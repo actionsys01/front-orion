@@ -1,19 +1,42 @@
-import NextAuth from "next-auth";
-
-interface Usuario {
-  id: number;
-  email: string;
-  nome: string;
-  empresa: {
-    nome_fantasia: string;
-    id: number;
-  };
+import NextAuth, { Usuario } from "next-auth";
+interface permicao {
+  categoria : string;
+  acao : string;
 }
 
+interface plano {
+  id : string;
+  nome : string
+  aplicacoes : {
+    categoria : string
+  }[];
+}
+
+interface perfil{
+  id : string;
+  nome : string;
+  descricao : string;
+  permissoes : permicao[] 
+}
+
+
+
+
 declare module "next-auth" {
-  /**
-   * Returned by `useSession`, `getSession` and received as a prop on the `Provider` React Context
-   */
+
+   interface Usuario {
+    id: number;
+    email: string;
+    nome: string;
+    empresa: {
+      id: number;
+      razao_social: string;
+      plano : plano
+    }
+    perfil : perfil;
+    token : string;
+  }
+
   interface Session {
     usuario: Usuario;
     token: string;
@@ -26,12 +49,8 @@ declare module "next-auth" {
   }
 }
 declare module "next-auth/jwt" {
-  /* Returned by the `jwt` callback and `getToken`, when using JWT sessions /
-  interface JWT {
-    /* OpenID ID Token /
-    // idToken?: string;
-    usuario: User;
-    token: string;
-    exp: number;
-  }
+      interface JWT {
+       usuario: Usuario;
+       token : string;
+      }
 }

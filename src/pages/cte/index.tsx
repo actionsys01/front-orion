@@ -1,28 +1,31 @@
 import Filtro from "@components/Filtro";
-import Paginacao from "@components/Paginacao";
-import TabelaControle from "@components/TabelaControle";
+import CtePagination from "@components/CtePagination"
 import { useFiltro } from "@contexts/filtro";
 import { Loading, Row, Spacer, Text } from "@geist-ui/react";
 import useRequest from "@hooks/useRequest";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
+import { useSession } from "next-auth/client"
+
 export default function Cte() {
   const { ctes } = useFiltro();
   const [pagina, setPagina] = useState(1);
-  const [totalPagina, setTotalPagina] = useState<number>(0);
-  const { data } = useRequest<{ ctes: []; total: number }>({
-    url: "/ctes/controle",
-    params: { pagina, filtro: JSON.stringify(ctes) },
-  });
+  
+  const [session] = useSession();
 
-  useEffect(() => {
-    if (data?.ctes) {
-      setTotalPagina(data.total);
-    }
-  }, [data]);
+  // const { data } = useRequest<{ ctes: []; total: number }>({
+  //   url: "/ctes",
+  //   params: { pagina, filtro: JSON.stringify(ctes) },
+  // });
 
-  if (!data) return <Loading />;
+  // useEffect(() => {
+  //   if (data?.ctes) {
+  //     setTotalPagina(data.total);
+  //   }
+  // }, [data]);
+
+  // if (!data) return <Loading />;
 
   return (
     <>
@@ -35,8 +38,9 @@ export default function Cte() {
         <Spacer x={0.2} />
       </Row>
       <Spacer y={0.5} />
-      <TabelaControle notas={data?.ctes} pathname="/cte-detalhes" />
-      <Paginacao totalPagina={totalPagina} setPagina={setPagina} />
+      <CtePagination company_id={session?.usuario.empresa.id} token={session?.token} />
+      {/* <TabelaControle notas={data?.ctes} pathname="/cte-detalhes" /> */}
+      {/* <Paginacao totalPagina={totalPagina} setPagina={setPagina} /> */}
     </>
   );
 }

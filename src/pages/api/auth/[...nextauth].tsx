@@ -40,11 +40,11 @@ export default NextAuth({
   providers: [
     Providers.Credentials({
       name: "Credentials",
-      async authorize(usuario: IUser) {
+      async authorize(credentials, request) {
         try {
           const res = await api.post("/sessoes", {
-            email: usuario.email,
-            senha: usuario.senha,
+            email: request.body.email,
+            senha: request.body.senha,
           });
 
           const user = await res.data;
@@ -53,7 +53,7 @@ export default NextAuth({
 
           return null;
         } catch (error) {
-          throw new Error(error.response.data.mensagem);
+          throw new Error('error.response.data.mensagem');
         }
       },
     }),

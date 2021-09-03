@@ -9,8 +9,10 @@ import {
   useMediaQuery,
 } from "@geist-ui/react";
 import { AlignCenter } from "@geist-ui/react-icons";
+import { ReactNode } from "hoist-non-react-statics/node_modules/@types/react";
 import "inter-ui/inter.css";
-import { Provider, signIn, signOut, useSession } from "next-auth/client";
+import { Provider, signIn, signOut, useSession  } from "next-auth/client";
+import { Session } from "next-auth";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -18,8 +20,41 @@ import { useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
 import "../styles/menu-lateral.css";
 
+
+interface IProps{
+  children : JSX.Element;
+}
+
+const Auth = ( { children } : IProps)   => {
+  const [session, loading] = useSession();
+  const router = useRouter();
+  const isUser = !!session?.user;
+
+
+
+  console.log({
+    isUser,
+    session
+  })
+
+  useEffect(() => {
+    if (loading) return; // Do nothing while loading
+    if (!isUser) router.push(`${window.location.origin}`); // If not authenticated, force log in
+  }, [isUser, loading]);
+
+  if (isUser) {
+    return children
+  }
+
+  // Session is being fetched, or no user.
+  // If no user, useEffect() will redirect.
+  return <PaginaCarregamento />;
+}
+
+
+
+
 export default function App({ Component, pageProps }: AppProps) {
-  const [session] = useSession();
   const [collapsed, setCollapsed] = useState(false);
   const isXS = useMediaQuery("xs");
   const [toggle, setToggle] = useState(false);
@@ -69,30 +104,15 @@ export default function App({ Component, pageProps }: AppProps) {
                   </Main>
                 </Container>
               </Auth>
-            ) : (
-              <Component {...pageProps} />
-            )}
+            )  : (
+               <Component {...pageProps} />
+           )}
           </ThemeProvider>
         </FiltroProvider>
       </GeistProvider>
     </Provider>
   );
 }
-function Auth({ children }) {
-  const [session, loading] = useSession();
-  const router = useRouter();
-  const isUser = !!session?.user;
 
-  useEffect(() => {
-    if (loading) return; // Do nothing while loading
-    if (!isUser) router.push(`${window.location.origin}`); // If not authenticated, force log in
-  }, [isUser, loading]);
 
-  if (isUser) {
-    return children;
-  }
 
-  // Session is being fetched, or no user.
-  // If no user, useEffect() will redirect.
-  return <PaginaCarregamento />;
-}

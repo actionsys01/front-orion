@@ -1,31 +1,36 @@
+import {useMemo , useEffect, useState } from "react";
 import Filtro from "@components/Filtro";
 import Paginacao from "@components/Paginacao";
 import TabelaControle from "@components/TabelaControle";
 import { useFiltro } from "@contexts/filtro";
 import { Loading, Row, Spacer, Text } from "@geist-ui/react";
-import useRequest from "@hooks/useRequest";
 import Head from "next/head";
-import { useMemo } from "react";
-import { useEffect, useState } from "react";
+import { Provider, signIn, signOut, useSession } from "next-auth/client";
+import NfePagination from "@components/NfePagination";
+import  getNfePagesByCompanyId from '@services/nfe'
+import INfeDto from '@services/nfe/dtos/INfeDTO';
 
 export default function Nfe() {
-  const { nfes } = useFiltro();
-  const [pagina, setPagina] = useState(1);
+  // const { nfes } = useFiltro();
+  const [session] = useSession();
 
-  const { data } = useRequest<{ nfes: []; total: number }>({
-    url: "/nfes/controle",
-    params: { pagina, filtro: JSON.stringify(nfes) },
-  });
+  console.log(session?.usuario.empresa.plano)
+  
+
+  // const { data } = useRequest<{ nfes: []; total: number }>({
+  //   url: "/nfes/controle",
+  //   params: { pagina, filtro: JSON.stringify(nfes) },
+  // });
 
 
 
-  const totalPagina = useMemo(() => {
-    if (data?.nfes) {
-      return data.total;
-    }
-  }, [data, nfes]);
+  // const totalPagina = useMemo(() => {
+  //   if (data?.nfes) {
+  //     return data.total;
+  //   }
+  // }, [data, nfes]);
 
-  if (!data) return <Loading />;
+  // if (!data) return <Loading />;
 
   return (
     <>
@@ -34,12 +39,16 @@ export default function Nfe() {
       </Head>
       <Text h2>Painel de Controle NFe</Text>
       <Row justify="end" align="middle">
-        <Filtro abaAtual="nfe" data={nfes} />
+        {/* <Filtro abaAtual="nfe" data={nfes} /> */}
         <Spacer x={0.2} />
       </Row>
       <Spacer y={0.5} />
-      <TabelaControle notas={data?.nfes} pathname="/nfe-detalhes" />
-      <Paginacao totalPagina={totalPagina} setPagina={setPagina} />
+      <NfePagination company_id={session?.usuario.empresa.id} token={session?.token}  />
+      {/* <TabelaControle notas={data?.nfes} pathname="/nfe-detalhes" />
+      // <Paginacao totalPagina={totalPagina} setPagina={setPagina} /> */}
+
+
+  {/* <Paginacao totalPagina={12} setPagina={() => {}} />  */}
     </>
   );
 }
