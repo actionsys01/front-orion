@@ -40,7 +40,7 @@ export default function NfeDetalhes() {
       IE: string;
     };
   }>({
-    url: `/nfes/${router.query?.chave_nota}`,
+    url: `/nfe/controle/${router.query?.chave_nota}`,
   });
 
   if (!data) return <Loading />;

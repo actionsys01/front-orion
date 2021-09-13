@@ -54,7 +54,7 @@ export default function PerfilAcesso() {
 
   const router = useRouter();
 
-  const { data, mutate } = useRequest<IPerfil[]>({ url: `/perfis/empresas` });
+  const { data, mutate } = useRequest<IPerfil[]>({ url: `/perfis/`});
 
   const perfis = useMemo(() => {
     const perfis: any = [];

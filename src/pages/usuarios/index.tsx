@@ -28,8 +28,8 @@ type IUsuario = {
 };
 
 export default function Usuarios() {
-  const { data, mutate } = useRequest<IUsuario[]>({ url: `/usuarios` });
   const [session] = useSession();
+  const { data, mutate } = useRequest<IUsuario[]>({ url: `/usuarios/${session?.usuario.id}` });
   const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
 

@@ -30,13 +30,6 @@ const Auth = ( { children } : IProps)   => {
   const router = useRouter();
   const isUser = !!session?.user;
 
-
-
-  console.log({
-    isUser,
-    session
-  })
-
   useEffect(() => {
     if (loading) return; // Do nothing while loading
     if (!isUser) router.push(`${window.location.origin}`); // If not authenticated, force log in

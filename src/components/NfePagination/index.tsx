@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { Container } from './style'
 import { useState } from "react";
 import Pagination from "@material-ui/lab/Pagination";
+import Link from 'next/link'
 
 
 interface Props {
@@ -17,6 +18,9 @@ export default function NfePagination({ company_id, token }: Props) {
   const [page, setPage] = useState(1);
   const [quantityPage, setQuantityPage] = useState(1)
 
+
+  
+
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
     setPage(value)
   }
@@ -26,6 +30,8 @@ export default function NfePagination({ company_id, token }: Props) {
 
     const { data } = responseNfes;
 
+
+    console.log(data.nfes[0])
     setNfes(data.nfes)
 
     setQuantityPage(Math.ceil(data.total / 5));
@@ -37,7 +43,6 @@ export default function NfePagination({ company_id, token }: Props) {
 
     getCtesAndTotalPages();
 
-
   }, [page])
 
 
@@ -47,7 +52,7 @@ export default function NfePagination({ company_id, token }: Props) {
         <table>
           <thead>
             <tr>
-              <th>Emissão</th>
+              <th>Chave</th>
               <th>Número</th>
               <th>Série</th>
               <th>Cnpj Emitente</th>
@@ -56,14 +61,23 @@ export default function NfePagination({ company_id, token }: Props) {
 
           <tbody>
 
-           {nfes.map(nfe => (
-                <tr key={nfe.chave_nota}>
-                <td>{nfe.nota}</td>
-                <td>{nfe.serie}</td>
-                <td>{nfe.serie}</td>
-                <td>{nfe.emit_cnpj}</td>
-              </tr>
-           ))}
+           {nfes.map(nfe => {
+             
+              console.log(nfe.chave_nota)
+
+             return (
+              <tr key={nfe.chave_nota}>
+              <td>
+                 <Link href={`/nfe-detalhes?chave_nota=${nfe.chave_nota}`}> 
+                     <a>{nfe.nota}</a> 
+                 </Link>
+              </td>
+              <td>{nfe.serie}</td>
+              <td>{nfe.serie}</td>
+              <td>{nfe.emit_cnpj}</td>
+            </tr>
+             )
+           })}
 
         
 
