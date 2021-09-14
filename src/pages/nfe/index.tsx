@@ -1,4 +1,5 @@
 import {useMemo , useEffect, useState } from "react";
+import React from "react";
 import Filtro from "@components/Filtro";
 import Paginacao from "@components/Paginacao";
 import TabelaControle from "@components/TabelaControle";
@@ -9,12 +10,27 @@ import { Provider, signIn, signOut, useSession } from "next-auth/client";
 import NfePagination from "@components/NfePagination";
 import  getNfePagesByCompanyId from '@services/nfe'
 import INfeDto from '@services/nfe/dtos/INfeDTO';
+import Pagination from "@material-ui/lab/Pagination";
 
-export default function Nfe() {
+
+interface Props {
+  company_id: number | undefined;
+  token: string | undefined
+}
+
+export default function Nfe({ company_id, token }: Props) {
   // const { nfes } = useFiltro();
   const [session] = useSession();
 
+
+  
+
   console.log(session?.usuario.empresa.plano)
+
+  
+      
+
+
   
 
   // const { data } = useRequest<{ nfes: []; total: number }>({
@@ -45,7 +61,7 @@ export default function Nfe() {
       <Spacer y={0.5} />
       <NfePagination company_id={session?.usuario.empresa.id} token={session?.token}  />
       {/* <TabelaControle notas={data?.nfes} pathname="/nfe-detalhes" />
-      // <Paginacao totalPagina={totalPagina} setPagina={setPagina} /> */}
+       <Paginacao totalPagina={totalPagina} setPagina={setPagina} /> */}
 
 
   {/* <Paginacao totalPagina={12} setPagina={() => {}} />  */}

@@ -34,7 +34,7 @@ export default function Cte() {
       </Head>
       <Text h2>Painel de Controle CTe</Text>
       <Row justify="end" align="middle">
-        <Filtro abaAtual={"cte"} data={ctes} />
+        {/* <Filtro abaAtual={"cte"} data={ctes} /> */}
         <Spacer x={0.2} />
       </Row>
       <Spacer y={0.5} />
