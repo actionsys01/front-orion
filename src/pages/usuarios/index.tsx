@@ -1,4 +1,5 @@
-import { Grid } from "@components/Grid";
+import { Grid } from "./styled";
+import React, { useState, useMemo, useEffect} from 'react'; 
 import {
   Button,
   Loading,
@@ -15,25 +16,108 @@ import * as usuario from "@services/usuarios";
 import { useSession } from "next-auth/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useMemo } from "react";
+import api from "@services/api"
 
-type IUsuario = {
+interface IUsuario  {
+  id: number;
   nome: string;
   email: string;
-  id: number;
-  perfil_id: number;
-  senha: string;
+  perfil: Perfil
 };
 
-export default function Usuarios() {
-  const { data, mutate } = useRequest<IUsuario[]>({ url: `/usuarios` });
+interface Perfil {
+  id: number;
+  nome: string;
+  descricao: string;
+  criadoEm: string;
+  atualizadaEm: string;
+  criadoPorIp: string;
+  atualizadoPorIp: string;
+}
+
+
+
+export default function Usuarios({}) {
   const [session] = useSession();
+  const { data, mutate } = useRequest<IUsuario[]>({ url: `/usuarios/${session?.usuario.id}` });
   const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
 
+
+   
+ 
+  const getAllUsersByCompanyId = async () : Promise<IUsuario[]> => {
+    const response = await api.get(`/usuarios/${session?.usuario.id}`)
+    const {data}= response;
+    return data
+  }
+ 
   useEffect(() => {
+    getAllUsersByCompanyId().then(response => setUsuarios(response))
+   
+  }, [])
+
+  const UsersByCompanyData = useMemo(() => {
+    const allData:any = [];
+    console.log('beterraba');
+    if(usuarios) {
+      usuarios.forEach((item) => {
+        allData.push({
+          ...item,
+          perfil_nome: (item.perfil.nome),
+          option: (actions: any, data: any) => (
+            <Popover
+              placement="right"
+              content={
+                <>
+                  <Popover.Item>
+                    <Text
+                      style={{
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        const { id } = data.rowValue;
+                        const perfil_id = data.rowValue.perfil_id;
+                        const nome = data.rowValue.nome;
+                        const email = data.rowValue.email;
+                        router.push({
+                          pathname: "/cadastrar-usuario",
+                          query: { perfil_id, nome, email, id },
+                        });
+                      }}
+                    >
+                      Editar
+                    </Text>
+                  </Popover.Item>
+                  <Popover.Item>
+                    <Text
+                      style={{
+                        cursor: "pointer",
+                      }}
+                     /*  onClick={() => {
+                        const { id } = data.rowValue;
+                        deletar(id);
+                      }} */
+                    >
+                      Deletar
+                    </Text>
+                  </Popover.Item>
+                </>
+              }
+            >
+              <span style={{ cursor: "pointer" }}>
+                <MoreHorizontal />
+              </span>
+            </Popover>
+          )
+        })
+      })
+    } 
+
+    return allData;
+  }, [usuarios])
+  
+/*   useEffect(() => {
     async function getData() {
       if (data) {
         const usuarioLogadoRemovido = data.filter(
@@ -45,17 +129,17 @@ export default function Usuarios() {
     }
 
     getData();
-  }, [data]);
+  }, [data]); */
 
-  function deletar(id: number) {
+ /*  function deletar(id: number) {
     usuario.deletar(id);
 
     const usuariosAtualizados = usuarios.filter((usuario) => usuario.id !== id);
 
     mutate(usuariosAtualizados, false);
-  }
+  } */
 
-  async function buscarDados(data: any) {
+ /*  async function buscarDados(data: any) {
     const usuarios = Promise.all(
       data.map(async (item) => {
         const response = await perfis.buscar(item.perfil_id);
@@ -114,7 +198,7 @@ export default function Usuarios() {
       })
     );
     return usuarios;
-  }
+  } */
 
   if (!data) return <Loading />;
 
@@ -136,8 +220,8 @@ export default function Usuarios() {
       </Row>
       <Spacer y={1} />
       <Grid>
-        <Table data={usuarios}>
-          <Table.Column prop="link" />
+        <Table data={UsersByCompanyData}>
+          <Table.Column prop="option" />
           <Table.Column prop="nome" label="Nome" />
           <Table.Column prop="email" label="Email" />
           <Table.Column prop="perfil_nome" label="Perfil" />

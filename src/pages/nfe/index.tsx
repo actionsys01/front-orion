@@ -15,6 +15,15 @@ export default function Nfe() {
   const [session] = useSession();
 
   console.log(session?.usuario.empresa.plano)
+
+  
+
+  /* console.log(session?.usuario.empresa.plano) */
+
+  
+      
+
+
   
 
   // const { data } = useRequest<{ nfes: []; total: number }>({
@@ -48,7 +57,7 @@ export default function Nfe() {
       // <Paginacao totalPagina={totalPagina} setPagina={setPagina} /> */}
 
 
-  {/* <Paginacao totalPagina={12} setPagina={() => {}} />  */}
+  
     </>
   );
 }
