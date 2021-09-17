@@ -15,6 +15,7 @@ export default function Nfe() {
   const [session] = useSession();
 
   console.log(session?.usuario.empresa.plano)
+  console.log(session);
   
 
   // const { data } = useRequest<{ nfes: []; total: number }>({

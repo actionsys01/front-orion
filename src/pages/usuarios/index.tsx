@@ -1,4 +1,5 @@
-import { Grid } from "@components/Grid";
+import { Grid } from "./styled";
+import React, {useMemo,useState, useEffect } from 'react'
 import {
   Button,
   Loading,
@@ -15,25 +16,46 @@ import * as usuario from "@services/usuarios";
 import { useSession } from "next-auth/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useMemo } from "react";
+import api from "@services/api"
 
-type IUsuario = {
+interface IUsuario  {
+  id: number;
   nome: string;
   email: string;
-  id: number;
-  perfil_id: number;
-  senha: string;
+  perfil: Perfil
 };
+
+interface Perfil {
+id:number;
+nome: string;
+descricao: string;
+criadoEm: string;
+atualizadoPorIp: string;
+criadoPorIp: string;
+}
 
 export default function Usuarios() {
   const [session] = useSession();
-  const { data, mutate } = useRequest<IUsuario[]>({ url: `/usuarios/${session?.usuario.id}` });
-  const router = useRouter();
+   const { data, mutate } = useRequest<IUsuario[]>({ url: `/usuarios/${session?.usuario.id}` });
+   console.log(data);
+   
+ const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
 
+  const getAllUserByCompanyId  = async () : Promise<Perfil[] | any> => {
+    const response = await api.get(`/usuarios/${session?.usuario.id}`)
+   const data = response.data
+    return data
+
+  }
+
   useEffect(() => {
+    getAllUserByCompanyId().then((response) => setUsuarios(response))
+  }, [])
+
+
+
+/*   useEffect(() => {
     async function getData() {
       if (data) {
         const usuarioLogadoRemovido = data.filter(
@@ -114,9 +136,67 @@ export default function Usuarios() {
       })
     );
     return usuarios;
-  }
+  } */
 
-  if (!data) return <Loading />;
+  /* if (!data) return <Loading />; */
+
+  const allData = useMemo(() => {
+    const allUsersData: any = [];
+    if(usuarios) {
+      usuarios.forEach((item) => {
+        allUsersData.push({
+          ...item,
+          perfil_nome: (item?.perfil.nome),
+          options: (actions: any, data: any) => (
+            <Popover
+                    placement="right"
+                    content={
+                      <>
+                        <Popover.Item>
+                          <Text
+                            style={{
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              const { id } = data.rowValue;
+                              const perfil_id = data.rowValue.perfil_id;
+                              const nome = data.rowValue.nome;
+                              const email = data.rowValue.email;
+                              router.push({
+                                pathname: "/cadastrar-usuario",
+                                query: { perfil_id, nome, email, id },
+                              });
+                            }}
+                          >
+                            Editar
+                          </Text>
+                        </Popover.Item>
+                        <Popover.Item>
+                          <Text
+                            style={{
+                              cursor: "pointer",
+                            }}
+                            /* onClick={() => {
+                              const { id } = data.rowValue;
+                              deletar(id);
+                            }} */
+                          >
+                            Deletar
+                          </Text>
+                        </Popover.Item>
+                      </>
+                    }
+                  >
+                    <span style={{ cursor: "pointer" }}>
+                      <MoreHorizontal />
+                    </span>
+                  </Popover>
+          ),
+        });
+      });
+    }
+return allUsersData
+  }, [usuarios])
 
   return (
     <>
@@ -136,8 +216,8 @@ export default function Usuarios() {
       </Row>
       <Spacer y={1} />
       <Grid>
-        <Table data={usuarios}>
-          <Table.Column prop="link" />
+        <Table data={allData}>
+          <Table.Column prop="options" />
           <Table.Column prop="nome" label="Nome" />
           <Table.Column prop="email" label="Email" />
           <Table.Column prop="perfil_nome" label="Perfil" />

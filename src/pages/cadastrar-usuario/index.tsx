@@ -30,8 +30,12 @@ export default function Usuarios() {
   const [email, setEmail] = useState<string>("");
   const [nome, setNome] = useState<string>("");
   const [perfilId, setPerfilId] = useState<string>("");
-  const { data } = useRequest<IPerfil[]>({ url: `/perfis/empresas` });
+  const { data } = useRequest<IPerfil[]>({ url: `/usuarios/${session?.usuario.perfil.nome}` });
   const [, setToast] = useToasts();
+  console.log(session);
+  console.log(data);
+  
+  
 
   useEffect(() => {
     if (router.query.nome) {
@@ -113,7 +117,7 @@ export default function Usuarios() {
           <Select
             placeholder={"Tipo perfil"}
             onChange={(value) => setPerfilId(value as string)}
-            // initialValue={data?.[0].id.toString()}
+             /* initialValue={data?.[0].id.toString()} */
             value={perfilId}
             width={"100%"}
             style={{ maxWidth: "100%" }}
