@@ -14,8 +14,7 @@ export const Grid = styled(GridGeist)`
     th {
       & .cell,
       & .thead-box {
-        justify-content: right;
-        text-align: right;
+        
         text-transform: capitalize;
         white-space: nowrap;
       }
