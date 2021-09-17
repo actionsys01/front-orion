@@ -1,18 +1,13 @@
 import React, { useMemo } from "react";
 import getNfePagesByCompanyId from '@services/nfe';
 import INfeDto from '@services/nfe/dtos/INfeDTO';
+import { Dot, Link, Popover, Table, Text, Tooltip } from "@geist-ui/react";
 import { useEffect } from "react";
-<<<<<<< Updated upstream
-import { Container } from './style'
-import { useState } from "react";
-import Pagination from "@material-ui/lab/Pagination";
-=======
 import { MoreHorizontal } from "@geist-ui/react-icons";
 import { useState } from "react";
 import Pagination from "@material-ui/lab/Pagination";
 import { Grid, Pages } from "./style";
-import {TableProps} from "@geist-ui/react/dist/table/table"
->>>>>>> Stashed changes
+
 
 
 interface Props  {
@@ -28,12 +23,6 @@ interface Props  {
   }
 }
 
-<<<<<<< Updated upstream
-export default function NfePagination({ company_id, token }: Props) {
-  const [nfes, setNfes] = useState<INfeDto[]>([])
-  const [page, setPage] = useState(1);
-  const [quantityPage, setQuantityPage] = useState(1)
-=======
 export default function NfePagination({ company_id, token, sefaz, portaria }: Props) {
   const [nfes, setNfes] = useState<INfeDto[]>([])
   const [page, setPage] = useState(1);
@@ -41,7 +30,6 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
   /* console.log(nfes);
   console.log(portaria?.cor); */
   
->>>>>>> Stashed changes
 
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
     setPage(value)
@@ -53,10 +41,6 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
     const { data } = responseNfes;
 
     setNfes(data.nfes)
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 
     setQuantityPage(Math.ceil(data.total / 5));
     
@@ -170,40 +154,6 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
 
 
   return (
-<<<<<<< Updated upstream
-      <Container>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Emissão</th>
-              <th>Número</th>
-              <th>Série</th>
-              <th>Cnpj Emitente</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-           {nfes.map(nfe => (
-                <tr key={nfe.chave_nota}>
-                <td>{nfe.nota}</td>
-                <td>{nfe.serie}</td>
-                <td>{nfe.serie}</td>
-                <td>{nfe.emit_cnpj}</td>
-              </tr>
-           ))}
-
-        
-
-
-          </tbody>
-        </table>
-          
-          <Pagination onChange={handleChange} count={quantityPage}  color="primary" />
-          
-      </Container>
-=======
     <>
       <Grid>
       <Table data={dataFormatted}>
@@ -226,6 +176,5 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
           <Pagination onChange={handleChange} count={quantityPage}  shape='rounded' />
           </Pages>
           </>
->>>>>>> Stashed changes
   )
 }
