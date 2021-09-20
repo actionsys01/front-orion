@@ -12,15 +12,25 @@ import useRequest from "@hooks/useRequest";
 import { useSession } from "next-auth/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { setAppElement } from "react-modal";
 import * as usuarios from "../../services/usuarios";
 
 type IPerfil = {
   id: number;
   nome: string;
+  perfil: Perfil
 };
+interface Perfil {
+  id: number;
+  nome: string;
+  descricao: string;
+  criadoEm: string;
+  atualizadaEm: string;
+  criadoPorIp: string;
+  atualizadoPorIp: string;
+}
+
 
 export default function Usuarios() {
   const [session] = useSession();
@@ -29,16 +39,25 @@ export default function Usuarios() {
   const [senha, setSenha] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [nome, setNome] = useState<string>("");
-  const [perfilId, setPerfilId] = useState<string>("");
-  const { data } = useRequest<IPerfil[]>({ url: `/perfis/empresas` });
+  const [perfilId, setPerfilId] = useState<number>();
+  const { data } = useRequest<IPerfil[]>({ url: `/usuarios/` });
   const [, setToast] = useToasts();
+ /*  console.log(session); */
+  /* console.log(data); */
+  //  console.log(router);  
+  
+ 
+  
+  
+  
 
   useEffect(() => {
     if (router.query.nome) {
       const { email, perfil_id, nome } = router.query;
       setNome(nome as string);
       setEmail(email as string);
-      setPerfilId(perfil_id as string);
+      setPerfilId(perfil_id as number);
+
     }
   }, []);
 
@@ -76,7 +95,7 @@ export default function Usuarios() {
         return;
       }
 
-      const response = await usuarios.cadastrar({ nome, email, senha });
+      const response = await usuarios.cadastrar({ nome, email, senha, perfil_id: perfilId, empresa_id: session?.usuario.empresa.id });
       const id = response?.data.usuario.id;
       await usuarios.atualizar({
         nome,
@@ -112,15 +131,16 @@ export default function Usuarios() {
           </Text>
           <Select
             placeholder={"Tipo perfil"}
-            onChange={(value) => setPerfilId(value as string)}
-            // initialValue={data?.[0].id.toString()}
-            value={perfilId}
+            onChange={(value) => console.log(value)
+            }
+             initialValue={data?.[0].id.toString()}
+            /* value={perfilId} */
             width={"100%"}
             style={{ maxWidth: "100%" }}
           >
             {data?.map((item) => (
               <Select.Option key={item.id} value={item.id.toString()}>
-                {item.nome}
+                {item.perfil.nome}
               </Select.Option>
             ))}
           </Select>

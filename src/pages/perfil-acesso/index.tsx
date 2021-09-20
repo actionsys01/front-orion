@@ -12,40 +12,38 @@ import {
   useModal,
   useToasts,
 } from "@geist-ui/react";
+import { useSession } from "next-auth/client";
 import { MoreHorizontal, Plus } from "@geist-ui/react-icons";
 import useRequest from "@hooks/useRequest";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useMemo, useState } from "react";
-import { Grid } from "../../components/Grid";
+import { Grid } from "./styled";
 import * as perfil from "../../services/perfis";
 import * as perfilAplicacao from "../../services/perfis-aplicacoes";
 
 interface IPerfilAplicacao {
   nome: string;
-  acao: string;
   descricao: string;
-  perfil_id: number;
-  codigo_id: number;
   id: number;
 }
 type IPerfil = {
   nome: string;
   descricao: string;
   id: number;
-  perfis_aplicacoes: IPerfilAplicacao[];
+  perfil: IPerfilAplicacao;
 };
 
 export default function PerfilAcesso() {
+  const [session] = useSession();
   const { setVisible, bindings } = useModal();
   const [nome, setNome] = useState<string>("");
   const [descricao, setDescricao] = useState<string>("");
-  const [perfisAplicacoes, setPerfisAplicacoes] = useState<IPerfilAplicacao[]>(
-    []
-  );
+  const [perfisAplicacoes, setPerfisAplicacoes] = useState<IPerfilAplicacao>();
   const [perfilId, setPerfiId] = useState<number>(0);
   const [loading, setLoading] = useState(false);
-
+    
+    
   const [acao, setAcao] = useState<"editar" | "cadastrar" | "copiar">(
     "cadastrar"
   );
@@ -54,14 +52,18 @@ export default function PerfilAcesso() {
 
   const router = useRouter();
 
-  const { data, mutate } = useRequest<IPerfil[]>({ url: `/perfis/empresas` });
+  const { data, mutate } = useRequest<IPerfil[]>({ url: `/usuarios/` });
 
   const perfis = useMemo(() => {
     const perfis: any = [];
     if (data) {
       data.forEach((item) => {
+        /* console.log(item); */
+        
         perfis.push({
           ...item,
+          perfil_nome: item.perfil.nome,
+          perfil_descricao: item.perfil.descricao,
           link: (action: any, data: any) => (
             <Popover
               placement="right"
@@ -83,7 +85,7 @@ export default function PerfilAcesso() {
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         const item = data.rowValue as IPerfil;
-                        deletar(item);
+                        /* deletar(item) */;
                       }}
                     >
                       Deletar
@@ -118,13 +120,13 @@ export default function PerfilAcesso() {
   async function copiar({
     nome,
     descricao,
-    perfis_aplicacoes,
+    perfil,
   }: Omit<IPerfil, "id">) {
     setAcao("copiar");
     setVisible(true);
     setNome(nome);
     setDescricao(descricao);
-    setPerfisAplicacoes(perfis_aplicacoes);
+    setPerfisAplicacoes(perfil);
   }
 
   async function editar({
@@ -139,14 +141,14 @@ export default function PerfilAcesso() {
     setPerfiId(id);
   }
 
-  async function deletar({
+/*   async function deletar({
     id,
-    perfis_aplicacoes,
+    perfil,
   }: Omit<IPerfil, "nome" | "descricao">) {
     try {
       await perfil.deletar(id);
 
-      perfis_aplicacoes.map(async (perfil) => {
+      perfil.map(async (perfil) => {
         const { id } = perfil;
         perfilAplicacao.deletar(id);
       });
@@ -160,7 +162,7 @@ export default function PerfilAcesso() {
       const mensagem = error.response.data.mensagem;
       setToast({ text: mensagem, type: "warning" });
     }
-  }
+  } */
 
   async function cadastrar() {
     setLoading(true);
@@ -183,16 +185,16 @@ export default function PerfilAcesso() {
 
         id = response.data.id;
 
-        perfisAplicacoes.map(async (perfil) => {
-          const { codigo_id, acao, descricao, nome } = perfil;
-          await perfilAplicacao.criar({
-            codigo_id,
-            perfil_id: id,
-            acao,
-            descricao,
-            nome,
-          });
-        });
+        // perfisAplicacoes.map(async (perfil) => {
+        //   const { codigo_id, acao, descricao, nome } = perfil;
+        //   await perfilAplicacao.criar({
+        //     codigo_id,
+        //     perfil_id: id,
+        //     acao,
+        //     descricao,
+        //     nome,
+        //   });
+        // });
       }
 
       router.push({
@@ -233,8 +235,8 @@ export default function PerfilAcesso() {
         <Grid>
           <Table data={perfis}>
             <Table.Column prop="link" width={15} />
-            <Table.Column prop="nome" label="Nome" width={500} />
-            <Table.Column prop="descricao" label="Descrição" width={500} />
+            <Table.Column prop="perfil_nome" label="Nome" width={500} />
+            <Table.Column prop="perfil_descricao" label="Descrição" width={500} />
           </Table>
         </Grid>
       ) : (

@@ -39,7 +39,7 @@ interface Perfil {
 
 export default function Usuarios({}) {
   const [session] = useSession();
-  const { data, mutate } = useRequest<IUsuario[]>({ url: `/usuarios/${session?.usuario.id}` });
+  /* const { data, mutate } = useRequest<IUsuario[]>({ url: `/usuarios` }); */
   const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
 
@@ -47,7 +47,7 @@ export default function Usuarios({}) {
    
  
   const getAllUsersByCompanyId = async () : Promise<IUsuario[]> => {
-    const response = await api.get(`/usuarios/${session?.usuario.id}`)
+    const response = await api.get(`/usuarios/`)
     const {data}= response;
     return data
   }
@@ -59,7 +59,6 @@ export default function Usuarios({}) {
 
   const UsersByCompanyData = useMemo(() => {
     const allData:any = [];
-    console.log('beterraba');
     if(usuarios) {
       usuarios.forEach((item) => {
         allData.push({
@@ -200,7 +199,7 @@ export default function Usuarios({}) {
     return usuarios;
   } */
 
-  if (!data) return <Loading />;
+ /*  if (!data) return <Loading />; */
 
   return (
     <>
