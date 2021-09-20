@@ -1,12 +1,14 @@
-import React, { useMemo } from "react";
+import React, { useMemo , useCallback} from "react";
 import getNfePagesByCompanyId from '@services/nfe';
 import INfeDto from '@services/nfe/dtos/INfeDTO';
 import { Dot, Link, Popover, Table, Text, Tooltip } from "@geist-ui/react";
+import { useFiltro } from "@contexts/filtro";
 import { useEffect } from "react";
 import { MoreHorizontal } from "@geist-ui/react-icons";
 import { useState } from "react";
 import Pagination from "@material-ui/lab/Pagination";
 import { Grid, Pages } from "./style";
+
 
 
 
@@ -24,8 +26,9 @@ interface Props  {
 }
 
 export default function NfePagination({ company_id, token, sefaz, portaria }: Props) {
-  const [nfes, setNfes] = useState<INfeDto[]>([])
+  const [nfe, setNfes] = useState<INfeDto[]>([])
   const [page, setPage] = useState(1);
+  const  { nfes  } = useFiltro();
   const [quantityPage, setQuantityPage] = useState(1)
   /* console.log(nfes);
   console.log(portaria?.cor); */
@@ -35,16 +38,16 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
     setPage(value)
   }
 
-  const getCtesAndTotalPages = async () => {
-    const responseNfes = await getNfePagesByCompanyId(company_id, token, page)
+  const getCtesAndTotalPages = useCallback(async () => {
+
+    const responseNfes = await getNfePagesByCompanyId(company_id, token, page, nfes)
 
     const { data } = responseNfes;
 
     setNfes(data.nfes)
 
     setQuantityPage(Math.ceil(data.total / 5));
-    
-  }
+    }, [nfes])
       
 
   useEffect(() => {
@@ -52,15 +55,15 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
     getCtesAndTotalPages();
 
 
-  }, [page])
+  }, [page, nfes])
 
 
 
 
   const dataFormatted = useMemo(() => {
     const newData: any = [];
-    if (nfes) {
-      nfes.forEach((item) => {
+    if (nfe) {
+      nfe.forEach((item) => {
         newData.push({
           ...item,
           sefaz_status: (
@@ -149,7 +152,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
     }
 
     return newData;
-  }, [nfes]);
+  }, [nfe]);
 
 
 
