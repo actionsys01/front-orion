@@ -30,8 +30,6 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
   const [page, setPage] = useState(1);
   const  { nfes  } = useFiltro();
   const [quantityPage, setQuantityPage] = useState(1)
-  /* console.log(nfes);
-  console.log(portaria?.cor); */
   
 
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
@@ -44,10 +42,12 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
 
     const { data } = responseNfes;
 
+    console.log("resultado fo",data)
+
     setNfes(data.nfes)
 
     setQuantityPage(Math.ceil(data.total / 5));
-    }, [nfes])
+    }, [nfes, page])
       
 
   useEffect(() => {
