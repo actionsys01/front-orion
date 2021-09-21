@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useContext, useState } from "react";
 import { createContext } from "react";
 import colunas from "@utils/painel-controle-filtro";
+import { ReactNode } from "hoist-non-react-statics/node_modules/@types/react";
 
 interface IUnform {
   campo: string;
@@ -21,13 +22,17 @@ interface FiltroContextType {
   limpar(): void;
 }
 
+interface IFiltroProps{
+  children : ReactNode
+}
+
 export const FiltroContext = createContext({} as FiltroContextType);
 
 export function useFiltro() {
   return useContext(FiltroContext);
 }
 
-export default function FiltroProvider({ children }) {
+export default function FiltroProvider({ children } : IFiltroProps) {
   const [nfes, setNfes] = useState<IFiltro[]>([]);
   const [ctes, setCtes] = useState<IFiltro[]>([]);
 
@@ -41,6 +46,14 @@ export default function FiltroProvider({ children }) {
 
     carregarStorage();
   }, []);
+
+
+
+  useEffect(() => {
+
+    console.log("FILTRO" , nfes)
+
+  }, [nfes])
 
   function cadastrarNfe(nfes: IFiltro[]) {
     setNfes(nfes);
