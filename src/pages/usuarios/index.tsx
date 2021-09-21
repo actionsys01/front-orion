@@ -115,6 +115,9 @@ export default function Usuarios({}) {
 
     return allData;
   }, [usuarios])
+
+  console.log(UsersByCompanyData);
+  
   
 /*   useEffect(() => {
     async function getData() {
