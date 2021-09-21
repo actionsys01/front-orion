@@ -11,7 +11,7 @@ import  getNfePagesByCompanyId from '@services/nfe'
 import INfeDto from '@services/nfe/dtos/INfeDTO';
 
 export default function Nfe() {
-  // const { nfes } = useFiltro();
+  const { nfes } = useFiltro();
   const [session] = useSession();
 
   console.log(session?.usuario.empresa.plano)
@@ -48,7 +48,7 @@ export default function Nfe() {
       </Head>
       <Text h2>Painel de Controle NFe</Text>
       <Row justify="end" align="middle">
-        {/* <Filtro abaAtual="nfe" data={nfes} /> */}
+        <Filtro abaAtual="nfe" data={nfes} />
         <Spacer x={0.2} />
       </Row>
       <Spacer y={0.5} />
