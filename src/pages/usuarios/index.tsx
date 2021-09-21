@@ -93,10 +93,10 @@ export default function Usuarios({}) {
                       style={{
                         cursor: "pointer",
                       }}
-                     /*  onClick={() => {
+                      onClick={() => {
                         const { id } = data.rowValue;
                         deletar(id);
-                      }} */
+                      }}
                     >
                       Deletar
                     </Text>
@@ -133,74 +133,14 @@ export default function Usuarios({}) {
     getData();
   }, [data]); */
 
- /*  function deletar(id: number) {
+  function deletar(id: number) {
     usuario.deletar(id);
 
     const usuariosAtualizados = usuarios.filter((usuario) => usuario.id !== id);
+    setUsuarios(usuariosAtualizados)
+    // mutate(usuariosAtualizados, false);
+  } 
 
-    mutate(usuariosAtualizados, false);
-  } */
-
- /*  async function buscarDados(data: any) {
-    const usuarios = Promise.all(
-      data.map(async (item) => {
-        const response = await perfis.buscar(item.perfil_id);
-
-        const { nome: perfil_nome } = response.data;
-
-        return {
-          ...item,
-          perfil_nome,
-          link: (action: any, data: any) => (
-            <Popover
-              placement="right"
-              content={
-                <>
-                  <Popover.Item>
-                    <Text
-                      style={{
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        const { id } = data.rowValue;
-                        const perfil_id = data.rowValue.perfil_id;
-                        const nome = data.rowValue.nome;
-                        const email = data.rowValue.email;
-                        router.push({
-                          pathname: "/cadastrar-usuario",
-                          query: { perfil_id, nome, email, id },
-                        });
-                      }}
-                    >
-                      Editar
-                    </Text>
-                  </Popover.Item>
-                  <Popover.Item>
-                    <Text
-                      style={{
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        const { id } = data.rowValue;
-                        deletar(id);
-                      }}
-                    >
-                      Deletar
-                    </Text>
-                  </Popover.Item>
-                </>
-              }
-            >
-              <span style={{ cursor: "pointer" }}>
-                <MoreHorizontal />
-              </span>
-            </Popover>
-          ),
-        };
-      })
-    );
-    return usuarios;
-  } */
 
  /*  if (!data) return <Loading />; */
 
