@@ -6,6 +6,6 @@ interface IPerfil {
 }
 
 export default async function criar(data: IPerfil) {
-  const response = await api.post(`/perfis/empresas`, data);
+  const response = await api.post(`/perfil/`, data);
   return response;
 }
