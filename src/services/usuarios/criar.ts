@@ -4,8 +4,8 @@ type IUsuario = {
   nome: string;
   email: string;
   senha: string;
-  perfil_id?: number;
-  empresa_id?: number;
+  perfil_id?: string;
+  empresa_id?: string;
 };
 
 export default async function criar(data: IUsuario) {
