@@ -46,20 +46,20 @@ export default function Usuarios() {
   const [nome, setNome] = useState<string>("");
   const [perfilId, setPerfilId] = useState<string>(""); 
   const [empresaId, setEmpresaId] = useState<string>("")
-  const { data } = useRequest<IPerfil[]>({ url: `/perfil/${empresaId}` });
+  const { data } = useRequest<IPerfil[]>({ url: `/perfil/${session?.usuario.empresa.id}` });
   const [, setToast] = useToasts();
  /*  console.log(session); */
   //  console.log(data); 
-    //  console.log(empresaId);  
+    console.log(perfilId);  
 
   useEffect(() => {
     if(session){
         //  const { email, nome } = session?.usuario;
-      const {id} = session.usuario.perfil;
+      // const {id} = session.usuario.perfil;
       const dataId = Number(session.usuario.empresa.id);
       setEmail(email as string);
       setNome(nome as string);
-      setPerfilId(id) 
+      setPerfilId(perfilId as string) 
       setEmpresaId(dataId)
     }
   }, []);
@@ -82,13 +82,14 @@ export default function Usuarios() {
         }
         await usuarios.atualizar({
           nome,
-          perfil_id: session.usuario.perfil.id as string,
+          perfil_id: perfilId,
           senha,
           id: Number(router.query.id as string),
         });
         setEmail("");
         setSenha("");
         setNome("");
+        setPerfilId("")
         router.back();
         return;
       }
@@ -106,7 +107,7 @@ export default function Usuarios() {
       const id = response?.data.usuario.id;
       await usuarios.atualizar({
         nome,
-        perfil_id: session.usuario.perfil.id as string,
+        perfil_id: perfilId,
         senha,
         id,
       });
@@ -114,6 +115,7 @@ export default function Usuarios() {
       setEmail("");
       setSenha("");
       setNome("");
+      setPerfilId("")
       router.back();
       }
     } catch (error) {
@@ -138,7 +140,7 @@ export default function Usuarios() {
           </Text>
           <Select
             placeholder={"Tipo perfil"}
-            // value={perfilId} 
+            value={perfilId} 
              onChange={(value) => setPerfilId(value as string)}
             //  initialValue={data?.[0].id.toString()}
             width={"100%"}
