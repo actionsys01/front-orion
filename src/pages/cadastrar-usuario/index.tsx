@@ -45,8 +45,8 @@ export default function Usuarios() {
    const [senha, setSenha] = useState<string>("");
   const [nome, setNome] = useState<string>("");
   const [perfilId, setPerfilId] = useState<string>(""); 
-  const { data } = useRequest<IPerfil[]>({ url: `/usuarios/` });
   const [empresaId, setEmpresaId] = useState<string>("")
+  const { data } = useRequest<IPerfil[]>({ url: `/perfil/${empresaId}` });
   const [, setToast] = useToasts();
  /*  console.log(session); */
   //  console.log(data); 
@@ -123,14 +123,6 @@ export default function Usuarios() {
     }
   } 
 
-   function remove (data){
-          return [...new Set(data)]       
-   }
- const saga = data?.map((item) => {
-   const perfilName = item.perfil.nome
-   return perfilName
- })
- const foi = remove(saga)
 
 
   return (
@@ -152,12 +144,11 @@ export default function Usuarios() {
             width={"100%"}
             style={{ maxWidth: "100%" }}
           >
-            {data?.map((item) => {
-              const names = item.perfil.nome;
-              <Select.Option key={item.perfil.id} value={item.perfil.id.toString()}>
-                {names}
+            {data?.map((item) => (
+              <Select.Option key={item.id} value={item.id.toString()}>
+                {item.nome}
               </Select.Option>
-})}
+            ))}
           </Select>
           <Spacer y={0.5} />
           <Input
