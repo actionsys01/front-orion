@@ -27,8 +27,6 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
   const [nfes, setNfes] = useState<INfeDto[]>([])
   const [page, setPage] = useState(1);
   const [quantityPage, setQuantityPage] = useState(1)
-  /* console.log(nfes);
-  console.log(portaria?.cor); */
   
 
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
