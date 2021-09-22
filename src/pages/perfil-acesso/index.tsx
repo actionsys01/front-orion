@@ -17,15 +17,20 @@ import { MoreHorizontal, Plus } from "@geist-ui/react-icons";
 import useRequest from "@hooks/useRequest";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { Grid } from "./styled";
 import * as perfil from "../../services/perfis";
 import * as perfilAplicacao from "../../services/perfis-aplicacoes";
+import api from "@services/api";
 
 interface IPerfilAplicacao {
+  id: number;
   nome: string;
   descricao: string;
-  id: number;
+  atualizadoEm: string;
+  stualizadoPorIp: string;
+  criadoEm: string;
+  criadoPorIp: string
 }
 type IPerfil = {
   nome: string;
@@ -37,12 +42,14 @@ type IPerfil = {
 export default function PerfilAcesso() {
   const [session] = useSession();
   const { setVisible, bindings } = useModal();
+  const [loading, setLoading] = useState(true);
+  const [empresaId, setEmpresaId] = useState<number>()
+  const [perfilId, setPerfiId] = useState<number>(0);
   const [nome, setNome] = useState<string>("");
   const [descricao, setDescricao] = useState<string>("");
-  const [perfisAplicacoes, setPerfisAplicacoes] = useState<IPerfilAplicacao>();
-  const [perfilId, setPerfiId] = useState<number>(0);
-  const [loading, setLoading] = useState(false);
+  const [perfisAplicacoes, setPerfisAplicacoes] = useState<IPerfilAplicacao[]>([]);
     
+ 
     
   const [acao, setAcao] = useState<"editar" | "cadastrar" | "copiar">(
     "cadastrar"
@@ -52,18 +59,25 @@ export default function PerfilAcesso() {
 
   const router = useRouter();
 
-  const { data, mutate } = useRequest<IPerfil[]>({ url: `/usuarios/` });
+  const getProfileData = async () => {
+    const response = await api.get(`/perfil/${session?.usuario.empresa.id}`)
+    const {data} = response
+    return data
+  }
+
+  useEffect(() => {
+      getProfileData().then(response => setPerfisAplicacoes(response)).finally( () => setLoading(false))
+      
+  },[])
+
+  // const { data, mutate } = useRequest<IPerfil[]>({ url: `/usuarios/` });
 
   const perfis = useMemo(() => {
     const perfis: any = [];
-    if (data) {
-      data.forEach((item) => {
-        /* console.log(item); */
-        
+    if (perfisAplicacoes) {
+      perfisAplicacoes.forEach((item) => {
         perfis.push({
           ...item,
-          perfil_nome: item.perfil.nome,
-          perfil_descricao: item.perfil.descricao,
           link: (action: any, data: any) => (
             <Popover
               placement="right"
@@ -115,7 +129,7 @@ export default function PerfilAcesso() {
     }
 
     return perfis;
-  }, [data]);
+  }, [perfisAplicacoes]);
 
   async function copiar({
     nome,
@@ -126,7 +140,7 @@ export default function PerfilAcesso() {
     setVisible(true);
     setNome(nome);
     setDescricao(descricao);
-    setPerfisAplicacoes(perfil);
+    // setPerfisAplicacoes(perfil);
   }
 
   async function editar({
@@ -208,7 +222,7 @@ export default function PerfilAcesso() {
     }
   }
 
-  if (!data) return <Loading />;
+  // if (!data) return <Loading />;
 
   return (
     <>
@@ -231,17 +245,15 @@ export default function PerfilAcesso() {
       </Row>
 
       <Spacer y={1} />
-      {perfis.length ? (
+     
         <Grid>
           <Table data={perfis}>
             <Table.Column prop="link" width={15} />
-            <Table.Column prop="perfil_nome" label="Nome" width={500} />
-            <Table.Column prop="perfil_descricao" label="Descrição" width={500} />
+            <Table.Column prop="nome" label="Nome" width={500} />
+            <Table.Column prop="descricao" label="Descrição" width={500} />
           </Table>
         </Grid>
-      ) : (
-        <NaoEncontrado />
-      )}
+      
 
       <Modal
         disableBackdropClick={true}
