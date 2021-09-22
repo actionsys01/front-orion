@@ -57,7 +57,7 @@ export default function Usuarios({}) {
    
   }, [])
 
-  const UsersByCompanyData = useMemo(() => {
+  const UsersByCompanyData = () => {
     const allData:any = [];
     if(usuarios) {
       usuarios.forEach((item) => {
@@ -114,7 +114,7 @@ export default function Usuarios({}) {
     } 
 
     return allData;
-  }, [usuarios])
+  }
 
   console.log(UsersByCompanyData);
   
@@ -149,7 +149,7 @@ export default function Usuarios({}) {
       <Head>
         <title>Orion | Usuários</title>
       </Head>
-      <Text h2>Usuarios</Text>
+      <Text h2>Usuários</Text>
       <Row justify="end" align="middle">
         <Button
           type="success-light"
