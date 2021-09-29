@@ -23,7 +23,6 @@ export default function Dashboard({className}: SelectProps) {
     
     
  
-const input = [<Calendar size="32px" className="field"/>, "Ano" ]
 
     return  <>
     <Head>
