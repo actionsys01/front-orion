@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect} from 'react'; 
 import { SelectStyle, Speedometer } from './style';
+import { GetServerSideProps } from "next";
 import {format, Locale} from "date-fns"
 import {
     Button,
@@ -14,14 +15,26 @@ import {
   import { Calendar } from '@geist-ui/react-icons'
 import { useSession } from "next-auth/client";
 import Head from "next/head";
+import api from '@services/api';
 
 interface SelectProps {
     className: string
 }
 
-export default function Dashboard({className}: SelectProps) {
+interface IUsuario  {
+  id: number;
+  nome: string;
+  email: string;
+};
+
+interface DashboardProps {
+  data: IUsuario
+}
+
+export default function Dashboard({data} :DashboardProps ) {
+  
     
-    
+ 
  
 
     return  <>
@@ -55,5 +68,6 @@ export default function Dashboard({className}: SelectProps) {
     </SelectStyle>
     </>
 }
+
 
 Dashboard.auth = true 
