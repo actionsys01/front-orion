@@ -43,6 +43,7 @@ export default function Usuarios({}) {
   const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
   
+  
 
  
   const getAllUsersByCompanyId = async () : Promise<IUsuario[]> => {
@@ -56,7 +57,7 @@ export default function Usuarios({}) {
    
   }, [])
 
-  const popoverHandler = () => {!visible ? setVisible(true): setVisible(false)}
+  const popoverHandler = () => {!visible ? setVisible(true) : setVisible(false)}
 
   const UsersByCompanyData = () => {
     const allData:any = [];
@@ -105,9 +106,10 @@ export default function Usuarios({}) {
                   </Popover.Item>
                 </>
               }
+              
             >
               <span style={{ cursor: "pointer" }}>
-                <MoreHorizontal  />
+                <MoreHorizontal />
               </span>
             </Popover>
           )
@@ -123,8 +125,8 @@ export default function Usuarios({}) {
   function deletar(id: number) {
     usuario.deletar(id);
     const usuariosAtualizados = usuarios.filter((usuario) => usuario.id !== id);
-    setUsuarios(usuariosAtualizados)
     setVisible(false)
+    setUsuarios(usuariosAtualizados)
   } 
 
 
