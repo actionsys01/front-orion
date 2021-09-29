@@ -12,7 +12,7 @@ export default async function getCteByCompanyId(company_id : number | undefined,
         headers: { Authorization: `Bearer ${token}` }
     };
 
-    const ctes = await  api.post(`/ctes${!!filter ? `?filtro=${JSON.stringify(filter)}` : ''}`, { 
+    const ctes = await  api.post(`/ctes${!!filter ? `?filtro=${JSON.stringify(filter)}` : "?filtro=%5B%5D"}`, { 
         company_id,
         page
     },
