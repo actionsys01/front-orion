@@ -13,6 +13,8 @@ export const Grid = styled(GridGeist)`
     th {
       & .cell,
       & .thead-box {
+        justify-content: right;
+        text-align: right;
         text-transform: capitalize;
         white-space: nowrap;
       }
@@ -21,7 +23,8 @@ export const Grid = styled(GridGeist)`
     td,
     th {
       &:nth-child(7),
-      &:nth-child(8) {
+      &:nth-child(8)
+      {
         & .cell,
         & .thead-box {
           justify-content: center;
@@ -29,24 +32,19 @@ export const Grid = styled(GridGeist)`
           white-space: normal;
           width: 70px;
         }
-      }
-    }
-  }
-`;
-
+    }}}
+`
 export const Pages = styled.div`
 display: flex;
-justify-content: center;
 align-items: center;
+justify-content: center;
 margin-top: 10px;
 ul li::before {
-    display: none;
+   display: none;
 }
-
-.MuiPaginationItem-page {
-    color: #0DD0B3;
+.MuiPaginationItem-root {
+    color: #0DD0B3
 }
-
 .MuiPaginationItem-page.Mui-selected {
     background-color: #0DD0B3;
     color: white

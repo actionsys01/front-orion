@@ -11,45 +11,59 @@ import {
 import useRequest from "@hooks/useRequest";
 import { useSession } from "next-auth/client";
 import Head from "next/head";
+import api from "@services/api";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { setAppElement } from "react-modal";
 import * as usuarios from "../../services/usuarios";
 
-type IPerfil = {
+interface IPerfil {
   id: number;
   nome: string;
+  email: string;
+  perfil: Perfil;
 };
+
+
+export interface Perfil {
+  id: number;
+  nome: string;
+  descricao: string;
+  criadoEm: string;
+  atualizadaEm: string;
+  criadoPorIp: string;
+  atualizadoPorIp: string;
+}
+
+
 
 export default function Usuarios() {
   const [session] = useSession();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [senha, setSenha] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+   const [senha, setSenha] = useState<string>("");
   const [nome, setNome] = useState<string>("");
-  const [perfilId, setPerfilId] = useState<string>("");
-  const { data } = useRequest<IPerfil[]>({ url: `/usuarios/${session?.usuario.perfil.nome}` });
+  const [perfilId, setPerfilId] = useState<string>(""); 
+  const [empresaId, setEmpresaId] = useState<string>("")
+  const { data } = useRequest<IPerfil[]>({ url: `/perfil/${session?.usuario.empresa.id}` });
   const [, setToast] = useToasts();
-  console.log(session);
-  console.log(data);
-  
   
 
   useEffect(() => {
-    if (router.query.nome) {
-      const { email, perfil_id, nome } = router.query;
-      setNome(nome as string);
-      setEmail(email as string);
-      setPerfilId(perfil_id as string);
+    if(session){
+      const dataId = Number(session.usuario.empresa.id);
+      setEmpresaId(dataId)
     }
   }, []);
 
-  async function criarUsuario() {
+ 
+ 
+
+   async function criarUsuario() {
     setLoading(true);
     try {
-      if (router.query.nome) {
+      if (session && router.query.nome) {
         if (!nome || !perfilId) {
           setLoading(false);
           setToast({
@@ -60,7 +74,7 @@ export default function Usuarios() {
         }
         await usuarios.atualizar({
           nome,
-          perfil_id: perfilId,
+          perfil: perfilId,
           senha,
           id: Number(router.query.id as string),
         });
@@ -79,30 +93,24 @@ export default function Usuarios() {
         });
         return;
       }
-
-      const response = await usuarios.cadastrar({ nome, email, senha });
-      const id = response?.data.usuario.id;
-      await usuarios.atualizar({
-        nome,
-        perfil_id: perfilId,
-        senha,
-        id,
-      });
-      await usuarios.associar({
-        usuario_id: id,
-        empresa_id: session.usuario.empresa.id,
-      });
+      if(session && !router.query.nome) {
+   await usuarios.cadastrar({ nome, email, senha, perfil_id: perfilId, empresa_id: empresaId })
       setLoading(false);
       setEmail("");
       setSenha("");
       setNome("");
+      setPerfilId("")
       router.back();
+      }
     } catch (error) {
       setLoading(false);
       const mensagem = error.response.data.mensagem;
       setToast({ text: mensagem, type: "warning" });
     }
-  }
+  } 
+
+
+
   return (
     <>
       <Head>
@@ -116,9 +124,9 @@ export default function Usuarios() {
           </Text>
           <Select
             placeholder={"Tipo perfil"}
-            onChange={(value) => setPerfilId(value as string)}
-             /* initialValue={data?.[0].id.toString()} */
-            value={perfilId}
+            value={perfilId} 
+             onChange={(value) => setPerfilId(value as string)}
+            //  initialValue={data?.[0].id.toString()}
             width={"100%"}
             style={{ maxWidth: "100%" }}
           >
@@ -132,8 +140,8 @@ export default function Usuarios() {
           <Input
             placeholder="Nome"
             width="100%"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
+             value={nome}
+             onChange={(e) => setNome(e.target.value)} 
           />
           {!router.query.nome && (
             <>
@@ -142,7 +150,7 @@ export default function Usuarios() {
                 placeholder="Email"
                 width="100%"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                 onChange={(e) => setEmail(e.target.value)}
               />
             </>
           )}
@@ -152,7 +160,7 @@ export default function Usuarios() {
               <Input.Password
                 placeholder="Senha"
                 width="100%"
-                value={senha}
+                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
               />
             </>

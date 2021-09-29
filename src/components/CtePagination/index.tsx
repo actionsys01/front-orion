@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React, {useMemo, useCallback} from "react";
 import getCteByCompanyId from '@services/cte';
 import INfeDto from '@services/nfe/dtos/INfeDTO';
 import { Dot, Link, Popover, Table, Text, Tooltip } from "@geist-ui/react";
@@ -6,46 +6,43 @@ import { MoreHorizontal } from "@geist-ui/react-icons";
 import { useEffect } from "react";
 import { Grid, Pages } from './style'
 import { useState } from "react";
+import { useFiltro } from "@contexts/filtro";
 import Pagination from "@material-ui/lab/Pagination";
-
 
 interface Props {
   company_id: number | undefined;
   token: string | undefined;
   sefaz: {
     cor: "secondary" | "success" | "error" | "warning" | "default";
-    mensagem: string;
+    message: string
   };
   portaria: {
     cor: "secondary" | "success" | "error" | "warning" | "default";
-    mensagem: string;
-  };
+    message: string
+  }
 }
 
 export default function CtePagination({ company_id, token, sefaz, portaria }: Props) {
-  const [ctes, setCtes] = useState<INfeDto[]>([])
+  const [cte, setCtes] = useState<INfeDto[]>([])
   const [page, setPage] = useState(1);
+  const { ctes } = useFiltro()
   const [quantityPage, setQuantityPage] = useState(0)
 
-
-  console.log(page)
 
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
     setPage(value)
   }
 
-  const getNfesAndTotalPages = async () => {
-    const responseNfes = await getCteByCompanyId(company_id, token, page)
+  const getNfesAndTotalPages = useCallback(async () => {
+    const responseNfes = await getCteByCompanyId(company_id, token, page, ctes )
 
     const { data } = responseNfes;
 
     setCtes(data.ctes)
 
-    console.log(data.ctes)
-
     setQuantityPage(Math.ceil(data.total / 5));
      
-  }
+  }, [ctes, page])
       
 
   useEffect(() => {
@@ -53,27 +50,25 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
     getNfesAndTotalPages();
 
 
-  }, [page])
+  }, [page, ctes])
 
   const dataFormatted = useMemo(() => {
     const newData: any = [];
-    if (ctes) {
-      ctes.forEach((item) => {
+    if (cte) {
+      cte.forEach((item) => {
         newData.push({
           ...item,
           sefaz_status: (
-            <Tooltip text={item.sefaz_status === 100 ? "Autorizada" : item.sefaz_status === 101 ? "Cancelada" : "Indisponível"} >
+            <Tooltip text={item.sefaz_status === 100 ? "Autorizada" : item.sefaz_status === 101 ? "Cancelada" : "Indisponível"} type={sefaz?.cor} >
               <Dot type={item.sefaz_status === 100 ? "success" : item.sefaz_status === 101 ? "warning" : "default"} />
             </Tooltip>
           ),
-
           portaria_status: (
-            <Tooltip text={item.portaria_status === 0 ? "Na Portaria" : item.portaria_status === 1 ? "Autorizada" : 'Indisponível'} >
-              <Dot type={item.portaria_status === 0 ? "warning" : item.portaria_status === 1 ? "success" : 'default'} />
+            <Tooltip text={item.portaria_status === 0 ? "Na Portaria" : item.portaria_status === 1 ? " Autorizada" : "Indisponível"} type={portaria?.cor}>
+              <Dot type={item.portaria_status === 0 ? "warning" : item.portaria_status === 1 ? "success" : "default"} />
             </Tooltip>
           ),
-
-          options: (actions: any, item: any) => (
+          option: (actions: any, item: any) => (
             <Popover
               placement="right"
               content={
@@ -137,16 +132,19 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
         });
       });
     }
+
     return newData;
-  }, [ctes]);
+  }, [cte]);
+
 
 
 
   return (
     <>
       <Grid>
+
       <Table data={dataFormatted}>
-            <Table.Column prop="options" />
+            <Table.Column prop="option" />
             <Table.Column prop="dt_hr_emi" label="Emissão" />
             <Table.Column prop="nota" label="Número" />
             <Table.Column prop="serie" label="Série" />
@@ -159,12 +157,10 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
             <Table.Column prop="dest_nome" label="Destinatário" />
             <Table.Column prop="criado_em" label="data/hora recebimento" />
           </Table>
-    
-          
           
       </Grid>
       <Pages>
-          <Pagination onChange={handleChange} count={quantityPage}  color="primary" />
+          <Pagination onChange={handleChange} count={quantityPage}  shape='rounded' />
           </Pages>
       </>
   )

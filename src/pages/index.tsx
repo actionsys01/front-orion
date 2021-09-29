@@ -50,7 +50,7 @@ const Entrar = () => {
 
     setEmail("");
     setSenha("");
-    router.push("/nfe");
+    router.push("/dashboard");
   }
 
   return (
@@ -121,7 +121,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (session) {
     return {
       redirect: {
-        destination: `${process.env.APP_WEB_URL}/nfe`,
+        destination: `${process.env.APP_WEB_URL}/dashboard`,
         permanent: false,
       },
     };

@@ -1,11 +1,13 @@
-import api from "../api";
+import api from "@services/api";
 
-interface IPerfil {
-  nome: string;
+interface ICreateProfile {
+  name: string;
   descricao: string;
+  permissions: number[]
+  empresa_id: number;
 }
 
-export default async function criar(data: IPerfil) {
-  const response = await api.post(`/perfis/empresas`, data);
+export default async function criar(data: ICreateProfile) {
+  const response = await api.post("/perfil", data);
   return response;
 }

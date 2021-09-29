@@ -1,32 +1,33 @@
-import React, {useMemo} from "react";
+import React, { useMemo, useEffect } from "react";
 import getNfePagesByCompanyId from '@services/nfe';
 import { Dot, Link, Popover, Table, Text, Tooltip } from "@geist-ui/react";
 import INfeDto from '@services/nfe/dtos/INfeDTO';
 import { MoreHorizontal } from "@geist-ui/react-icons";
-import { useEffect } from "react";
-import { Grid, Pages } from './style'
 import { useState } from "react";
 import Pagination from "@material-ui/lab/Pagination";
+import { Grid, Pages } from "./style";
 
 
 
-interface Props {
+interface Props  {
   company_id: number | undefined;
   token: string | undefined;
   sefaz: {
     cor: "secondary" | "success" | "error" | "warning" | "default";
-    mensagem: string;
-  };
+    message: string
+  }
   portaria: {
     cor: "secondary" | "success" | "error" | "warning" | "default";
-    mensagem: string;
-  };
+    message: string
+  }
 }
 
-export default function NfePagination({ company_id, token, sefaz, portaria}: Props) {
+export default function NfePagination({ company_id, token, sefaz, portaria }: Props) {
   const [nfes, setNfes] = useState<INfeDto[]>([])
   const [page, setPage] = useState(1);
-  const [quantityPage, setQuantityPage] = useState(1)
+  const [quantityPage, setQuantityPage] = useState(1);
+  console.log(nfes);
+  
 
 
   
@@ -45,7 +46,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria}: Pro
     setNfes(data.nfes)
 
     setQuantityPage(Math.ceil(data.total / 5));
-     
+    
   }
       
 
@@ -148,6 +149,9 @@ export default function NfePagination({ company_id, token, sefaz, portaria}: Pro
   }, [nfes]);
 
 
+
+
+
   return (
     <>
       <Grid>
@@ -165,42 +169,6 @@ export default function NfePagination({ company_id, token, sefaz, portaria}: Pro
             <Table.Column prop="dest_nome" label="Destinatário" />
             <Table.Column prop="criado_em" label="data/hora recebimento" />
           </Table>
-      {/*   <table>
-          <thead>
-            <tr>
-              <th>Chave</th>
-              <th>Número</th>
-              <th>Série</th>
-              <th>Cnpj Emitente</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-           {nfes.map(nfe => {
-             
-              console.log(nfe.chave_nota)
-
-             return (
-              <tr key={nfe.chave_nota}>
-              <td>
-                 <Link href={`/nfe-detalhes?chave_nota=${nfe.chave_nota}`}> 
-                     <a>{nfe.nota}</a> 
-                 </Link>
-              </td>
-              <td>{nfe.serie}</td>
-              <td>{nfe.serie}</td>
-              <td>{nfe.emit_cnpj}</td>
-            </tr>
-             )
-           })}
-
-        
-
-
-          </tbody>
-        </table> */}
-          
           
       </Grid>
       <Pages>

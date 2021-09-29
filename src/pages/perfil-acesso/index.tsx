@@ -12,54 +12,79 @@ import {
   useModal,
   useToasts,
 } from "@geist-ui/react";
+import { useSession } from "next-auth/client";
 import { MoreHorizontal, Plus } from "@geist-ui/react-icons";
 import useRequest from "@hooks/useRequest";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useMemo, useState } from "react";
-import { Grid } from "../../components/Grid";
-import * as perfil from "../../services/perfis";
+import React, { useMemo, useState, useEffect } from "react";
+import { Grid } from "./styled";
+import * as perfil from "@services/perfis";
 import * as perfilAplicacao from "../../services/perfis-aplicacoes";
+import api from "@services/api";
+
 
 interface IPerfilAplicacao {
-  nome: string;
-  acao: string;
-  descricao: string;
-  perfil_id: number;
-  codigo_id: number;
   id: number;
+  nome: string;
+  descricao: string;
+  atualizadoEm: string;
+  atualizadoPorIp: string;
+  criadoEm: string;
+  criadoPorIp: string
 }
-type IPerfil = {
+
+interface IUpdateProfile{
+  id_profile : number;
+  nome : string;
+  descricao : string;
+  permissions : Number[];
+}
+interface IPerfil  {
   nome: string;
   descricao: string;
   id: number;
-  perfis_aplicacoes: IPerfilAplicacao[];
+  perfil: IPerfilAplicacao;
 };
 
 export default function PerfilAcesso() {
+  const [session] = useSession();
   const { setVisible, bindings } = useModal();
+  const [empresaId, setEmpresaId] = useState<number>()
+  const [perfilId, setPerfiId] = useState<number>();
   const [nome, setNome] = useState<string>("");
   const [descricao, setDescricao] = useState<string>("");
-  const [perfisAplicacoes, setPerfisAplicacoes] = useState<IPerfilAplicacao[]>(
-    []
-  );
-  const [perfilId, setPerfiId] = useState<number>(0);
-  const [loading, setLoading] = useState(false);
-
+  const [perfisAplicacoes, setPerfisAplicacoes] = useState<IPerfilAplicacao[]>([]);
+  
   const [acao, setAcao] = useState<"editar" | "cadastrar" | "copiar">(
     "cadastrar"
   );
-
+  console.log(perfilId);
+  
   const [, setToast] = useToasts();
-
   const router = useRouter();
 
-  const { data, mutate } = useRequest<IPerfil[]>({ url: `/perfis/`});
+  const getProfileData = async () => {
+    const response = await api.get(`/perfil/${session?.usuario.empresa.id}`)
+    
+    const {data} = response
+    
+    return data
+  }
+
+  useEffect(() => {
+      getProfileData().then(response => setPerfisAplicacoes(response))
+      const companyId = session?.usuario.empresa.id
+      setEmpresaId(companyId)
+      
+  },[])
+
+
 
   const perfis = useMemo(() => {
     const perfis: any = [];
-    if (data) {
-      data.forEach((item) => {
+    if (perfisAplicacoes) {
+      perfisAplicacoes.forEach((item) => {
         perfis.push({
           ...item,
           link: (action: any, data: any) => (
@@ -71,7 +96,7 @@ export default function PerfilAcesso() {
                     <Text
                       style={{ cursor: "pointer" }}
                       onClick={() => {
-                        const item = data.rowValue as IPerfil;
+                        const item = data.rowValue as IPerfilAplicacao;
                         editar(item);
                       }}
                     >
@@ -82,8 +107,8 @@ export default function PerfilAcesso() {
                     <Text
                       style={{ cursor: "pointer" }}
                       onClick={() => {
-                        const item = data.rowValue as IPerfil;
-                        deletar(item);
+                        const item = data.rowValue as IPerfilAplicacao;
+                        deletar(item) ;
                       }}
                     >
                       Deletar
@@ -113,100 +138,68 @@ export default function PerfilAcesso() {
     }
 
     return perfis;
-  }, [data]);
+  }, [perfisAplicacoes]);
 
   async function copiar({
     nome,
     descricao,
-    perfis_aplicacoes,
+    perfil,
   }: Omit<IPerfil, "id">) {
     setAcao("copiar");
     setVisible(true);
     setNome(nome);
     setDescricao(descricao);
-    setPerfisAplicacoes(perfis_aplicacoes);
+    // setPerfisAplicacoes(perfil);
   }
 
   async function editar({
     nome,
     descricao,
     id,
-  }: Omit<IPerfil, "perfis_aplicacoes">) {
+  }: Omit<IPerfilAplicacao, "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp">) {
     setAcao("editar");
     setVisible(true);
     setNome(nome);
     setDescricao(descricao);
-    setPerfiId(id);
+    setPerfiId(id)
   }
 
-  async function deletar({
+ async function deletar({
     id,
-    perfis_aplicacoes,
-  }: Omit<IPerfil, "nome" | "descricao">) {
+  }: Omit<IPerfilAplicacao, "nome" | "descricao" | "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp">) {
     try {
       await perfil.deletar(id);
-
-      perfis_aplicacoes.map(async (perfil) => {
-        const { id } = perfil;
-        perfilAplicacao.deletar(id);
-      });
-
-      const perfisAtualizados = perfis.filter(
-        (perfil: IPerfil) => perfil.id !== id
-      );
-
-      mutate(perfisAtualizados, false);
     } catch (error) {
       const mensagem = error.response.data.mensagem;
       setToast({ text: mensagem, type: "warning" });
     }
-  }
+    const perfisAtualizados = perfis.filter(
+      (perfil: IPerfil) => perfil.id !== id
+    );
+    setPerfisAplicacoes(perfisAtualizados)
+  }  
 
   async function cadastrar() {
-    setLoading(true);
-    let id: number;
-
-    try {
-      if (acao === "editar") {
-        const response = await perfil.atualizar({
-          descricao,
-          id: perfilId,
-        });
-
-        id = response.data.id;
-      } else if (acao === "cadastrar") {
-        const response = await perfil.criar({ descricao, nome });
-
-        id = response.data.id;
-      } else {
-        const response = await perfil.criar({ descricao, nome });
-
-        id = response.data.id;
-
-        perfisAplicacoes.map(async (perfil) => {
-          const { codigo_id, acao, descricao, nome } = perfil;
-          await perfilAplicacao.criar({
-            codigo_id,
-            perfil_id: id,
-            acao,
-            descricao,
-            nome,
-          });
-        });
-      }
-
+    if(!nome || !descricao) {
+      setToast({
+        text: "Informe todos os dados do usuário.",
+        type: "warning"}); 
+        return
+    } if (acao === "editar") {
       router.push({
         pathname: "/perfil-cadastro",
-        query: { nome, descricao, id, acao },
+        query: { nome, descricao, perfilId },
+      })
+    } if (acao === "cadastrar") {
+      
+      router.push({
+        pathname: "/perfil-cadastro",
+        query: { nome, descricao, empresaId },
       });
-    } catch (error) {
-      setLoading(false);
-      const mensagem = error.response.data.mensagem;
-      setToast({ text: mensagem, type: "warning" });
     }
   }
 
-  if (!data) return <Loading />;
+  // if (!data) return <Loading />;
 
   return (
     <>
@@ -229,7 +222,7 @@ export default function PerfilAcesso() {
       </Row>
 
       <Spacer y={1} />
-      {perfis.length ? (
+     
         <Grid>
           <Table data={perfis}>
             <Table.Column prop="link" width={15} />
@@ -237,9 +230,7 @@ export default function PerfilAcesso() {
             <Table.Column prop="descricao" label="Descrição" width={500} />
           </Table>
         </Grid>
-      ) : (
-        <NaoEncontrado />
-      )}
+      
 
       <Modal
         disableBackdropClick={true}
@@ -271,7 +262,7 @@ export default function PerfilAcesso() {
         <Modal.Action passive onClick={() => setVisible(false)} type="abort">
           CANCELAR
         </Modal.Action>
-        <Modal.Action onClick={cadastrar} loading={loading}>
+        <Modal.Action onClick={cadastrar} >
           CONTINUAR
         </Modal.Action>
       </Modal>

@@ -7,8 +7,5 @@ export default [
   { value: "nota", label: "Número" },
   { value: "serie", label: "Serie" },
   { value: "sefaz_status", label: "Status sefaz" },
-  { value: "portaria_status", label: "Status portaria" },
-  { value: "diverg_status", label: "Status divergência" },
-  { value: "fisico_status", label: "Status físico" },
-  { value: "integracao_status", label: "Status integração" },
+  { value: "portaria_status", label: "Status portaria" }
 ];

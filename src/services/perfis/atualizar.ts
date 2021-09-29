@@ -1,10 +1,12 @@
-import api from "../api";
+import api from "@services/api";
 
-interface IPerfil {
-  descricao: string;
-  id: number;
+interface IUpdateProfile{
+  id_profile : number;
+  nome : string;
+  descricao : string;
+  permissions : Number[];
 }
 
-export default async function atualizar(data: IPerfil) {
-  return await api.put(`/perfis/empresas/${data.id}`, data);
+export default async function atualizar(data: IUpdateProfile) {
+  return await api.put(`/perfil/`, data);
 }

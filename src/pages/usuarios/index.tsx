@@ -1,5 +1,5 @@
 import { Grid } from "./styled";
-import React, {useMemo,useState, useEffect } from 'react'
+import React, { useState, useMemo, useEffect} from 'react'; 
 import {
   Button,
   Loading,
@@ -26,70 +26,50 @@ interface IUsuario  {
 };
 
 interface Perfil {
-id:number;
-nome: string;
-descricao: string;
-criadoEm: string;
-atualizadoPorIp: string;
-criadoPorIp: string;
+  id: number;
+  nome: string;
+  descricao: string;
+  criadoEm: string;
+  atualizadaEm: string;
+  criadoPorIp: string;
+  atualizadoPorIp: string;
 }
 
-export default function Usuarios() {
+
+
+export default function Usuarios({}) {
   const [session] = useSession();
-   const { data, mutate } = useRequest<IUsuario[]>({ url: `/usuarios/${session?.usuario.id}` });
-   console.log(data);
-   
- const router = useRouter();
+  const [visible, setVisible] = useState<boolean>(false)
+  const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
+  
+  
 
-  const getAllUserByCompanyId  = async () : Promise<Perfil[] | any> => {
-    const response = await api.get(`/usuarios/${session?.usuario.id}`)
-   const data = response.data
+ 
+  const getAllUsersByCompanyId = async () : Promise<IUsuario[]> => {
+    const response = await api.get(`/usuarios/`)
+    const {data}= response;
     return data
-
   }
-
+ 
   useEffect(() => {
-    getAllUserByCompanyId().then((response) => setUsuarios(response))
+    getAllUsersByCompanyId().then(response => setUsuarios(response))
+   
   }, [])
 
+  const popoverHandler = () => {!visible ? setVisible(true) : setVisible(false)}
 
-
-/*   useEffect(() => {
-    async function getData() {
-      if (data) {
-        const usuarioLogadoRemovido = data.filter(
-          (usuario) => usuario.id !== session?.usuario.id
-        );
-        const usuarios = await buscarDados(usuarioLogadoRemovido);
-        setUsuarios(usuarios);
-      }
-    }
-
-    getData();
-  }, [data]);
-
-  function deletar(id: number) {
-    usuario.deletar(id);
-
-    const usuariosAtualizados = usuarios.filter((usuario) => usuario.id !== id);
-
-    mutate(usuariosAtualizados, false);
-  }
-
-  async function buscarDados(data: any) {
-    const usuarios = Promise.all(
-      data.map(async (item) => {
-        const response = await perfis.buscar(item.perfil_id);
-
-        const { nome: perfil_nome } = response.data;
-
-        return {
+  const UsersByCompanyData = () => {
+    const allData:any = [];
+    if(usuarios) {
+      usuarios.forEach((item) => {
+        allData.push({
           ...item,
-          perfil_nome,
-          link: (action: any, data: any) => (
+          perfil_nome: item.perfil.nome,
+          option: (actions: any, data: any) => (
             <Popover
               placement="right"
+              visible={visible}
               content={
                 <>
                   <Popover.Item>
@@ -99,12 +79,12 @@ export default function Usuarios() {
                       }}
                       onClick={() => {
                         const { id } = data.rowValue;
-                        const perfil_id = data.rowValue.perfil_id;
+                        const perfil_nome = data.rowValue.perfil_id;
                         const nome = data.rowValue.nome;
                         const email = data.rowValue.email;
                         router.push({
                           pathname: "/cadastrar-usuario",
-                          query: { perfil_id, nome, email, id },
+                          query: { perfil_nome, nome, email, id },
                         });
                       }}
                     >
@@ -126,84 +106,38 @@ export default function Usuarios() {
                   </Popover.Item>
                 </>
               }
+              
             >
               <span style={{ cursor: "pointer" }}>
                 <MoreHorizontal />
               </span>
             </Popover>
-          ),
-        };
+          )
+        })
       })
-    );
-    return usuarios;
-  } */
+    } 
 
-  /* if (!data) return <Loading />; */
+    return allData;
+  }
 
-  const allData = useMemo(() => {
-    const allUsersData: any = [];
-    if(usuarios) {
-      usuarios.forEach((item) => {
-        allUsersData.push({
-          ...item,
-          perfil_nome: (item?.perfil.nome),
-          options: (actions: any, data: any) => (
-            <Popover
-                    placement="right"
-                    content={
-                      <>
-                        <Popover.Item>
-                          <Text
-                            style={{
-                              cursor: "pointer",
-                            }}
-                            onClick={() => {
-                              const { id } = data.rowValue;
-                              const perfil_id = data.rowValue.perfil_id;
-                              const nome = data.rowValue.nome;
-                              const email = data.rowValue.email;
-                              router.push({
-                                pathname: "/cadastrar-usuario",
-                                query: { perfil_id, nome, email, id },
-                              });
-                            }}
-                          >
-                            Editar
-                          </Text>
-                        </Popover.Item>
-                        <Popover.Item>
-                          <Text
-                            style={{
-                              cursor: "pointer",
-                            }}
-                            /* onClick={() => {
-                              const { id } = data.rowValue;
-                              deletar(id);
-                            }} */
-                          >
-                            Deletar
-                          </Text>
-                        </Popover.Item>
-                      </>
-                    }
-                  >
-                    <span style={{ cursor: "pointer" }}>
-                      <MoreHorizontal />
-                    </span>
-                  </Popover>
-          ),
-        });
-      });
-    }
-return allUsersData
-  }, [usuarios])
+  
+
+  function deletar(id: number) {
+    usuario.deletar(id);
+    const usuariosAtualizados = usuarios.filter((usuario) => usuario.id !== id);
+    setVisible(false)
+    setUsuarios(usuariosAtualizados)
+  } 
+
+
+ /*  if (!data) return <Loading />; */
 
   return (
     <>
       <Head>
         <title>Orion | Usuários</title>
       </Head>
-      <Text h2>Usuarios</Text>
+      <Text h2>Usuários</Text>
       <Row justify="end" align="middle">
         <Button
           type="success-light"
@@ -216,8 +150,8 @@ return allUsersData
       </Row>
       <Spacer y={1} />
       <Grid>
-        <Table data={allData}>
-          <Table.Column prop="options" />
+        <Table data={UsersByCompanyData}>
+          <Table.Column prop="option" />
           <Table.Column prop="nome" label="Nome" />
           <Table.Column prop="email" label="Email" />
           <Table.Column prop="perfil_nome" label="Perfil" />
