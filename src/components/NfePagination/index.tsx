@@ -1,14 +1,12 @@
-import React, { useMemo , useCallback} from "react";
+import React, { useMemo } from "react";
 import getNfePagesByCompanyId from '@services/nfe';
 import INfeDto from '@services/nfe/dtos/INfeDTO';
 import { Dot, Link, Popover, Table, Text, Tooltip } from "@geist-ui/react";
-import { useFiltro } from "@contexts/filtro";
 import { useEffect } from "react";
 import { MoreHorizontal } from "@geist-ui/react-icons";
 import { useState } from "react";
 import Pagination from "@material-ui/lab/Pagination";
 import { Grid, Pages } from "./style";
-
 
 
 
@@ -20,38 +18,32 @@ interface Props  {
     message: string
   }
   portaria: {
-    cor: "success" | "warning" | "default";
+    cor: "secondary" | "success" | "error" | "warning" | "default";
     message: string
   }
 }
 
 export default function NfePagination({ company_id, token, sefaz, portaria }: Props) {
-  const [nfe, setNfes] = useState<INfeDto[]>([])
+  const [nfes, setNfes] = useState<INfeDto[]>([])
   const [page, setPage] = useState(1);
-  const  { nfes  } = useFiltro();
-  const [quantityPage, setQuantityPage] = useState(1)
-<<<<<<< HEAD
+  const [quantityPage, setQuantityPage] = useState(1);
   console.log(nfes);
-=======
->>>>>>> origin/createFilterComponentNFE
   
 
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
     setPage(value)
   }
 
-  const getCtesAndTotalPages = useCallback(async () => {
-
-    const responseNfes = await getNfePagesByCompanyId(company_id, token, page, nfes)
+  const getCtesAndTotalPages = async () => {
+    const responseNfes = await getNfePagesByCompanyId(company_id, token, page)
 
     const { data } = responseNfes;
-
-    console.log("resultado fo",data)
 
     setNfes(data.nfes)
 
     setQuantityPage(Math.ceil(data.total / 5));
-    }, [nfes, page])
+    
+  }
       
 
   useEffect(() => {
@@ -59,15 +51,15 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
     getCtesAndTotalPages();
 
 
-  }, [page, nfes])
+  }, [page])
 
 
 
 
   const dataFormatted = useMemo(() => {
     const newData: any = [];
-    if (nfe) {
-      nfe.forEach((item) => {
+    if (nfes) {
+      nfes.forEach((item) => {
         newData.push({
           ...item,
           sefaz_status: (
@@ -156,7 +148,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
     }
 
     return newData;
-  }, [nfe]);
+  }, [nfes]);
 
 
 
