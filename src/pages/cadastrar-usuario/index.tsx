@@ -25,7 +25,7 @@ interface IPerfil {
 };
 
 
-interface Perfil {
+export interface Perfil {
   id: number;
   nome: string;
   descricao: string;
@@ -50,16 +50,11 @@ export default function Usuarios() {
   const [, setToast] = useToasts();
  /*  console.log(session); */
   //  console.log(data); 
-    console.log(perfilId);  
+    // console.log(perfilId);  
 
   useEffect(() => {
     if(session){
-        //  const { email, nome } = session?.usuario;
-      // const {id} = session.usuario.perfil;
       const dataId = Number(session.usuario.empresa.id);
-      setEmail(email as string);
-      setNome(nome as string);
-      setPerfilId(perfilId as string) 
       setEmpresaId(dataId)
     }
   }, []);
@@ -82,14 +77,13 @@ export default function Usuarios() {
         }
         await usuarios.atualizar({
           nome,
-          perfil_id: perfilId,
+          perfil: perfilId,
           senha,
           id: Number(router.query.id as string),
         });
         setEmail("");
         setSenha("");
         setNome("");
-        setPerfilId("")
         router.back();
         return;
       }
@@ -103,14 +97,7 @@ export default function Usuarios() {
         return;
       }
       if(session && !router.query.nome) {
-      const response = await usuarios.cadastrar({ nome, email, senha, perfil_id: perfilId, empresa_id: empresaId })
-      const id = response?.data.usuario.id;
-      await usuarios.atualizar({
-        nome,
-        perfil_id: perfilId,
-        senha,
-        id,
-      });
+   await usuarios.cadastrar({ nome, email, senha, perfil_id: perfilId, empresa_id: empresaId })
       setLoading(false);
       setEmail("");
       setSenha("");
