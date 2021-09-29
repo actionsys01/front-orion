@@ -42,6 +42,7 @@ export default function Usuarios({}) {
   /* const { data, mutate } = useRequest<IUsuario[]>({ url: `/usuarios` }); */
   const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
+  
 
 
    
@@ -63,7 +64,7 @@ export default function Usuarios({}) {
       usuarios.forEach((item) => {
         allData.push({
           ...item,
-          perfil_nome: (item.perfil.nome),
+          perfil_nome: item.perfil.nome,
           option: (actions: any, data: any) => (
             <Popover
               placement="right"
@@ -76,12 +77,12 @@ export default function Usuarios({}) {
                       }}
                       onClick={() => {
                         const { id } = data.rowValue;
-                        const perfil_id = data.rowValue.perfil_id;
+                        const perfil_nome = data.rowValue.perfil_id;
                         const nome = data.rowValue.nome;
                         const email = data.rowValue.email;
                         router.push({
                           pathname: "/cadastrar-usuario",
-                          query: { perfil_id, nome, email, id },
+                          query: { perfil_nome, nome, email, id },
                         });
                       }}
                     >
@@ -116,29 +117,12 @@ export default function Usuarios({}) {
     return allData;
   }
 
-  console.log(UsersByCompanyData);
   
-  
-/*   useEffect(() => {
-    async function getData() {
-      if (data) {
-        const usuarioLogadoRemovido = data.filter(
-          (usuario) => usuario.id !== session?.usuario.id
-        );
-        const usuarios = await buscarDados(usuarioLogadoRemovido);
-        setUsuarios(usuarios);
-      }
-    }
-
-    getData();
-  }, [data]); */
 
   function deletar(id: number) {
     usuario.deletar(id);
-
     const usuariosAtualizados = usuarios.filter((usuario) => usuario.id !== id);
     setUsuarios(usuariosAtualizados)
-    // mutate(usuariosAtualizados, false);
   } 
 
 
