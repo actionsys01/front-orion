@@ -1,21 +1,24 @@
 import api from "@services/api";
 
 
-export default async function getCteByCompanyId(company_id : number | undefined, token : string | undefined, page : number) {
+interface IFiltro {
+    campo: { label: string; value: string } | undefined;
+    valor: string;
+  }
+
+export default async function getCteByCompanyId(company_id : number | undefined, token : string | undefined, page : number, filter ? : IFiltro[] | undefined) {
 
     const config = {
         headers: { Authorization: `Bearer ${token}` }
     };
 
-
-    const ctes = await  api.post('/ctes/', { 
+    const ctes = await  api.post(`/ctes${!!filter ? `?filtro=${JSON.stringify(filter)}` : ''}`, { 
         company_id,
         page
     },
     config
     )
 
-
-    return ctes
+    return ctes    
     
 }

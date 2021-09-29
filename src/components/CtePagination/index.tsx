@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React, {useMemo, useCallback} from "react";
 import getCteByCompanyId from '@services/cte';
 import INfeDto from '@services/nfe/dtos/INfeDTO';
 import { Dot, Link, Popover, Table, Text, Tooltip } from "@geist-ui/react";
@@ -6,6 +6,7 @@ import { MoreHorizontal } from "@geist-ui/react-icons";
 import { useEffect } from "react";
 import { Grid, Pages } from './style'
 import { useState } from "react";
+import { useFiltro } from "@contexts/filtro";
 import Pagination from "@material-ui/lab/Pagination";
 
 interface Props {
@@ -22,8 +23,9 @@ interface Props {
 }
 
 export default function CtePagination({ company_id, token, sefaz, portaria }: Props) {
-  const [ctes, setCtes] = useState<INfeDto[]>([])
+  const [cte, setCtes] = useState<INfeDto[]>([])
   const [page, setPage] = useState(1);
+  const { ctes } = useFiltro()
   const [quantityPage, setQuantityPage] = useState(0)
 
 
@@ -31,8 +33,8 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
     setPage(value)
   }
 
-  const getNfesAndTotalPages = async () => {
-    const responseNfes = await getCteByCompanyId(company_id, token, page)
+  const getNfesAndTotalPages = useCallback(async () => {
+    const responseNfes = await getCteByCompanyId(company_id, token, page, ctes )
 
     const { data } = responseNfes;
 
@@ -40,7 +42,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
 
     setQuantityPage(Math.ceil(data.total / 5));
      
-  }
+  }, [ctes, page])
       
 
   useEffect(() => {
@@ -48,12 +50,12 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
     getNfesAndTotalPages();
 
 
-  }, [page])
+  }, [page, ctes])
 
   const dataFormatted = useMemo(() => {
     const newData: any = [];
-    if (ctes) {
-      ctes.forEach((item) => {
+    if (cte) {
+      cte.forEach((item) => {
         newData.push({
           ...item,
           sefaz_status: (
@@ -132,7 +134,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
     }
 
     return newData;
-  }, [ctes]);
+  }, [cte]);
 
 
   return (
