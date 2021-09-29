@@ -45,7 +45,7 @@ export default async function getNfePagesByCompanyId(company_id : number | undef
     };
 
 
-    const nfes = await  api.post(`/nfe/controle${!!filter ? `?filtro=${JSON.stringify(filter)}` : ''}`, { 
+    const nfes = await  api.post(`/nfe/controle${!!filter ? `?filtro=${JSON.stringify(filter)}` : "?filtro=%5B%5D"}`, { 
         company_id,
         page,
     },
