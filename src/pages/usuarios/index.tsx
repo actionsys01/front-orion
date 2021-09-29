@@ -39,13 +39,11 @@ interface Perfil {
 
 export default function Usuarios({}) {
   const [session] = useSession();
-  /* const { data, mutate } = useRequest<IUsuario[]>({ url: `/usuarios` }); */
+  const [visible, setVisible] = useState<boolean>(false)
   const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
   
 
-
-   
  
   const getAllUsersByCompanyId = async () : Promise<IUsuario[]> => {
     const response = await api.get(`/usuarios/`)
@@ -58,6 +56,8 @@ export default function Usuarios({}) {
    
   }, [])
 
+  const popoverHandler = () => {!visible ? setVisible(true): setVisible(false)}
+
   const UsersByCompanyData = () => {
     const allData:any = [];
     if(usuarios) {
@@ -68,6 +68,7 @@ export default function Usuarios({}) {
           option: (actions: any, data: any) => (
             <Popover
               placement="right"
+              visible={visible}
               content={
                 <>
                   <Popover.Item>
@@ -106,7 +107,7 @@ export default function Usuarios({}) {
               }
             >
               <span style={{ cursor: "pointer" }}>
-                <MoreHorizontal />
+                <MoreHorizontal  />
               </span>
             </Popover>
           )
@@ -123,6 +124,7 @@ export default function Usuarios({}) {
     usuario.deletar(id);
     const usuariosAtualizados = usuarios.filter((usuario) => usuario.id !== id);
     setUsuarios(usuariosAtualizados)
+    setVisible(false)
   } 
 
 
