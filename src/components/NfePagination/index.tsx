@@ -42,7 +42,6 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
 
     const { data } = responseNfes;
 
-    console.log("resultado fo",data)
 
     setNfes(data.nfes)
 
