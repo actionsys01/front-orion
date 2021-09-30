@@ -2,6 +2,7 @@ import { Container, Main } from "@components/App/index";
 import MenuLateral from "@components/MenuLateral";
 import PaginaCarregamento from "@components/PaginaCarregamento";
 import FiltroProvider from "@contexts/filtro";
+import {SecurityProvider} from "@contexts/security"
 import {
   CssBaseline,
   GeistProvider,
@@ -74,6 +75,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <GeistProvider themes={[orionTheme]} themeType="orion">
         <CssBaseline />
         <FiltroProvider>
+          <SecurityProvider>
           <ThemeProvider theme={orionTheme}>
             <Head>
               <link
@@ -101,6 +103,7 @@ export default function App({ Component, pageProps }: AppProps) {
                <Component {...pageProps} />
            )}
           </ThemeProvider>
+          </SecurityProvider>
         </FiltroProvider>
       </GeistProvider>
     </Provider>
