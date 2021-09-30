@@ -7,6 +7,7 @@ const SecurityContext = React.createContext({} as ContextProps);
 
 const SecurityProvider: React.FC = ({ children }: any) => {
   const session = useSession()
+  console.log('contextSession:', session);
   
 
   return <SecurityContext.Provider value="value">{children}</SecurityContext.Provider>;
