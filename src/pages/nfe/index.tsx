@@ -14,32 +14,12 @@ export default function Nfe() {
   const { nfes } = useFiltro();
   const [session] = useSession();
 
-  console.log(session?.usuario.empresa.plano)
 
   
 
   /* console.log(session?.usuario.empresa.plano) */
 
-  
-      
 
-
-  
-
-  // const { data } = useRequest<{ nfes: []; total: number }>({
-  //   url: "/nfes/controle",
-  //   params: { pagina, filtro: JSON.stringify(nfes) },
-  // });
-
-
-
-  // const totalPagina = useMemo(() => {
-  //   if (data?.nfes) {
-  //     return data.total;
-  //   }
-  // }, [data, nfes]);
-
-  // if (!data) return <Loading />;
 
   return (
     <>

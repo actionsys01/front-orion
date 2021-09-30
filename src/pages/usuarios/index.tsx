@@ -78,14 +78,16 @@ export default function Usuarios({}) {
                         cursor: "pointer",
                       }}
                       onClick={() => {
+                        console.log(data.rowValue);
+                        
                         const { id } = data.rowValue;
                         const perfil_nome = data.rowValue.perfil_id;
                         const nome = data.rowValue.nome;
                         const email = data.rowValue.email;
-                        router.push({
-                          pathname: "/cadastrar-usuario",
-                          query: { perfil_nome, nome, email, id },
-                        });
+                        // router.push({
+                        //   pathname: "/cadastrar-usuario",
+                        //   query: { perfil_nome, nome, email, id },
+                        // });
                       }}
                     >
                       Editar
