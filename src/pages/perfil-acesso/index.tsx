@@ -59,7 +59,6 @@ export default function PerfilAcesso() {
   const [acao, setAcao] = useState<"editar" | "cadastrar" | "copiar">(
     "cadastrar"
   );
-  console.log(perfilId);
   
   const [, setToast] = useToasts();
   const router = useRouter();
