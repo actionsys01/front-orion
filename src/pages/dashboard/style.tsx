@@ -1,23 +1,22 @@
 import styled from "styled-components";
 
 export const SelectStyle = styled.div`
-span {
-display: flex;
-justify-content: space-between;
-
-
-span {
-    color: blue;
-    gap: 10px;
-}
-}
-.field {
-    color: blue
+  display: flex;
+  justify-content: flex-end;
+  margin: 25px;
+  select {
+    margin: 10px;
+    width:125px;
+    height: 35px;
 }
 `
 
 export const Speedometer = styled.div`
+display: flex;
+align-items: flex-end;
+margin: 25px;
 #main-div{
+  margin: 25px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;

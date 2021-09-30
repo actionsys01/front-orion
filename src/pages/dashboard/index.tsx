@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect} from 'react'; 
 import { SelectStyle, Speedometer } from './style';
-import { GetServerSideProps } from "next";
 import {format, Locale} from "date-fns"
 import {
     Button,
@@ -27,14 +26,12 @@ interface IUsuario  {
   email: string;
 };
 
-interface DashboardProps {
-  data: IUsuario
-}
 
-export default function Dashboard({data} :DashboardProps ) {
+export default function Dashboard() {
   
-    
+    const time = new Date().toLocaleString()
  
+ console.log(time);
  
 
     return  <>
@@ -42,14 +39,39 @@ export default function Dashboard({data} :DashboardProps ) {
         <title>Orion | Dashboard</title>
     </Head>
     <Text h2>Dashboard</Text>
+
     <SelectStyle>
   <select title="Ano" name="Ano" id="ano">
     <option value="" disabled selected>Ano</option>
     <option value="2010" >2010</option>
   </select>
+  <select title="Mês" name="Mês" id="mes">
+    <option value="" disabled selected>Mês</option>
+    <option value="Janeiro" >2010</option>
+  </select>
+  </SelectStyle>
+  <div style={{height: "35vh"}}>
+
+  </div>
 <Speedometer>
   <div id="main-div">
-  {/* Scorer 1 Starts */}
+  {/* velocímetro 1  */}
+  <div className="layout-align">
+    <div id="score-meter-1" className="layout-align">
+    <div id="scorer-1-inner-div">
+      <div id="scorer-1-inner-div-5">
+        <div className="scorer-1-tick">
+        </div>
+      </div>
+    </div>
+    <div id="scorer-1-inner-div-2"></div>
+    <div id="scorer-1-inner-div-3"></div>
+    <div id="scorer-1-inner-div-4"></div>
+  </div>
+  </div>
+  </div>
+  <div id="main-div">
+  {/* velocímetro 2 */}
   <div className="layout-align">
     <div id="score-meter-1" className="layout-align">
     <div id="scorer-1-inner-div">
@@ -65,7 +87,7 @@ export default function Dashboard({data} :DashboardProps ) {
   </div>
   </div>
   </Speedometer>
-    </SelectStyle>
+    
     </>
 }
 
