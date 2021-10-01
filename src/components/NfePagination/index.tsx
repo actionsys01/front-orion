@@ -8,6 +8,7 @@ import { MoreHorizontal } from "@geist-ui/react-icons";
 import { useState } from "react";
 import Pagination from "@material-ui/lab/Pagination";
 import { Grid, Pages } from "./style";
+import { useRouter } from "next/router";
 
 
 
@@ -28,6 +29,7 @@ interface Props  {
 export default function NfePagination({ company_id, token, sefaz, portaria }: Props) {
   const [nfe, setNfes] = useState<INfeDto[]>([])
   const [page, setPage] = useState(1);
+  const router = useRouter()
   const  { nfes  } = useFiltro();
   const [quantityPage, setQuantityPage] = useState(1)
   
@@ -92,14 +94,14 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
                         const desc_status_sefaz =
                           item?.rowValue.sefaz_status_desc;
                         console.log(item);
-                       /*  router.push({
-                          pathname,
+                        router.push({
+                          pathname: `/nfe-detalhes`,
                           query: {
                             chave_nota,
                             status_sefaz,
                             desc_status_sefaz,
                           },
-                        }); */
+                        });
                       }}
                     >
                       Visualizar

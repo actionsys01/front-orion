@@ -38,7 +38,7 @@ export default function Dashboard() {
     <Head>
         <title>Orion | Dashboard</title>
     </Head>
-    <Text h2>Dashboard</Text>
+    <h2>Dashboard</h2>
 
     <SelectStyle>
   <select title="Ano" name="Ano" id="ano">

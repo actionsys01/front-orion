@@ -8,6 +8,7 @@ import { Grid, Pages } from './style'
 import { useState } from "react";
 import { useFiltro } from "@contexts/filtro";
 import Pagination from "@material-ui/lab/Pagination";
+import { useRouter } from "next/router";
 
 interface Props {
   company_id: number | undefined;
@@ -24,6 +25,7 @@ interface Props {
 
 export default function CtePagination({ company_id, token, sefaz, portaria }: Props) {
   const [cte, setCtes] = useState<INfeDto[]>([])
+  const router = useRouter()
   const [page, setPage] = useState(1);
   const { ctes } = useFiltro()
   const [quantityPage, setQuantityPage] = useState(0)
@@ -82,14 +84,14 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
                         const desc_status_sefaz =
                           item.rowValue.sefaz_status_desc;
                         console.log(item);
-                       /*  router.push({
-                          pathname,
+                        router.push({
+                          pathname: "/cte-detalhes",
                           query: {
                             chave_nota,
                             status_sefaz,
                             desc_status_sefaz,
                           },
-                        }); */
+                        });
                       }}
                     >
                       Visualizar
