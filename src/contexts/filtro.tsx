@@ -49,11 +49,11 @@ export default function FiltroProvider({ children } : IFiltroProps) {
 
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    console.log("FILTRO" , nfes)
+  //   console.log("FILTRO" , nfes)
 
-  }, [nfes])
+  // }, [nfes])
 
   function cadastrarNfe(nfes: IFiltro[]) {
     setNfes(nfes);

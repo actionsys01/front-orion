@@ -49,10 +49,12 @@ export default function Usuarios() {
   const { data } = useRequest<IPerfil[]>({ url: `/perfil/${session?.usuario.empresa.id}` });
   const [, setToast] = useToasts();
   
+  
+  
 
   useEffect(() => {
     if(session){
-      const dataId = Number(session.usuario.empresa.id);
+      const dataId: any = session.usuario.empresa.id;
       setEmpresaId(dataId)
     }
   }, []);
@@ -102,7 +104,7 @@ export default function Usuarios() {
       setPerfilId("")
       router.back();
       }
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
       const mensagem = error.response.data.mensagem;
       setToast({ text: mensagem, type: "warning" });

@@ -1,9 +1,10 @@
 import { Collapse, Grid, Spacer, Text } from "@geist-ui/react";
 import { useRouter } from "next/router";
+import { useMemo } from 'react'
 import DadosGeraisNfe from "../DadosGeraisNfe";
 import { GridAlinhaTextoCentro, Titulo } from "../styled";
-import { BackgroundCinza } from "@components/BackgroundCinza/styled";
-
+import { Container, InsideGrid } from "./style";
+import {format} from "date-fns"
 interface IProps {
   data: {
     informacoes_nfe: {
@@ -11,9 +12,11 @@ interface IProps {
       serie: string;
       nNF: string;
       verProc: string;
-      dhEmi: string;
-      dhSaiEnt: string;
+      dEmi: string;
+      dhEmi: string
+      hSaiEnt: string;
     };
+    versao: string;
     total: {
       ICMSTot: { vNF: string };
     };
@@ -57,10 +60,27 @@ interface IProps {
 }
 export default function AbaNfe({ data }: IProps) {
   const router = useRouter();
+
+
+  const dataEmissao = useMemo(() => {
+    const dataEmissaoFormatted = format(new Date(data?.informacoes_nfe?.dEmi ?? data?.informacoes_nfe?.dhEmi), "dd-MM-yyyy")
+
+    return dataEmissaoFormatted
+
+  }, [data])
+
+  //  const dataTime = useMemo(() => {
+  //    if(data?.informacoes_nfe?.hSaiEnt) {
+  //      const dataFinal = format(new Date(data?.informacoes_nfe?.hSaiEnt), "dd-MM-yyyy")
+  //      return dataFinal;
+  //    }
+  //    return null
+  //  }, [data])
+
   return (
     <>
       <DadosGeraisNfe data={data} />
-      <BackgroundCinza>
+      <Container>
         <Text h3>Dados NF-e </Text>
         <Grid.Container gap={2}>
           <GridAlinhaTextoCentro>
@@ -77,24 +97,24 @@ export default function AbaNfe({ data }: IProps) {
           </GridAlinhaTextoCentro>
           <Grid>
             <Titulo>Data de emissão</Titulo>
-            <Text small>{data?.informacoes_nfe?.dhEmi}</Text>
+            <Text small>{dataEmissao}</Text>
           </Grid>
           <Grid>
-            <Titulo>Data de sáida/entrada</Titulo>
-            <Text small>{data?.informacoes_nfe?.dhSaiEnt}</Text>
+            <Titulo>Data de saída/entrada</Titulo>
+            <Text small>{data?.informacoes_nfe?.hSaiEnt}</Text>
           </Grid>
           <GridAlinhaTextoCentro>
             <Titulo>Valor total NF-e</Titulo>
             <Text small>{data?.total?.ICMSTot.vNF}</Text>
           </GridAlinhaTextoCentro>
         </Grid.Container>
-      </BackgroundCinza>
+      </Container>
 
       <Spacer />
-      <BackgroundCinza style={{ padding: 0 }}>
-        <Collapse.Group>
-          <Collapse title="Dados Emitente">
-            <Grid.Container gap={2} direction="row">
+      <InsideGrid  >
+        <Collapse.Group className="collapse"  style={{ padding: 0 }}>
+          <Collapse title="Dados Emitentes" >
+            <Grid.Container direction="row" >
               <Grid>
                 <Titulo>Razão social</Titulo>
                 <Text small>{data?.emitente?.xNome}</Text>
@@ -240,9 +260,9 @@ export default function AbaNfe({ data }: IProps) {
             </Grid.Container>
           </Collapse>
         </Collapse.Group>
-      </BackgroundCinza>
+      </InsideGrid>
       <Spacer />
-      <BackgroundCinza>
+      <Container>
         <Text h3>Situação Atual</Text>
         <Grid.Container gap={2}>
           <GridAlinhaTextoCentro>
@@ -254,7 +274,7 @@ export default function AbaNfe({ data }: IProps) {
             <Text small>{router.query.desc_status_sefaz}</Text>
           </GridAlinhaTextoCentro>
         </Grid.Container>
-      </BackgroundCinza>
+      </Container>
     </>
   );
 }

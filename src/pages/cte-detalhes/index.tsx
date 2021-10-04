@@ -38,13 +38,15 @@ export default function NfeDetalhes() {
   }>({
     url: `/ctes/${router.query?.chave_nota}`,
   });
+ 
+  
   return (
     <>
       <Head>
         <title>Orion | CTe - Detalhes </title>
       </Head>
       <div style={{ padding: 10 }}>
-        <BotaoVoltar />
+        {/* <BotaoVoltar /> */}
         <Tabs initialValue="1">
           <Tabs.Item label="CTe" value="1">
             <AbaCte data={data} />

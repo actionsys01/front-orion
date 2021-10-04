@@ -1,7 +1,7 @@
 import { Grid as GridGeist, Spacer, Text } from "@geist-ui/react";
 import { useRouter } from "next/router";
 import { GridAlinhaTextoCentro, Titulo } from "../styled";
-import { BackgroundCinza } from "@components/BackgroundCinza/styled";
+import { General } from "./styles";
 
 interface IProps {
   data: {
@@ -15,7 +15,7 @@ export default function DadosGeraisNfe({ data }: IProps) {
   const router = useRouter();
   return (
     <>
-      <BackgroundCinza>
+      <General>
         <Text h3>Dados gerais </Text>
         <GridGeist.Container gap={2}>
           <GridGeist>
@@ -33,7 +33,7 @@ export default function DadosGeraisNfe({ data }: IProps) {
             <Text small>{data?.versao}</Text>
           </GridAlinhaTextoCentro>
         </GridGeist.Container>
-      </BackgroundCinza>
+      </General>
       <Spacer />
     </>
   );

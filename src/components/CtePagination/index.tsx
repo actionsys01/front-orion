@@ -8,6 +8,8 @@ import { Grid, Pages } from './style'
 import { useState } from "react";
 import { useFiltro } from "@contexts/filtro";
 import Pagination from "@material-ui/lab/Pagination";
+import { useRouter } from "next/router";
+import  {format} from "date-fns"
 
 interface Props {
   company_id: number | undefined;
@@ -24,6 +26,7 @@ interface Props {
 
 export default function CtePagination({ company_id, token, sefaz, portaria }: Props) {
   const [cte, setCtes] = useState<INfeDto[]>([])
+  const router = useRouter()
   const [page, setPage] = useState(1);
   const { ctes } = useFiltro()
   const [quantityPage, setQuantityPage] = useState(0)
@@ -68,6 +71,8 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
               <Dot type={item.portaria_status === 0 ? "warning" : item.portaria_status === 1 ? "success" : "default"} />
             </Tooltip>
           ),
+          emissionDate: format(new Date(item.dt_hr_emi), "dd-MM-yyyy HH:mm:ss"),
+          receiveDate: format(new Date(item.criado_em), "dd-MM-yyyy HH:mm:ss"),
           option: (actions: any, item: any) => (
             <Popover
               placement="right"
@@ -82,14 +87,14 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
                         const desc_status_sefaz =
                           item.rowValue.sefaz_status_desc;
                         console.log(item);
-                       /*  router.push({
-                          pathname,
+                        router.push({
+                          pathname: "/cte-detalhes",
                           query: {
                             chave_nota,
                             status_sefaz,
                             desc_status_sefaz,
                           },
-                        }); */
+                        });
                       }}
                     >
                       Visualizar
@@ -145,17 +150,17 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
 
       <Table data={dataFormatted}>
             <Table.Column prop="option" />
-            <Table.Column prop="dt_hr_emi" label="Emissão" />
+            <Table.Column prop="emissionDate" label="Data/hora Emissão" />
             <Table.Column prop="nota" label="Número" />
             <Table.Column prop="serie" label="Série" />
-            <Table.Column prop="emit_cnpj" label="CNPJ emitente" />
-            <Table.Column prop="emit_nome" label="Fornecedor" />
-            <Table.Column prop="sefaz_status" label="Status sefaz" />
-            <Table.Column prop="portaria_status" label="Status portaria" />
-            <Table.Column prop="chave_nota" label="Chave de acesso" />
-            <Table.Column prop="dest_cnpj" label="CNPJ destinatário" />
+            <Table.Column prop="emit_cnpj" label="CNPJ Fornecedor" />
+            <Table.Column prop="emit_nome" label="Nome Fornecedor" />
+            <Table.Column prop="sefaz_status" label="Status Sefaz" />
+            <Table.Column prop="portaria_status" label="Status Portaria" />
+            <Table.Column prop="chave_nota" label="Chave de Acesso" />
+            <Table.Column prop="dest_cnpj" label="CNPJ Destinatário" />
             <Table.Column prop="dest_nome" label="Destinatário" />
-            <Table.Column prop="criado_em" label="data/hora recebimento" />
+            <Table.Column prop="receiveDate" label="Data/hora Recebimento" />
           </Table>
           
       </Grid>

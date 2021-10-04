@@ -5,6 +5,7 @@ import useTransformArray from "@hooks/useTransformArray";
 import { useEffect, useState } from "react";
 import DadosGeraisNfe from "../DadosGeraisNfe";
 import { GridAlinhaTextoCentro, Titulo } from "../styled";
+import {VolumTable} from "./style"
 
 interface IProps {
   data: {
@@ -34,6 +35,7 @@ interface IProps {
         vPIS: string;
       };
     };
+    versao: string;
     transporte: {
       modFrete: string;
       transporta: {
@@ -52,7 +54,7 @@ interface IProps {
 }
 export default function AbaTransporte({ data }: IProps) {
   const volumes = useTransformArray(data?.transporte.vol);
-
+  
   return (
     <>
       <DadosGeraisNfe data={data} />

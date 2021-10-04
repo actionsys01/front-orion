@@ -133,7 +133,7 @@ export default function Filtro({ abaAtual, data }: IProps) {
             ))}
             <BotaoIncluir onClick={adicionar} type="button">
               <HiPlusCircle />
-              <text> Incluir linha</text>
+              <Text> Incluir linha</Text>
             </BotaoIncluir>
           </ContainerFiltro>
 
@@ -152,7 +152,7 @@ export default function Filtro({ abaAtual, data }: IProps) {
               type="button"
               style={{ fontWeight: "normal" }}
             >
-              <text>Cancelar</text>
+              <Text>Cancelar</Text>
             </BotaoIncluir>
 
             <BotaoIncluir
@@ -162,7 +162,7 @@ export default function Filtro({ abaAtual, data }: IProps) {
               // @ts-ignore: Object is possibly 'null'.
               onClick={() => formRef?.current.submitForm()}
             >
-              <text>Confirmar</text>
+              <Text>Confirmar</Text>
             </BotaoIncluir>
           </Row>
         </Modal>

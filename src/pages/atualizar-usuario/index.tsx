@@ -1,27 +1,40 @@
 import BotaoVoltar from "@components/BotaoVoltar";
 import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
+import {
+    useToasts,
+  } from "@geist-ui/react";
 import React, { useState, useEffect } from "react";
 import * as usuarios from "../../services/usuarios";
 import Head from "next/head";
 import {Wrapper, Select, InputStyle, Button} from "./style"
-import {Perfil} from "../cadastrar-usuario/"
 import api from "@services/api"
 
 interface UpdateProps {
     id: number;
     email: string;
     nome: string;
-     perfil: Perfil;
+    perfil: Perfil;
 }
 
-
+export interface Perfil {
+    id: number;
+    nome: string;
+    descricao: string;
+    criadoEm: string;
+    atualizadaEm: string;
+    criadoPorIp: string;
+    atualizadoPorIp: string;
+  }
 
 const AtualiarUsuario = () => {
     const [session] = useSession()
     const router = useRouter();
     const [profileData, setProfileData] = useState<Perfil[]>([])
-
+    const [, setToast] = useToasts();
+    const [newProfileId, setNewProfileId] = useState<string>("")
+    console.log(newProfileId);
+    
         const getProfileData = async () => {
             const response = await api.get(`/perfil/${session?.usuario.empresa.id}`)
             const {data} = response;
@@ -34,24 +47,64 @@ const AtualiarUsuario = () => {
 
         console.log(profileData);
         
-        const updateUser = () => {
-            
+        async function updateUser () {
+            try {
+            if(!newProfileId) {
+                setToast({
+                    text: "Insira um perfil válido.",
+                    type: "warning",
+                  });
+                  return;
+            } 
+                await usuarios.atualizar({nome: String(router.query.nome), perfil: String(newProfileId), id: Number(router.query.id)})
+                
+            } catch (error) {
+                console.log(error)
+            }
+            setNewProfileId(""),
+            router.back()
         }
+
+        // async function criarUsuario() {
+           
+        //     try {
+        //       if (session && router.query.nome) {
+        //         if (!nome || !perfilId) {
+        //           setLoading(false);
+        //           setToast({
+        //             text: "Informe todos os dados do usuário.",
+        //             type: "warning",
+        //           });
+        //           return;
+        //         }
+        //         await usuarios.atualizar({
+        //           nome,
+        //           perfil: perfilId,
+        //           senha,
+        //           id: Number(router.query.id as string),
+        //         });
+        //         setEmail("");
+        //         setSenha("");
+        //         setNome("");
+        //         router.back();
+        //         return;
+        //       }
+        
 
     return <>
         <Head>
             <title>Orion | Atualizar Usuário </title>
         </Head>
         <BotaoVoltar />
+            <h1 >Atualizar Usuário</h1>
         <Wrapper>
         <div style={{width: 400}}>
-            <h1 style={{ textAlign: "center", width: "100%" }}>Atualizar Usuário</h1>
             <Select>
-            <select name="perfil" id="perfil">
+            <select   onChange={(e: any) => setNewProfileId(e.target.value)} >
             <option value='' disabled selected>Tipo Perfil </option>
-            {profileData.map((item) => 
-            <option value={item.id}>
-                {item.nome}
+            {profileData.map((item, i) => 
+            <option key={i} value={item.id}  >
+                {item.nome} 
             </option>
             )}
             </select>
@@ -59,6 +112,11 @@ const AtualiarUsuario = () => {
             <InputStyle>
             <div>
                 <input type="text" placeholder={router.query.nome} />
+            </div>
+            </InputStyle>
+            <InputStyle>
+            <div>
+                <input type="text" placeholder={router.query.email} />
             </div>
             </InputStyle>
             <Button type="submit" onClick={updateUser} >

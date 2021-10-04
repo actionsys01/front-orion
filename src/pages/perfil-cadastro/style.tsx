@@ -69,7 +69,7 @@ export const Table = styled.div`
                 span {
                    
                     .icon {
-                        fill: #979797;
+                        
                         cursor: pointer;
                         font-size: 35px;
                 }
