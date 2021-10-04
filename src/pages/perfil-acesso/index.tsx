@@ -168,7 +168,7 @@ export default function PerfilAcesso() {
   }: Omit<IPerfilAplicacao, "nome" | "descricao" | "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp">) {
     try {
       await perfil.deletar(id);
-    } catch (error) {
+    } catch (error: any) {
       const mensagem = error.response.data.mensagem;
       setToast({ text: mensagem, type: "warning" });
     }
@@ -186,7 +186,7 @@ export default function PerfilAcesso() {
         return
     } if (acao === "editar") {
       router.push({
-        pathname: "/perfil-cadastro",
+        pathname: "/atualizar-cadastro",
         query: { nome, descricao, perfilId },
       })
     } if (acao === "cadastrar") {

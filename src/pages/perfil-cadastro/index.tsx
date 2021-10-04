@@ -10,6 +10,7 @@ import Head from "next/head";
 import { ChevronDown, ChevronUp  } from '@geist-ui/react-icons'
 import {  useRouter } from "next/router";
 import React, { useMemo, useState, useEffect } from "react";
+import api from "@services/api"
 
 
 type ICreateProfile = {
@@ -31,7 +32,7 @@ interface Class {
 
 export default function PerfilCadastro() {
   const router = useRouter();
-  const id_profile = Number(router.query.id);
+  const id_profile = Number(router.query.perfilId);
   const [session] = useSession();
   const [permissions, setPermissions ] = useState<Permissions[]>([])
   const [nfeModal, setNfeModal] = useState<boolean>(false)
@@ -45,10 +46,17 @@ export default function PerfilCadastro() {
   const [isNfse, setIsNfse] = useState<boolean>(false)
   const [profileApp, setProfileApp] = useState<number[]>([])
 
+  console.log(id_profile);
   
   // if (!data) return <Loading />;
 
-
+const teste = async () => {
+  const response = await api.get(`/perfil/search/?profile_id=${id_profile}`)
+  const data = response.data
+  console.log(data);
+  
+  return data
+}
 
   useEffect(() => {
     const data: any =  session?.usuario.empresa.plano.aplicacoes
@@ -62,6 +70,7 @@ export default function PerfilCadastro() {
         setIsNfse(true)
       }
     })
+    teste()
   }, [permissions])
 
   

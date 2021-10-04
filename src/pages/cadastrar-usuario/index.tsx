@@ -11,10 +11,8 @@ import {
 import useRequest from "@hooks/useRequest";
 import { useSession } from "next-auth/client";
 import Head from "next/head";
-import api from "@services/api";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
-import { setAppElement } from "react-modal";
 import * as usuarios from "../../services/usuarios";
 
 interface IPerfil {
@@ -42,7 +40,7 @@ export default function Usuarios() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [email, setEmail] = useState<string>("");
-   const [senha, setSenha] = useState<string>("");
+  const [senha, setSenha] = useState<string>("");
   const [nome, setNome] = useState<string>("");
   const [perfilId, setPerfilId] = useState<string>(""); 
   const [empresaId, setEmpresaId] = useState<string>("")
@@ -74,12 +72,12 @@ export default function Usuarios() {
           });
           return;
         }
-        await usuarios.atualizar({
-          nome,
-          perfil: perfilId,
-          senha,
-          id: Number(router.query.id as string),
-        });
+        // await usuarios.atualizar({
+        //   nome,
+        //   perfil: perfilId,
+        //   senha,
+        //   id: Number(router.query.id as string),
+        // });
         setEmail("");
         setSenha("");
         setNome("");
