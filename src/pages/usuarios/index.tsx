@@ -1,4 +1,4 @@
-import { Grid } from "./styled";
+import { Grid, GridStyle } from "./style";
 import React, { useState, useMemo, useEffect} from 'react'; 
 import {
   Button,
@@ -8,6 +8,7 @@ import {
   Spacer,
   Table,
   Text,
+  User,
 } from "@geist-ui/react";
 import { MoreHorizontal, Plus } from "@geist-ui/react-icons";
 import useRequest from "@hooks/useRequest";
@@ -35,6 +36,16 @@ interface Perfil {
   atualizadoPorIp: string;
 }
 
+interface UserData {
+  id: number;
+  nome: string;
+  email: string;
+  perfil: Perfil;
+  perfil_nome: string;
+  emailFormatted: string;
+  option: any
+}
+
 
 
 export default function Usuarios({}) {
@@ -42,7 +53,6 @@ export default function Usuarios({}) {
   const [visible, setVisible] = useState<boolean>(false)
   const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
-  
   
 
  
@@ -57,75 +67,81 @@ export default function Usuarios({}) {
    
   }, [])
 
-  const popoverHandler = () => {!visible ? setVisible(true) : setVisible(false)}
+  const popoverHandler = () => !visible ? setVisible(true) : setVisible(false);
 
-  const UsersByCompanyData = () => {
-    const allData:any = [];
+  const PopOption = ( data: any) => (
+ 
+    <Popover
+      placement="right"
+      visible={visible}
+      onVisibleChange={popoverHandler}
+      content={
+        <>
+          <Popover.Item>
+            <Text
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                const { id } = data;
+                const perfil_nome = data.perfil_id;
+                const nome = data.nome;
+                const email = data.email;
+                router.push({
+                  pathname: "/atualizar-usuario",
+                  query: { perfil_nome, nome, email, id },
+                });
+              }}
+            >
+              Editar
+            </Text>
+          </Popover.Item>
+          <Popover.Item>
+            <Text
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                const { id } = data;
+                deletar(id);
+                setVisible(false)
+              }}
+            >
+              Deletar
+            </Text>
+          </Popover.Item>
+        </>
+      }
+    >
+      <span style={{ cursor: "pointer" }}>
+        <MoreHorizontal />
+      </span>
+    </Popover>
+  
+)
+
+  const UsersByCompanyData = useMemo(() => {
+    const allData: UserData[] = [];
     if(usuarios) {
       usuarios.forEach((item) => {
         allData.push({
           ...item,
           perfil_nome: item.perfil.nome,
-          option: (actions: any, data: any) => (
-            <Popover
-              placement="right"
-              visible={visible}
-              content={
-                <>
-                  <Popover.Item>
-                    <Text
-                      style={{
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        const { id } = data.rowValue;
-                        const perfil_nome = data.rowValue.perfil_id;
-                        const nome = data.rowValue.nome;
-                        const email = data.rowValue.email;
-                        router.push({
-                          pathname: "/cadastrar-usuario",
-                          query: { perfil_nome, nome, email, id },
-                        });
-                      }}
-                    >
-                      Editar
-                    </Text>
-                  </Popover.Item>
-                  <Popover.Item>
-                    <Text
-                      style={{
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        const { id } = data.rowValue;
-                        deletar(id);
-                      }}
-                    >
-                      Deletar
-                    </Text>
-                  </Popover.Item>
-                </>
-              }
-              
-            >
-              <span style={{ cursor: "pointer" }}>
-                <MoreHorizontal />
-              </span>
-            </Popover>
-          )
+          emailFormatted: item.email.toLowerCase(),
+          option: PopOption(item),
         })
       })
-    } 
-
+    }
+    
     return allData;
-  }
+  },[usuarios])
 
+ 
   
 
   function deletar(id: number) {
     usuario.deletar(id);
     const usuariosAtualizados = usuarios.filter((usuario) => usuario.id !== id);
-    setVisible(false)
     setUsuarios(usuariosAtualizados)
   } 
 
@@ -149,14 +165,37 @@ export default function Usuarios({}) {
         </Button>
       </Row>
       <Spacer y={1} />
-      <Grid>
+      {/* <Grid>
         <Table data={UsersByCompanyData}>
           <Table.Column prop="option" />
           <Table.Column prop="nome" label="Nome" />
-          <Table.Column prop="email" label="Email" />
+          <Table.Column prop="emailFormatted"  label="Email" />
           <Table.Column prop="perfil_nome" label="Perfil" />
         </Table>
-      </Grid>
+      </Grid> */}
+    <GridStyle>
+      <table>
+        <thead>
+          <tr>
+          <th></th>
+          <th>Nome</th>
+          <th>E-mail</th>
+          <th>Perfil</th>
+          </tr>
+        </thead>
+        <tbody>
+        {UsersByCompanyData.map((item, i) => (
+        <tr key={i}>
+          <td>{item.option}</td>
+          <td style={{textTransform: "capitalize"}}>{item.nome }</td>
+          <td>{item.email}</td>
+          <td>{item.perfil_nome}</td>
+        </tr>
+        ))}
+        </tbody>
+      </table>
+    </GridStyle>
+
     </>
   );
 }

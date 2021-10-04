@@ -9,6 +9,7 @@ import { useState } from "react";
 import Pagination from "@material-ui/lab/Pagination";
 import { Grid, Pages } from "./style";
 import { useRouter } from "next/router";
+import  {format} from "date-fns"
 
 
 
@@ -80,6 +81,8 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
                
              </Tooltip>
           ),
+          emissionDate: format(new Date(item.dt_hr_emi), "dd-MM-yyyy HH:mm:ss"),
+          receiveDate: format(new Date(item.criado_em), "dd-MM-yyyy HH:mm:ss"),
           option: (actions: any, item: any) => (
             <Popover
               placement="right"
@@ -93,7 +96,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
                         const status_sefaz = Number(item?.rowValue.sefaz_status);
                         const desc_status_sefaz =
                           item?.rowValue.sefaz_status_desc;
-                        console.log(item);
+                        
                         router.push({
                           pathname: `/nfe-detalhes`,
                           query: {
@@ -162,17 +165,17 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
       <Grid>
       <Table data={dataFormatted}>
             <Table.Column prop="option" />
-            <Table.Column prop="dt_hr_emi" label="Emissão" />
+            <Table.Column prop="emissionDate" label="Data/hora Emissão" />
             <Table.Column prop="nota" label="Número" />
             <Table.Column prop="serie" label="Série" />
-            <Table.Column prop="emit_cnpj" label="CNPJ emitente" />
-            <Table.Column prop="emit_nome" label="Fornecedor" />
-            <Table.Column prop="sefaz_status" label="Status sefaz" />
-            <Table.Column prop="portaria_status" label="Status portaria" />
-            <Table.Column prop="chave_nota" label="Chave de acesso" />
-            <Table.Column prop="dest_cnpj" label="CNPJ destinatário" />
+            <Table.Column prop="emit_cnpj" label="CNPJ Fornecedor" />
+            <Table.Column prop="emit_nome" label="Nome Fornecedor" />
+            <Table.Column prop="sefaz_status" label="Status Sefaz" />
+            <Table.Column prop="portaria_status" label="Status Portaria" />
+            <Table.Column prop="chave_nota" label="Chave de Acesso" />
+            <Table.Column prop="dest_cnpj" label="CNPJ Destinatário" />
             <Table.Column prop="dest_nome" label="Destinatário" />
-            <Table.Column prop="criado_em" label="data/hora recebimento" />
+            <Table.Column prop="receiveDate" label="Data/hora Recebimento" />
           </Table>
           
       </Grid>

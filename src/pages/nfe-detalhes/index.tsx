@@ -1,6 +1,7 @@
 import BotaoVoltar from "@components/BotaoVoltar";
 import { Loading, Tabs } from "@geist-ui/react";
 import useRequest from "@hooks/useRequest";
+import {Menu} from "./styled";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import AbaNfe from "./AbaNfe";
@@ -20,9 +21,11 @@ export default function NfeDetalhes() {
       serie: string;
       nNF: string;
       verProc: string;
+      dEmi: string;
       dhEmi: string;
       dhSaiEnt: string;
     };
+    versao: string
     total: {
       ICMSTot: { vNF: string };
     };
@@ -42,6 +45,7 @@ export default function NfeDetalhes() {
   }>({
     url: `/nfe/controle/${router.query?.chave_nota}`,
   });
+  
 
   if (!data) return <Loading />;
   return (
@@ -51,7 +55,8 @@ export default function NfeDetalhes() {
       </Head>
       <div style={{ padding: 10 }}>
         <BotaoVoltar />
-        <Tabs initialValue="1">
+        <Menu>
+        <Tabs initialValue="1" className="style">
           <Tabs.Item label="NFe" value="1">
             <AbaNfe data={data} />
           </Tabs.Item>
@@ -77,6 +82,7 @@ export default function NfeDetalhes() {
             <AbaRastro data={data} />
           </Tabs.Item>
         </Tabs>
+        </Menu>
       </div>
     </>
   );

@@ -4,7 +4,7 @@ export const Wrapper = styled.div`
     padding: 10px;
     overflow-y: auto;
     width: 100%;
-    height: 100%;
+    height: 70%;
     justify-content: center;
     vertical-align: middle;
     display: flex;
@@ -13,8 +13,9 @@ export const Wrapper = styled.div`
     margin-left: calc(0 * 16pt / 2);
     margin-right: calc(0 * 16pt / 2);
     row-gap: calc(0 * 16pt);
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
+    flex-direction: column;
 
     h1 {
     text-align: center;
@@ -61,6 +62,7 @@ display: inline-flex;
 align-items: center;
 width: 100%;
 height: calc(1.687 * 16pt);
+margin-bottom: 15px;
 
 div /* 2 */ {
 display: inline-flex;
@@ -72,7 +74,7 @@ user-select: none;
 border-radius: 5px;
 border: 1px solid #eaeaea;
 transition: border 0.2 ease 0s, color 0.2s ease 0s;
-margin-bottom: 15px;
+
 
 input {
 

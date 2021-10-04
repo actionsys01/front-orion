@@ -7,7 +7,7 @@ import { Checkbox } from '@material-ui/core';
 import useRequest from "@hooks/useRequest";
 import * as perfil from "@services/perfis"
 import Head from "next/head";
-import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
+import { ChevronDown, ChevronUp  } from '@geist-ui/react-icons'
 import {  useRouter } from "next/router";
 import React, { useMemo, useState, useEffect } from "react";
 
@@ -45,11 +45,9 @@ export default function PerfilCadastro() {
   const [isNfse, setIsNfse] = useState<boolean>(false)
   const [profileApp, setProfileApp] = useState<number[]>([])
 
-  console.log(profileApp, id_profile);
   
   // if (!data) return <Loading />;
 
-console.log("id profile:" ,router.query.perfilId, "nome:", router.query.nome, "desc:", router.query.descricao, "permissions:", profileApp);
 
 
   useEffect(() => {
@@ -64,7 +62,7 @@ console.log("id profile:" ,router.query.perfilId, "nome:", router.query.nome, "d
         setIsNfse(true)
       }
     })
-  }, [session, permissions])
+  }, [permissions])
 
   
 
@@ -145,7 +143,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </h5>
           </span>
           <span>
-            {!nfeModal ? <AiFillCaretDown onClick={handleNfeModal} className="icon"/> : <AiFillCaretUp onClick={handleNfeModal} className="icon"/> }
+            {!nfeModal ? <ChevronDown onClick={handleNfeModal} className="icon"/> : <ChevronUp onClick={handleNfeModal} className="icon"/> }
           </span>
         </div>
           {nfeModal &&
@@ -188,7 +186,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </h5>
           </span>
           <span>
-            {!cteModal ? <AiFillCaretDown  onClick={handleCteModal}  className="icon"/> : <AiFillCaretUp  onClick={handleCteModal}  className="icon"/>}
+            {!cteModal ? <ChevronDown  onClick={handleCteModal}  className="icon"/> : <ChevronUp  onClick={handleCteModal}  className="icon"/>}
           </span>
         </div>
         {cteModal &&
@@ -231,7 +229,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </h5>
           </span>
           <span>
-           {!nfseModal ? <AiFillCaretDown onClick={handleNfseModal}  className="icon"/> : <AiFillCaretUp onClick={handleNfseModal}  className="icon"/>}
+           {!nfseModal ? <ChevronDown onClick={handleNfseModal}  className="icon"/> : <ChevronUp onClick={handleNfseModal}  className="icon"/>}
           </span>
         </div>
         {nfseModal &&
@@ -273,7 +271,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </h5>
             </span>
           <span>
-            {!entranceModal ? <AiFillCaretDown onClick={handleEntranceModal}  className="icon"/> : <AiFillCaretUp onClick={handleEntranceModal}  className="icon"/>}
+            {!entranceModal ? <ChevronDown onClick={handleEntranceModal}  className="icon"/> : <ChevronUp onClick={handleEntranceModal}  className="icon"/>}
           </span>
         </div>
         {entranceModal &&
@@ -314,7 +312,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </h5>
           </span>
           <span>
-            {!profileModal ? <AiFillCaretDown  onClick={handleProfileModal} className="icon"/> : <AiFillCaretUp  onClick={handleProfileModal} className="icon"/>}
+            {!profileModal ? <ChevronDown  onClick={handleProfileModal} className="icon"/> : <ChevronUp  onClick={handleProfileModal} className="icon"/>}
           </span>
         </div>
         {profileModal &&
@@ -355,7 +353,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </h5>
           </span>
           <span> 
-            {!usersModal ? <AiFillCaretDown onClick={handleUsersModal} className="icon"/> : <AiFillCaretUp onClick={handleUsersModal} className="icon"/>}
+            {!usersModal ? <ChevronDown onClick={handleUsersModal} className="icon"/> : <ChevronUp onClick={handleUsersModal} className="icon"/>}
           </span>
         </div>
         {usersModal &&

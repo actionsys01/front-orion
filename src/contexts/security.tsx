@@ -16,16 +16,16 @@ const SecurityProvider: React.FC = ({ children }: any) => {
   const [ctePermission, setCtePermission] = useState<boolean>(false)
   const [nfsePermission, setNfsePermission] = useState<boolean>(false)
   const [entrancePermission, setEntrancePermission] = useState<boolean>(false)
-  console.log("permissions:", permissions);
+ 
 
 
-const getPermission = () => {
+// const getPermission = () => {
 
-}
+// }
 
-useEffect(() => {
-  getPermission()
-}, [session])
+// useEffect(() => {
+//   getPermission()
+// }, [])
   
 
   return <SecurityContext.Provider value="value">{children}</SecurityContext.Provider>;
