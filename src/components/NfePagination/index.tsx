@@ -135,7 +135,16 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
                     </Popover>
                   </Popover.Item>
                   <Popover.Item>
-                    <Link href="#">Histórico de nota</Link>
+                    <Text 
+                    style={{ cursor: "pointer" }}
+                    onClick={()=> {
+                      const chave_nota = item?.rowValue.chave_nota;
+                      router.push({
+                        pathname: `/historico-notas`,
+                        query: {chave_nota}
+                      })
+                    }}
+                    >Histórico de nota</Text>
                   </Popover.Item>
                   <Popover.Item>
                     <Link href="#">Download</Link>
