@@ -1,9 +1,11 @@
 import { Collapse, Grid, Spacer, Text } from "@geist-ui/react";
+import React, {useMemo} from "react";
 import { Titulo } from "@components/Titulo";
 import { GridAlinhaTextoCentro } from "@components/GridAlinhaTextoCentro";
 import { useRouter } from "next/router";
 import { BackgroundCinza } from "@components/BackgroundCinza/styled";
 import DadosGeraisCte from "../DadosGeraisCte";
+import {format} from "date-fns"
 
 interface IProps {
   data: {
@@ -13,6 +15,7 @@ interface IProps {
       cCT: string;
       verProc: string;
       dhEmi: string;
+      dEmi: string;
       dhSaiEnt: string;
       modal: string;
       tpServ: string;
@@ -98,6 +101,16 @@ interface IProps {
 }
 export default function AbaCte({ data }: IProps) {
   const router = useRouter();
+  
+  
+
+  const dataEmissao = useMemo(() => {
+    if(data) {
+      const dataEmissaoFormatted = format(new Date(data?.informacoes_cte?.dEmi ?? data?.informacoes_cte?.dhEmi), "dd-MM-yyyy")
+      return dataEmissaoFormatted
+    }
+  }, [data])
+
   return (
     <>
       <DadosGeraisCte data={data} />
@@ -118,7 +131,7 @@ export default function AbaCte({ data }: IProps) {
           </GridAlinhaTextoCentro>
           <Grid>
             <Titulo>Data de emissão</Titulo>
-            <Text small>{data?.informacoes_cte?.dhEmi}</Text>
+            <Text small>{dataEmissao}</Text>
           </Grid>
         </Grid.Container>
       </BackgroundCinza>

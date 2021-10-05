@@ -15,6 +15,7 @@ interface IProps {
       dEmi: string;
       dhEmi: string
       hSaiEnt: string;
+      dSaiEnt: string;
     };
     versao: string;
     total: {
@@ -63,9 +64,12 @@ export default function AbaNfe({ data }: IProps) {
 
 
   const dataEmissao = useMemo(() => {
-    const dataEmissaoFormatted = format(new Date(data?.informacoes_nfe?.dEmi ?? data?.informacoes_nfe?.dhEmi), "dd-MM-yyyy")
+    if(data) {
+      const dataEmissaoFormatted = format(new Date(data?.informacoes_nfe?.dEmi ?? data?.informacoes_nfe?.dhEmi), "dd-MM-yyyy")
+  
+      return dataEmissaoFormatted
 
-    return dataEmissaoFormatted
+    }
 
   }, [data])
 
@@ -101,7 +105,7 @@ export default function AbaNfe({ data }: IProps) {
           </Grid>
           <Grid>
             <Titulo>Data de saída/entrada</Titulo>
-            <Text small>{data?.informacoes_nfe?.hSaiEnt}</Text>
+            <Text small>{data?.informacoes_nfe?.dSaiEnt}</Text>
           </Grid>
           <GridAlinhaTextoCentro>
             <Titulo>Valor total NF-e</Titulo>

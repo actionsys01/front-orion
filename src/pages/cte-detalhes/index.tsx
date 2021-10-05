@@ -1,6 +1,7 @@
 import BotaoVoltar from "@components/BotaoVoltar";
 import { Tabs } from "@geist-ui/react";
 import useRequest from "@hooks/useRequest";
+import {Menu} from "./style";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import AbaCarga from "./AbaCarga";
@@ -47,7 +48,8 @@ export default function NfeDetalhes() {
       </Head>
       <div style={{ padding: 10 }}>
         {/* <BotaoVoltar /> */}
-        <Tabs initialValue="1">
+        <Menu>
+        <Tabs initialValue="1" className="style">
           <Tabs.Item label="CTe" value="1">
             <AbaCte data={data} />
           </Tabs.Item>
@@ -61,6 +63,7 @@ export default function NfeDetalhes() {
             <AbaInformacoesAdicionais data={data} />
           </Tabs.Item>
         </Tabs>
+        </Menu>
       </div>
     </>
   );
