@@ -1,5 +1,5 @@
 import { Grid, GridStyle } from "./style";
-import React, { useState, useMemo, useEffect} from 'react'; 
+import React, { useState, useMemo, useEffect, useCallback} from 'react'; 
 import {
   Button,
   Loading,
@@ -10,14 +10,16 @@ import {
   Text,
   User,
 } from "@geist-ui/react";
+
+import { PaginationAlign, Pages } from "./styledComponent"
+
 import { MoreHorizontal, Plus } from "@geist-ui/react-icons";
-import useRequest from "@hooks/useRequest";
-import * as perfis from "@services/perfis";
+import Pagination from "@material-ui/lab/Pagination";
 import * as usuario from "@services/usuarios";
 import { useSession } from "next-auth/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import api from "@services/api"
+import getUsersByCompanyId from "@services/usuarios/getUsersByCompanyId";
 
 interface IUsuario  {
   id: number;
@@ -53,19 +55,36 @@ export default function Usuarios({}) {
   const [visible, setVisible] = useState<boolean>(false)
   const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
+  const [page, setPage] = useState(1);
+  const [quantityPage, setQuantityPage] = useState(1)
   
 
- 
-  const getAllUsersByCompanyId = async () : Promise<IUsuario[]> => {
-    const response = await api.get(`/usuarios/`)
-    const {data}= response;
-    return data
+  const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
+    setPage(value)
   }
- 
+
+  const getUsersAndTotalPage = useCallback(async () => {
+
+    const responseNfes = await getUsersByCompanyId(page)
+
+    const { data } = responseNfes;
+
+
+    setUsuarios(data.usuarios)
+  
+    setQuantityPage(Math.ceil(data.total / 5));
+    }, [page])
+      
+
   useEffect(() => {
-    getAllUsersByCompanyId().then(response => setUsuarios(response))
-   
-  }, [])
+
+    getUsersAndTotalPage();
+
+
+  }, [page])
+
+
+  
 
   const popoverHandler = () => !visible ? setVisible(true) : setVisible(false);
 
@@ -196,6 +215,10 @@ export default function Usuarios({}) {
       </table>
     </GridStyle>
 
+      <Pages>
+    <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
+    </ Pages>
+   
     </>
   );
 }
