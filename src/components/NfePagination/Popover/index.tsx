@@ -2,6 +2,7 @@ import { Link, Modal, Popover, Text, Textarea, useModal } from "@geist-ui/react"
 import { MoreHorizontal } from "@geist-ui/react-icons";
 import { useCallback, useState } from "react";
 import router from "next/router";
+import {useSecurityContext} from "@contexts/security"
 
 interface PopoverProps {
   item: any
@@ -12,6 +13,7 @@ interface PopoverProps {
     const [action, setAction] = useState("")
     const { setVisible: setVisiblePop, bindings } = useModal();
     const [secondPopoverVisible, setSecondPopoverVisible] = useState(false)
+    const {nfeHistoricalPermission} = useSecurityContext()
 
     const changeHandler = useCallback((next) => {
       setVisible(next)
@@ -109,7 +111,7 @@ interface PopoverProps {
                     Registrar evento
                 </Popover>
               </Popover.Item>
-              <Popover.Item>
+              {nfeHistoricalPermission && <Popover.Item>
                 <Text 
                 style={{ cursor: "pointer" }}
                 onClick={()=> {
@@ -121,7 +123,7 @@ interface PopoverProps {
                   })
                 }}
                 >Histórico de nota</Text>
-              </Popover.Item>
+              </Popover.Item>}
               <Popover.Item>
                 <a href={item?.rowValue.xml} download>
                 <Text

@@ -15,6 +15,7 @@ import {
 import { useSession } from "next-auth/client";
 import Head from "next/head";
 import api from '@services/api';
+import {useSecurityContext} from "@contexts/security"
 
 interface SelectProps {
     className: string
@@ -28,10 +29,10 @@ interface IUsuario  {
 
 
 export default function Dashboard() {
-  
+    const {nfePermission,ctePermission, nfsePermission} = useSecurityContext()
     const time = new Date().toLocaleString()
  
- console.log(time);
+ console.log("dashboard permission:",nfePermission);
  
 
     return  <>
@@ -42,16 +43,19 @@ export default function Dashboard() {
 
     <SelectStyle>
   <select title="Ano" name="Ano" id="ano">
-    <option value="" disabled selected>Ano</option>
+    <option value="Ano"  >Ano</option>
     <option value="2010" >2010</option>
   </select>
   <select title="Mês" name="Mês" id="mes">
-    <option value="" disabled selected>Mês</option>
+    <option value="" disabled >Mês</option>
     <option value="Janeiro" >2010</option>
   </select>
   </SelectStyle>
   <div style={{height: "35vh"}}>
-
+  {nfePermission && <h3>Nf-e</h3>}
+  {ctePermission && <h3>Ct-e</h3>}
+  {nfsePermission &&  <h3>Nfs-e</h3>}
+ 
   </div>
 <Speedometer>
   <div id="main-div">

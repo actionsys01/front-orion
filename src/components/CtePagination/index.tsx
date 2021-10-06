@@ -1,7 +1,7 @@
 import React, {useMemo, useCallback} from "react";
 import getCteByCompanyId from '@services/cte';
 import INfeDto from '@services/nfe/dtos/INfeDTO';
-import { Dot, Link, Popover, Table, Text, Tooltip } from "@geist-ui/react";
+import { Dot, Table, Text, Tooltip } from "@geist-ui/react";
 import { MoreHorizontal } from "@geist-ui/react-icons";
 import { useEffect } from "react";
 import { Grid, Pages } from './style'
@@ -31,16 +31,8 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
   const [page, setPage] = useState(1);
   const { ctes } = useFiltro()
   const [quantityPage, setQuantityPage] = useState(0)
-  const [visible, setVisible] = useState(false)
-  const [secondPopoverVisible, setSecondPopoverVisible] = useState(false)
 
-  const changeHandler = useCallback((next) => {
-    setVisible(next)
-  }, [])
-
-  const changeHandlerSecondPopover = useCallback((next) => {
-    setSecondPopoverVisible(next)
-  }, [])
+  
 
 
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
