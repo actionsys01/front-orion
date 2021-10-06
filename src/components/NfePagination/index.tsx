@@ -29,9 +29,9 @@ interface Props  {
 
 export default function NfePagination({ company_id, token, sefaz, portaria }: Props) {
   const [nfe, setNfes] = useState<INfeDto[]>([])
-  const [page, setPage] = useState(1);
   const router = useRouter()
   const  { nfes  } = useFiltro();
+  const [page, setPage] = useState(1);
   const [quantityPage, setQuantityPage] = useState(1)
   
 
@@ -47,7 +47,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
 
 
     setNfes(data.nfes)
-
+  
     setQuantityPage(Math.ceil(data.total / 5));
     }, [nfes, page])
       
@@ -58,6 +58,13 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
 
 
   }, [page, nfes])
+
+
+  useEffect(() => {
+    if(page > quantityPage){
+      setPage(1)
+    }
+  }, [nfes, quantityPage, page])
 
 
 
