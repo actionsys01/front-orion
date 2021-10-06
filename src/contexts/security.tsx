@@ -80,7 +80,7 @@ const SecurityProvider: React.FC = ({ children }: any) => {
   
 
 
-  return <SecurityContext.Provider value={{ nfePermission, nfeHistoricalPermission, ctePermission, cteHistoricalPermission, nfsePermission, userPermission, profilePermission}}>{children}</SecurityContext.Provider>;
+  return <SecurityContext.Provider value={{ nfePermission, nfeHistoricalPermission, ctePermission, cteHistoricalPermission, nfsePermission, userPermission, profilePermission, entrancePermission}}>{children}</SecurityContext.Provider>;
 };
 
 export const useSecurityContext = () => {
