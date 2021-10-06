@@ -1,15 +1,17 @@
 import React, { useMemo , useCallback} from "react";
 import getNfePagesByCompanyId from '@services/nfe';
 import INfeDto from '@services/nfe/dtos/INfeDTO';
-import { Dot, Link, Popover, Table, Text, Tooltip } from "@geist-ui/react";
+import { Dot, Table, Tooltip} from "@geist-ui/react";
 import { useFiltro } from "@contexts/filtro";
 import { useEffect } from "react";
 import { MoreHorizontal } from "@geist-ui/react-icons";
 import { useState } from "react";
 import Pagination from "@material-ui/lab/Pagination";
-import { Grid, Pages } from "./style";
+import { Grid, Pages, Visibility } from "./style";
 import { useRouter } from "next/router";
 import  {format} from "date-fns"
+import { inherits } from "util";
+import PopoverComponent from "./Popover";
 
 
 
@@ -33,7 +35,8 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
   const router = useRouter()
   const  { nfes  } = useFiltro();
   const [quantityPage, setQuantityPage] = useState(1)
-  
+ 
+ 
 
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
     setPage(value)
@@ -61,7 +64,6 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
 
 
 
-
   const dataFormatted = useMemo(() => {
     const newData: any = [];
     if (nfe) {
@@ -81,84 +83,10 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
                
              </Tooltip>
           ),
-          emissionDate: format(new Date(item.dt_hr_emi), "dd-MM-yyyy HH:mm:ss"),
-          receiveDate: format(new Date(item.criado_em), "dd-MM-yyyy HH:mm:ss"),
+          emissionDate: format(new Date(item.dt_hr_emi), "dd/MM/yyyy HH:mm:ss"),
+          receiveDate: format(new Date(item.criado_em), "dd/MM/yyyy HH:mm:ss"),
           option: (actions: any, item: any) => (
-            <Popover
-              placement="right"
-              content={
-                <>
-                  <Popover.Item>
-                    <Text
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        const chave_nota = item?.rowValue.chave_nota;
-                        const status_sefaz = Number(item?.rowValue.sefaz_status);
-                        const desc_status_sefaz =
-                          item?.rowValue.sefaz_status_desc;
-                        
-                        router.push({
-                          pathname: `/nfe-detalhes`,
-                          query: {
-                            chave_nota,
-                            status_sefaz,
-                            desc_status_sefaz,
-                          },
-                        });
-                      }}
-                    >
-                      Visualizar
-                    </Text>
-                  </Popover.Item>
-                  <Popover.Item>
-                    <Popover
-                    style={{ cursor: "pointer" }}
-                      placement="right"
-                      content={
-                        <>
-                          <Popover.Item>
-                            <Link href="#">Ciência</Link>
-                          </Popover.Item>
-                          <Popover.Item>
-                            <Link href="#">Confirmação</Link>
-                          </Popover.Item>
-                          <Popover.Item>
-                            <Link href="#">Operação não realizada</Link>
-                          </Popover.Item>
-                          <Popover.Item>
-                            <Link href="#">Desconhecimento</Link>
-                          </Popover.Item>
-                        </>
-                      }
-                    >
-                      Registrar evento
-                    </Popover>
-                  </Popover.Item>
-                  <Popover.Item>
-                    <Text 
-                    style={{ cursor: "pointer" }}
-                    onClick={()=> {
-                      const chave_nota = item?.rowValue.chave_nota;
-                      router.push({
-                        pathname: `/historico-notas`,
-                        query: {chave_nota}
-                      })
-                    }}
-                    >Histórico de nota</Text>
-                  </Popover.Item>
-                  <Popover.Item>
-                    <Link href="#">Download</Link>
-                  </Popover.Item>
-                  <Popover.Item>
-                    <Link href="#">Imprimir Nota</Link>
-                  </Popover.Item>
-                </>
-              }
-            >
-              <span style={{ cursor: "pointer" }}>
-                <MoreHorizontal />
-              </span>
-            </Popover>
+            <PopoverComponent item={item} />
           ),
         });
       });
@@ -166,6 +94,8 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
 
     return newData;
   }, [nfe]);
+
+ 
 
 
 
@@ -191,6 +121,218 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
       <Pages>
           <Pagination onChange={handleChange} count={quantityPage}  shape='rounded' />
           </Pages>
-          </>
+        </>
   )
 }
+
+/*  option: (actions: any, item: any) => (
+            <Visibility>
+            <Popover
+            visible={popoverVisibility}
+            onVisibleChange={changeHandler}
+            
+              placement="right"
+              content={
+                <div className={ "show"}>
+                  <Popover.Item >
+                    <Text
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        const chave_nota = item?.rowValue.chave_nota;
+                        const status_sefaz = Number(item?.rowValue.sefaz_status);
+                        const desc_status_sefaz =
+                          item?.rowValue.sefaz_status_desc;
+                        
+                        router.push({
+                          pathname: `/nfe-detalhes`,
+                          query: {
+                            chave_nota,
+                            status_sefaz,
+                            desc_status_sefaz,
+                          },
+                        });
+                      }}
+                    >
+                      Visualizar
+                    </Text>
+                  </Popover.Item>
+                  <Popover.Item>
+                    <Popover
+                    visible={popoverVisibility}
+                    style={{ cursor: "pointer" }}
+                      placement="bottom"
+                      content={
+                        <>
+                          <Popover.Item>
+                            <Text 
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                              setVisible(true);
+                              setAction("Ciência")    
+                            }}>Ciência</Text>
+                          </Popover.Item>
+                          <Popover.Item>
+                            <Text
+                             style={{ cursor: "pointer" }}
+                             onClick={() => {
+                             setVisible(true);
+                             setAction("Confirmação")    
+                           }}
+                            >Confirmação</Text>
+                          </Popover.Item>
+                          <Popover.Item>
+                            <Text
+                             style={{ cursor: "pointer" }}
+                             onClick={() => {
+                               const rowData = item?.rowValue;
+                               unfinishedOp(rowData)
+                               setPopoverVisibility(false)
+                                
+                           }}
+                            >Operação não realizada</Text>
+                          </Popover.Item>
+                          <Popover.Item >
+                            <Text
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              
+                            setAction("Desconhecimento da Operação")    
+                          }}
+                            >Desconhecimento</Text>
+                          </Popover.Item>
+                        </>
+                      }
+                    >
+                      Registrar evento
+                    </Popover>
+                  </Popover.Item>
+                  <Popover.Item>
+                    <Text 
+                    style={{ cursor: "pointer" }}
+                    onClick={()=> {
+                      const chave_nota = item?.rowValue.chave_nota;
+                      const empresa_id = item?.rowValue.empresa_id
+                      router.push({
+                        pathname: `/historico-notas`,
+                        query: {chave_nota, empresa_id }
+                      })
+                    }}
+                    >Histórico de nota</Text>
+                  </Popover.Item>
+                  <Popover.Item>
+                    <a href={item?.rowValue.xml} download>
+                    <Text
+                    style={{ cursor: "pointer", textDecoration: "none", color: "#1C496A", margin: "0"}}
+                    >Download</Text>
+                    </a>
+                  </Popover.Item>
+                  <Popover.Item>
+                    <Link href="#">Imprimir Nota</Link>
+                  </Popover.Item>
+                </div>
+              }
+            >
+              <span style={{ cursor: "pointer" }}>
+                <MoreHorizontal  onClick={changeHandler}/>
+              </span>
+            </Popover>
+            </Visibility>
+          ), */
+
+          /*     option: (actions: any, item: any) => (
+            <>
+            <span style={{ cursor: "pointer" }}>
+            <MoreHorizontal onClick={handleClick} />
+          </span>
+            <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            >
+                <div >
+                    <Text
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        const chave_nota = item?.chave_nota;
+                        const status_sefaz = Number(item?.sefaz_status);
+                        const desc_status_sefaz =
+                          item?.sefaz_status_desc;
+                       
+                        // router.push({
+                        //   pathname: `/nfe-detalhes`,
+                        //   query: {
+                        //     chave_nota,
+                        //     status_sefaz,
+                        //     desc_status_sefaz,
+                        //   },
+                        // });
+                      }}
+                    >
+                      Visualizar
+                    </Text>
+                      <div>
+                    <Popover>
+                    
+                        <>
+                            <Text 
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                              setVisible(true);
+                              setAction("Ciência")    
+                            }}>Ciência</Text>
+                            <Text
+                             style={{ cursor: "pointer" }}
+                             onClick={() => {
+                             setVisible(true);
+                             setAction("Confirmação")    
+                           }}
+                            >Confirmação</Text>
+                       
+                            <Text
+                             style={{ cursor: "pointer" }}
+                             onClick={() => {
+                               const rowData = item?.rowValue;
+                               unfinishedOp(rowData)
+                               setPopoverVisibility(false)
+                                
+                           }}
+                            >Operação não realizada</Text>
+                          
+                            <Text
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              
+                            setAction("Desconhecimento da Operação")    
+                          }}
+                            >Desconhecimento</Text>
+                          
+                        </>
+                     
+                      Registrar evento
+                    </Popover>
+                      </div>
+                    <Text 
+                    style={{ cursor: "pointer" }}
+                    onClick={()=> {
+                      const chave_nota = item?.chave_nota;
+                      const empresa_id = item?.empresa_id
+                      router.push({
+                        pathname: `/historico-notas`,
+                        query: {chave_nota, empresa_id }
+                      })
+                    }}
+                    >Histórico de nota</Text>
+                  
+                    <a href={item?.rowValue.xml} download>
+                    <Text
+                    style={{ cursor: "pointer", textDecoration: "none", color: "#1C496A", margin: "0"}}
+                    >Download</Text>
+                    </a>
+                    <Link href="#">Imprimir Nota</Link>
+                </div>
+            
+          
+            </Popover>
+            </>
+          ),   */

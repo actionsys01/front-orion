@@ -4,6 +4,7 @@ import { Grid as GridGeist } from "@geist-ui/react";
 export const Grid = styled(GridGeist)`
   overflow: auto;
   max-height: auto;
+  
   table {
     th {
       background-color: ${(props) => props.theme.palette.foreground};
@@ -48,4 +49,18 @@ ul li::before {
     color: white
 }
 
+`
+
+export const Visibility = styled.div`
+popover {
+  color: red
+}
+.show {
+  display: block;
+  color: red;
+}
+.hide {
+  display: none;
+  
+}
 `

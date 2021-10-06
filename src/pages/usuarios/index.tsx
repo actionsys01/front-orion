@@ -6,9 +6,8 @@ import {
   Popover,
   Row,
   Spacer,
-  Table,
   Text,
-  User,
+  useToasts
 } from "@geist-ui/react";
 import { MoreHorizontal, Plus } from "@geist-ui/react-icons";
 import useRequest from "@hooks/useRequest";
@@ -52,14 +51,23 @@ export default function Usuarios({}) {
   const [session] = useSession();
   const [visible, setVisible] = useState<boolean>(false)
   const router = useRouter();
-  const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
+  const [usuarios, setUsuarios] = useState<IUsuario[] | undefined>([]);
+  const [, setToast] = useToasts();
   
 
  
-  const getAllUsersByCompanyId = async () : Promise<IUsuario[]> => {
-    const response = await api.get(`/usuarios/`)
-    const {data}= response;
-    return data
+  const getAllUsersByCompanyId = async () : Promise<IUsuario[] | undefined> => {
+    try {
+      const response = await api.get(`/usuarios/`)
+      const {data}= response;
+      return data
+    } catch (error) {
+      setToast({
+        text: "Houve um erro, por favor reinicie seu navegador",
+        type: "warning"
+      })
+    }
+
   }
  
   useEffect(() => {
@@ -73,8 +81,7 @@ export default function Usuarios({}) {
  
     <Popover
       placement="right"
-      visible={visible}
-      onVisibleChange={popoverHandler}
+     
       content={
         <>
           <Popover.Item>
@@ -141,7 +148,7 @@ export default function Usuarios({}) {
 
   function deletar(id: number) {
     usuario.deletar(id);
-    const usuariosAtualizados = usuarios.filter((usuario) => usuario.id !== id);
+    const usuariosAtualizados = usuarios?.filter((usuario) => usuario.id !== id);
     setUsuarios(usuariosAtualizados)
   } 
 

@@ -56,6 +56,7 @@ export default function PerfilAcesso() {
   const [descricao, setDescricao] = useState<string>("");
   const [perfisAplicacoes, setPerfisAplicacoes] = useState<IPerfilAplicacao[]>([]);
   
+  
   const [acao, setAcao] = useState<"editar" | "cadastrar" | "copiar">(
     "cadastrar"
   );
@@ -64,11 +65,18 @@ export default function PerfilAcesso() {
   const router = useRouter();
 
   const getProfileData = async () => {
-    const response = await api.get(`/perfil/${session?.usuario.empresa.id}`)
+    try {
+      const response = await api.get(`/perfil/${session?.usuario.empresa.id}`)
+      const {data} = response
+      return data
+    } catch (error) {
+      setToast({
+        text: "Houve um erro, por favor atualize a página.",
+        type: "warning",
+      })
+    }
+   
     
-    const {data} = response
-    
-    return data
   }
 
   useEffect(() => {
@@ -89,6 +97,7 @@ export default function PerfilAcesso() {
           link: (action: any, data: any) => (
             <Popover
               placement="right"
+              {...bindings}
               content={
                 <>
                   <Popover.Item>

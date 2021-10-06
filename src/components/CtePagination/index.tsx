@@ -10,6 +10,7 @@ import { useFiltro } from "@contexts/filtro";
 import Pagination from "@material-ui/lab/Pagination";
 import { useRouter } from "next/router";
 import  {format} from "date-fns"
+import PopoverCte from "./Popover"
 
 interface Props {
   company_id: number | undefined;
@@ -30,6 +31,16 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
   const [page, setPage] = useState(1);
   const { ctes } = useFiltro()
   const [quantityPage, setQuantityPage] = useState(0)
+  const [visible, setVisible] = useState(false)
+  const [secondPopoverVisible, setSecondPopoverVisible] = useState(false)
+
+  const changeHandler = useCallback((next) => {
+    setVisible(next)
+  }, [])
+
+  const changeHandlerSecondPopover = useCallback((next) => {
+    setSecondPopoverVisible(next)
+  }, [])
 
 
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
@@ -74,74 +85,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
           emissionDate: format(new Date(item.dt_hr_emi), "dd-MM-yyyy HH:mm:ss"),
           receiveDate: format(new Date(item.criado_em), "dd-MM-yyyy HH:mm:ss"),
           option: (actions: any, item: any) => (
-            <Popover
-              placement="right"
-              content={
-                <>
-                  <Popover.Item>
-                    <Text
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        const chave_nota = item.rowValue.chave_nota;
-                        const status_sefaz = Number(item.rowValue.sefaz_status);
-                        const desc_status_sefaz =
-                          item.rowValue.sefaz_status_desc;
-                        console.log(item);
-                        router.push({
-                          pathname: "/cte-detalhes",
-                          query: {
-                            chave_nota,
-                            status_sefaz,
-                            desc_status_sefaz,
-                          },
-                        });
-                      }}
-                    >
-                      Visualizar
-                    </Text>
-                  </Popover.Item>
-                  <Popover.Item>
-                    <Popover
-                      placement="right"
-                      content={
-                        <>
-                          <Popover.Item>
-                            <Link href="#">Ciência</Link>
-                          </Popover.Item>
-                          <Popover.Item>
-                            <Link href="#">Confirmação</Link>
-                          </Popover.Item>
-                          <Popover.Item>
-                            <Link href="#">Operação não realizada</Link>
-                          </Popover.Item>
-                          <Popover.Item>
-                            <Link href="#">Desconhecimento</Link>
-                          </Popover.Item>
-                        </>
-                      }
-                    >
-                      Registrar evento
-                    </Popover>
-                  </Popover.Item>
-                  <Popover.Item>
-                    <Text 
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      const chave_nota = item?.rowValue.chave_nota;
-                      router.push({
-                        pathname: `/historico-notas`,
-                        query: {chave_nota}
-                      })
-                    }}
-                    >Histórico de nota</Text>
-                  </Popover.Item>
-                </>
-              }
-            >
-              <span style={{ cursor: "pointer" }}>
-                <MoreHorizontal />
-              </span>
-            </Popover>
+          <PopoverCte  item={item} />
           ),
         });
       });

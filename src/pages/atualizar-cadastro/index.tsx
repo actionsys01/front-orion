@@ -99,8 +99,7 @@ const nfePermissions: ProfilePermissions[] = [];
     if(editarPerfil) {setPerfilEditar(true)}
     if(adicionarPerfil){setPerfilAdicionar(true)}
     if(excluirPerfil) {setPerfilExcluir(true)}
-    console.log("first:",visualizarNfe)
-    console.log("check:",editarPerfil)
+
     }
     return nfePermissions
 }, [profilePermissions])

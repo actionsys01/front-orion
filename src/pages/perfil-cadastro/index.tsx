@@ -50,13 +50,7 @@ export default function PerfilCadastro() {
   
   // if (!data) return <Loading />;
 
-const teste = async () => {
-  const response = await api.get(`/perfil/search/?profile_id=${id_profile}`)
-  const data = response.data
-  console.log(data);
-  
-  return data
-}
+
 
   useEffect(() => {
     const data: any =  session?.usuario.empresa.plano.aplicacoes
@@ -70,7 +64,6 @@ const teste = async () => {
         setIsNfse(true)
       }
     })
-    teste()
   }, [permissions])
 
   
@@ -95,14 +88,14 @@ try {
   router.push({pathname: "/perfil-acesso"})
 }
 
-async function updateProfile() {
-  try {
-    await perfil.atualizar({id_profile: Number(router.query.perfilId), nome: String(router.query.nome), descricao: String(router.query.descricao), permissions: profileApp})
-  } catch (error) {
-    console.log(error);
-  }
-  router.push({pathname: "/perfil-acesso"})
-}
+// async function updateProfile() {
+//   try {
+//     await perfil.atualizar({id_profile: Number(router.query.perfilId), nome: String(router.query.nome), descricao: String(router.query.descricao), permissions: profileApp})
+//   } catch (error) {
+//     console.log(error);
+//   }
+//   router.push({pathname: "/perfil-acesso"})
+// }
 
 const handleNfeModal = () => {!nfeModal ? setNfeModal(true) : setNfeModal(false)}
 const handleCteModal = () => {!cteModal ? setCteModal(true) : setCteModal(false)}
@@ -124,7 +117,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           type="success-light"
           size="small"
           className="btn"
-          onClick={router.query.perfilId ? updateProfile : createProfile}
+          onClick={createProfile}
         >
           Confirmar
         </Button>
