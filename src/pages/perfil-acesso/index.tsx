@@ -12,16 +12,19 @@ import {
   useModal,
   useToasts,
 } from "@geist-ui/react";
+import Pagination from "@material-ui/lab/Pagination";
 import { useSession } from "next-auth/client";
 import { MoreHorizontal, Plus } from "@geist-ui/react-icons";
 import useRequest from "@hooks/useRequest";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { Grid } from "./styled";
 import * as perfil from "@services/perfis";
-import * as perfilAplicacao from "../../services/perfis-aplicacoes";
-import api from "@services/api";
+import { Pages } from './style'
+
+import getProfileAnTotalByCompanyId from '@services/perfis/getProfileAnTotalByCompanyId'
+
 
 
 interface IPerfilAplicacao {
@@ -55,7 +58,9 @@ export default function PerfilAcesso() {
   const [nome, setNome] = useState<string>("");
   const [descricao, setDescricao] = useState<string>("");
   const [perfisAplicacoes, setPerfisAplicacoes] = useState<IPerfilAplicacao[]>([]);
-  
+  const [page, setPage] = useState(1);
+  const [quantityPage, setQuantityPage] = useState(1)
+
   const [acao, setAcao] = useState<"editar" | "cadastrar" | "copiar">(
     "cadastrar"
   );
@@ -63,20 +68,30 @@ export default function PerfilAcesso() {
   const [, setToast] = useToasts();
   const router = useRouter();
 
-  const getProfileData = async () => {
-    const response = await api.get(`/perfil/${session?.usuario.empresa.id}`)
-    
-    const {data} = response
-    
-    return data
+
+  const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
+   
+    setPage(value)
   }
+
+
+
+  const getProfileData = useCallback(async () => {
+    const response = await getProfileAnTotalByCompanyId(session?.usuario.empresa.id, page)
+    
+    const { data } = response
+
+    setQuantityPage(Math.ceil(data.total / 5));
+    
+    return data.perfis
+  }, [page])
 
   useEffect(() => {
       getProfileData().then(response => setPerfisAplicacoes(response))
       const companyId = session?.usuario.empresa.id
       setEmpresaId(companyId)
       
-  },[])
+  },[page])
 
 
 
@@ -228,6 +243,9 @@ export default function PerfilAcesso() {
             <Table.Column prop="nome" label="Nome" width={500} />
             <Table.Column prop="descricao" label="Descrição" width={500} />
           </Table>
+          <Pages>
+          <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
+          </Pages>
         </Grid>
       
 
