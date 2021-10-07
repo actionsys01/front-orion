@@ -74,8 +74,8 @@ export default function MenuLateral({
             </SubMenu>
             <SubMenu title="Aplicações" icon={<Grid />}>
               <MenuItem>Controle de Portaria</MenuItem>
-              <MenuItem>Contagem Física</MenuItem>
-              <MenuItem>Controle Divergência</MenuItem>
+              {/* <MenuItem>Contagem Física</MenuItem>
+              <MenuItem>Controle Divergência</MenuItem> */}
             </SubMenu>
             <SubMenu title="Configurações" icon={<Settings />}>
               {profilePermission && <MenuItem onClick={() => router.push("/perfil-acesso")}>
@@ -84,10 +84,10 @@ export default function MenuLateral({
               {userPermission && <MenuItem onClick={() => router.push("/usuarios")}>
                 Usuários
               </MenuItem>}
-              <MenuItem onClick={() => router.push("/funcionalidades")}>
+              {/* <MenuItem onClick={() => router.push("/funcionalidades")}>
                 Funcionalidades
               </MenuItem>
-              <MenuItem>Divergências</MenuItem>
+              <MenuItem>Divergências</MenuItem> */}
             </SubMenu>
           </Menu>
         </SidebarContent>
