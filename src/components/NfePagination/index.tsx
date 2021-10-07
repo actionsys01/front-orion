@@ -40,8 +40,8 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
     setPage(value)
   }
 
-  const getCtesAndTotalPages = useCallback(async () => {
-
+  const getNfesAndTotalPages = useCallback(async () => {
+    
     const responseNfes = await getNfePagesByCompanyId(company_id, token, page, nfes)
 
     const { data } = responseNfes;
@@ -55,7 +55,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
 
   useEffect(() => {
 
-    getCtesAndTotalPages();
+    getNfesAndTotalPages();
 
 
   }, [page, nfes])
