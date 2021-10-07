@@ -223,7 +223,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </div>
         </div>
         }
-        </div>
+        </div> 
         }
         {isNfse &&
         <div className="body-row">

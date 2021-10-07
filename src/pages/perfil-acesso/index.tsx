@@ -68,6 +68,7 @@ export default function PerfilAcesso() {
   );
   const [, setToast] = useToasts();
   const router = useRouter();
+  
   // useEffect(() => {
   //   if(!profilePermission){
   //     router.back()

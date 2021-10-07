@@ -36,7 +36,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data }) => {
     const [descricao, setDescricao] = useState<string>("");
     const [empresaId, setEmpresaId] = useState<number>()
     const [perfilId, setPerfiId] = useState<number>();
-    const [perfisAplicacoes, setPerfisAplicacoes] = useState<IPerfilAplicacao[]>([]);
+    const [perfisAplicacoes, setPerfisAplicacoes] = useState<ProfilePermissions[]>([]);
     // const [copiedId, setCopiedId] = useState<number | null>()
     const [copiedPermissions, setCopiedPermissions] = useState<number[]>([])
    
@@ -61,7 +61,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data }) => {
         setVisibleModal(true);
         setNome(`Cópia de ${nome}`);
         setDescricao(descricao);
-        getProfilePermissions(id)
+        // getProfilePermissions(id)
       }
     
        async function editar({
@@ -93,17 +93,19 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data }) => {
         // setPerfisAplicacoes(perfisAtualizados)
       }  
 
-      async function getProfilePermissions(id: number){
-        const permissions = await api.get(`/perfil/search?profile_id=${id}`);
-        const insideData: any = [];
-        const profileData= permissions.data
-        insideData.push(profileData)
-        console.log("copy:",insideData);
-        const arrayOfPermissions = insideData.map((item: any) => item.permissoes);
-        const data = arrayOfPermissions.filter(Number)
-        console.log("final",arrayOfPermissions);
-        
-      }
+      // async function getProfilePermissions(id: number){
+      //   const permissions = await api.get(`/perfil/search?profile_id=${id}`);
+      //   const insideData: any = [];
+      //   const profileData= permissions.data
+      //   insideData.push(profileData)
+      //   console.log("copy:",insideData);
+      //   const arrayOfPermissions = insideData.map((item: any) => item.permissoes);
+      //   // setPerfisAplicacoes(arrayOfPermissions)
+      //   const final= arrayOfPermissions.map(({id}) => id)
+      //   console.log("final",final);
+      // }
+
+      // console.log("outside:",perfisAplicacoes)
 
       async function copyProfile() {
           try {
@@ -168,7 +170,6 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data }) => {
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                           setVisible(false)
-                          console.log(data.rowValue)
                           const item = data.rowValue as IPerfilAplicacao;
                           copiar(item);
                       }}
