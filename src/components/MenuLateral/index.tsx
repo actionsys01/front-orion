@@ -67,7 +67,7 @@ export default function MenuLateral({
             <MenuItem icon={<Avatar src={logo} />} onClick={() => router.push("/dashboard")}>
               {session?.usuario?.empresa?.nome_fantasia}
             </MenuItem>
-            <SubMenu title="Paineis" icon={<FileText />}>
+            <SubMenu title="Painéis" icon={<FileText />}>
               {nfePermission && <MenuItem onClick={() => router.push("/nfe")}>NFe</MenuItem>}
               {ctePermission && <MenuItem onClick={() => router.push("/cte")}>CTe</MenuItem>}
               {nfsePermission && <MenuItem>NFS-e</MenuItem>}
