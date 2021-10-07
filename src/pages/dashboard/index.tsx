@@ -29,10 +29,10 @@ interface IUsuario  {
 
 
 export default function Dashboard() {
-    const {nfePermission,ctePermission, nfsePermission} = useSecurityContext()
+    const {nfePermission,ctePermission, nfsePermission, userPermission, profilePermission, entrancePermission} = useSecurityContext()
     const time = new Date().toLocaleString()
  
- console.log("dashboard permission:",nfePermission);
+ 
  
 
     return  <>
@@ -55,7 +55,9 @@ export default function Dashboard() {
   {nfePermission && <h3>Nf-e</h3>}
   {ctePermission && <h3>Ct-e</h3>}
   {nfsePermission &&  <h3>Nfs-e</h3>}
- 
+  {entrancePermission && <h3>Portaria</h3>}
+  {profilePermission && <h3>Perfis</h3>}
+  {userPermission && <h3>Usuários</h3>}
   </div>
 <Speedometer>
   <div id="main-div">
