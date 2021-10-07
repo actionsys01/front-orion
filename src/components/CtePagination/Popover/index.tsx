@@ -2,6 +2,7 @@ import { Link, Modal, Popover, Text, Textarea, useModal } from "@geist-ui/react"
 import { MoreHorizontal } from "@geist-ui/react-icons";
 import { useCallback, useState } from "react";
 import router from "next/router";
+import {useSecurityContext} from "@contexts/security"
 
 
 interface PopoverProps {
@@ -10,15 +11,16 @@ interface PopoverProps {
 
   const PopoverCte: React.FC<PopoverProps> = ({ item }) => {
     const [visible, setVisible] = useState(false)
-    const [secondPopoverVisible, setSecondPopoverVisible] = useState(false)
+    // const [secondPopoverVisible, setSecondPopoverVisible] = useState(false)
+    const {cteHistoricalPermission} = useSecurityContext()
 
     const changeHandler = useCallback((next) => {
         setVisible(next)
       }, [])
     
-      const changeHandlerSecondPopover = useCallback((next) => {
-        setSecondPopoverVisible(next)
-      }, [])
+      // const changeHandlerSecondPopover = useCallback((next) => {
+      //   setSecondPopoverVisible(next)
+      // }, [])
 
     return <>
       <Popover
@@ -49,7 +51,7 @@ interface PopoverProps {
                       Visualizar
                     </Text>
                   </Popover.Item>
-                  <Popover.Item>
+                  {/* <Popover.Item>
                     <Popover
                     visible={secondPopoverVisible}
                     onVisibleChange={changeHandlerSecondPopover}
@@ -73,7 +75,7 @@ interface PopoverProps {
                     >
                       Registrar evento
                     </Popover>
-                  </Popover.Item>
+                  </Popover.Item> */}
                   <Popover.Item>
                     <a href={item?.rowValue.xml} download>
                     <Text
@@ -84,7 +86,7 @@ interface PopoverProps {
                     </Text>
                     </a>
                   </Popover.Item>
-                  <Popover.Item>
+               { cteHistoricalPermission &&  <Popover.Item>
                     <Text 
                     style={{ cursor: "pointer" }}
                     onClick={() => {
@@ -96,7 +98,7 @@ interface PopoverProps {
                       })
                     }}
                     >Histórico de nota</Text>
-                  </Popover.Item>
+                  </Popover.Item>}
                 </>
               }
             >

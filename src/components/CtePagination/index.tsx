@@ -39,10 +39,10 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
     setPage(value)
   }
 
-  const getNfesAndTotalPages = useCallback(async () => {
-    const responseNfes = await getCteByCompanyId(company_id, token, page, ctes )
+  const getCtesAndTotalPages = useCallback(async () => {
+    const responseCtes = await getCteByCompanyId(company_id, token, page, ctes )
 
-    const { data } = responseNfes;
+    const { data } = responseCtes;
 
     setCtes(data.ctes)
 
@@ -53,10 +53,16 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
 
   useEffect(() => {
 
-    getNfesAndTotalPages();
+    getCtesAndTotalPages();
 
 
   }, [page, ctes])
+
+  useEffect(() => {
+    if(page > quantityPage){
+      setPage(0)
+    }
+  }, [ctes, quantityPage, page])
 
   const dataFormatted = useMemo(() => {
     const newData: any = [];
