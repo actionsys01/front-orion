@@ -8,8 +8,12 @@ nfeHistoricalPermission: boolean;
 ctePermission: boolean;
 cteHistoricalPermission: boolean;
 nfsePermission: boolean;
-userPermission: boolean;
 profilePermission: boolean;
+profileUpdatePermission: boolean;
+profileDeletePermission: boolean;
+userPermission: boolean;
+userUpdatePermission: boolean;
+userDeletePermission: boolean;
 entrancePermission: boolean;
 };
 
@@ -31,15 +35,19 @@ const SecurityProvider: React.FC = ({ children }: any) => {
   const [nfsePermission, setNfsePermission] = useState<boolean>(false)
   const [entrancePermission, setEntrancePermission] = useState<boolean>(false)
   const [profilePermission, setProfilePermission] = useState<boolean>(false)
+  const [profileUpdatePermission, setProfileUpdatePermission] = useState<boolean>(false)
+  const [profileDeletePermission, setProfileDeletePermission] = useState<boolean>(false)
   const [userPermission, setUserPermission] = useState<boolean>(false)
+  const [userUpdatePermission, setUserUpdatePermission] = useState<boolean>(false)
+  const [userDeletePermission, setUserDeletePermission] = useState<boolean>(false)
   const [, setToast] = useToasts();
  
-  console.log("contextest:",permissions)
-  // console.log("context:",permissions)
-  // console.log("constext session:",session)
-   console.log("nfe H perm:",nfeHistoricalPermission)
-   console.log("cte H perm:", cteHistoricalPermission)
-  console.log("portaria perm:",entrancePermission)
+  // console.log("contextest:",permissions)
+  // // console.log("context:",permissions)
+  // // console.log("constext session:",session)
+  //  console.log("nfe H perm:",nfeHistoricalPermission)
+  //  console.log("cte H perm:", cteHistoricalPermission)
+  // console.log("portaria perm:",entrancePermission)
 
    const getPermissions = async () => {
      try {
@@ -72,15 +80,23 @@ const SecurityProvider: React.FC = ({ children }: any) => {
       setCtePermission(Boolean(permissions?.find((item) => item.categoria === "CTE" && item.acao === "VISUALIZAR")))
       setCteHistoricalPermission(Boolean(permissions?.find((item) => item.categoria === "CTE" && item.acao === "HISTORICO")))
       setNfsePermission(Boolean(permissions?.find((item) => item.categoria === "NFSE" && item.acao === "VISUALIZAR")))
-      setUserPermission(Boolean(permissions?.find((item) => item.categoria === "USUARIO" && item.acao === "ADICIONAR")))
       setProfilePermission(Boolean(permissions?.find((item) => item.categoria === "PERFIS" && item.acao === "ADICIONAR")))
-      setEntrancePermission(Boolean(permissions?.find((item) => item.categoria === "PORTARIA" && item.acao === "VISUALIZAR")))
+      setProfileUpdatePermission(Boolean(permissions?.find((item) => item.categoria === "PERFIS" && item.acao === "EDITAR")))
+      setProfileDeletePermission(Boolean(permissions?.find((item) => item.categoria === "PERFIS" && item.acao === "EXCLUIR")))
+      setUserPermission(Boolean(permissions?.find((item) => item.categoria === "USUARIO" && item.acao === "ADICIONAR")))
+      setUserUpdatePermission(Boolean(permissions?.find((item) => item.categoria === "USUARIO" && item.acao === "EDITAR")))
+      setUserDeletePermission(Boolean(permissions?.find((item) => item.categoria === "USUARIO" && item.acao === "EXCLUIR")))
     }
    },[session, permissions])
   
 
 
-  return <SecurityContext.Provider value={{ nfePermission, nfeHistoricalPermission, ctePermission, cteHistoricalPermission, nfsePermission, userPermission, profilePermission, entrancePermission}}>{children}</SecurityContext.Provider>;
+  return <SecurityContext.Provider value={{ 
+    nfePermission, nfeHistoricalPermission, ctePermission, 
+    cteHistoricalPermission, nfsePermission, userPermission,
+    userUpdatePermission, userDeletePermission,  profilePermission, 
+     entrancePermission, profileUpdatePermission, profileDeletePermission
+    }}>{children}</SecurityContext.Provider>;
 };
 
 export const useSecurityContext = () => {
