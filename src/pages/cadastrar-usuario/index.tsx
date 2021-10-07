@@ -12,7 +12,7 @@ import useRequest from "@hooks/useRequest";
 import { useSession } from "next-auth/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import * as usuarios from "../../services/usuarios";
 
 interface IPerfil {
@@ -21,6 +21,11 @@ interface IPerfil {
   email: string;
   perfil: Perfil;
 };
+
+interface NewProfile {
+  total: number,
+  perfis: Perfil
+}
 
 
 export interface Perfil {
@@ -44,9 +49,10 @@ export default function Usuarios() {
   const [nome, setNome] = useState<string>("");
   const [perfilId, setPerfilId] = useState<string>(""); 
   const [empresaId, setEmpresaId] = useState<string>("")
-  const { data } = useRequest<IPerfil[]>({ url: `/perfil/${session?.usuario.empresa.id}` });
+  const { data } = useRequest<NewProfile[]>({ url: `/perfil/all/${empresaId}` });
   const [, setToast] = useToasts();
   
+ 
   
   
 
@@ -109,6 +115,18 @@ export default function Usuarios() {
     }
   } 
 
+  const gatheredData = useMemo(() => {
+    const allData: any = [];
+    if(data) {
+      data.forEach((item) => {
+        allData.push({
+          ...item,
+        })
+      })
+    }
+    return allData
+  }, [data])
+
 
 
   return (
@@ -130,11 +148,11 @@ export default function Usuarios() {
             width={"100%"}
             style={{ maxWidth: "100%" }}
           >
-            {data?.map((item) => (
+             {data?.map((item: any) => (
               <Select.Option key={item.id} value={item.id.toString()}>
                 {item.nome}
               </Select.Option>
-            ))}
+            ))} 
           </Select>
           <Spacer y={0.5} />
           <Input
