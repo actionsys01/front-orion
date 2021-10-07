@@ -14,32 +14,34 @@ interface IProps {
       xCaracAd: string;
       xEmi: string;
       fluxo: { xOrig: string };
-      ObsCont: [] | { xCampo: string; xTexto: string };
+      ObsCont:  { xCampo: string; xTexto: string }[];
     };
     imposto: {
       ICMSSN: { infAdFisco: string };
     };
+    informações_cte: {cCT: string};
+    versao: string
   };
 }
 export default function AbaInformacoesAdicionais({ data }: IProps) {
-  const [observacoes, setObservacoes] = useState([]);
+  const [observacoes, setObservacoes] = useState< { xCampo: string; xTexto: string }[]>([]);
   
   //console.log(data)
 
-  // useEffect(() => {
-  //   const observacoes = [];
-  //   const ObsCont = data?.complemento?.ObsCont;
-  //   if (Array.isArray(ObsCont)) {
-  //     ObsCont.map((item) => {
-  //       const { xCampo, xTexto } = item;
-  //       observacoes.push({ xCampo, xTexto });
-  //     });
-  //   } else {
-  //     const { xCampo, xTexto } = ObsCont;
-  //     observacoes.push({ xCampo, xTexto });
-  //   }
-  //   setObservacoes(observacoes);
-  // }, [data]);
+  useEffect(() => {
+    // const observacoes = [];
+    const ObsCont = data?.complemento?.ObsCont;
+    if (Array.isArray(ObsCont)) {
+      ObsCont.map((item) => {
+        const { xCampo , xTexto } = item;
+        observacoes.push({ xCampo, xTexto });
+      });
+    } else {
+      const { xCampo, xTexto } = ObsCont;
+      observacoes.push({ xCampo, xTexto });
+    }
+    setObservacoes(observacoes);
+  }, [data]);
 
   return (
     <>
