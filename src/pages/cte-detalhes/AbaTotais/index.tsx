@@ -22,6 +22,7 @@ interface IProps {
   };
 }
 export default function AbaTotais({ data }: IProps) {
+  //console.log(data)
   return (
     <>
       <DadosGeraisCte data={data} />

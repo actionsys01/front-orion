@@ -23,21 +23,23 @@ interface IProps {
 }
 export default function AbaInformacoesAdicionais({ data }: IProps) {
   const [observacoes, setObservacoes] = useState([]);
+  
+  //console.log(data)
 
-  useEffect(() => {
-    const observacoes = [];
-    const ObsCont = data?.complemento?.ObsCont;
-    if (Array.isArray(ObsCont)) {
-      ObsCont.map((item) => {
-        const { xCampo, xTexto } = item;
-        observacoes.push({ xCampo, xTexto });
-      });
-    } else {
-      const { xCampo, xTexto } = ObsCont;
-      observacoes.push({ xCampo, xTexto });
-    }
-    setObservacoes(observacoes);
-  }, [data]);
+  // useEffect(() => {
+  //   const observacoes = [];
+  //   const ObsCont = data?.complemento?.ObsCont;
+  //   if (Array.isArray(ObsCont)) {
+  //     ObsCont.map((item) => {
+  //       const { xCampo, xTexto } = item;
+  //       observacoes.push({ xCampo, xTexto });
+  //     });
+  //   } else {
+  //     const { xCampo, xTexto } = ObsCont;
+  //     observacoes.push({ xCampo, xTexto });
+  //   }
+  //   setObservacoes(observacoes);
+  // }, [data]);
 
   return (
     <>

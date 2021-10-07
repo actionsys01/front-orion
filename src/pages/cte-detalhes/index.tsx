@@ -47,7 +47,7 @@ export default function NfeDetalhes() {
         <title>Orion | CTe - Detalhes </title>
       </Head>
       <div style={{ padding: 10 }}>
-        {/* <BotaoVoltar /> */}
+        <BotaoVoltar />
         <Menu>
         <Tabs initialValue="1" className="style">
           <Tabs.Item label="CTe" value="1">
