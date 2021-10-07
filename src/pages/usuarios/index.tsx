@@ -1,5 +1,5 @@
 import { Grid, GridStyle } from "./style";
-import React, { useState, useMemo, useEffect} from 'react'; 
+import React, { useState, useMemo, useEffect, useCallback} from 'react'; 
 import {
   Button,
   Loading,
@@ -9,14 +9,17 @@ import {
   Text,
   useToasts
 } from "@geist-ui/react";
+
+import { PaginationAlign, Pages } from "./styledComponent"
+
 import { MoreHorizontal, Plus } from "@geist-ui/react-icons";
-import useRequest from "@hooks/useRequest";
-import * as perfis from "@services/perfis";
+import {useSecurityContext} from "@contexts/security"
+import Pagination from "@material-ui/lab/Pagination";
 import * as usuario from "@services/usuarios";
 import { useSession } from "next-auth/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import api from "@services/api"
+import getUsersByCompanyId from "@services/usuarios/getUsersByCompanyId";
 
 interface IUsuario  {
   id: number;
@@ -49,33 +52,43 @@ interface UserData {
 
 export default function Usuarios({}) {
   const [session] = useSession();
-  const [visible, setVisible] = useState<boolean>(false)
+  const {userDeletePermission, userUpdatePermission} = useSecurityContext()
   const router = useRouter();
-  const [usuarios, setUsuarios] = useState<IUsuario[] | undefined>([]);
+  const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
+  const [page, setPage] = useState(1);
+  const [quantityPage, setQuantityPage] = useState(1)
   const [, setToast] = useToasts();
+
   
 
- 
-  const getAllUsersByCompanyId = async () : Promise<IUsuario[] | undefined> => {
-    try {
-      const response = await api.get(`/usuarios/`)
-      const {data}= response;
-      return data
-    } catch (error) {
-      setToast({
-        text: "Houve um erro, por favor reinicie seu navegador",
-        type: "warning"
-      })
-    }
-
+  const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
+    setPage(value)
   }
- 
-  useEffect(() => {
-    getAllUsersByCompanyId().then(response => setUsuarios(response))
-   
-  }, [])
 
-  const popoverHandler = () => !visible ? setVisible(true) : setVisible(false);
+  const getUsersAndTotalPage = useCallback(async () => {
+    
+    const responseNfes: any = await getUsersByCompanyId(page)
+
+    const { data } = responseNfes;
+
+
+    setUsuarios(data.usuarios)
+  
+    setQuantityPage(Math.ceil(data.total / 5));
+    }, [page])
+      
+
+  useEffect(() => {
+
+    getUsersAndTotalPage();
+
+
+  }, [page])
+
+
+  
+
+  
 
   const PopOption = ( data: any) => (
  
@@ -84,7 +97,8 @@ export default function Usuarios({}) {
      
       content={
         <>
-          <Popover.Item>
+          {userUpdatePermission &&
+            <Popover.Item>
             <Text
               style={{
                 cursor: "pointer",
@@ -103,6 +117,8 @@ export default function Usuarios({}) {
               Editar
             </Text>
           </Popover.Item>
+          }
+        { userDeletePermission && 
           <Popover.Item>
             <Text
               style={{
@@ -111,12 +127,13 @@ export default function Usuarios({}) {
               onClick={() => {
                 const { id } = data;
                 deletar(id);
-                setVisible(false)
+                // setVisible(false)
               }}
             >
               Deletar
             </Text>
           </Popover.Item>
+          }
         </>
       }
     >
@@ -203,6 +220,10 @@ export default function Usuarios({}) {
       </table>
     </GridStyle>
 
+      <Pages>
+    <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
+    </ Pages>
+   
     </>
   );
 }

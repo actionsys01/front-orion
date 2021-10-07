@@ -12,19 +12,24 @@ import {
   useModal,
   useToasts,
 } from "@geist-ui/react";
+import Pagination from "@material-ui/lab/Pagination";
 import { useSession } from "next-auth/client";
 import { MoreHorizontal, Plus } from "@geist-ui/react-icons";
 import useRequest from "@hooks/useRequest";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { Grid } from "./styled";
 import * as perfil from "@services/perfis";
-import * as perfilAplicacao from "../../services/perfis-aplicacoes";
-import api from "@services/api";
+import { Pages } from './style'
+import {useSecurityContext} from "@contexts/security"
+import ProfilePopover from "./Popover";
+
+import getProfileAnTotalByCompanyId from '@services/perfis/getProfileAnTotalByCompanyId'
 
 
-interface IPerfilAplicacao {
+
+export interface IPerfilAplicacao {
   id: number;
   nome: string;
   descricao: string;
@@ -34,13 +39,13 @@ interface IPerfilAplicacao {
   criadoPorIp: string
 }
 
-interface IUpdateProfile{
+export interface IUpdateProfile{
   id_profile : number;
   nome : string;
   descricao : string;
   permissions : Number[];
 }
-interface IPerfil  {
+export interface IPerfil  {
   nome: string;
   descricao: string;
   id: number;
@@ -49,42 +54,50 @@ interface IPerfil  {
 
 export default function PerfilAcesso() {
   const [session] = useSession();
+  const {profilePermission} = useSecurityContext()
   const { setVisible, bindings } = useModal();
   const [empresaId, setEmpresaId] = useState<number>()
   const [perfilId, setPerfiId] = useState<number>();
   const [nome, setNome] = useState<string>("");
   const [descricao, setDescricao] = useState<string>("");
   const [perfisAplicacoes, setPerfisAplicacoes] = useState<IPerfilAplicacao[]>([]);
-  
-  
+  const [page, setPage] = useState(1);
+  const [quantityPage, setQuantityPage] = useState(1)
   const [acao, setAcao] = useState<"editar" | "cadastrar" | "copiar">(
     "cadastrar"
   );
-  
   const [, setToast] = useToasts();
   const router = useRouter();
+  // useEffect(() => {
+  //   if(!profilePermission){
+  //     router.back()
+  //   } 
+  // }, [])
 
-  const getProfileData = async () => {
-    try {
-      const response = await api.get(`/perfil/${session?.usuario.empresa.id}`)
-      const {data} = response
-      return data
-    } catch (error) {
-      setToast({
-        text: "Houve um erro, por favor atualize a página.",
-        type: "warning",
-      })
-    }
+
+  const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
    
-    
+    setPage(value)
   }
+
+
+
+  const getProfileData = useCallback(async () => {
+    const response = await getProfileAnTotalByCompanyId(session?.usuario.empresa.id, page)
+    
+    const { data } = response
+
+    setQuantityPage(Math.ceil(data.total / 5));
+    
+    return data.perfis
+  }, [page])
 
   useEffect(() => {
       getProfileData().then(response => setPerfisAplicacoes(response))
       const companyId = session?.usuario.empresa.id
       setEmpresaId(companyId)
       
-  },[])
+  },[page])
 
 
 
@@ -95,51 +108,7 @@ export default function PerfilAcesso() {
         perfis.push({
           ...item,
           link: (action: any, data: any) => (
-            <Popover
-              placement="right"
-              {...bindings}
-              content={
-                <>
-                  <Popover.Item>
-                    <Text
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        const item = data.rowValue as IPerfilAplicacao;
-                        editar(item);
-                      }}
-                    >
-                      Editar
-                    </Text>
-                  </Popover.Item>
-                  <Popover.Item>
-                    <Text
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        const item = data.rowValue as IPerfilAplicacao;
-                        deletar(item) ;
-                      }}
-                    >
-                      Deletar
-                    </Text>
-                  </Popover.Item>
-                  <Popover.Item>
-                    <Text
-                      style={{ cursor: "pointer" }}
-                      onClick={() => {
-                        const item = data.rowValue as IPerfil;
-                        copiar(item);
-                      }}
-                    >
-                      Copiar
-                    </Text>
-                  </Popover.Item>
-                </>
-              }
-            >
-              <span style={{ cursor: "pointer" }}>
-                <MoreHorizontal />
-              </span>
-            </Popover>
+           <ProfilePopover data={data} />
           ),
         });
       });
@@ -148,63 +117,18 @@ export default function PerfilAcesso() {
     return perfis;
   }, [perfisAplicacoes]);
 
-  async function copiar({
-    nome,
-    descricao,
-    perfil,
-  }: Omit<IPerfil, "id">) {
-    setAcao("copiar");
-    setVisible(true);
-    setNome(nome);
-    setDescricao(descricao);
-    // setPerfisAplicacoes(perfil);
-  }
-
-  async function editar({
-    nome,
-    descricao,
-    id,
-  }: Omit<IPerfilAplicacao, "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp">) {
-    setAcao("editar");
-    setVisible(true);
-    setNome(nome);
-    setDescricao(descricao);
-    setPerfiId(id)
-  }
-
- async function deletar({
-    id,
-  }: Omit<IPerfilAplicacao, "nome" | "descricao" | "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp">) {
-    try {
-      await perfil.deletar(id);
-    } catch (error: any) {
-      const mensagem = error.response.data.mensagem;
-      setToast({ text: mensagem, type: "warning" });
-    }
-    const perfisAtualizados = perfis.filter(
-      (perfil: IPerfil) => perfil.id !== id
-    );
-    setPerfisAplicacoes(perfisAtualizados)
-  }  
 
   async function cadastrar() {
     if(!nome || !descricao) {
       setToast({
-        text: "Informe todos os dados do usuário.",
+        text: "Informe todos os dados do perfil.",
         type: "warning"}); 
         return
-    } if (acao === "editar") {
-      router.push({
-        pathname: "/atualizar-cadastro",
-        query: { nome, descricao, perfilId },
-      })
-    } if (acao === "cadastrar") {
-      
+    } 
       router.push({
         pathname: "/perfil-cadastro",
         query: { nome, descricao, empresaId },
       });
-    }
   }
 
   // if (!data) return <Loading />;
@@ -221,7 +145,6 @@ export default function PerfilAcesso() {
           size="small"
           icon={<Plus />}
           onClick={() => {
-            setAcao("cadastrar");
             setVisible(true);
           }}
         >
@@ -237,10 +160,13 @@ export default function PerfilAcesso() {
             <Table.Column prop="nome" label="Nome" width={500} />
             <Table.Column prop="descricao" label="Descrição" width={500} />
           </Table>
+          <Pages>
+          <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
+          </Pages>
         </Grid>
       
 
-      <Modal
+    <Modal
         disableBackdropClick={true}
         {...bindings}
         onClose={() => {
@@ -256,7 +182,6 @@ export default function PerfilAcesso() {
             width="100%"
             placeholder="Ex: ADMIN"
             value={nome}
-            disabled={acao === "editar" ? true : false}
             onChange={(e) => setNome(e.target.value)}
           />
           <Text small>Descrição</Text>
@@ -273,7 +198,7 @@ export default function PerfilAcesso() {
         <Modal.Action onClick={cadastrar} >
           CONTINUAR
         </Modal.Action>
-      </Modal>
+      </Modal> 
       <style>{`.backdrop {z-index: 1200 !important}`}</style>
     </>
   );

@@ -40,16 +40,15 @@ interface IFiltro {
 
 export default async function getNfePagesByCompanyId(company_id : number | undefined, token : string | undefined, page : number, filter? : IFiltro[] | undefined) {
 
-    const config = {
-        headers: { Authorization: `Bearer ${token}` }
-    };
 
-
-    const nfes = await  api.post(`/nfe/controle${!!filter ? `?filtro=${JSON.stringify(filter)}` : ""}`, { 
-        company_id,
-        page,
-    },
-    config
+    const nfes = await  api.get(`/nfe/controle${!!filter ? `?filtro=${JSON.stringify(filter)}` : ""}`,
+    {
+        
+        params : {
+            page,
+            company_id
+        }
+    }
     )
 
     return nfes
