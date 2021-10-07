@@ -11,6 +11,7 @@ import { ChevronDown, ChevronUp  } from '@geist-ui/react-icons'
 import {  useRouter } from "next/router";
 import React, { useMemo, useState, useEffect } from "react";
 import api from "@services/api"
+import {useSecurityContext} from "@contexts/security"
 
 
 type ICreateProfile = {
@@ -32,6 +33,10 @@ interface Class {
 
 export default function PerfilCadastro() {
   const router = useRouter();
+  const {nfePermission, nfeHistoricalPermission, ctePermission,
+        cteHistoricalPermission, userPermission, userUpdatePermission,
+        userDeletePermission, profilePermission,
+        profileUpdatePermission, profileDeletePermission} = useSecurityContext()
   const id_profile = Number(router.query.perfilId);
   const [session] = useSession();
   const [permissions, setPermissions ] = useState<Permissions[]>([])
@@ -46,22 +51,25 @@ export default function PerfilCadastro() {
   const [isNfse, setIsNfse] = useState<boolean>(false)
   const [profileApp, setProfileApp] = useState<number[]>([])
 
-  console.log(id_profile);
+  //Portaria ainda não possui rotas de permissão, portanto a lógica ainda não aplicada a ela IMPORTANTE!
   
   // if (!data) return <Loading />;
 
-
+  console.log(session?.usuario.empresa.plano.aplicacoes)
 
   useEffect(() => {
+    // Empresa em questão possui apenas duas aplicações
     const data: any =  session?.usuario.empresa.plano.aplicacoes
     setPermissions(data)
-    permissions.map((item) => {
+    permissions?.map((item) => {
       if(item.categoria === "NFE"){
         setIsNfe(true)
       } if (item.categoria === "CTE") {
         setIsCte(true)
       } if(item.categoria === "NFSE") {
         setIsNfse(true)
+      } if(item.categoria === "") {
+
       }
     })
   }, [permissions])
@@ -131,7 +139,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           <h5></h5>
         </span>
       </header>
-      {isNfe  &&
+      {isNfe && nfePermission  &&
       <div className="body-row">
         <div>
           <span className="line">
@@ -154,9 +162,9 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
             <span>
               <span><Checkbox value={1} onChange={() => gatherData(1)}/></span>
               Visualizar</span>
-            <span> 
+            {nfeHistoricalPermission && <span> 
               <span><Checkbox value={27} onChange={() => gatherData(27)}/></span>
-              Histórico de Notas</span>
+              Histórico de Notas</span>}
               <span> 
               <span><Checkbox/></span>
               Registrar Evento - Ciência da Operação</span>
@@ -174,7 +182,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           }
           </div>
           }
-          {isCte &&
+          {isCte && ctePermission &&
         <div className="body-row">
           <div>
           <span className="line">
@@ -197,10 +205,10 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
             <span>
               <span><Checkbox  onChange={() => gatherData(5)}/></span>
               Visualizar</span>
-            <span> 
+            {cteHistoricalPermission && <span> 
               <span><Checkbox  onChange={() => gatherData(21)}/></span>
-              Histórico de Notas</span>
-              <span> 
+              Histórico de Notas</span>}
+              {/* <span> 
               <span><Checkbox/></span>
               Registrar Evento - Ciência da Operação</span>
               <span> 
@@ -211,7 +219,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
               Registrar Evento - Operação Não Realizada</span>
               <span> 
               <span><Checkbox/></span>
-              Registrar Evento - Desconhecimento da Operação</span>
+              Registrar Evento - Desconhecimento da Operação</span> */}
           </div>
         </div>
         }
@@ -301,6 +309,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
         </div>
         }
         </div>
+       {profilePermission &&
         <div className="body-row">
           <div>
           <span className="line">
@@ -326,12 +335,13 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
             <span> 
               <span><Checkbox  onChange={() => gatherData(24)}/></span>
               Cadastrar Perfil</span>
+              {profileDeletePermission &&
               <span> 
-              <span><Checkbox onChange={() => gatherData(25)}/></span>
-              Excluir Perfil</span>
-              <span> 
+               <span><Checkbox onChange={() => gatherData(25)}/></span>
+              Excluir Perfil</span>}
+              {profileUpdatePermission && <span> 
               <span><Checkbox onChange={() => gatherData(26)} /></span>
-              Editar Perfil</span>
+              Editar Perfil</span>}
               {/* <span> 
               <span><Checkbox/></span>
               Registrar Evento - Operação Não Realizada</span>
@@ -341,7 +351,8 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </div>
         </div>
         }
-        </div>
+        </div>}
+       {userPermission &&
         <div className="body-row">
           <div>
           <span className="line">
@@ -367,12 +378,12 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
             <span> 
               <span><Checkbox value={23} onChange={() => gatherData(23)}/></span>
               Adicionar Usuário</span>
-              <span> 
+              {userDeletePermission && <span> 
               <span><Checkbox value={22}  onChange={() => gatherData(22)}/></span>
-              Excluir Usuário</span>
-              <span> 
+              Excluir Usuário</span>}
+              {userUpdatePermission && <span> 
               <span><Checkbox value={2} onChange={() => gatherData(2)}/></span>
-              Editar Usuário</span>
+              Editar Usuário</span>}
               {/* <span> 
               <span><Checkbox/></span>
               Registrar Evento - Operação Não Realizada</span>
@@ -382,7 +393,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </div>
         </div>
         }
-        </div>
+        </div>}
        
       
     </div>
