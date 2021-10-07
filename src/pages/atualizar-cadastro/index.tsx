@@ -270,7 +270,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
             <span> 
               <span><Checkbox checked={cteHistorico}  onChange={() => gatherData(21)} onClick={cteHistorico ? ()=> setCteHistorico(false) : ()=> setCteHistorico(true)}/></span>
               Histórico de Notas</span>
-              <span> 
+              {/* <span> 
               <span><Checkbox/></span>
               Registrar Evento - Ciência da Operação</span>
               <span> 
@@ -281,7 +281,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
               Registrar Evento - Operação Não Realizada</span>
               <span> 
               <span><Checkbox/></span>
-              Registrar Evento - Desconhecimento da Operação</span>
+              Registrar Evento - Desconhecimento da Operação</span> */}
           </div>
         </div>
         }

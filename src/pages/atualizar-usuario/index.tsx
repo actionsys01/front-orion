@@ -36,7 +36,7 @@ const AtualiarUsuario = () => {
     console.log(newProfileId);
     
         const getProfileData = async () => {
-            const response = await api.get(`/perfil/${session?.usuario.empresa.id}`)
+            const response = await api.get(`/perfil/all/${session?.usuario.empresa.id}`)
             const {data} = response;
             return data
         }
@@ -111,12 +111,12 @@ const AtualiarUsuario = () => {
             </Select>
             <InputStyle>
             <div>
-                <input type="text" placeholder={router.query.nome} />
+                <input type="text" placeholder={router.query.nome as string} />
             </div>
             </InputStyle>
             <InputStyle>
             <div>
-                <input type="text" placeholder={router.query.email} />
+                <input type="text" placeholder={router.query.email as string} />
             </div>
             </InputStyle>
             <Button type="submit" onClick={updateUser} >
