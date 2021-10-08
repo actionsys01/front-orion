@@ -5,6 +5,10 @@ import { useToasts} from "@geist-ui/react";
 interface ContextProps  {
 nfePermission: boolean;
 nfeHistoricalPermission: boolean;
+nfeAwarePermission: boolean;
+nfeConfirmPermission: boolean;
+nfeUnawarePermission: boolean;
+nfeUnauthorizedPermission: boolean;
 ctePermission: boolean;
 cteHistoricalPermission: boolean;
 nfsePermission: boolean;
@@ -30,6 +34,10 @@ const SecurityProvider: React.FC = ({ children }: any) => {
   const [permissions, setPermissions] = useState<Permissions[]>([])
   const [nfePermission, setNfePermission] = useState<boolean>(false)
   const [nfeHistoricalPermission, setNfeHistoricalPermission] = useState<boolean>(false)
+  const [nfeAwarePermission, setNfeAwarePermission] = useState<boolean>(false)
+  const [nfeConfirmPermission, setNfeConfirmPermission] = useState<boolean>(false)
+  const [nfeUnawarePermission, setNfeUnawarePermission] = useState<boolean>(false)
+  const [nfeUnauthorizedPermission, setNfeUnauthorizedPermission] = useState<boolean>(false)
   const [ctePermission, setCtePermission] = useState<boolean>(false)
   const [cteHistoricalPermission, setCteHistoricalPermission] = useState<boolean>(false)
   const [nfsePermission, setNfsePermission] = useState<boolean>(false)
@@ -77,6 +85,10 @@ const SecurityProvider: React.FC = ({ children }: any) => {
      if(permissions) {
       setNfePermission(Boolean(permissions?.find((item) => item.categoria === "NFE" && item.acao === "VISUALIZAR")))
       setNfeHistoricalPermission(Boolean(permissions?.find((item) => item.categoria === "NFE" && item.acao === "HISTORICO")))
+      setNfeAwarePermission(Boolean(permissions?.find((item) => item.categoria === "NFE" && item.acao === "CIENCIA")))
+      setNfeConfirmPermission(Boolean(permissions?.find((item) => item.categoria === "NFE" && item.acao === "CONFIRMACAO")))
+      setNfeUnawarePermission(Boolean(permissions?.find((item) => item.categoria === "NFE" && item.acao === "DESCONHECIMENTO")))
+      setNfeUnauthorizedPermission(Boolean(permissions?.find((item) => item.categoria === "NFE" && item.acao === "OPERACAO_NAO_REALIZADA")))
       setCtePermission(Boolean(permissions?.find((item) => item.categoria === "CTE" && item.acao === "VISUALIZAR")))
       setCteHistoricalPermission(Boolean(permissions?.find((item) => item.categoria === "CTE" && item.acao === "HISTORICO")))
       setNfsePermission(Boolean(permissions?.find((item) => item.categoria === "NFSE" && item.acao === "VISUALIZAR")))
@@ -95,7 +107,8 @@ const SecurityProvider: React.FC = ({ children }: any) => {
     nfePermission, nfeHistoricalPermission, ctePermission, 
     cteHistoricalPermission, nfsePermission, userPermission,
     userUpdatePermission, userDeletePermission,  profilePermission, 
-     entrancePermission, profileUpdatePermission, profileDeletePermission
+     entrancePermission, profileUpdatePermission, profileDeletePermission,
+     nfeAwarePermission, nfeConfirmPermission, nfeUnawarePermission, nfeUnauthorizedPermission
     }}>{children}</SecurityContext.Provider>;
 };
 

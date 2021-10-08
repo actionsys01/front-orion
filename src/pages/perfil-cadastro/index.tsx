@@ -36,7 +36,10 @@ export default function PerfilCadastro() {
   const {nfePermission, nfeHistoricalPermission, ctePermission,
         cteHistoricalPermission, userPermission, userUpdatePermission,
         userDeletePermission, profilePermission,
-        profileUpdatePermission, profileDeletePermission} = useSecurityContext()
+        profileUpdatePermission, profileDeletePermission,
+        nfeAwarePermission, nfeConfirmPermission, 
+        nfeUnawarePermission, nfeUnauthorizedPermission
+      } = useSecurityContext()
   const id_profile = Number(router.query.perfilId);
   const [session] = useSession();
   const [permissions, setPermissions ] = useState<Permissions[]>([])
@@ -165,18 +168,22 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
             {nfeHistoricalPermission && <span> 
               <span><Checkbox value={27} onChange={() => gatherData(27)}/></span>
               Histórico de Notas</span>}
+              {nfeAwarePermission && 
               <span> 
               <span><Checkbox onChange={() => gatherData(28)}/></span>
-              Registrar Evento - Ciência da Operação</span>
+              Registrar Evento - Ciência da Operação</span>}
+              {nfeConfirmPermission && 
               <span> 
               <span><Checkbox onChange={() => gatherData(29)}/></span>
-              Registrar Evento - Confirmação da Operação</span>
+              Registrar Evento - Confirmação da Operação</span>}
+             {nfeUnauthorizedPermission &&
               <span> 
               <span><Checkbox onChange={() => gatherData(31)}/></span>
-              Registrar Evento - Operação Não Realizada</span>
+              Registrar Evento - Operação Não Realizada</span>}
+              {nfeUnawarePermission && 
               <span> 
               <span><Checkbox onChange={() => gatherData(30)}/></span>
-              Registrar Evento - Desconhecimento da Operação</span>
+              Registrar Evento - Desconhecimento da Operação</span>}
           </div>
         </div>
           }

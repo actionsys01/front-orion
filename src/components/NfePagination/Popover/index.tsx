@@ -24,7 +24,7 @@ interface Event {
     const router = useRouter()
     const { setVisible: setVisiblePop, bindings } = useModal();
     const [secondPopoverVisible, setSecondPopoverVisible] = useState(false)
-    const {nfeHistoricalPermission} = useSecurityContext()
+    const {nfeHistoricalPermission, nfeAwarePermission, nfeConfirmPermission, nfeUnawarePermission, nfeUnauthorizedPermission} = useSecurityContext()
     const [ reason, setReason] = useState<string>("")
     const [eventType, setEventType] = useState<"CIENCIA_DA_OPERAÇÃO" | "CONFIRMACAO_DA_OPERACAO" |
      "OPERACAO_NAO_REALIZADA" | "DESCONHECIMENTO_DA_OPERACAO" | string>("")
@@ -123,6 +123,7 @@ interface Event {
                   placement="right"
                   content={
                     <>
+                     {nfeAwarePermission &&
                       <Popover.Item>
                         <Text 
                           style={{ cursor: "pointer" }}
@@ -137,7 +138,8 @@ interface Event {
                           setAction("Ciência da Operação")
                           
                         }}>Ciência</Text>
-                      </Popover.Item>
+                      </Popover.Item>}
+                      {nfeConfirmPermission && 
                       <Popover.Item>
                         <Text
                           style={{ cursor: "pointer" }}
@@ -152,7 +154,8 @@ interface Event {
                           setAction("Confirmação da Operação" )
                         }}
                         >Confirmação</Text>
-                      </Popover.Item>
+                      </Popover.Item>}
+                     {nfeUnauthorizedPermission &&
                       <Popover.Item>
                         <Text
                           style={{ cursor: "pointer" }}
@@ -166,7 +169,8 @@ interface Event {
                             setAction("Operação não realizada")
                         }}
                         >Operação não realizada</Text>
-                      </Popover.Item>
+                      </Popover.Item>}
+                     {nfeUnawarePermission &&
                       <Popover.Item >
                         <Text
                         style={{ cursor: "pointer" }}
@@ -180,7 +184,7 @@ interface Event {
                           setAction("Desconhecimento da Operação")
                       }}
                         >Desconhecimento</Text>
-                      </Popover.Item>
+                      </Popover.Item>}
                     </>
                   }
                 >
