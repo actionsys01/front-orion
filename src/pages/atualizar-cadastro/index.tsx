@@ -222,7 +222,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
       </header>
       {/* {isNfe  && nfePermission && */}
       <div className="body-row">
-        <div>
+        <div onClick={handleNfeModal} style={{cursor: "pointer"}}>
           <span className="line">
           <h5>
             Nf-e
@@ -234,7 +234,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </h5>
           </span>
           <span>
-            {!nfeModal ? <ChevronDown onClick={handleNfeModal} className="icon"/> : <ChevronUp onClick={handleNfeModal} className="icon"/> }
+            {!nfeModal ? <ChevronDown  className="icon"/> : <ChevronUp  className="icon"/> }
           </span>
         </div>
           {nfeModal &&
@@ -270,7 +270,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           {/* } */}
           {isCte &&
         <div className="body-row">
-          <div>
+          <div onClick={handleCteModal}  style={{cursor: "pointer"}}>
           <span className="line">
           <h5>
             Ct-e
@@ -282,7 +282,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </h5>
           </span>
           <span>
-            {!cteModal ? <ChevronDown  onClick={handleCteModal}  className="icon"/> : <ChevronUp  onClick={handleCteModal}  className="icon"/>}
+            {!cteModal ? <ChevronDown  className="icon"/> : <ChevronUp  className="icon"/>}
           </span>
         </div>
         {cteModal &&
@@ -314,7 +314,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
         }
         {isNfse &&
         <div className="body-row">
-          <div>
+          <div onClick={handleNfseModal} style={{cursor: "pointer"}}>
           <span className="line">
           <h5>
             Nfs-e
@@ -326,7 +326,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </h5>
           </span>
           <span>
-           {!nfseModal ? <ChevronDown onClick={handleNfseModal}  className="icon"/> : <ChevronUp onClick={handleNfseModal}  className="icon"/>}
+           {!nfseModal ? <ChevronDown   className="icon"/> : <ChevronUp  className="icon"/>}
           </span>
         </div>
         {nfseModal &&
@@ -356,7 +356,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
         </div>
         }
         <div className="body-row">
-          <div>
+          <div onClick={handleEntranceModal} style={{cursor: "pointer"}}>
             <span className="line">
           <h5>
             Portaria
@@ -368,7 +368,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </h5>
             </span>
           <span>
-            {!entranceModal ? <ChevronDown onClick={handleEntranceModal}  className="icon"/> : <ChevronUp onClick={handleEntranceModal}  className="icon"/>}
+            {!entranceModal ? <ChevronDown   className="icon"/> : <ChevronUp  className="icon"/>}
           </span>
         </div>
         {entranceModal &&
@@ -398,7 +398,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
         </div>
       {/* {profilePermission && */}
         <div className="body-row">
-          <div>
+          <div onClick={handleProfileModal} style={{cursor: "pointer"}}>
           <span className="line">
           <h5>
             Perfis
@@ -410,7 +410,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </h5>
           </span>
           <span>
-            {!profileModal ? <ChevronDown  onClick={handleProfileModal} className="icon"/> : <ChevronUp  onClick={handleProfileModal} className="icon"/>}
+            {!profileModal ? <ChevronDown   className="icon"/> : <ChevronUp className="icon"/>}
           </span>
         </div>
         {profileModal &&
@@ -443,7 +443,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
         {/* } */}
         {/* {userPermission &&  */}
         <div className="body-row">
-          <div>
+          <div onClick={handleUsersModal} style={{cursor: "pointer"}}>
           <span className="line">
           <h5>
             Usuários
@@ -455,7 +455,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </h5>
           </span>
           <span> 
-            {!usersModal ? <ChevronDown onClick={handleUsersModal} className="icon"/> : <ChevronUp onClick={handleUsersModal} className="icon"/>}
+            {!usersModal ? <ChevronDown className="icon"/> : <ChevronUp className="icon"/>}
           </span>
         </div>
         {usersModal &&
