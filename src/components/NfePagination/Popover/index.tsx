@@ -55,16 +55,19 @@ interface Event {
       setVisiblePop(true);
       setSecondPopoverVisible(false)
       setVisible(false) 
-      // console.log("cod_estado:",stateCode, key, company_id, dest_cnpj, "tipo:",eventType,"motivo:", reason)
+      console.log("cod_estado:",stateCode, key, company_id, dest_cnpj, "tipo:",eventType,"motivo:", reason)
       
     }
 
-    // console.log("FORA","cod_estado:",stateCode,"nota:", invoiceKey,  "cnpj:", cnpj, "tipo:",eventType,"motivo:", reason)
+    console.log("FORA","cod_estado:",stateCode,"nota:", invoiceKey,  "cnpj:", cnpj, "tipo:",eventType,"motivo:", reason)
 
     async function eventRegister() {
      try {
       await api.post("/nfe/controle/evento-sefaz", {chave_nota: invoiceKey, empresa_id: companyId, dest_cnpj: cnpj, tipo_evento: eventType, motivo: reason, cod_estado: stateCode, ambiente: "HOMOLOGACAO" })
-     
+      setToast({
+        text: "Foi",
+        type: "success"
+      })
     } catch (error) {
       setToast({
         text: "Não foi possível registrar o evento, por favor tente novamente",
@@ -257,7 +260,7 @@ interface Event {
         <Modal.Action passive onClick={() => setVisiblePop(false)} type="abort">
           CANCELAR
         </Modal.Action>
-        <Modal.Action onClick={() => {setVisiblePop(false); eventRegister}} >
+        <Modal.Action onClick={eventRegister} >
           CONTINUAR
         </Modal.Action>
       </Modal>

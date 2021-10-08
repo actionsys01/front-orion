@@ -52,7 +52,7 @@ interface UserData {
 
 export default function Usuarios({}) {
   const [session] = useSession();
-  const {userDeletePermission, userUpdatePermission} = useSecurityContext()
+  const {userDeletePermission, userUpdatePermission, userPermission} = useSecurityContext()
   const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
   const [page, setPage] = useState(1);
@@ -197,6 +197,7 @@ export default function Usuarios({}) {
           <Table.Column prop="perfil_nome" label="Perfil" />
         </Table>
       </Grid> */}
+   {userPermission &&
     <GridStyle>
       <table>
         <thead>
@@ -219,7 +220,7 @@ export default function Usuarios({}) {
         </tbody>
       </table>
     </GridStyle>
-
+}
       <Pages>
     <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
     </ Pages>

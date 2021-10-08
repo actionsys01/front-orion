@@ -11,6 +11,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import { useRouter } from "next/router";
 import  {format} from "date-fns"
 import PopoverCte from "./Popover"
+import {useSecurityContext} from "@contexts/security"
 
 interface Props {
   company_id: number | undefined;
@@ -31,7 +32,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
   const [page, setPage] = useState(1);
   const { ctes } = useFiltro()
   const [quantityPage, setQuantityPage] = useState(0)
-
+  const {ctePermission} = useSecurityContext()
   
 
 
@@ -99,7 +100,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
     <>
       <Grid>
 
-      <Table data={dataFormatted}>
+      {ctePermission && <Table data={dataFormatted}>
             <Table.Column prop="option" />
             <Table.Column prop="emissionDate" label="Data/hora Emissão" />
             <Table.Column prop="nota" label="Número" />
@@ -112,7 +113,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
             <Table.Column prop="dest_cnpj" label="CNPJ Destinatário" />
             <Table.Column prop="dest_nome" label="Destinatário" />
             <Table.Column prop="receiveDate" label="Data/hora Recebimento" />
-          </Table>
+          </Table>}
           
       </Grid>
       <Pages>

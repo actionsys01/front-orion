@@ -156,11 +156,11 @@ export default function PerfilAcesso() {
       <Spacer y={1} />
      
         <Grid>
-          <Table data={perfis}>
+         {profilePermission && <Table data={perfis}>
             <Table.Column prop="link" width={15} />
             <Table.Column prop="nome" label="Nome" width={500} />
             <Table.Column prop="descricao" label="Descrição" width={500} />
-          </Table>
+          </Table>}
           <Pages>
           <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
           </Pages>

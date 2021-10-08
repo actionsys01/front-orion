@@ -10,7 +10,7 @@ import { Grid, Pages } from "./style";
 import { useRouter } from "next/router";
 import  {format} from "date-fns"
 import PopoverComponent from "./Popover";
-
+import {useSecurityContext} from "@contexts/security"
 
 
 
@@ -33,7 +33,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
   const  { nfes  } = useFiltro();
   const [page, setPage] = useState(1);
   const [quantityPage, setQuantityPage] = useState(1)
- 
+  const {nfePermission} = useSecurityContext()
  
 
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
@@ -107,6 +107,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
   return (
     <>
       <Grid>
+   {nfePermission &&
       <Table data={dataFormatted}>
             <Table.Column prop="option" />
             <Table.Column prop="emissionDate" label="Data/hora Emissão" />
@@ -120,7 +121,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
             <Table.Column prop="dest_cnpj" label="CNPJ Destinatário" />
             <Table.Column prop="dest_nome" label="Destinatário" />
             <Table.Column prop="receiveDate" label="Data/hora Recebimento" />
-          </Table>
+          </Table>}
           
       </Grid>
       <Pages>
