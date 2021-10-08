@@ -101,7 +101,7 @@ const AtualiarUsuario = () => {
         <div style={{width: 400}}>
             <Select>
             <select   onChange={(e: any) => setNewProfileId(e.target.value)} >
-            <option value='' disabled selected>Tipo Perfil </option>
+            <option value='' selected disabled>{session?.usuario.perfil.nome}</option>
             {profileData.map((item, i) => 
             <option key={i} value={item.id}  >
                 {item.nome} 
