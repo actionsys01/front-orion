@@ -143,7 +143,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
         </span>
       </header>
       {/* {isNfe && nfePermission  && */}
-      <div className="body-row">
+      <div className="body-row" onClick={handleNfeModal} style={{cursor: "pointer"}}>
         <div>
           <span className="line">
           <h5>
@@ -156,7 +156,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </h5>
           </span>
           <span>
-            {!nfeModal ? <ChevronDown onClick={handleNfeModal} className="icon"/> : <ChevronUp onClick={handleNfeModal} className="icon"/> }
+            {!nfeModal ? <ChevronDown  className="icon"/> : <ChevronUp  className="icon"/> }
           </span>
         </div>
           {nfeModal &&

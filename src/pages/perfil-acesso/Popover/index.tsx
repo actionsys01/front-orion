@@ -70,16 +70,16 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
       }
       console.log("post:", descricao, name,)
     
-       async function editar({
+        function editar({
         nome,
         descricao,
         id,
       }: Omit<IPerfilAplicacao, "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp">) {
         setAcao("editar");
-        setVisibleModal(true);
         setName(nome);
         setDescricao(descricao);
         setPerfiId(id)
+        setVisibleModal(true);
       }
     
      async function deletar({
@@ -207,7 +207,6 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
           <Input
             width="100%"
             placeholder={name}
-            
             onChange={(e) => setName(e.target.value)}
           />
           <Text small>Descrição</Text>
@@ -224,7 +223,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
           <Text small>Nome</Text>
           <Input
             width="100%"
-            placeholder={name}
+            value={name}
             disabled={ true}
             // onChange={(e) => setName(e.target.value)}
           />

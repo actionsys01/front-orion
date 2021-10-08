@@ -91,13 +91,13 @@ setProfileApp(currentPermissions)
 const getNfePermissions = useMemo(() => {
 const nfePermissions: ProfilePermissions[] = [];
  if(profilePermissions) {
-    const visualizarNfe = profilePermissions.find((item) => item.categoria === "NFE");
+    const visualizarNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "VISUALIZAR");
     const historicoNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "HISTORICO")
     const eventoCienciaNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "CIENCIA")
     const eventoConfirmarNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "CONFIRMACAO")
     const eventoDesconhecimentoNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "DESCONHECIMENTO")
     const eventoNaoRealizadoNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "OPERACAO_NAO_REALIZADA")
-    const visualizarCte = profilePermissions.find((item) => item.categoria === "CTE");
+    const visualizarCte = profilePermissions.find((item) => item.categoria === "CTE" && item.acao === "VISUALIZAR");
     const historicoCte = profilePermissions.find((item) => item.categoria === "CTE" && item.acao === "HISTORICO")
     const editarUsuario = profilePermissions.find((item) => item.categoria === "USUARIO" && item.acao === "EDITAR")
     const adicionarUsuario = profilePermissions.find((item) => item.categoria === "USUARIO" && item.acao === "ADICIONAR")
@@ -177,7 +177,7 @@ if (!findProfileApp) {
 
 async function updateProfile() {
   try {
-    await perfil.atualizar({id_profile: Number(router.query.perfilId), nome: String(router.query.nome), descricao: String(router.query.descricao), permissions: profileApp})
+    await perfil.atualizar({id_profile: Number(router.query.perfilId), nome: String(router.query.name), descricao: String(router.query.descricao), permissions: profileApp})
   } catch (error) {
     console.log(error);
   }
