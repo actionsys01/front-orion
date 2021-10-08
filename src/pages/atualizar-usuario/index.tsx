@@ -96,8 +96,8 @@ const AtualiarUsuario = () => {
             <title>Orion | Atualizar Usuário </title>
         </Head>
         <BotaoVoltar />
-            <h1 >Atualizar Usuário</h1>
         <Wrapper>
+            <h1 >Atualizar <br/> Usuário</h1>
         <div style={{width: 400}}>
             <Select>
             <select   onChange={(e: any) => setNewProfileId(e.target.value)} >

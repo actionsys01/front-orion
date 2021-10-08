@@ -4,7 +4,7 @@ export const Wrapper = styled.div`
     padding: 10px;
     overflow-y: auto;
     width: 100%;
-    height: 70%;
+    height: 100%;
     justify-content: center;
     vertical-align: middle;
     display: flex;
@@ -22,7 +22,7 @@ export const Wrapper = styled.div`
     width: 100%;
     font-size: 3rem;
     letter-spacing: 0.066875rem;
-    line-height: 2.5rem;
+    line-height: 3rem;
     font-weight: 700;
     margin: 0 0 0.625rem 0;
     color: #1C496A;

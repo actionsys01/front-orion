@@ -137,7 +137,7 @@ export default function Usuarios() {
       <BotaoVoltar />
       <Row justify="center" align="middle" style={{ height: "100%" }}>
         <div style={{ width: 400 }}>
-          <Text h1 style={{ textAlign: "center", width: "100%" }}>
+          <Text h1 style={{ textAlign: "center", width: "100%", lineHeight: 1 }}>
             {!router.query.nome ? "Cadastrar Usuário" : "Editar Usuário"}
           </Text>
           <Select
