@@ -109,7 +109,7 @@ export default function PerfilAcesso() {
         perfis.push({
           ...item,
           link: (action: any, data: any) => (
-           <ProfilePopover data={data} />
+           <ProfilePopover data={data}  setPerfisAplicacoes={setPerfisAplicacoes}/>
           ),
         });
       });
@@ -156,7 +156,8 @@ export default function PerfilAcesso() {
       <Spacer y={1} />
      
         <Grid>
-         {profilePermission && <Table data={perfis}>
+         {profilePermission && 
+         <Table data={perfis}>
             <Table.Column prop="link" width={15} />
             <Table.Column prop="nome" label="Nome" width={500} />
             <Table.Column prop="descricao" label="Descrição" width={500} />

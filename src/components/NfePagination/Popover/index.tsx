@@ -43,11 +43,9 @@ interface Event {
     }, [])
 
 
-
-    const getEventData = useCallback((key: string, company_id: number, dest_cnpj: string) => {
-      
-         let firstString = key.substring(0,1)
-         let cod_estado = firstString === "N" ? key.substring(3,5) : key.substring(0,2)
+    const getEventData = useCallback((key, company_id, dest_cnpj) => {
+         const firstString = key.substring(0,1)
+         const cod_estado = firstString === "N" ? key.substring(3,5) : key.substring(0,2)
          setStateCode(cod_estado);
          setInvoiceKey(key)
          setCompanyId(company_id)
@@ -55,16 +53,11 @@ interface Event {
          setVisiblePop(true);
          setSecondPopoverVisible(false)
          setVisible(false) 
-         
-         
          console.log("cod_estado:",stateCode, key, invoiceKey, company_id, dest_cnpj, "tipo:",eventType,"motivo:", reason)
-        },[])
+        },[invoiceKey, cnpj, ])
         
         console.log("cod_estado:",stateCode, "nota:", invoiceKey, "empresa:", companyId, "cnpj", cnpj, "tipo:",eventType,"motivo:", reason)
 
-      // useEffect(() => {
-      //   console.log("Oi")
-      // }, [])
 
 
       //chave_nota: invoiceKey, empresa_id: companyId, dest_cnpj: cnpj, tipo_evento: eventType, motivo: reason, cod_estado: stateCode, ambiente: "HOMOLOGACAO" 
@@ -80,9 +73,6 @@ interface Event {
         cod_estado: stateCode,
         chave_nota: invoiceKey
       })
-      
-      console.log()
-
       setToast({
         text: "Evento registrado com sucesso",
         type: "success"

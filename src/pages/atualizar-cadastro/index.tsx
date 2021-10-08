@@ -49,6 +49,10 @@ export default function AtualizarCadastro() {
   //checkbox states
   const [nfeVisualizar, setNfeVizualizar] = useState<boolean>(false)
   const [nfeHistorico, setNfeHistorico] = useState<boolean>(false)
+  const [nfeEventoCiencia, setNfeEventoCiencia] = useState<boolean>(false)
+  const [nfeEventoConfirmar, setNfeEventoConfirmar] = useState<boolean>(false)
+  const [nfeEventoDesconhecimento, setNfeEventoDesconhecimento] = useState<boolean>(false)
+  const [nfeEventoNaoRealizado, setNfeEventoNaoRealizado] = useState<boolean>(false)
   const [cteVisualizar, setCteVizualizar] = useState<boolean>(false)
   const [cteHistorico, setCteHistorico] = useState<boolean>(false)
   const [nfseVisualizar, setNfseVizualizar] = useState<boolean>(false)
@@ -81,6 +85,10 @@ const nfePermissions: ProfilePermissions[] = [];
  if(profilePermissions) {
     const visualizarNfe = profilePermissions.find((item) => item.categoria === "NFE");
     const historicoNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "HISTORICO")
+    const eventoCienciaNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "CIENCIA")
+    const eventoConfirmarNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "CONFIRMACAO")
+    const eventoDesconhecimentoNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "DESCONHECIMENTO")
+    const eventoNaoRealizadoNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "OPERACAO_NAO_REALIZADA")
     const visualizarCte = profilePermissions.find((item) => item.categoria === "CTE");
     const historicoCte = profilePermissions.find((item) => item.categoria === "CTE" && item.acao === "HISTORICO")
     const editarUsuario = profilePermissions.find((item) => item.categoria === "USUARIO" && item.acao === "EDITAR")
@@ -99,7 +107,10 @@ const nfePermissions: ProfilePermissions[] = [];
     if(editarPerfil) {setPerfilEditar(true)}
     if(adicionarPerfil){setPerfilAdicionar(true)}
     if(excluirPerfil) {setPerfilExcluir(true)}
-
+    if(eventoCienciaNfe) {setNfeEventoCiencia(true)}
+    if(eventoConfirmarNfe){setNfeEventoConfirmar(true)}
+    if(eventoDesconhecimentoNfe) {setNfeEventoDesconhecimento(true)}
+    if(eventoNaoRealizadoNfe) {setNfeEventoNaoRealizado(true)}
     }
     return nfePermissions
 }, [profilePermissions])
@@ -228,16 +239,16 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
               <span><Checkbox value={27} checked={nfeHistorico} onChange={() => gatherData(27)} onClick={nfeHistorico ? ()=> setNfeHistorico(false) : ()=> setNfeHistorico(true)}/></span>
               Histórico de Notas</span>
               <span> 
-              <span><Checkbox/></span>
+              <span><Checkbox  checked={nfeEventoCiencia} onChange={() => gatherData(28)} onClick={nfeEventoCiencia ? ()=> setNfeEventoCiencia(false) : ()=> setNfeEventoCiencia(true)}/></span>
               Registrar Evento - Ciência da Operação</span>
               <span> 
-              <span><Checkbox/></span>
+              <span><Checkbox checked={nfeEventoConfirmar} onChange={() => gatherData(29)} onClick={nfeEventoConfirmar ? ()=> setNfeEventoConfirmar(false) : ()=> setNfeEventoConfirmar(true)}/></span>
               Registrar Evento - Confirmação da Operação</span>
               <span> 
-              <span><Checkbox/></span>
+              <span><Checkbox  checked={nfeEventoNaoRealizado} onChange={() => gatherData(31)} onClick={nfeEventoNaoRealizado ? ()=> setNfeEventoNaoRealizado(false) : ()=> setNfeEventoNaoRealizado(true)}/></span>
               Registrar Evento - Operação Não Realizada</span>
               <span> 
-              <span><Checkbox/></span>
+              <span><Checkbox  checked={nfeEventoDesconhecimento} onChange={() => gatherData(30)} onClick={nfeEventoDesconhecimento ? ()=> setNfeEventoDesconhecimento(false) : ()=> setNfeEventoDesconhecimento(true)}/></span>
               Registrar Evento - Desconhecimento da Operação</span>
           </div>
         </div>

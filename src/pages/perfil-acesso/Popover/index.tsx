@@ -1,6 +1,6 @@
 import { Link, Modal, Popover, Text, Textarea, useModal, useToasts, Input } from "@geist-ui/react";
 import { MoreHorizontal } from "@geist-ui/react-icons";
-import { useCallback, useState } from "react";
+import { useCallback, useState, Dispatch, SetStateAction } from "react";
 import router from "next/router";
 import {useSecurityContext} from "@contexts/security"
 import {IPerfilAplicacao, IUpdateProfile, IPerfil} from "../index"
@@ -8,7 +8,8 @@ import * as perfil from "@services/perfis";
 import api from "@services/api"
 
 interface PopoverProps {
-    data: any
+    data: any;
+    setPerfisAplicacoes: Dispatch<SetStateAction<IPerfilAplicacao[]>>
   }
 
    interface CopyProfile {
@@ -28,7 +29,7 @@ categoria: string;
 acao: string
 }
 
-const ProfilePopover: React.FC<PopoverProps> = ({ data }) => {
+const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) => {
     const [visible, setVisible] = useState(false)
     const { setVisible: setVisibleModal, bindings } = useModal();
     const {profileUpdatePermission, profileDeletePermission} = useSecurityContext();
@@ -36,7 +37,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data }) => {
     const [descricao, setDescricao] = useState<string>("");
     const [empresaId, setEmpresaId] = useState<number>()
     const [perfilId, setPerfiId] = useState<number>();
-    const [perfisAplicacoes, setPerfisAplicacoes] = useState<ProfilePermissions[]>([]);
+    // const [perfisAplicacoes, setPerfisAplicacoes] = useState<IPerfilAplicacao[]>([]);
     // const [copiedId, setCopiedId] = useState<number | null>()
     const [copiedPermissions, setCopiedPermissions] = useState<number[]>([])
    
@@ -57,7 +58,6 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data }) => {
         id
       }: Omit<IPerfilAplicacao,  "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp">  ) {
         setAcao("copiar");
-       
         setVisibleModal(true);
         setNome(`Cópia de ${nome}`);
         setDescricao(descricao);
@@ -82,31 +82,18 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data }) => {
         try {
           await perfil.deletar(id);
           
+          setPerfisAplicacoes(oldPerfisAplicacoes =>
+            oldPerfisAplicacoes.filter((perfil: IPerfilAplicacao) => perfil.id !== id)
+          )
         } catch (error: any) {
-          
-          setToast({ text: "Houve um problema, por favor reinicie seu navegador.", 
+          console.log("erro:",error.response.data.mensagem)
+          setToast({ text:  error.response.data.mensagem, 
             type: "warning" });
         }
-        
-        // const perfisAtualizados = perfisAplicacoes.filter(
-        //   (perfil: IPerfilAplicacao) => perfil.id !== id
-        // );
-        // setPerfisAplicacoes(perfisAtualizados)
+
       }  
 
-      // async function getProfilePermissions(id: number){
-      //   const permissions = await api.get(`/perfil/search?profile_id=${id}`);
-      //   const insideData: any = [];
-      //   const profileData= permissions.data
-      //   insideData.push(profileData)
-      //   console.log("copy:",insideData);
-      //   const arrayOfPermissions = insideData.map((item: any) => item.permissoes);
-      //   // setPerfisAplicacoes(arrayOfPermissions)
-      //   const final= arrayOfPermissions.map(({id}) => id)
-      //   console.log("final",final);
-      // }
-
-      // console.log("outside:",perfisAplicacoes)
+    
 
       async function copyProfile() {
           try {
@@ -170,9 +157,11 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data }) => {
                     <Text
                       style={{ cursor: "pointer" }}
                       onClick={() => {
-                          setVisible(false)
-                          const item = data.rowValue as IPerfilAplicacao;
-                          copiar(item);
+                        console.log(data.rowValue);
+                        
+                          // setVisible(false)
+                          // const item = data.rowValue as IPerfilAplicacao;
+                          // copiar(item);
                       }}
                     >
                       Copiar

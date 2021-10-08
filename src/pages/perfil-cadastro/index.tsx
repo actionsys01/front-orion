@@ -66,11 +66,11 @@ export default function PerfilCadastro() {
         setIsNfe(true)
       } if (item.categoria === "CTE") {
         setIsCte(true)
-      } if(item.categoria === "NFSE") {
+      } /* if(item.categoria === "NFSE") {
         setIsNfse(true)
       } if(item.categoria === "") {
 
-      }
+      } */
     })
   }, [permissions])
 
@@ -119,7 +119,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
         <title>Orion | Perfil de Cadastro</title>
       </Head>
       <BotaoVoltar/>
-      <h2>Perfil de Cadastro </h2>
+      <h2>Perfil de Cadastro {profileApp}</h2>
       <ButtonStyle>
       <Button
           type="success-light"
@@ -166,16 +166,16 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
               <span><Checkbox value={27} onChange={() => gatherData(27)}/></span>
               Histórico de Notas</span>}
               <span> 
-              <span><Checkbox/></span>
+              <span><Checkbox onChange={() => gatherData(28)}/></span>
               Registrar Evento - Ciência da Operação</span>
               <span> 
-              <span><Checkbox/></span>
+              <span><Checkbox onChange={() => gatherData(29)}/></span>
               Registrar Evento - Confirmação da Operação</span>
               <span> 
-              <span><Checkbox/></span>
+              <span><Checkbox onChange={() => gatherData(31)}/></span>
               Registrar Evento - Operação Não Realizada</span>
               <span> 
-              <span><Checkbox/></span>
+              <span><Checkbox onChange={() => gatherData(30)}/></span>
               Registrar Evento - Desconhecimento da Operação</span>
           </div>
         </div>
