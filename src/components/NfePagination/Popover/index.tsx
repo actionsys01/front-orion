@@ -86,9 +86,6 @@ interface Event {
     }
     }
     
-    useEffect(() => {
-      console.log({ condition: nfeAwarePermission || nfeConfirmPermission || nfeUnauthorizedPermission || nfeUnawarePermission })
-    }, [nfeAwarePermission, nfeConfirmPermission, nfeUnauthorizedPermission, nfeUnawarePermission])
     
 
   return (
@@ -120,8 +117,6 @@ interface Event {
                   Visualizar
                 </Text>
               </Popover.Item>
-
-                  
               {(nfeAwarePermission || nfeConfirmPermission || nfeUnauthorizedPermission || nfeUnawarePermission) && (
                 <>
                   <Popover.Item>

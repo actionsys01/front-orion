@@ -6,6 +6,7 @@ import {useSecurityContext} from "@contexts/security"
 import {IPerfilAplicacao, IUpdateProfile, IPerfil} from "../index"
 import * as perfil from "@services/perfis";
 import api from "@services/api"
+import { useSession } from "next-auth/client";
 
 interface PopoverProps {
     data: any;
@@ -33,12 +34,11 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
     const [visible, setVisible] = useState(false)
     const { setVisible: setVisibleModal, bindings } = useModal();
     const {profileUpdatePermission, profileDeletePermission} = useSecurityContext();
-    const [nome, setNome] = useState<string>("");
+    const [name, setName] = useState<string>("");
+    const [session] = useSession()
     const [descricao, setDescricao] = useState<string>("");
     const [empresaId, setEmpresaId] = useState<number>()
     const [perfilId, setPerfiId] = useState<number>();
-    // const [perfisAplicacoes, setPerfisAplicacoes] = useState<IPerfilAplicacao[]>([]);
-    // const [copiedId, setCopiedId] = useState<number | null>()
     const [copiedPermissions, setCopiedPermissions] = useState<number[]>([])
    
     const [acao, setAcao] = useState<"editar" | "cadastrar" | "copiar">(
@@ -50,19 +50,25 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
         setVisible(next)
       }, [])
 
-
-
-      async function copiar(id : number ) {
+      async function getProfileId (id: number) {
         const response = await api.get(`/perfil/search?profile_id=${id}`)
         const profile = response.data.permissoes
-        profile.map((item) => console.log(item))
-        console.log(profile)
-        // setAcao("copiar");
-        // setVisibleModal(true);
-        // setNome(`Cópia de ${nome}`);
-        // setDescricao(descricao);
-        // getProfilePermissions(id)
+        const permissions =  profile.map((item: any) => item.id)
+        
+        console.log("mapa:",profile, "result:", permissions)
+        setCopiedPermissions(permissions)
       }
+
+
+
+       function copiar({ nome,
+        descricao} : Omit<IPerfilAplicacao, "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp" | "id"> ) {
+        setAcao("copiar")  
+        setName(nome)
+        setDescricao(descricao);
+        setVisibleModal(true)
+      }
+      console.log("post:", descricao, name,)
     
        async function editar({
         nome,
@@ -71,7 +77,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
       }: Omit<IPerfilAplicacao, "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp">) {
         setAcao("editar");
         setVisibleModal(true);
-        setNome(nome);
+        setName(nome);
         setDescricao(descricao);
         setPerfiId(id)
       }
@@ -97,19 +103,23 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
 
       async function copyProfile() {
           try {
-            
-            await perfil.criar({name: nome, descricao: descricao, permissions: copiedPermissions, empresa_id: Number(empresaId)})
+            await perfil.criar({name: name, descricao: descricao, permissions: copiedPermissions, empresa_id: Number(session?.usuario.empresa.id)})
+            setToast({
+              text: "Cópia realizada com sucesso.",
+              type: "success"
+          })
+          
           } catch (error) {
               setToast({
                   text: "Houve um problema com a operação, por favor tente novamente.",
                   type: "warning"
               })
           }
-       
+          setVisibleModal(false)
       }
 
       async function updateProfile() {
-        if(!nome || !descricao) {
+        if(!name || !descricao) {
           setToast({
             text: "Informe todos os dados do usuário.",
             type: "warning"}); 
@@ -117,7 +127,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
         }
           router.push({
             pathname: "/atualizar-cadastro",
-            query: { nome, descricao, perfilId },
+            query: { name, descricao, perfilId },
           })
       
       }
@@ -158,9 +168,14 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
                       style={{ cursor: "pointer" }}
                       onClick={() => {
                         setVisible(false)
+                        const item = data.rowValue as IPerfilAplicacao;
                         const id = Number(data.rowValue.id);
-                        console.log(id)
-                         copiar(id);
+                        // const nome = String(data.rowValue.nome);
+                        // const description = String(data.rowValue.descricao)
+                       console.log("row",data.rowValue)
+                        // console.log(id)
+                        getProfileId(id)
+                        copiar(item);
                         
                       }}
                     >
@@ -179,9 +194,8 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
             disableBackdropClick={true}
             {...bindings}
             onClose={() => {
-            setNome("");
+            setName("");
             setDescricao("");
-            
             }}
       >
             <Modal.Title>{acao}</Modal.Title>
@@ -192,9 +206,9 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
                 <Text small>Nome</Text>
           <Input
             width="100%"
-            placeholder={nome}
-            disabled={ true }
-            // onChange={(e) => setNome(e.target.value)}
+            placeholder={name}
+            
+            onChange={(e) => setName(e.target.value)}
           />
           <Text small>Descrição</Text>
           <Input
@@ -210,15 +224,15 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
           <Text small>Nome</Text>
           <Input
             width="100%"
-            placeholder={nome}
-            disabled={ true }
-            // onChange={(e) => setNome(e.target.value)}
+            placeholder={name}
+            disabled={ true}
+            // onChange={(e) => setName(e.target.value)}
           />
           <Text small>Descrição</Text>
           <Input
             width="100%"
-            placeholder="Ex: Permitir deletar"
-            value={descricao}
+            placeholder={descricao}
+            // value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
           />
         </Modal.Content>
@@ -226,7 +240,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
         <Modal.Action passive onClick={() => setVisibleModal(false)} type="abort">
           CANCELAR
         </Modal.Action>
-        <Modal.Action onClick={updateProfile } >
+        <Modal.Action onClick={acao === "editar" ? updateProfile : copyProfile } >
           CONTINUAR
         </Modal.Action>
       </Modal>
