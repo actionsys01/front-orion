@@ -48,7 +48,7 @@ export default function TrocarSenha() {
           </Text>
           <Input.Password
             size="large"
-            placeholder="153045ab"
+            placeholder="Digite sua senha"
             width="100%"
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
