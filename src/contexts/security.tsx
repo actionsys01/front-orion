@@ -52,7 +52,7 @@ const SecurityProvider: React.FC = ({ children }: any) => {
    const getPermissions = async () => {
      try {
       const data = session?.usuario.perfil.permissoes;
-       console.log("inside permission", data)
+      //  console.log("inside permission", data)
        return data || []
      } catch (error) {
        setToast({

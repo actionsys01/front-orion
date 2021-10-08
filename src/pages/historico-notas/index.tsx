@@ -35,9 +35,9 @@ export default function Historico () {
    
 
     async function getHistoricalNotes() {
-        await api.post(`/historico`, {
-            empresa: empresa_id, chave_nota: key , sequencia: 22, status: 12, criado_por_app: "gra web", atualizado_por_app: "gra web"
-        })
+        // await api.post(`/historico`, {
+        //     empresa: empresa_id, chave_nota: key , sequencia: 22, status: 12, criado_por_app: "gra web", atualizado_por_app: "gra web"
+        // })
         try {
             const response = await api.get(`/historico/?empresa_id=${empresa_id}&chave_nota=${key}`)
             const data  = await response.data
