@@ -47,7 +47,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
 
     setCtes(data.ctes)
 
-    setQuantityPage(Math.ceil(data.total / 5));
+    setQuantityPage(Math.ceil(data.total / 8));
      
   }, [ctes, page])
       

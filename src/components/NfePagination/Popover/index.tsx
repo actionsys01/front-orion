@@ -4,6 +4,7 @@ import { useCallback, useState, useEffect } from "react";
 import router, { useRouter } from "next/router";
 import {useSecurityContext} from "@contexts/security";
 import api from "@services/api"
+import { eventNames } from "cluster";
 interface PopoverProps {
   item: any
 }
@@ -45,8 +46,8 @@ interface Event {
 
     const getEventData = useCallback((key: string, company_id: number, dest_cnpj: string) => {
       
-         const firstString = key.substring(0,1)
-         const cod_estado = firstString === "N" ? key.substring(3,5) : key.substring(0,2)
+         let firstString = key.substring(0,1)
+         let cod_estado = firstString === "N" ? key.substring(3,5) : key.substring(0,2)
          setStateCode(cod_estado);
          setInvoiceKey(key)
          setCompanyId(company_id)
@@ -54,15 +55,16 @@ interface Event {
          setVisiblePop(true);
          setSecondPopoverVisible(false)
          setVisible(false) 
-         // console.log("cod_estado:",stateCode, key, company_id, dest_cnpj, "tipo:",eventType,"motivo:", reason)
          
+         
+         console.log("cod_estado:",stateCode, key, invoiceKey, company_id, dest_cnpj, "tipo:",eventType,"motivo:", reason)
+        },[])
+        
+        console.log("cod_estado:",stateCode, "nota:", invoiceKey, "empresa:", companyId, "cnpj", cnpj, "tipo:",eventType,"motivo:", reason)
 
-      },[])
- 
-
-      useEffect(() => {
-        console.log("Oi")
-      }, [])
+      // useEffect(() => {
+      //   console.log("Oi")
+      // }, [])
 
 
       //chave_nota: invoiceKey, empresa_id: companyId, dest_cnpj: cnpj, tipo_evento: eventType, motivo: reason, cod_estado: stateCode, ambiente: "HOMOLOGACAO" 
@@ -70,13 +72,13 @@ interface Event {
     async function eventRegister() {
      try {
       await api.post("/nfe/controle/evento-sefaz",{
-        empresa_id: 22,
-        dest_cnpj: "04076904000151",
+        empresa_id: companyId,
+        dest_cnpj: cnpj,
         ambiente: "HOMOLOGACAO",
-        tipo_evento: "CIENCIA_DA_OPERACAO",
-        motivo: "CIENCIA_DA_OPERACAO",
-        cod_estado: "42",
-        chave_nota: "42210586907235000349550040001102561367494158"
+        tipo_evento: eventType,
+        motivo: reason,
+        cod_estado: stateCode,
+        chave_nota: invoiceKey
       })
       
       console.log()

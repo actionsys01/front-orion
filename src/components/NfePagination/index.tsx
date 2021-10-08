@@ -49,7 +49,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
 
     setNfes(data.nfes)
   
-    setQuantityPage(Math.ceil(data.total / 5));
+    setQuantityPage(Math.ceil(data.total / 8));
     }, [nfes, page])
       
 

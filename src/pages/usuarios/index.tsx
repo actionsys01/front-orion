@@ -74,7 +74,7 @@ export default function Usuarios({}) {
 
     setUsuarios(data.usuarios)
   
-    setQuantityPage(Math.ceil(data.total / 5));
+    setQuantityPage(Math.ceil(data.total / 8));
     }, [page])
       
 

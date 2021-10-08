@@ -88,7 +88,7 @@ export default function PerfilAcesso() {
     
     const { data } = response
 
-    setQuantityPage(Math.ceil(data.total / 5));
+    setQuantityPage(Math.ceil(data.total / 8));
     
     return data.perfis
   }, [page])
