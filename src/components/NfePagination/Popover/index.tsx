@@ -1,10 +1,9 @@
 import { Link, Modal, Popover, Text, Textarea, useModal, useToasts } from "@geist-ui/react";
 import { MoreHorizontal } from "@geist-ui/react-icons";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import router, { useRouter } from "next/router";
 import {useSecurityContext} from "@contexts/security";
 import api from "@services/api"
-
 interface PopoverProps {
   item: any
 }
@@ -43,31 +42,50 @@ interface Event {
     }, [])
 
 
+
+    const getEventData = useCallback((key: string, company_id: number, dest_cnpj: string) => {
+      
+         const firstString = key.substring(0,1)
+         const cod_estado = firstString === "N" ? key.substring(3,5) : key.substring(0,2)
+         setStateCode(cod_estado);
+         setInvoiceKey(key)
+         setCompanyId(company_id)
+         setCnpj(dest_cnpj)
+         setVisiblePop(true);
+         setSecondPopoverVisible(false)
+         setVisible(false) 
+         // console.log("cod_estado:",stateCode, key, company_id, dest_cnpj, "tipo:",eventType,"motivo:", reason)
+         
+
+      },[])
  
 
-     function getEventData(key: string, company_id: number, dest_cnpj: string) {
-      const firstString = key.substring(0,1)
-      const cod_estado = firstString === "N" ? key.substring(3,5) : key.substring(0,2)
-      setStateCode(cod_estado);
-      setInvoiceKey(key)
-      setCompanyId(company_id)
-      setCnpj(dest_cnpj)
-      setVisiblePop(true);
-      setSecondPopoverVisible(false)
-      setVisible(false) 
-      console.log("cod_estado:",stateCode, key, company_id, dest_cnpj, "tipo:",eventType,"motivo:", reason)
+      useEffect(() => {
+        console.log("Oi")
+      }, [])
+
+
+      //chave_nota: invoiceKey, empresa_id: companyId, dest_cnpj: cnpj, tipo_evento: eventType, motivo: reason, cod_estado: stateCode, ambiente: "HOMOLOGACAO" 
       
-    }
-
-    console.log("FORA","cod_estado:",stateCode,"nota:", invoiceKey,  "cnpj:", cnpj, "tipo:",eventType,"motivo:", reason)
-
     async function eventRegister() {
      try {
-      await api.post("/nfe/controle/evento-sefaz", {chave_nota: invoiceKey, empresa_id: companyId, dest_cnpj: cnpj, tipo_evento: eventType, motivo: reason, cod_estado: stateCode, ambiente: "HOMOLOGACAO" })
+      await api.post("/nfe/controle/evento-sefaz",{
+        empresa_id: 22,
+        dest_cnpj: "04076904000151",
+        ambiente: "HOMOLOGACAO",
+        tipo_evento: "CIENCIA_DA_OPERACAO",
+        motivo: "CIENCIA_DA_OPERACAO",
+        cod_estado: "42",
+        chave_nota: "42210586907235000349550040001102561367494158"
+      })
+      
+      console.log()
+
       setToast({
-        text: "Foi",
+        text: "Evento registrado com sucesso",
         type: "success"
       })
+
     } catch (error) {
       setToast({
         text: "Não foi possível registrar o evento, por favor tente novamente",
@@ -260,7 +278,7 @@ interface Event {
         <Modal.Action passive onClick={() => setVisiblePop(false)} type="abort">
           CANCELAR
         </Modal.Action>
-        <Modal.Action onClick={eventRegister} >
+        <Modal.Action onClick={() => {setVisiblePop(false), eventRegister()}} >
           CONTINUAR
         </Modal.Action>
       </Modal>

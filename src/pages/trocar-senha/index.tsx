@@ -3,9 +3,12 @@ import * as usuarios from "@services/usuarios";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import api from "@services/api";
+import { useSession } from "next-auth/client";
 
 export default function TrocarSenha() {
   const [loading, setLoading] = useState(false);
+  const [ session ] = useSession();
   const router = useRouter();
   const [senha, setSenha] = useState("");
   const [, setToast] = useToasts();
@@ -17,9 +20,21 @@ export default function TrocarSenha() {
       setToast({ text: "Informe senha", type: "warning" });
       return;
     }
-    await usuarios.atualizar({ senha });
-    setLoading(false);
-    router.push("/nfe");
+    try {
+      await api.post("/password/change-password/", {
+        user_id : session?.usuario.id,
+        password : senha
+      })
+
+      setToast({ text: "Senha trocada com sucesso", type: "success" });
+      
+    } catch (error) {
+      setToast({ text: "Ocorreu um problema ao efetuar a troca de senha", type: "error" });
+    } finally {
+      setLoading(false);
+      router.push("/");
+    }
+  
   }
   return (
     <>
