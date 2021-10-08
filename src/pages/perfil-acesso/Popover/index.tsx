@@ -52,15 +52,15 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
 
 
 
-       function copiar({
-        nome,
-        descricao,
-        id
-      }: Omit<IPerfilAplicacao,  "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp">  ) {
-        setAcao("copiar");
-        setVisibleModal(true);
-        setNome(`Cópia de ${nome}`);
-        setDescricao(descricao);
+      async function copiar(id : number ) {
+        const response = await api.get(`/perfil/search?profile_id=${id}`)
+        const profile = response.data.permissoes
+        profile.map((item) => console.log(item))
+        console.log(profile)
+        // setAcao("copiar");
+        // setVisibleModal(true);
+        // setNome(`Cópia de ${nome}`);
+        // setDescricao(descricao);
         // getProfilePermissions(id)
       }
     
@@ -157,11 +157,11 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
                     <Text
                       style={{ cursor: "pointer" }}
                       onClick={() => {
-                        console.log(data.rowValue);
+                        setVisible(false)
+                        const id = Number(data.rowValue.id);
+                        console.log(id)
+                         copiar(id);
                         
-                          // setVisible(false)
-                          // const item = data.rowValue as IPerfilAplicacao;
-                          // copiar(item);
                       }}
                     >
                       Copiar

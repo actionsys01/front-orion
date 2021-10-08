@@ -220,7 +220,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           <h5></h5>
         </span>
       </header>
-      {isNfe  && nfePermission &&
+      {/* {isNfe  && nfePermission && */}
       <div className="body-row">
         <div>
           <span className="line">
@@ -243,31 +243,31 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
             <span>
               <span><Checkbox  value={1} checked={nfeVisualizar}  onChange={() => gatherData(1)} onClick={nfeVisualizar ? ()=> setNfeVizualizar(false) : ()=> setNfeVizualizar(true)}/></span>
               Visualizar</span>
-              {nfeHistoricalPermission && 
+              {/* {nfeHistoricalPermission &&  */}
               <span> 
               <span><Checkbox value={27} checked={nfeHistorico} onChange={() => gatherData(27)} onClick={nfeHistorico ? ()=> setNfeHistorico(false) : ()=> setNfeHistorico(true)}/></span>
-              Histórico de Notas</span>}
-              {nfeAwarePermission && 
+              Histórico de Notas</span>
+              {/* {nfeAwarePermission &&  */}
               <span> 
               <span><Checkbox  checked={nfeEventoCiencia} onChange={() => gatherData(28)} onClick={nfeEventoCiencia ? ()=> setNfeEventoCiencia(false) : ()=> setNfeEventoCiencia(true)}/></span>
-              Registrar Evento - Ciência da Operação</span>}
-              {nfeConfirmPermission && 
+              Registrar Evento - Ciência da Operação</span>
+              {/* {nfeConfirmPermission &&  */}
               <span> 
               <span><Checkbox checked={nfeEventoConfirmar} onChange={() => gatherData(29)} onClick={nfeEventoConfirmar ? ()=> setNfeEventoConfirmar(false) : ()=> setNfeEventoConfirmar(true)}/></span>
-              Registrar Evento - Confirmação da Operação</span>}
-              {nfeUnauthorizedPermission && 
+              Registrar Evento - Confirmação da Operação</span>
+              {/* {nfeUnauthorizedPermission &&  */}
               <span> 
               <span><Checkbox  checked={nfeEventoNaoRealizado} onChange={() => gatherData(31)} onClick={nfeEventoNaoRealizado ? ()=> setNfeEventoNaoRealizado(false) : ()=> setNfeEventoNaoRealizado(true)}/></span>
-              Registrar Evento - Operação Não Realizada</span>}
-              {nfeUnawarePermission && 
+              Registrar Evento - Operação Não Realizada</span>
+              {/* {nfeUnawarePermission &&  */}
               <span> 
               <span><Checkbox  checked={nfeEventoDesconhecimento} onChange={() => gatherData(30)} onClick={nfeEventoDesconhecimento ? ()=> setNfeEventoDesconhecimento(false) : ()=> setNfeEventoDesconhecimento(true)}/></span>
-              Registrar Evento - Desconhecimento da Operação</span>}
+              Registrar Evento - Desconhecimento da Operação</span>
           </div>
         </div>
           }
           </div>
-          }
+          {/* } */}
           {isCte &&
         <div className="body-row">
           <div>
@@ -291,10 +291,10 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
             <span>
               <span><Checkbox checked={cteVisualizar} onChange={() => gatherData(5)} onClick={cteVisualizar ? ()=> setCteVizualizar(false) : ()=> setCteVizualizar(true)}/></span>
               Visualizar</span>
-           {cteHistoricalPermission &&
+           {/* {cteHistoricalPermission && */}
             <span> 
               <span><Checkbox checked={cteHistorico}  onChange={() => gatherData(21)} onClick={cteHistorico ? ()=> setCteHistorico(false) : ()=> setCteHistorico(true)}/></span>
-              Histórico de Notas</span>}
+              Histórico de Notas</span>
               {/* <span> 
               <span><Checkbox/></span>
               Registrar Evento - Ciência da Operação</span>
@@ -396,7 +396,7 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
         </div>
         }
         </div>
-      {profilePermission &&
+      {/* {profilePermission && */}
         <div className="body-row">
           <div>
           <span className="line">
@@ -422,14 +422,14 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
             <span> 
               <span><Checkbox checked={perfilAdcionar}  onChange={() => gatherData(24)} onClick={perfilAdcionar ? ()=> setPerfilAdicionar(false) : ()=> setPerfilAdicionar(true)}/></span>
               Cadastrar Perfil</span>
-              {profileDeletePermission && 
+              {/* {profileDeletePermission &&  */}
               <span> 
               <span><Checkbox checked={perfilExcluir}  onChange={() => gatherData(25)}  onClick={perfilExcluir ? ()=> setPerfilExcluir(false) : ()=> setPerfilExcluir(true)}/></span>
-              Excluir Perfil</span>}
-              {profileUpdatePermission && 
+              Excluir Perfil</span>
+              {/* {profileUpdatePermission &&  */}
               <span> 
               <span><Checkbox checked={perfilEditar}  onChange={() => gatherData(26)}  onClick={perfilEditar ? ()=> setPerfilEditar(false) : ()=> setPerfilEditar(true)} /></span>
-              Editar Perfil</span>}
+              Editar Perfil</span>
               {/* <span> 
               <span><Checkbox/></span>
               Registrar Evento - Operação Não Realizada</span>
@@ -439,8 +439,9 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </div>
         </div>
         }
-        </div>}
-        {userPermission && 
+        </div>
+        {/* } */}
+        {/* {userPermission &&  */}
         <div className="body-row">
           <div>
           <span className="line">
@@ -466,14 +467,14 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
             <span> 
               <span><Checkbox checked={usuarioAdcionar}  value={23} onChange={() => gatherData(23)} onClick={usuarioAdcionar ? ()=> setUsuarioAdicionar(false) : ()=> setUsuarioAdicionar(true)}/></span>
               Adicionar Usuário</span>
-              {userDeletePermission && 
+              {/* {userDeletePermission &&  */}
               <span> 
               <span><Checkbox checked={usuarioExcluir} value={22}  onChange={() => gatherData(22)} onClick={usuarioExcluir ? ()=> setUsuarioExcluir(false) : ()=> setUsuarioExcluir(true)}/></span>
-              Excluir Usuário</span>}
-              {userUpdatePermission && 
+              Excluir Usuário</span>
+              {/* {userUpdatePermission &&  */}
               <span> 
               <span><Checkbox checked={usuarioEditar} value={2} onChange={() => gatherData(2)} onClick={usuarioEditar ? ()=> setUsuarioEditar(false) : ()=> setUsuarioEditar(true)}/></span>
-              Editar Usuário</span>}
+              Editar Usuário</span>
               {/* <span> 
               <span><Checkbox/></span>
               Registrar Evento - Operação Não Realizada</span>
@@ -483,7 +484,8 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
           </div>
         </div>
         }
-        </div>}
+        </div>
+        {/* } */}
        
       
     </div>

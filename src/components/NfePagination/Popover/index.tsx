@@ -85,6 +85,11 @@ interface Event {
       })
     }
     }
+    
+    useEffect(() => {
+      console.log({ condition: nfeAwarePermission || nfeConfirmPermission || nfeUnauthorizedPermission || nfeUnawarePermission })
+    }, [nfeAwarePermission, nfeConfirmPermission, nfeUnauthorizedPermission, nfeUnawarePermission])
+    
 
   return (
     <>
@@ -115,82 +120,91 @@ interface Event {
                   Visualizar
                 </Text>
               </Popover.Item>
-              <Popover.Item>
-                <Popover
-                  visible={secondPopoverVisible}
-                  onVisibleChange={changeHandlerSecondPopover}
-                  style={{ cursor: "pointer" }}
-                  placement="right"
-                  content={
-                    <>
-                     {nfeAwarePermission &&
-                      <Popover.Item>
-                        <Text 
-                          style={{ cursor: "pointer" }}
-                          onClick={() => {
-                          const key = String(item?.rowValue.chave_nota);
-                          const company_id = Number(item?.rowValue.empresa_id);
-                          const dest_cnpj = String(item?.rowValue.dest_cnpj);
-                          const reasonKey = "CIENCIA_DA_OPERAÇÃO";
-                          setReason(reasonKey)
-                          setEventType(reasonKey)
-                          getEventData(key, company_id, dest_cnpj)
-                          setAction("Ciência da Operação")
-                          
-                        }}>Ciência</Text>
-                      </Popover.Item>}
-                      {nfeConfirmPermission && 
-                      <Popover.Item>
-                        <Text
-                          style={{ cursor: "pointer" }}
-                          onClick={() => {
-                          const key = String(item?.rowValue.chave_nota);
-                          const company_id = Number(item?.rowValue.empresa_id);
-                          const dest_cnpj = String(item?.rowValue.dest_cnpj);
-                          const reasonKey = "CONFIRMACAO_DA_OPERAÇÃO";
-                          setReason(reasonKey)
-                          setEventType(reasonKey)
-                          getEventData(key, company_id, dest_cnpj)
-                          setAction("Confirmação da Operação" )
-                        }}
-                        >Confirmação</Text>
-                      </Popover.Item>}
-                     {nfeUnauthorizedPermission &&
-                      <Popover.Item>
-                        <Text
-                          style={{ cursor: "pointer" }}
-                          onClick={() => {
-                            const key = String(item?.rowValue.chave_nota);
-                            const company_id = Number(item?.rowValue.empresa_id);
-                            const dest_cnpj = String(item?.rowValue.dest_cnpj);
-                            const reasonKey = "OPERACAO_NAO_REALIZADA"
-                            setEventType(reasonKey)
-                            getEventData(key, company_id, dest_cnpj)
-                            setAction("Operação não realizada")
-                        }}
-                        >Operação não realizada</Text>
-                      </Popover.Item>}
-                     {nfeUnawarePermission &&
-                      <Popover.Item >
-                        <Text
-                        style={{ cursor: "pointer" }}
-                        onClick={() => {
-                          const key = String(item?.rowValue.chave_nota);
-                          const company_id = Number(item?.rowValue.empresa_id);
-                          const dest_cnpj = String(item?.rowValue.dest_cnpj);
-                          const reasonKey = "DESCONHECIMENTO_DA_OPERACAO"
-                          setEventType(reasonKey)
-                          getEventData(key, company_id, dest_cnpj)
-                          setAction("Desconhecimento da Operação")
-                      }}
-                        >Desconhecimento</Text>
-                      </Popover.Item>}
-                    </>
-                  }
-                >
-                    Registrar evento
-                </Popover>
-              </Popover.Item>
+
+                  
+              {(nfeAwarePermission || nfeConfirmPermission || nfeUnauthorizedPermission || nfeUnawarePermission) && (
+                <>
+                  <Popover.Item>
+                    <Popover
+                      visible={secondPopoverVisible}
+                      onVisibleChange={changeHandlerSecondPopover}
+                      style={{ cursor: "pointer" }}
+                      placement="right"
+                      content={
+                        <>
+                        {nfeAwarePermission &&
+                          <Popover.Item>
+                            <Text 
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                              const key = String(item?.rowValue.chave_nota);
+                              const company_id = Number(item?.rowValue.empresa_id);
+                              const dest_cnpj = String(item?.rowValue.dest_cnpj);
+                              const reasonKey = "CIENCIA_DA_OPERAÇÃO";
+                              setReason(reasonKey)
+                              setEventType(reasonKey)
+                              getEventData(key, company_id, dest_cnpj)
+                              setAction("Ciência da Operação")
+                              
+                            }}>Ciência</Text>
+                          </Popover.Item>}
+
+                          {nfeConfirmPermission && (
+                          <Popover.Item>
+                            <Text
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                              const key = String(item?.rowValue.chave_nota);
+                              const company_id = Number(item?.rowValue.empresa_id);
+                              const dest_cnpj = String(item?.rowValue.dest_cnpj);
+                              const reasonKey = "CONFIRMACAO_DA_OPERAÇÃO";
+                              setReason(reasonKey)
+                              setEventType(reasonKey)
+                              getEventData(key, company_id, dest_cnpj)
+                              setAction("Confirmação da Operação" )
+                            }}
+                            >Confirmação</Text>
+                          </Popover.Item>
+                          )}
+                        {nfeUnauthorizedPermission &&
+                          <Popover.Item>
+                            <Text
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                                const key = String(item?.rowValue.chave_nota);
+                                const company_id = Number(item?.rowValue.empresa_id);
+                                const dest_cnpj = String(item?.rowValue.dest_cnpj);
+                                const reasonKey = "OPERACAO_NAO_REALIZADA"
+                                setEventType(reasonKey)
+                                getEventData(key, company_id, dest_cnpj)
+                                setAction("Operação não realizada")
+                            }}
+                            >Operação não realizada</Text>
+                          </Popover.Item>}
+                        {nfeUnawarePermission &&
+                          <Popover.Item >
+                            <Text
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              const key = String(item?.rowValue.chave_nota);
+                              const company_id = Number(item?.rowValue.empresa_id);
+                              const dest_cnpj = String(item?.rowValue.dest_cnpj);
+                              const reasonKey = "DESCONHECIMENTO_DA_OPERACAO"
+                              setEventType(reasonKey)
+                              getEventData(key, company_id, dest_cnpj)
+                              setAction("Desconhecimento da Operação")
+                          }}
+                            >Desconhecimento</Text>
+                          </Popover.Item>}
+                        </>
+                      }
+                    >
+                        Registrar evento
+                    </Popover>
+                  </Popover.Item>
+                </>
+              )}
+
               {nfeHistoricalPermission && <Popover.Item>
                 <Text 
                 style={{ cursor: "pointer" }}
@@ -231,7 +245,7 @@ interface Event {
           setReason("");
           setStateCode("");
           setInvoiceKey("")
-          setCompanyId()
+          // setCompanyId()
           setCnpj("")
         }}
       >
