@@ -116,7 +116,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
             <Table.Column prop="emit_cnpj" label="CNPJ Fornecedor" />
             <Table.Column prop="emit_nome" label="Nome Fornecedor" />
             <Table.Column prop="sefaz_status" label="Status Sefaz" />
-            <Table.Column prop="portaria_status" label="Status Portaria" />
+            <Table.Column prop="portaria_status" label="Status Entrada" />
             <Table.Column prop="chave_nota" label="Chave de Acesso" />
             <Table.Column prop="dest_cnpj" label="CNPJ Destinatário" />
             <Table.Column prop="dest_nome" label="Destinatário" />

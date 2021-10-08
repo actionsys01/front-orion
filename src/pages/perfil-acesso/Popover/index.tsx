@@ -87,6 +87,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data }) => {
           setToast({ text: "Houve um problema, por favor reinicie seu navegador.", 
             type: "warning" });
         }
+        
         // const perfisAtualizados = perfisAplicacoes.filter(
         //   (perfil: IPerfilAplicacao) => perfil.id !== id
         // );
