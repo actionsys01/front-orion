@@ -21,6 +21,33 @@ interface Produto {
 }
 interface Impostos {
   vTotTrib: string;
+    // ICMS: {
+    //   ICMS00: { orig: string; CST: string; vBC: string; vICMS: string; pICMS: string;  modBC: string };
+    //   ICMS10: { orig: string; CST: string; modBC: string; vBC: string; pICMS: string; vICMS: string;  pRedBC: string; modBCST: string; pMVAST: string;
+    //   pRedBCST: string; pICMSST: string; vICMSST: string};
+    //   ICMS20: { orig: string; CST: string; modBC: string; pRedBC: string; vBC: string; vICMS: string; pICMS: string; vICMSDeson: string; motDesICMS: string};
+    //   ICMS30: { orig: string; CST: string; modBCST: string; pMVAST: string; pRedBCST: string; vBCST: string; pICMSST: string; vICMSST: string; vICMSDeson: string};
+    //   ICMS40: { orig: string; CST: string; vICMSDeson: string; motDesICMS: string};
+    //   ICMS51: { orig: string; CST: string; modBC: string; pRedBC: string; vBC: string; pICMS: string; vICMSOp: string; pDif: string; vICMS: string; vICMSDif: string; pMVAST: string};
+    //   ICMS60: { orig: string; CST: string; vBCSTRet: string; vICMSSTRet: string };
+    //   ICMS70: { orig: string; CST: string; modBC: string; pRedBC: string; vBC: string; pICMS: string; vICMS: string; modBCST: string; pMVAST: string;
+    //     pRedBCST: string; pICMSST: string; vICMSST: string, vICMSDeson: string, motDesICMS: string};
+    //   ICMS90: { orig: string; CST: string; modBC: string; pRedBC: string; vBC: string; pICMS: string; vICMS: string; modBCST: string; pMVAST: string;
+    //     pRedBCST: string; vBCST: string; pICMSST: string; vICMSST: string, vICMSDeson: string, motDesICMS: string};
+    //   ICMSOutraUF: {
+    //     CST: string;
+    //     pRedBCOutraUF: string;
+    //     vBCOutraUF: string;
+    //     pICMSOutraUF: string;
+    //     vICMSOutraUF: string;
+    //   };
+    //   ICMSSN: {
+    //     CST: string;
+    //     indSN: string;
+    //     vTotTrib: string;
+    //     infAdFisco: string;
+    //   };
+    // };
 }
 
 interface IProps {
@@ -52,6 +79,7 @@ interface IProps {
 }
 
 export default function AbaProdutosServicos({ data }: IProps) {
+  
   const produtos = useMemo(() => {
     let produtos: any[] = [];
     if (Array.isArray(data?.produtos_servicos)) {
@@ -61,6 +89,7 @@ export default function AbaProdutosServicos({ data }: IProps) {
     }
     return produtos;
   }, [data]);
+  
 
   return (
     <>
@@ -210,9 +239,10 @@ export default function AbaProdutosServicos({ data }: IProps) {
               </Text>
             </BackgroundCinza>
             <Spacer />
+            {/* row */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
-                <Titulo>Tributação do ICMS</Titulo>
+                <Titulo>CST do ICMS</Titulo>
                 <Text small>{produto?.imposto?.ICMS?.ICMS10?.CST}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
@@ -220,38 +250,60 @@ export default function AbaProdutosServicos({ data }: IProps) {
                 <Text small>{produto?.imposto?.ICMS?.ICMS10?.modBC}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
-                <Titulo>CTS do IPI</Titulo>
+                <Titulo>CST IPI</Titulo>
                 <Text small>{produto?.IPI?.IPITrib?.CST}</Text>
               </GridAlinhaTextoCentro>
             </Grid.Container>
             <Spacer />
+             {/* row */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
                 <Titulo>BC do ICMS</Titulo>
                 <Text small>{produto?.imposto?.ICMS?.ICMS00?.vBC}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
-                <Titulo>Alíquota</Titulo>
+                <Titulo>Alíquota do ICMS</Titulo>
                 <Text small>{produto?.imposto?.ICMS?.ICMS00?.pICMS}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
-                <Titulo>Valor ICMS</Titulo>
+                <Titulo>Valor do ICMS</Titulo>
                 <Text small>{produto?.imposto?.ICMS?.ICMS10?.vICMS}</Text>
               </GridAlinhaTextoCentro>
-              <GridAlinhaTextoCentro>
+              {/* <GridAlinhaTextoCentro>
                 <Titulo>BC do IPI</Titulo>
                 <Text small>{produto?.imposto?.ICMS?.ICMS10?.vBC}</Text>
-              </GridAlinhaTextoCentro>
+              </GridAlinhaTextoCentro> */}
             </Grid.Container>
             <Spacer />
+             {/* row */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
                 <Titulo>BC do ICMS-ST</Titulo>
                 <Text small>{produto?.imposto?.ICMS?.ICMS60?.pST}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
-                <Titulo>Valor ICMS-ST</Titulo>
+                <Titulo>Alíquota do ICMS-ST</Titulo>
+                <Text small></Text>
+              </GridAlinhaTextoCentro>
+              <GridAlinhaTextoCentro>
+                <Titulo>Valor do ICMS-ST</Titulo>
                 <Text small>{produto?.imposto?.ICMS?.ICMS60?.vICMSSTRet}</Text>
+              </GridAlinhaTextoCentro>
+            </Grid.Container>
+            <Spacer />
+            {/*  row */}
+            <Grid.Container gap={2} direction="row">
+              <GridAlinhaTextoCentro>
+                <Titulo>BC do IPI</Titulo>
+                <Text small></Text>
+              </GridAlinhaTextoCentro>
+              <GridAlinhaTextoCentro>
+                <Titulo>Alíquota do IPI</Titulo>
+                <Text small></Text>
+              </GridAlinhaTextoCentro>
+              <GridAlinhaTextoCentro>
+                <Titulo>Valor do IPI</Titulo>
+                <Text small></Text>
               </GridAlinhaTextoCentro>
             </Grid.Container>
             <Spacer />
@@ -261,6 +313,7 @@ export default function AbaProdutosServicos({ data }: IProps) {
               </Text>
             </BackgroundCinza>
             <Spacer />
+             {/* row */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
                 <Titulo>CTS do CONFINS</Titulo>

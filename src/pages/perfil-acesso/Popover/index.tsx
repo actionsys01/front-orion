@@ -41,7 +41,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
     const [perfilId, setPerfiId] = useState<number>();
     const [copiedPermissions, setCopiedPermissions] = useState<number[]>([])
    
-    const [acao, setAcao] = useState<"editar" | "cadastrar" | "copiar">(
+    const [acao, setAcao] = useState<"editar" | "cadastrar" | "copiar" | "deletar">(
         "cadastrar"
       );
       const [, setToast] = useToasts();
@@ -82,21 +82,24 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
      async function deletar({
         id,
       }: Omit<IPerfilAplicacao, "nome" | "descricao" | "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp">) {
+        setAcao("deletar");
+        setPerfiId(id)
+        setVisibleModal(true)
+      }  
+
+      async function deleteProfile() {
+        const id: number | undefined = perfilId
         try {
           await perfil.deletar(id);
-          
           setPerfisAplicacoes(oldPerfisAplicacoes =>
             oldPerfisAplicacoes.filter((perfil: IPerfilAplicacao) => perfil.id !== id)
           )
         } catch (error: any) {
-          console.log("erro:",error.response.data.mensagem)
           setToast({ text:  error.response.data.mensagem, 
             type: "warning" });
         }
-
-      }  
-
-    
+        setVisibleModal(false)
+      }
 
       async function copyProfile() {
           try {
@@ -195,6 +198,9 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
       >
             <Modal.Title>{acao}</Modal.Title>
             <Modal.Subtitle>Perfil de Acesso</Modal.Subtitle>
+            {acao === "deletar" &&
+            <h4>Deseja realmente excluir o perfil?</h4>
+            }
             {acao === "copiar" && 
             <Modal.Content>
                 {/* <Text small>Deseja prosseguir com a cópia do perfil selecionado?</Text> */}
@@ -234,7 +240,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
         <Modal.Action passive onClick={() => setVisibleModal(false)} type="abort">
           CANCELAR
         </Modal.Action>
-        <Modal.Action onClick={acao === "editar" ? updateProfile : copyProfile } >
+        <Modal.Action onClick={() => acao === "editar" ? updateProfile : acao === "copiar" ? copyProfile : acao === "deletar" ? deleteProfile() : null} >
           CONTINUAR
         </Modal.Action>
       </Modal>
