@@ -57,9 +57,15 @@ const AtualiarUsuario = () => {
                   return;
             } 
                 await usuarios.atualizar({nome: String(router.query.nome), perfil: String(newProfileId), id: Number(router.query.id)})
-                
+                setToast({
+                    text: "Usuário atualizado com sucesso",
+                    type: "success",
+                  });
             } catch (error) {
-                console.log(error)
+                setToast({
+                    text: "Houve um problema, por favor tente novamente.",
+                    type: "warning",
+                  });
             }
             setNewProfileId(""),
             router.back()

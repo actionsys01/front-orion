@@ -18,7 +18,7 @@ interface Event {
   key: string
 }
 
-  const PopoverComponent: React.FC<PopoverProps> = ({ item }: PopoverProps) => {
+  const PopoverComponent: React.FC<PopoverProps> = ({ item }) => {
     const [visible, setVisible] = useState(false)
     const [action, setAction] = useState("")
     const router = useRouter()

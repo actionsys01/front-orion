@@ -20,8 +20,9 @@ import { useSession } from "next-auth/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import getUsersByCompanyId from "@services/usuarios/getUsersByCompanyId";
+import UserPopover from "./Popover";
 
-interface IUsuario  {
+export interface IUsuario  {
   id: number;
   nome: string;
   email: string;
@@ -52,15 +53,15 @@ interface UserData {
 
 export default function Usuarios({}) {
   const [session] = useSession();
-  const {userDeletePermission, userUpdatePermission, userPermission} = useSecurityContext()
+  const {userPermission} = useSecurityContext()
   const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
   const [page, setPage] = useState(1);
   const [quantityPage, setQuantityPage] = useState(1)
-  const [, setToast] = useToasts();
+ 
+
 
   
-
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
     setPage(value)
   }
@@ -86,91 +87,26 @@ export default function Usuarios({}) {
   }, [page])
 
 
-  
-
-  
-
-  const PopOption = ( data: any) => (
- 
-    <Popover
-      placement="right"
-     
-      content={
-        <>
-          {userUpdatePermission &&
-            <Popover.Item>
-            <Text
-              style={{
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                const { id } = data;
-                const perfil_nome = data.perfil_id;
-                const nome = data.nome;
-                const email = data.email;
-                router.push({
-                  pathname: "/atualizar-usuario",
-                  query: { perfil_nome, nome, email, id },
-                });
-              }}
-            >
-              Editar
-            </Text>
-          </Popover.Item>
-          }
-        { userDeletePermission && 
-          <Popover.Item>
-            <Text
-              style={{
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                const { id } = data;
-                deletar(id);
-                // setVisible(false)
-              }}
-            >
-              Deletar
-            </Text>
-          </Popover.Item>
-          }
-        </>
-      }
-    >
-      <span style={{ cursor: "pointer" }}>
-        <MoreHorizontal />
-      </span>
-    </Popover>
-  
-)
+function optionUserPopover (data: any) {
+  return <UserPopover data={data} usuarios={usuarios} setUsuarios={setUsuarios} />
+}
 
   const UsersByCompanyData = useMemo(() => {
-    const allData: UserData[] = [];
+    const allData: any = [];
     if(usuarios) {
       usuarios.forEach((item) => {
         allData.push({
           ...item,
           perfil_nome: item.perfil.nome,
           emailFormatted: item.email.toLowerCase(),
-          option: PopOption(item),
-        })
-      })
+          option:  optionUserPopover(item)
+        });
+      });
     }
     
     return allData;
   },[usuarios])
 
- 
-  
-
-  function deletar(id: number) {
-    usuario.deletar(id);
-    const usuariosAtualizados = usuarios?.filter((usuario) => usuario.id !== id);
-    setUsuarios(usuariosAtualizados)
-  } 
-
-
- /*  if (!data) return <Loading />; */
 
   return (
     <>
@@ -189,14 +125,6 @@ export default function Usuarios({}) {
         </Button>
       </Row>
       <Spacer y={1} />
-      {/* <Grid>
-        <Table data={UsersByCompanyData}>
-          <Table.Column prop="option" />
-          <Table.Column prop="nome" label="Nome" />
-          <Table.Column prop="emailFormatted"  label="Email" />
-          <Table.Column prop="perfil_nome" label="Perfil" />
-        </Table>
-      </Grid> */}
    {userPermission &&
     <GridStyle>
       <table>
@@ -209,7 +137,7 @@ export default function Usuarios({}) {
           </tr>
         </thead>
         <tbody>
-        {UsersByCompanyData.map((item, i) => (
+        {UsersByCompanyData.map((item: any, i: any) => (
         <tr key={i}>
           <td>{item.option}</td>
           <td style={{textTransform: "capitalize"}}>{item.nome }</td>
