@@ -21,6 +21,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import getUsersByCompanyId from "@services/usuarios/getUsersByCompanyId";
 import UserPopover from "./Popover";
+import {capitalize} from "@utils/capitalize"
 
 export interface IUsuario  {
   id: number;
@@ -91,6 +92,8 @@ function optionUserPopover (data: any) {
   return <UserPopover data={data} usuarios={usuarios} setUsuarios={setUsuarios} />
 }
 
+
+
   const UsersByCompanyData = useMemo(() => {
     const allData: any = [];
     if(usuarios) {
@@ -99,14 +102,27 @@ function optionUserPopover (data: any) {
           ...item,
           perfil_nome: item.perfil.nome,
           emailFormatted: item.email.toLowerCase(),
+          nome: capitalize(item.nome),
           option:  optionUserPopover(item)
         });
       });
     }
     
-    return allData;
+    return allData.sort(comparations);
   },[usuarios])
 
+
+
+ function comparations (a: any, b: any) {
+  if ( a.nome < b.nome ){
+    return -1;
+  }
+  if ( a.nome > b.nome ){
+    return 1;
+  }
+  return 0;
+ }
+ 
 
   return (
     <>

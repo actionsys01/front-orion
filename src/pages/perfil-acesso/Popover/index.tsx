@@ -66,7 +66,6 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
         setDescricao(descricao);
         setVisibleModal(true)
       }
-      console.log("post:", descricao, name,)
     
         function editar({
         nome,

@@ -113,8 +113,6 @@ export default function PerfilAcesso() {
     return perfis;
   }, [perfisAplicacoes]);
 
-  console.log(perfis)
-
 
   async function cadastrar() {
     if(!nome || !descricao) {
