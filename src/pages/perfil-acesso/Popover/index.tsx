@@ -54,8 +54,6 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
         const response = await api.get(`/perfil/search?profile_id=${id}`)
         const profile = response.data.permissoes
         const permissions =  profile.map((item: any) => item.id)
-        
-        console.log("mapa:",profile, "result:", permissions)
         setCopiedPermissions(permissions)
       }
 
@@ -103,12 +101,14 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
 
       async function copyProfile() {
           try {
-            await perfil.criar({name: name, descricao: descricao, permissions: copiedPermissions, empresa_id: Number(session?.usuario.empresa.id)})
+            const newProfileResponse = await perfil.criar({name: name, descricao: descricao, permissions: copiedPermissions, empresa_id: Number(session?.usuario.empresa.id)})
             setToast({
               text: "Cópia realizada com sucesso.",
               type: "success"
           })
+          console.log("new:",newProfileResponse.data);
           
+          setPerfisAplicacoes(oldPerfisAplicacoes => [...oldPerfisAplicacoes, newProfileResponse.data])
           } catch (error) {
               setToast({
                   text: "Houve um problema com a operação, por favor tente novamente.",

@@ -69,11 +69,6 @@ export default function PerfilAcesso() {
   const [, setToast] = useToasts();
   const router = useRouter();
   
-  // useEffect(() => {
-  //   if(!profilePermission){
-  //     router.back()
-  //   } 
-  // }, [])
 
 
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
@@ -98,7 +93,7 @@ export default function PerfilAcesso() {
       const companyId = session?.usuario.empresa.id
       setEmpresaId(companyId)
       
-  },[page, perfisAplicacoes])
+  },[page])
 
 
 
