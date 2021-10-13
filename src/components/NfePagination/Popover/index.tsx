@@ -26,8 +26,7 @@ interface Event {
     const [secondPopoverVisible, setSecondPopoverVisible] = useState(false)
     const {nfeHistoricalPermission, nfeAwarePermission, nfeConfirmPermission, nfeUnawarePermission, nfeUnauthorizedPermission} = useSecurityContext()
     const [ reason, setReason] = useState<string>("")
-    const [eventType, setEventType] = useState<"CIENCIA_DA_OPERAÇÃO" | "CONFIRMACAO_DA_OPERACAO" |
-     "OPERACAO_NAO_REALIZADA" | "DESCONHECIMENTO_DA_OPERACAO" | string>("")
+    const [eventType, setEventType] = useState< string>("")
     const [stateCode, setStateCode] = useState<string>("") 
     const [invoiceKey, setInvoiceKey] = useState<string>("")
     const [companyId, setCompanyId] = useState<number>()
@@ -54,7 +53,7 @@ interface Event {
          setSecondPopoverVisible(false)
          setVisible(false) 
          console.log("cod_estado:",stateCode, key, invoiceKey, company_id, dest_cnpj, "tipo:",eventType,"motivo:", reason)
-        },[invoiceKey, cnpj, ])
+        },[invoiceKey, cnpj ])
         
         console.log("cod_estado:",stateCode, "nota:", invoiceKey, "empresa:", companyId, "cnpj", cnpj, "tipo:",eventType,"motivo:", reason)
 
@@ -257,7 +256,6 @@ interface Event {
         </Modal.Content>
         }
         {action ===  "Operação não realizada" &&
-        
         <Modal.Content>
           <Text small>Motivo</Text>
           <Textarea
@@ -269,13 +267,11 @@ interface Event {
         </Modal.Content>
         }
           {action ===  "Desconhecimento da Operação" &&
-        
         <Modal.Content>
           <Text small>Motivo</Text>
           <Textarea
             width="100%"
-             placeholder="Ex: Os dados da nota não conferem"
-            
+            placeholder="Ex: Os dados da nota não conferem"
             onChange={(e) => setReason(e.target.value)}
           />
         </Modal.Content>

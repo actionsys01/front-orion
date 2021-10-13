@@ -98,7 +98,7 @@ export default function PerfilAcesso() {
       const companyId = session?.usuario.empresa.id
       setEmpresaId(companyId)
       
-  },[page])
+  },[page, perfisAplicacoes])
 
 
 

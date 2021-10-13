@@ -64,7 +64,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
        function copiar({ nome,
         descricao} : Omit<IPerfilAplicacao, "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp" | "id"> ) {
         setAcao("copiar")  
-        setName(nome)
+        setName(`Cópia de ${nome}`)
         setDescricao(descricao);
         setVisibleModal(true)
       }
@@ -170,10 +170,6 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
                         setVisible(false)
                         const item = data.rowValue as IPerfilAplicacao;
                         const id = Number(data.rowValue.id);
-                        // const nome = String(data.rowValue.nome);
-                        // const description = String(data.rowValue.descricao)
-                       console.log("row",data.rowValue)
-                        // console.log(id)
                         getProfileId(id)
                         copiar(item);
                         
@@ -206,7 +202,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
                 <Text small>Nome</Text>
           <Input
             width="100%"
-            placeholder={name}
+            value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <Text small>Descrição</Text>
