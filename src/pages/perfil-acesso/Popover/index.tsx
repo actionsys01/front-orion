@@ -131,7 +131,6 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
             pathname: "/atualizar-cadastro",
             query: { name, descricao, perfilId },
           })
-      
       }
 
     return <>
@@ -240,7 +239,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
         <Modal.Action passive onClick={() => setVisibleModal(false)} type="abort">
           CANCELAR
         </Modal.Action>
-        <Modal.Action onClick={() => acao === "editar" ? updateProfile : acao === "copiar" ? copyProfile : acao === "deletar" ? deleteProfile() : null} >
+        <Modal.Action onClick={() => acao === "editar" ? updateProfile() : acao === "copiar" ? copyProfile() : acao === "deletar" ? deleteProfile() : null} >
           CONTINUAR
         </Modal.Action>
       </Modal>
