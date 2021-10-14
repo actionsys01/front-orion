@@ -52,10 +52,10 @@ interface Event {
          setVisiblePop(true);
          setSecondPopoverVisible(false)
          setVisible(false) 
-         console.log("cod_estado:",stateCode, key, invoiceKey, company_id, dest_cnpj, "tipo:",eventType,"motivo:", reason)
+        //  console.log("cod_estado:",stateCode, key, invoiceKey, company_id, dest_cnpj, "tipo:",eventType,"motivo:", reason)
         },[invoiceKey, cnpj ])
         
-        console.log("cod_estado:",stateCode, "nota:", invoiceKey, "empresa:", companyId, "cnpj", cnpj, "tipo:",eventType,"motivo:", reason)
+        // console.log("cod_estado:",stateCode, "nota:", invoiceKey, "empresa:", companyId, "cnpj", cnpj, "tipo:",eventType,"motivo:", reason)
 
 
 
