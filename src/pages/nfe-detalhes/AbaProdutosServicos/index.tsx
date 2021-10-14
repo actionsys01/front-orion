@@ -1,5 +1,5 @@
 import { Table, Text, Collapse, Spacer } from "@geist-ui/react";
-import { useMemo } from "react";
+import { useMemo, useCallback, useEffect } from "react";
 import { Grid } from "@components/Grid";
 import DadosGeraisNfe from "../DadosGeraisNfe";
 import { Titulo, GridAlinhaTextoCentro } from "../styled";
@@ -21,33 +21,28 @@ interface Produto {
 }
 interface Impostos {
   vTotTrib: string;
-    // ICMS: {
-    //   ICMS00: { orig: string; CST: string; vBC: string; vICMS: string; pICMS: string;  modBC: string };
-    //   ICMS10: { orig: string; CST: string; modBC: string; vBC: string; pICMS: string; vICMS: string;  pRedBC: string; modBCST: string; pMVAST: string;
-    //   pRedBCST: string; pICMSST: string; vICMSST: string};
-    //   ICMS20: { orig: string; CST: string; modBC: string; pRedBC: string; vBC: string; vICMS: string; pICMS: string; vICMSDeson: string; motDesICMS: string};
-    //   ICMS30: { orig: string; CST: string; modBCST: string; pMVAST: string; pRedBCST: string; vBCST: string; pICMSST: string; vICMSST: string; vICMSDeson: string};
-    //   ICMS40: { orig: string; CST: string; vICMSDeson: string; motDesICMS: string};
-    //   ICMS51: { orig: string; CST: string; modBC: string; pRedBC: string; vBC: string; pICMS: string; vICMSOp: string; pDif: string; vICMS: string; vICMSDif: string; pMVAST: string};
-    //   ICMS60: { orig: string; CST: string; vBCSTRet: string; vICMSSTRet: string };
-    //   ICMS70: { orig: string; CST: string; modBC: string; pRedBC: string; vBC: string; pICMS: string; vICMS: string; modBCST: string; pMVAST: string;
-    //     pRedBCST: string; pICMSST: string; vICMSST: string, vICMSDeson: string, motDesICMS: string};
-    //   ICMS90: { orig: string; CST: string; modBC: string; pRedBC: string; vBC: string; pICMS: string; vICMS: string; modBCST: string; pMVAST: string;
-    //     pRedBCST: string; vBCST: string; pICMSST: string; vICMSST: string, vICMSDeson: string, motDesICMS: string};
-    //   ICMSOutraUF: {
-    //     CST: string;
-    //     pRedBCOutraUF: string;
-    //     vBCOutraUF: string;
-    //     pICMSOutraUF: string;
-    //     vICMSOutraUF: string;
-    //   };
-    //   ICMSSN: {
-    //     CST: string;
-    //     indSN: string;
-    //     vTotTrib: string;
-    //     infAdFisco: string;
-    //   };
-    // };
+    ICMS: {
+      ICMS00: { CST: string; vBC: string;  modBC: string; pICMS: string; vICMS: string};
+      ICMS10: { CST: string; modBC: string; vBC: string; pICMS: string; vICMS: string; modBCST: string; 
+      vBCST: string; pICMSST: string; vICMSST: string};
+      ICMS20: { CST: string; modBC: string; vBC: string; vICMS: string; pICMS: string};
+      ICMS30: { CST: string; modBCST: string;  vBCST: string; pICMSST: string; vICMSST: string  };
+      ICMS40: { CST: string};
+      ICMS51: { CST: string; modBC: string; vBC: string; pICMS: string; vICMS: string};
+      ICMS60: { CST: string};
+      ICMS70: { CST: string; modBC: string; vBC: string; pICMS: string; vICMS: string; modBCST: string; 
+        vBCST: string; pICMSST: string; vICMSST: string};
+      ICMS90: { CST: string; modBC: string; vBC: string; pICMS: string; vICMS: string; modBCST: string; 
+        vBCST: string; pICMSST: string; vICMSST: string};
+      ICMSPart: { CST: string; modBC: string; vBC: string; vICMS: string; pICMS: string; modBCST: string; 
+        vBCST: string; pICMSST: string; vICMSST: string}; 
+      ICMSST: { CST: string};
+    };
+    IPI: {
+      IPIINT: {CST: string};
+      IPITrib: {CST: string; vBC: string, vIPI: string; pIPI: string }
+    };
+    COFINS: {}
 }
 
 interface IProps {
@@ -68,34 +63,62 @@ interface IProps {
       | [
           {
             prod: Produto;
-            impostos: Impostos;
+            imposto: Impostos;
           }
         ]
       | {
           prod: Produto;
-          impostos: Impostos;
+          imposto: Impostos;
         };
   };
 }
 
 export default function AbaProdutosServicos({ data }: IProps) {
   
+  
+
   const produtos = useMemo(() => {
-    let produtos: any[] = [];
+    let products: any[] = [];
     if (Array.isArray(data?.produtos_servicos)) {
-      data.produtos_servicos.map((item) => produtos.push(item));
+      data.produtos_servicos.map((item) => products.push({...item,
+      ICMS: item.imposto.ICMS.ICMS00 || 
+      item.imposto.ICMS.ICMS10 || 
+      item.imposto.ICMS.ICMS20 || 
+      item.imposto.ICMS.ICMS30 || 
+      item.imposto.ICMS.ICMS40 || 
+      item.imposto.ICMS.ICMS51 || 
+      item.imposto.ICMS.ICMS60 || 
+      item.imposto.ICMS.ICMS70 || 
+      item.imposto.ICMS.ICMS90 || 
+      item.imposto.ICMS.ICMSST,
+      IPI: item.imposto.IPI?.IPIINT || item.imposto.IPI?.IPITrib
+      }));
     } else {
-      produtos.push(data?.produtos_servicos);
+      products.push({...data.produtos_servicos,
+        ICMS: data.produtos_servicos.imposto.ICMS.ICMS00 || 
+        data.produtos_servicos.imposto.ICMS.ICMS10 || 
+        data.produtos_servicos.imposto.ICMS.ICMS20 || 
+        data.produtos_servicos.imposto.ICMS.ICMS30 || 
+        data.produtos_servicos.imposto.ICMS.ICMS40 || 
+        data.produtos_servicos.imposto.ICMS.ICMS51 || 
+        data.produtos_servicos.imposto.ICMS.ICMS60 || 
+        data.produtos_servicos.imposto.ICMS.ICMS70 || 
+        data.produtos_servicos.imposto.ICMS.ICMS90 || 
+        data.produtos_servicos.imposto.ICMS.ICMSST,
+        IPI: data.produtos_servicos.imposto.IPI?.IPIINT || data.produtos_servicos.imposto.IPI?.IPITrib
+        });
     }
-    return produtos;
+    //  console.log("func:", products)
+    return products;
   }, [data]);
   
 
+  
   return (
     <>
       <DadosGeraisNfe data={data} />
       <Text h3>Dados dos Produtos e Serviços </Text>
-      {produtos.map((produto) => (
+      {produtos.map((produto, i) => (
         <Collapse.Group>
           <Collapse
             style={{ padding: 5 }}
@@ -239,74 +262,71 @@ export default function AbaProdutosServicos({ data }: IProps) {
               </Text>
             </BackgroundCinza>
             <Spacer />
-            {/* row */}
+            {/* row 1 */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
                 <Titulo>CST do ICMS</Titulo>
-                <Text small>{produto?.imposto?.ICMS?.ICMS10?.CST}</Text>
+                <Text small>{produto?.ICMS?.CST}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>Mod. BC do ICMS</Titulo>
-                <Text small>{produto?.imposto?.ICMS?.ICMS10?.modBC}</Text>
+                <Text small>{produto?.ICMS?.modBC}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>CST IPI</Titulo>
-                <Text small>{produto?.IPI?.IPITrib?.CST}</Text>
+                <Text small>{produto?.IPI?.CST}</Text>
               </GridAlinhaTextoCentro>
             </Grid.Container>
             <Spacer />
-             {/* row */}
+             {/* row 2 */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
                 <Titulo>BC do ICMS</Titulo>
-                <Text small>{produto?.imposto?.ICMS?.ICMS00?.vBC}</Text>
+                <Text small>{produto?.ICMS?.vBC}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>Alíquota do ICMS</Titulo>
-                <Text small>{produto?.imposto?.ICMS?.ICMS00?.pICMS}</Text>
+                <Text small>{produto?.ICMS?.pICMS}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>Valor do ICMS</Titulo>
-                <Text small>{produto?.imposto?.ICMS?.ICMS10?.vICMS}</Text>
+                <Text small>{produto?.ICMS?.vICMS}</Text>
               </GridAlinhaTextoCentro>
-              {/* <GridAlinhaTextoCentro>
-                <Titulo>BC do IPI</Titulo>
-                <Text small>{produto?.imposto?.ICMS?.ICMS10?.vBC}</Text>
-              </GridAlinhaTextoCentro> */}
             </Grid.Container>
             <Spacer />
-             {/* row */}
+             {/* row 3 */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
                 <Titulo>BC do ICMS-ST</Titulo>
-                <Text small>{produto?.imposto?.ICMS?.ICMS60?.pST}</Text>
+                <Text small>{produto?.ICMS?.vBCST}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>Alíquota do ICMS-ST</Titulo>
-                <Text small></Text>
+                <Text small>{produto?.ICMS?.pICMSST}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>Valor do ICMS-ST</Titulo>
-                <Text small>{produto?.imposto?.ICMS?.ICMS60?.vICMSSTRet}</Text>
+                <Text small>{produto?.ICMS?.vICMSST}</Text>
               </GridAlinhaTextoCentro>
             </Grid.Container>
             <Spacer />
-            {/*  row */}
+            {/*  row 4 */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
                 <Titulo>BC do IPI</Titulo>
-                <Text small></Text>
+                <Text small>{produto?.IPI?.vBC}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>Alíquota do IPI</Titulo>
-                <Text small></Text>
+                <Text small>{produto?.IPI?.pIPI}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>Valor do IPI</Titulo>
-                <Text small></Text>
+                <Text small>{produto?.IPI?.vIPI}</Text>
               </GridAlinhaTextoCentro>
             </Grid.Container>
             <Spacer />
+            {/* mal feito */}
             <BackgroundCinza>
               <Text h3 style={{ textAlign: "left", margin: 0 }}>
                 PIS/COFINS
@@ -316,35 +336,36 @@ export default function AbaProdutosServicos({ data }: IProps) {
              {/* row */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
-                <Titulo>CTS do CONFINS</Titulo>
-                <Text small>{produto?.COFINS?.COFINSAliq?.CST}</Text>
+                <Titulo>CST do CONFINS</Titulo>
+                {/* {console.log("dentro",produto?.COFINS?.COFINSAliq?.CST)} */}
+                <Text small>{produto?.imposto.COFINS?.COFINSAliq?.CST}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>BC do CONFINS</Titulo>
-                <Text small>{produto?.COFINS?.COFINSAliq?.vBC}</Text>
+                <Text small>{produto?.imposto.COFINS?.COFINSAliq?.vBC}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>Alíquota do CONFINS</Titulo>
-                <Text small>{produto?.COFINS?.COFINSAliq?.pCOFINS}</Text>
+                <Text small>{produto?.imposto.COFINS?.COFINSAliq?.pCOFINS}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>Valor do CONFINS</Titulo>
-                <Text small>{produto?.COFINS?.COFINSAliq?.vCOFINS}</Text>
+                <Text small>{produto?.imposto.COFINS?.COFINSAliq?.vCOFINS}</Text>
               </GridAlinhaTextoCentro>
             </Grid.Container>
             <Spacer />
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
-                <Titulo>CTS do PIS</Titulo>
-                <Text small>{produto?.PIS?.PISAliq?.CTS}</Text>
+                <Titulo>CST do PIS</Titulo>
+                <Text small>{produto?.imposto.PIS?.PISAliq?.CTS}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>BC dO PIS</Titulo>
-                <Text small>{produto?.PIS?.PISAliq?.vBC}</Text>
+                <Text small>{produto?.imposto.PIS?.PISAliq?.vBC}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>Alíquota do PIS</Titulo>
-                <Text small>{produto?.PIS?.PISAliq?.pPIS}</Text>
+                <Text small>{produto?.imposto.PIS?.PISAliq?.pPIS}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>Valor do PIS</Titulo>
