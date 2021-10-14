@@ -74,8 +74,6 @@ interface IProps {
 }
 
 export default function AbaProdutosServicos({ data }: IProps) {
-  
-  
 
   const produtos = useMemo(() => {
     let products: any[] = [];
@@ -119,7 +117,7 @@ export default function AbaProdutosServicos({ data }: IProps) {
       <DadosGeraisNfe data={data} />
       <Text h3>Dados dos Produtos e Serviços </Text>
       {produtos.map((produto, i) => (
-        <Collapse.Group>
+        <Collapse.Group key={i}>
           <Collapse
             style={{ padding: 5 }}
             title={
@@ -133,11 +131,11 @@ export default function AbaProdutosServicos({ data }: IProps) {
                 </Grid>
                 <Grid>
                   <Titulo>Número</Titulo>
-                  <Text size={12}>{produto?.prod?.cProd}</Text>
+                  <Text key={i} size={12}>{produto?.prod?.cProd}</Text>
                 </Grid>
                 <Grid>
                   <Titulo>Descrição</Titulo>
-                  <Text size={12}>{produto?.prod?.xProd}</Text>
+                  <Text key={i} size={12}>{produto?.prod?.xProd}</Text>
                 </Grid>
                 <Grid>
                   <Titulo>Quantidade</Titulo>
@@ -360,7 +358,7 @@ export default function AbaProdutosServicos({ data }: IProps) {
                 <Text small>{produto?.imposto.PIS?.PISAliq?.CTS}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
-                <Titulo>BC dO PIS</Titulo>
+                <Titulo>BC do PIS</Titulo>
                 <Text small>{produto?.imposto.PIS?.PISAliq?.vBC}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
@@ -369,7 +367,7 @@ export default function AbaProdutosServicos({ data }: IProps) {
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>
                 <Titulo>Valor do PIS</Titulo>
-                <Text small>{produto?.PIS?.PISAliq?.vPIS}</Text>
+                <Text small>{produto?.imposto.PIS?.PISAliq?.vPIS}</Text>
               </GridAlinhaTextoCentro>
             </Grid.Container>
           </Collapse>
