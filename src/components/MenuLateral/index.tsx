@@ -19,7 +19,8 @@ import {
   SidebarFooter,
   SubMenu,
 } from "react-pro-sidebar";
-import logo from "@assets/images/reckitt-logo.png";
+import logo from "@assets/images/actionsys.jpg"
+// import logo from "@assets/images/reckitt-logo.png";
 import {useSecurityContext} from "@contexts/security"
 
 interface IProps {
@@ -64,8 +65,8 @@ export default function MenuLateral({
                 onClick={() => setCollapsed(!collapsed)}
               />
             )}
-            <MenuItem icon={<Avatar src={logo} />} onClick={() => router.push("/dashboard")}>
-              {session?.usuario?.empresa?.nome_fantasia}
+            <MenuItem icon={<Avatar src={logo} style={{objectFit: "contain"}} />} onClick={() => router.push("/dashboard")}>
+              Actionsys
             </MenuItem>
             <SubMenu title="Painéis" icon={<FileText />}>
               {nfePermission && <MenuItem onClick={() => router.push("/nfe")}>NFe</MenuItem>}
