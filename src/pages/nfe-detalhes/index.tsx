@@ -45,6 +45,7 @@ export default function NfeDetalhes() {
   }>({
     url: `/nfe/controle/${router.query?.chave_nota}`,
   });
+
   
 
   if (!data) return <Loading />;

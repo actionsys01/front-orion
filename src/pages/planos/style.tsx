@@ -5,32 +5,41 @@ export const AccountStyle = styled.div`
 `
 
 export const ButtonStyle = styled.div`
-    width: 100%;
-    margin: 0;
     display: flex;
-    height: 2.5rem;
-    line-height: 2.5rem;
-    font-weight: 400;
-    font-size: 0.875rem;
-    user-select: none;
-    outline: none;
-    text-transform: capitalize;
+    position: relative;
+    box-sizing: border-box;
+    margin-left: calc(0 * 16pt / 2 );
+    margin-right: calc(0 * 16pt / 2 );
+    margin-bottom: 10px;
+    row-gap: calc(0 * 16pt);
     justify-content: flex-end;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    color: #fff;
-    cursor: pointer;
-    pointer-events: auto;
-    box-shadow: none;
+    align-items: center;
 
-    button /* com texto ou icone */ {
-        position: relative;
-        z-index: 1;
-        display: inline-flex;
-        align-items: center;
+    button {
+        box-sizing: border-box;
+        display: inline-block;
+        padding: 0 1.25rem;
+        height: 2rem;
+        min-width: 9.375rem;
+        width: initial;
+        border-radius: 5px;
+        font-weight: 400;
+        font-size: 0.875rem;
+        user-select: none;
+        outline: none;
+        text-transform: capitalize;
+        justify-content: center;
         text-align: center;
-        top: -1px;
+        white-space: nowrap;
+        transition: background-color 200ms ease 0ms,box-shadow 200ms ease 0ms, border 200ms ease 0ms,color 200ms ease 0ms;
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        background-color: #0DD0B3;
+        border: 1px solid #0DD0B3;
+        cursor: pointer;
+        pointer-events: auto;
+        box-shadow: none;
     }
 `
 

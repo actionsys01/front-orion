@@ -1,7 +1,7 @@
 import BotaoVoltar from "@components/BotaoVoltar";
 import { Table, ButtonStyle } from "./style";
 import { useSession } from "next-auth/client";
-import {  Button, Loading, Spacer, Text } from "@geist-ui/react";
+import { Spacer } from "@geist-ui/react";
 import { Checkbox } from '@material-ui/core';
 import * as perfil from "@services/perfis"
 import Head from "next/head";
@@ -123,24 +123,6 @@ const nfePermissions: ProfilePermissions[] = [];
     return nfePermissions
 }, [profilePermissions])
 
-// const getNfePermissions = useMemo(() => {
-//   const nfePermissions: ProfilePermissions[] = [];
-//    if(profilePermissions) {
-//       const visualizarNfe = profilePermissions.filter((item) => item.categoria === "NFE");
-//       if(visualizarNfe){
-//           setNfeVizualizar(true)
-//           // data.forEach((item: any) => {
-//           //     nfePermissions.push({
-//           //         ...item,
-//           //         row: (<Checkbox checked/>)
-//           //     })
-//           // })
-//       }
-      
-//       }
-//       return nfePermissions
-//   }, [profilePermissions])
-
 
 
   useEffect(() => {
@@ -202,15 +184,14 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
       <BotaoVoltar/>
       <h2>Perfil de Cadastro </h2>
       <ButtonStyle>
-      <Button
-          type="success-light"
-          size="small"
+      <button
           className="btn"
           onClick={updateProfile}
         >
           Confirmar
-        </Button>
+        </button>
         </ButtonStyle>
+        <Spacer y={1} />
     <Table>
     <div className="main">
       <header>

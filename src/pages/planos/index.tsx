@@ -15,9 +15,14 @@ export default function Planos() {
     <AccountStyle>
         <h2>Cadastro de Planos</h2>
     </AccountStyle>
-    {/* <ButtonStyle>
-
-    </ButtonStyle> */}
+    <ButtonStyle>
+    <button
+    type='button'
+    onClick={() => router.push({pathname: "/cadastrar-plano"})}
+    >
+        Adicionar
+    </button>
+    </ButtonStyle>
     <AccountGrid>
         <table>
             <thead>
