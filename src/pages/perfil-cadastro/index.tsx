@@ -99,14 +99,6 @@ try {
   router.push({pathname: "/perfil-acesso"})
 }
 
-// async function updateProfile() {
-//   try {
-//     await perfil.atualizar({id_profile: Number(router.query.perfilId), nome: String(router.query.nome), descricao: String(router.query.descricao), permissions: profileApp})
-//   } catch (error) {
-//     console.log(error);
-//   }
-//   router.push({pathname: "/perfil-acesso"})
-// }
 
 const handleNfeModal = () => {!nfeModal ? setNfeModal(true) : setNfeModal(false)}
 const handleCteModal = () => {!cteModal ? setCteModal(true) : setCteModal(false)}
