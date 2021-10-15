@@ -34,6 +34,8 @@ export default function CadastrarEmpresa() {
                         <div className="input-style">
                             <input type="text" /* onChange={(e) => setName(e.target.value)} *//>
                         </div>
+                        <div className="label"><h6>Plano</h6></div>
+                    <select name="" id=""></select>
                     </div>
                 </div>
             </CompanyRegister>
