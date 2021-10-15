@@ -108,7 +108,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
               text: "Cópia realizada com sucesso.",
               type: "success"
           })
-          console.log("new:",newProfileResponse.data);
+          // console.log("new:",newProfileResponse.data);
           
           setPerfisAplicacoes(oldPerfisAplicacoes => [...oldPerfisAplicacoes, newProfileResponse.data])
           } catch (error) {
@@ -230,8 +230,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
           <Text small>Descrição</Text>
           <Input
             width="100%"
-            placeholder={descricao}
-            // value={descricao}
+            value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
           />
         </Modal.Content>
