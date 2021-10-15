@@ -43,8 +43,9 @@ const Entrar = () => {
     });
 
     if (res?.error) {
+      console.log(res.error)
       setLoading(false);
-      setToast({ text: res?.error, type: "warning" });
+      setToast({ text: "E-mail ou usuário inválidos, por favor tente novamente.", type: "warning" });
       return;
     }
 
@@ -63,9 +64,9 @@ const Entrar = () => {
         justify="space-between"
         style={{ backgroundColor: palette.foreground, padding: 10 }}
       >
-        <Link href="/">
+        {/* <Link href="#">  */}
           <Box size={50} color="#fff" />
-        </Link>
+        {/* </Link> */}
       </Row>
       <Row justify="center" style={{ marginTop: 50, padding: 10 }}>
         <div>

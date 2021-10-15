@@ -9,11 +9,11 @@ interface IProps {
   data: {
     impostos: {
       ICMS: {
-        ICMS00: { CST: string; vBC: string; vICMS: string; pICMS: string; vlCMS: string };
+        ICMS00: { CST: string; vBC: string; vICMS: string; pICMS: string};
         ICMS20: { CST: string; vBC: string; pRedBC: string; vICMS: string; pICMS: string };
         ICMS45: { CST: string;};
-        ICMS60: { CST: string; vBCSTRet: string; vICMSSTRet: string; pICMSSTRet: string; vCred: string };
-        ICMS90: { CST: string; pRedBC: string; vBC: string; pICMS: string; vICMS: string; vCred: string };
+        ICMS60: { CST: string; vBCSTRet: string; vICMSSTRet: string; pICMSSTRet: string };
+        ICMS90: { CST: string; pRedBC: string; vBC: string; pICMS: string; vICMS: string };
         ICMSOutraUF: {
           CST: string;
           pRedBCOutraUF: string;
@@ -34,29 +34,39 @@ interface IProps {
 }
 export default function AbaTotais({ data }: IProps) {
 
-const getIcmsData =- useMemo(() => {
+const getTotalsData = useMemo(() => {
   const icmsData: any = [];
   if(data) {
-    icmsData.push(data.impostos.ICMS)
+    icmsData.push({...data,
+    ICMS: data.impostos.ICMS.ICMS00 ||
+    data.impostos.ICMS.ICMS20 ||
+    data.impostos.ICMS.ICMS45 ||
+    data.impostos.ICMS.ICMS60 ||
+    data.impostos.ICMS.ICMS90 ||
+    data.impostos.ICMS.ICMSOutraUF ||
+    data.impostos.ICMS.ICMSSN
+    })
   }
-  console.log(icmsData)
+  
   return icmsData
-},[])
+},[data])
 
   //console.log(data)
   return (
     <>
       <DadosGeraisCte data={data} />
+        {getTotalsData.map((item: any, i: any) => (
+          <div key={i}>
       <BackgroundCinza>
         <Text h3>Totais </Text>
         <Grid.Container gap={2}>
           <GridAlinhaTextoCentro>
             <Titulo>Valor Total da Prestação de Serviços </Titulo>
-            <Text small>{data?.valores_servicos?.vTPrest}</Text>
+            <Text small>{item?.valores_servicos?.vTPrest}</Text>
           </GridAlinhaTextoCentro>
           <GridAlinhaTextoCentro>
             <Titulo>Valor a Receber</Titulo>
-            <Text small>{data?.valores_servicos?.vRec}</Text>
+            <Text small>{item?.valores_servicos?.vRec}</Text>
           </GridAlinhaTextoCentro>
         </Grid.Container>
       </BackgroundCinza>
@@ -66,64 +76,66 @@ const getIcmsData =- useMemo(() => {
         <Grid.Container gap={2}>
           <GridAlinhaTextoCentro>
             <Titulo>CST </Titulo>
-            <Text small>{data?.impostos?.ICMS?.ICMS00?.CST}</Text>
+            <Text small>{item?.ICMS?.CST}</Text>
           </GridAlinhaTextoCentro>
           <GridAlinhaTextoCentro>
             <Titulo>BC do ICMS</Titulo>
-            <Text small>{data?.impostos?.ICMS?.ICMS00?.vBC}</Text>
+            <Text small>{item?.ICMS?.vBC}</Text>
           </GridAlinhaTextoCentro>
           <GridAlinhaTextoCentro>
             <Titulo>Alíquota do ICMS</Titulo>
-            <Text small>{data?.impostos?.ICMS?.ICMS00?.pICMS}</Text>
+            <Text small>{item?.ICMS?.pICMS}</Text>
           </GridAlinhaTextoCentro>
           <GridAlinhaTextoCentro>
             <Titulo>Valor do ICMS</Titulo>
-            <Text small>{data?.impostos?.ICMS?.ICMS00?.vICMS}</Text>
+            <Text small>{item?.ICMS?.vICMS}</Text>
           </GridAlinhaTextoCentro>
           <GridAlinhaTextoCentro>
             <Titulo>Alíquota de redução da BC</Titulo>
-            <Text small>{data?.impostos?.ICMS?.ICMS60?.vBCSTRet}</Text>
+            <Text small>{item?.ICMS?.vBCSTRet}</Text>
           </GridAlinhaTextoCentro>
           {/* <GridAlinhaTextoCentro>
             <Titulo>ICMS Indicador SN</Titulo>
-            <Text small>{data?.informacoes_cte?.serie}</Text>
+            <Text small>{item?.informacoes_cte?.serie}</Text>
           </GridAlinhaTextoCentro> */}
         </Grid.Container>
           {/* SEGUNDO */}
         <Grid.Container gap={2}>
           <GridAlinhaTextoCentro>
             <Titulo>BC do ST Ret</Titulo>
-            <Text small>{data?.impostos?.ICMS?.ICMS60?.vBCSTRet}</Text>
+            <Text small>{item?.ICMS?.vBCSTRet}</Text>
           </GridAlinhaTextoCentro>
           <GridAlinhaTextoCentro>
             <Titulo>Valor do ICMS ST Ret</Titulo>
-            <Text small>{data?.impostos?.ICMS?.ICMS60?.vICMSSTRet}</Text>
+            <Text small>{item?.ICMS?.vICMSSTRet}</Text>
           </GridAlinhaTextoCentro>
           <GridAlinhaTextoCentro>
             <Titulo>Alíquota Redução ICMS ST Ret</Titulo>
-            <Text small>{data?.impostos?.ICMS?.ICMS60?.vBCSTRet}</Text>
+            <Text small>{item?.ICMS?.vBCSTRet}</Text>
           </GridAlinhaTextoCentro>
           <GridAlinhaTextoCentro>
             <Titulo>Alíquota ICMS ST Ret </Titulo>
-            <Text small>{data?.impostos?.ICMS?.ICMS60?.pICMSSTRet}</Text>
+            <Text small>{item?.ICMS?.pICMSSTRet}</Text>
           </GridAlinhaTextoCentro>
         </Grid.Container>
         {/* TERCEIRO */}
         <Grid.Container gap={2}>
         <GridAlinhaTextoCentro>
             <Titulo>BC do ICMS Outra UF</Titulo>
-            <Text small>{data?.impostos?.ICMS?.ICMSOutraUF?.vBCOutraUF}</Text>
+            <Text small>{item?.ICMS?.vBCOutraUF}</Text>
           </GridAlinhaTextoCentro>
           <GridAlinhaTextoCentro>
             <Titulo>Alíquota ICMS Outra UF</Titulo>
-            <Text small>{data?.impostos?.ICMS?.ICMSOutraUF?.pICMSOutraUF}</Text>
+            <Text small>{item?.ICMS?.pICMSOutraUF}</Text>
           </GridAlinhaTextoCentro>
           <GridAlinhaTextoCentro>
             <Titulo>Valor ICMS Outra UF</Titulo>
-            <Text small>{data?.impostos?.ICMS?.ICMSOutraUF?.vICMSOutraUF}</Text>
+            <Text small>{item?.ICMS?.vICMSOutraUF}</Text>
           </GridAlinhaTextoCentro>
         </Grid.Container>
       </BackgroundCinza>
+      </div>
+        ))}
       <Spacer />
     </>
   );

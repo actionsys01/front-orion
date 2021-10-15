@@ -17,7 +17,8 @@ export default function TrocarSenha() {
     setLoading(true);
     if (!senha) {
       setLoading(false);
-      setToast({ text: "Informe senha", type: "warning" });
+      setToast({  text: "Informe senha", 
+                  type: "warning" });
       return;
     }
     try {
@@ -26,10 +27,12 @@ export default function TrocarSenha() {
         password : senha
       })
 
-      setToast({ text: "Senha trocada com sucesso", type: "success" });
+      setToast({  text: "Senha trocada com sucesso", 
+                  type: "success" });
       
     } catch (error) {
-      setToast({ text: "Ocorreu um problema ao efetuar a troca de senha", type: "error" });
+      setToast({  text: "Ocorreu um problema ao efetuar a troca de senha", 
+                  type: "error" });
     } finally {
       setLoading(false);
       router.push("/");

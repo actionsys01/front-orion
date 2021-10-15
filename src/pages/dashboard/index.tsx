@@ -52,12 +52,12 @@ export default function Dashboard() {
   </select>
   </SelectStyle>
   <div style={{height: "35vh"}}>
-  {nfePermission && <h3>Nf-e</h3>}
+  {/* {nfePermission && <h3>Nf-e</h3>}
   {ctePermission && <h3>Ct-e</h3>}
   {nfsePermission &&  <h3>Nfs-e</h3>}
   {entrancePermission && <h3>Portaria</h3>}
   {profilePermission && <h3>Perfis</h3>}
-  {userPermission && <h3>Usuários</h3>}
+  {userPermission && <h3>Usuários</h3>} */}
   </div>
 <Speedometer>
   <div id="main-div">
