@@ -74,11 +74,11 @@ export default function MenuLateral({
               {nfsePermission && <MenuItem>NFS-e</MenuItem>}
             </SubMenu>
             <SubMenu title="Aplicações" icon={<Grid />}>
-              <MenuItem>Controle de Portaria</MenuItem>
+              <MenuItem onClick={() => router.push("/controle-entrada")}>Controle de Entrada</MenuItem>
               {/* <MenuItem>Contagem Física</MenuItem>
               <MenuItem>Controle Divergência</MenuItem> */}
             </SubMenu>
-            <SubMenu title="Configurações" icon={<Settings />}>
+            <SubMenu title="Configurações" icon={<Settings />}>s
               {profilePermission && <MenuItem onClick={() => router.push("/perfil-acesso")}>
                 Perfil de Acesso
               </MenuItem>}
