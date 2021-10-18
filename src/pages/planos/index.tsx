@@ -3,7 +3,9 @@ import { AccountStyle, AccountGrid, ButtonStyle } from './style';
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Checkbox } from '@material-ui/core';
-import { MoreHorizontal } from "@geist-ui/react-icons";
+import { Plus } from "@geist-ui/react-icons"
+import {AddBtn} from "../../styles/buttons";
+import Popover from '@components/Popover';
 
 export default function Planos() {
     const router = useRouter();
@@ -15,14 +17,15 @@ export default function Planos() {
     <AccountStyle>
         <h2>Cadastro de Planos</h2>
     </AccountStyle>
-    <ButtonStyle>
+    <AddBtn>
     <button
     type='button'
     onClick={() => router.push({pathname: "/cadastrar-plano"})}
-    >
+    >   
+        <span><Plus /></span>
         Adicionar
     </button>
-    </ButtonStyle>
+    </AddBtn>
     <AccountGrid>
         <table>
             <thead>
@@ -37,7 +40,7 @@ export default function Planos() {
             </thead>
             <tbody>
                 <tr>
-                    <td><MoreHorizontal /></td>
+                    <td><Popover /></td>
                     <td>Plano Rover</td>
                     <td>Plano da Empresa Rover</td>
                     <td>365</td>
