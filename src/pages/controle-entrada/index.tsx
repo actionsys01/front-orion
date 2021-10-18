@@ -2,11 +2,11 @@ import React, { useState, useMemo, useEffect, useCallback} from 'react';
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Plus, Filter } from "@geist-ui/react-icons"
-import {AddBtn, FilterBtn} from "../../styles/buttons";
 import { EntranceGrid, BtnRow } from './style';
 import Popover from '@components/Popover';
 
 export default function ControleEntrada() {
+    const router = useRouter()
     return <>
             <Head>
                 <title>Orion | Controle de Entrada</title>
@@ -17,7 +17,7 @@ export default function ControleEntrada() {
                     <span><Filter/></span>
                             Filtrar
                     </button>
-                    <button type="button" className="add">
+                    <button type="button" className="add" onClick={() => router.push({pathname: "/cadastrar-entrada"})}>
                         <span><Plus /></span>
                             Adicionar
                     </button>
