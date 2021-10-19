@@ -78,7 +78,7 @@ export default function MenuLateral({
               {/* <MenuItem>Contagem Física</MenuItem>
               <MenuItem>Controle Divergência</MenuItem> */}
             </SubMenu>
-            <SubMenu title="Configurações" icon={<Settings />}>s
+            <SubMenu title="Configurações" icon={<Settings />}>
               {profilePermission && <MenuItem onClick={() => router.push("/perfil-acesso")}>
                 Perfil de Acesso
               </MenuItem>}
