@@ -30,6 +30,10 @@ interface IProps {
       };
     };
     valores_servicos: { vTPrest: string; vRec: string };
+    informacoes_cte: {
+      cCT: string;
+    };
+    versao: string;
   };
 }
 export default function AbaTotais({ data }: IProps) {

@@ -58,6 +58,10 @@ interface IProps {
             };
       };
     };
+    informacoes_cte: {
+      cCT: string;
+    };
+    versao: string;
   };
 }
 export default function AbaCarga({ data }: IProps) {

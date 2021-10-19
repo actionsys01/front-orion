@@ -19,7 +19,7 @@ interface IProps {
     imposto: {
       ICMSSN: { infAdFisco: string };
     };
-    informações_cte: {cCT: string};
+    informacoes_cte: {cCT: string};
     versao: string
   };
 }
