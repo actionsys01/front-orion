@@ -48,7 +48,7 @@ const Auth = ( { children } : IProps)   => {
 
 
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: any) {
   const [collapsed, setCollapsed] = useState(false);
   const isXS = useMediaQuery("xs");
   const [toggle, setToggle] = useState(false);
