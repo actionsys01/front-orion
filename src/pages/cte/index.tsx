@@ -38,9 +38,7 @@ export default function Cte() {
         <Spacer x={0.2} />
       </Row>
       <Spacer y={0.5} />
-      <CtePagination company_id={session?.usuario.empresa.id} token={session?.token} />
-      {/* <TabelaControle notas={data?.ctes} pathname="/cte-detalhes" /> */}
-      {/* <Paginacao totalPagina={totalPagina} setPagina={setPagina} /> */}
+      <CtePagination  company_id={session?.usuario.empresa.id} token={session?.token} />
     </>
   );
 }

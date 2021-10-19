@@ -12,7 +12,7 @@ import AbaTotais from "./AbaTotais";
 export default function NfeDetalhes() {
   const router = useRouter();
   const { data } = useRequest<{
-    informacoes_nfe: {
+    informacoes_cte: {
       mod: string;
       serie: string;
       nNF: string;
@@ -36,7 +36,7 @@ export default function NfeDetalhes() {
       };
       IE: string;
     };
-  }>({
+  } | any>({
     url: `/ctes/${router.query?.chave_nota}`,
   });
  

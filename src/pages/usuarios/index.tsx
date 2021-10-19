@@ -1,4 +1,4 @@
-import { Grid, GridStyle } from "./style";
+import { Grid, GridStyle, Pages } from "./style";
 import React, { useState, useMemo, useEffect, useCallback} from 'react'; 
 import {
   Button,
@@ -9,9 +9,6 @@ import {
   Text,
   useToasts
 } from "@geist-ui/react";
-
-import { PaginationAlign, Pages } from "./styledComponent"
-
 import { MoreHorizontal, Plus } from "@geist-ui/react-icons";
 import {useSecurityContext} from "@contexts/security"
 import Pagination from "@material-ui/lab/Pagination";

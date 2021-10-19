@@ -53,6 +53,7 @@ interface IProps {
               | { nLote: string; dVal: string; qLote: string; dFab: string };
           };
         };
+        versao: string;
   };
 }
 export default function AbaRastro({ data }: IProps) {

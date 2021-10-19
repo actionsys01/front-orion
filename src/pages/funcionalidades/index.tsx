@@ -87,7 +87,7 @@ export default function Funcionalidades() {
           <Table.Column
             prop="grupo_codigo"
             label="Perfil de acesso"
-            width={"30%"}
+            width={30}
           />
         </Table>
       </Grid>

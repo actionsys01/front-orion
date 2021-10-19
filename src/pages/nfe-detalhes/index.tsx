@@ -24,8 +24,9 @@ export default function NfeDetalhes() {
       dEmi: string;
       dhEmi: string;
       dhSaiEnt: string;
+      
     };
-    versao: string
+    versao: string;
     total: {
       ICMSTot: { vNF: string };
     };
@@ -42,7 +43,8 @@ export default function NfeDetalhes() {
       };
       IE: string;
     };
-  }>({
+    destinatario: string;
+  } | any>({
     url: `/nfe/controle/${router.query?.chave_nota}`,
   });
 

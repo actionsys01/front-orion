@@ -30,6 +30,7 @@ interface IProps {
           ]
         | { nDup: string; dVenc: string; vDup: string };
     };
+    versao: string;
   };
 }
 export default function AbaCobranca({ data }: IProps) {

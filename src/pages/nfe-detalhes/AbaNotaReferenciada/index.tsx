@@ -40,6 +40,7 @@ interface IProps {
             refECF: { nCOO: string; nECF: string };
           };
     };
+    versao: string;
   };
 }
 export default function AbaNotaReferenciada({ data }: IProps) {

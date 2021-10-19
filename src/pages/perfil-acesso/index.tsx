@@ -19,9 +19,8 @@ import useRequest from "@hooks/useRequest";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useMemo, useState, useEffect, useCallback } from "react";
-import { Grid } from "./styled";
+import { Grid, Pages } from "./styled";
 import * as perfil from "@services/perfis";
-import { Pages } from './style'
 import {useSecurityContext} from "@contexts/security"
 import ProfilePopover from "./Popover";
 import {capitalize} from "@utils/capitalize"
