@@ -24,8 +24,7 @@ interface IProps {
         vCarga: string;
         proPred: string;
         xOutCat: string;
-        infQ:
-          | [
+        infQ: [
               {
                 tpMed: string;
                 cUnid: string;
@@ -39,8 +38,7 @@ interface IProps {
             };
       };
       infDoc: {
-        infNFe:
-          | [
+        infNFe: [
               {
                 chave: string;
                 nDoc: string;
