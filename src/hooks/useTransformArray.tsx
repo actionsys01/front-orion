@@ -9,7 +9,7 @@ export default function useTransformArray(data: [] | object) {
     } else {
       setArray(data ? [data] : []);
     }
-  });
+  }, []);
 
   return array;
 }
