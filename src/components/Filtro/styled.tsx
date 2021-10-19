@@ -140,5 +140,5 @@ export const SelectCustomizado = styled(Select).attrs((props) => ({
   components: {
     IndicatorSeparator: () => null,
   },
-  defaultValue: props.options[0],
+  // defaultValue: props.options[0],
 }))``;
