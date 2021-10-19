@@ -6,6 +6,7 @@ export const PopStyle = styled.div`
     div /* primeira div */ {
     position: absolute;
     width: -webkit-fill-available;
+    min-width: 85px;
     height: fit-content;
     bottom: -1.865rem;
     left: 24.89825px;
