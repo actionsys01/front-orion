@@ -52,7 +52,7 @@ export default function ControleEntrada() {
                     </thead>
                     <tbody>
                         <tr>
-                            <td></td>
+                            <td style={{width: "35px"}}><Popover /></td>
                             <td >878729 08776875 55653330001</td>
                             <td>DJU-45586</td>
                             <td>DFTY-3636352</td>

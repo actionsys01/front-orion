@@ -4,7 +4,7 @@ export const EntranceGrid = styled.div`
     margin: 0;
     box-sizing: border-box;
     overflow: auto;
-    width: 82.6vw;
+    width: 81.6vw;
     min-height: 55vh;
     
     table {
@@ -50,6 +50,7 @@ export const EntranceGrid = styled.div`
         tr {
           td:first-child {
             padding-left: 10px;
+            width: 150px;
           }
           td {
             border-bottom: 1px solid #eaeaea;
