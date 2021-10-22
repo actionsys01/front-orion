@@ -1,9 +1,9 @@
 import api from "@services/api";
 
 interface ICreatePlainDTO {
-    id : number;
     nome : string;
     desconto : number;
+    descricao: string;
     usuarios : number;
     notas : number;
     valor : number;
