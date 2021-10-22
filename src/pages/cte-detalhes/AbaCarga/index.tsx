@@ -24,8 +24,7 @@ interface IProps {
         vCarga: string;
         proPred: string;
         xOutCat: string;
-        infQ:
-          | [
+        infQ: [
               {
                 tpMed: string;
                 cUnid: string;
@@ -39,8 +38,7 @@ interface IProps {
             };
       };
       infDoc: {
-        infNFe:
-          | [
+        infNFe: [
               {
                 chave: string;
                 nDoc: string;
@@ -58,6 +56,10 @@ interface IProps {
             };
       };
     };
+    informacoes_cte: {
+      cCT: string;
+    };
+    versao: string;
   };
 }
 export default function AbaCarga({ data }: IProps) {
@@ -152,7 +154,7 @@ export default function AbaCarga({ data }: IProps) {
           chave_nota,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
       const mensagem = error.response.data.mensagem;
       setToast({ text: mensagem, type: "warning" });

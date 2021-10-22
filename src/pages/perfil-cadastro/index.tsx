@@ -2,15 +2,12 @@ import BotaoVoltar from "@components/BotaoVoltar";
 import { Table, ButtonStyle } from "./style";
 import { useSession } from "next-auth/client";
 import NaoEncontrado from "@components/NaoEncontrado";
-import {  Button, Loading, Spacer, Text } from "@geist-ui/react";
 import { Checkbox } from '@material-ui/core';
-import useRequest from "@hooks/useRequest";
 import * as perfil from "@services/perfis"
 import Head from "next/head";
 import { ChevronDown, ChevronUp  } from '@geist-ui/react-icons'
 import {  useRouter } from "next/router";
 import React, { useMemo, useState, useEffect } from "react";
-import api from "@services/api"
 import {useSecurityContext} from "@contexts/security"
 
 
@@ -33,6 +30,7 @@ interface Class {
 
 export default function PerfilCadastro() {
   const router = useRouter();
+  // checar permissões
   const {nfePermission, nfeHistoricalPermission, ctePermission,
         cteHistoricalPermission, userPermission, userUpdatePermission,
         userDeletePermission, profilePermission,
@@ -116,14 +114,13 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
       <BotaoVoltar/>
       <h2>Perfil de Cadastro</h2>
       <ButtonStyle>
-      <Button
-          type="success-light"
-          size="small"
+      <button
+          type="button"
           className="btn"
           onClick={createProfile}
         >
           Confirmar
-        </Button>
+        </button>
         </ButtonStyle>
     <Table>
     <div className="main">

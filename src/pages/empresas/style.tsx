@@ -52,9 +52,11 @@ export const CompaniesGrid = styled.div`
             border-bottom: 1px solid #eaeaea;
             color: #444;
             height: 3rem;
+            white-space: nowrap;
           }
         }
             
       }
     }
 `
+
