@@ -1,5 +1,6 @@
-import getCompanies from "./getCompanies";
+import getAllCompaniesByPage from "./getAllCompaniesByPage";
 import create from "./create";
 import update from "./update";
+import deletar from "./delete";
 
-export {getCompanies, create, update}
+export {getAllCompaniesByPage, create, update, deletar}

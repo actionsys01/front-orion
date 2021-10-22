@@ -6,7 +6,7 @@ interface ICriarEmpresaDTO {
     cnpj: string;
     email: string;
     status: number;
-    plano_id: number
+    plano: number
   }
 
 
