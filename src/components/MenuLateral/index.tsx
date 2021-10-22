@@ -69,8 +69,8 @@ export default function MenuLateral({
               Actionsys
             </MenuItem>
             <SubMenu title="Painéis" icon={<FileText />}>
-              {nfePermission && <MenuItem onClick={() => router.push("/nfe")}>NFe</MenuItem>}
-              {ctePermission && <MenuItem onClick={() => router.push("/cte")}>CTe</MenuItem>}
+              {nfePermission && <MenuItem onClick={() => router.push("/nfe")}>NF-e</MenuItem>}
+              {ctePermission && <MenuItem onClick={() => router.push("/cte")}>CT-e</MenuItem>}
               {nfsePermission && <MenuItem>NFS-e</MenuItem>}
             </SubMenu>
             <SubMenu title="Aplicações" icon={<Grid />}>
