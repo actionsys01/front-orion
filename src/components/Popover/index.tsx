@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { PopStyle } from './style'
 import { BsThreeDots } from "react-icons/bs";
 
-const Popover = () => {
+const Popover = (props: any) => {
+    
     const [visible, setVisible] = useState(false);
-    const [secondVisible, setSecondVisible] = useState(false)
 
     const visibleHandler = () => {
         setVisible(!visible)
@@ -15,8 +15,10 @@ const Popover = () => {
                 <BsThreeDots onClick={visibleHandler} /> 
                 {visible && 
                 <div onMouseLeave={() => setVisible(false)}>
-                    <p>Editar</p>
-                    <p>Deletar</p>
+                    {props?.content?.map((item: any, i: any) => (
+                        <p key={i} onClick={item.onClick}>{item.optionName}</p>
+                    ))}
+                    
                 </div>}
             </PopStyle>
         </>

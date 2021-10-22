@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const PopStyle = styled.div`
     position: relative;
-
+    cursor: pointer;
     div /* primeira div */ {
     position: absolute;
     width: -webkit-fill-available;
@@ -24,7 +24,7 @@ export const PopStyle = styled.div`
             cursor: pointer;
             margin: 0;
             font-size: 0.875rem;
-            line-height: 1.85rem;
+            line-height: 2rem;
         }
 }
 `

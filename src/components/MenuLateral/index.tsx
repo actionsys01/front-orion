@@ -19,7 +19,7 @@ import {
   SidebarFooter,
   SubMenu,
 } from "react-pro-sidebar";
-import logo from "@assets/images/actionsys.jpg"
+// import logo from "@assets/images/actionsys.jpg"
 // import logo from "@assets/images/reckitt-logo.png";
 import {useSecurityContext} from "@contexts/security"
 
@@ -65,7 +65,7 @@ export default function MenuLateral({
                 onClick={() => setCollapsed(!collapsed)}
               />
             )}
-            <MenuItem icon={<Avatar src={logo} style={{objectFit: "contain"}} />} onClick={() => router.push("/dashboard")}>
+            <MenuItem icon={<img src="images/actionsys.jpg" style={{objectFit: "contain", borderRadius: "50%"}} />} onClick={() => router.push("/dashboard")}>
               Actionsys
             </MenuItem>
             <SubMenu title="Painéis" icon={<FileText />}>

@@ -50,17 +50,3 @@ ul li::before {
 }
 
 `
-
-export const Visibility = styled.div`
-popover {
-  color: red
-}
-.show {
-  display: block;
-  color: red;
-}
-.hide {
-  display: none;
-  
-}
-`
