@@ -2,17 +2,20 @@ import React, {useState} from 'react'
 import BotaoVoltar from "@components/BotaoVoltar";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import {InputContainer, BottomContainer, ButtonStyle} from "./style"
+import {InputContainer, BottomContainer, ButtonStyle, SmallInputs, Column} from "./style"
 import { Checkbox } from '@material-ui/core';
 import { useToasts } from "@geist-ui/react";
-import * as planos from "@services/planos"
+import * as accounts from "@services/planos"
 
 export default function PlanoCadastro() {
     const router = useRouter();
     const [name, setName] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const [duration, setDuration] = useState<string>("");
-    const [quantity, setQuantity] = useState<string>("");
+    const [duration, setDuration] = useState<number>(0);
+    const [invoiceQuantity, setInvoiceQuantity] = useState<number>(0);
+    const [usersQuantity, setUsersQuantity] = useState<number>(0);
+    const [discount, setDiscount] = useState<number>(0);
+    const [value, setValue] = useState<number>(0);
     const [applications, setApplications] = useState<number[]>([])
     const [, setToast] = useToasts();
 
@@ -30,7 +33,7 @@ export default function PlanoCadastro() {
 
     async function createAccount () {
         try {
-            // await planos.criar({})
+            await accounts.criar({nome: name, descricao: description, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: value, dias: duration, aplicacoes: applications })
             setToast({
                 text: "Plano cadastrado com sucesso.",
                 type: "success"
@@ -41,6 +44,7 @@ export default function PlanoCadastro() {
                 type: "warning"
             })
         }
+        router.push("/planos")
     }
 
     return (
@@ -51,25 +55,41 @@ export default function PlanoCadastro() {
             <BotaoVoltar />
             <h2>Cadastrar Planos</h2>
             <InputContainer>
-            <div>
-                <div className="container">
-                    <div className="label"><h6>Nome do Plano</h6></div>
-                    <div className="input-style">
-                        <input type="text" onChange={(e) => setName(e.target.value)}/>
+                <div>
+                    <div>
+                        <span>Nome do Plano</span>
+                        <input type="tsext" onChange={(e) => setName(e.target.value)}/>
                     </div>
-                    <div className="label"><h6>Descrição</h6></div>
-                    <div className="input-style">
-                        <input type="text" onChange={(e) => setDescription(e.target.value)}/>
-                    </div>
-                    <div className="label"><h6>Duração (em dias)</h6></div>
-                    <div className="input-style">
-                        <input type="text" onChange={(e) => setDuration(e.target.value)}/>
-                    </div>
-                    <div className="label"><h6>Quantidade de Notas</h6></div>
-                    <div className="input-style">
-                        <input type="text" onChange={(e) => setQuantity(e.target.value)}/>
-                    </div>
+                <div>
+                    <span>Descrição</span>
+                    <input type="text" onChange={(e) => setDescription(e.target.value)}/>
                 </div>
+                <SmallInputs>
+                    <Column>
+                        <div>
+                            <div>
+                                    <span>Quantidade de Notas</span>
+                                    <input type="text" onChange={(e) => setInvoiceQuantity(Number(e.target.value))}/>
+                            </div>
+                            <div>
+                                    <span>Duração (em dias)</span>
+                                    <input type="text" onChange={(e) => setDuration(Number(e.target.value))}/>
+                            </div>
+                        </div>
+                    </Column>
+                    <Column>
+                        <div>
+                            <div>
+                                <span>Quantidade de Usuários</span>
+                                <input type="text" onChange={(e) => setUsersQuantity(Number(e.target.value))}/>
+                            </div>
+                            <div>
+                                <span>Valor da Mensalidade</span>
+                                <input type="text" onChange={(e) => setValue(Number(e.target.value))}/>
+                            </div>
+                        </div>  
+                    </Column>
+                </SmallInputs>
             </div>
             </InputContainer>
             <BottomContainer>
@@ -108,7 +128,7 @@ export default function PlanoCadastro() {
                 </div>
             </BottomContainer>
             <ButtonStyle>
-                <button>
+                <button onClick={createAccount}>
                     Confirmar
                 </button>
             </ButtonStyle>

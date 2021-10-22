@@ -7,56 +7,65 @@ export const InputContainer = styled.div`
     box-sizing: border-box;
     margin-bottom: 2px;
    
-   div {
+   > div {
     width: 500px;
-    height: 325px;
+    height: 285px;
     border: 1px solid rgba(151, 151, 151, .45);
+    padding: 1rem;
+    gap: 10px;
    }
 
- .container  {
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     justify-content: center;
-     border: none;
-     
-     
-     .label {
-            position: relative;
-            display: flex;
-            height: 20px;
-            border: none;
-         h6 {
-            position: absolute;
-            left: 75px;
-         }
-     }
-
-       .input-style  {
+   > div {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            vertical-align: middle;
-            height: 35px;
-            width: 75%;
-            border-radius: 5px;
-            border: 1px solid #eaeaea;
-            margin: 7px 10px;
+        }
+        span {
+                margin: 0 0.5rem;
+                font-size: 0.9rem;
+                white-space: nowrap;
+                color: #444;
+        }
 
         input {
-            margin: 4px 10px;
-            padding:0;
-            box-shadow: none;
-            font-size: .875rem;
-            background-color: transparent;
-            border: none;
-            color: #1c496a;
-            outline:  none;
-            border-radius: 0;
-            
+            max-width: 450px;
+            width: 100%;
+            height: 28px;
+            border: 1px solid #eaeaea;
         }
-   }}
 
+     
+`
+export const SmallInputs = styled.div`
+    display: flex;
+    justify-content: space-between;
+`
+
+
+export const Column = styled.div`
+    display: flex;
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1rem;
+
+         span {
+            margin: 0 0.5rem;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+     input {
+            max-width: 280px;
+            width: 90%;
+            height: 28px;
+            border: 1px solid #eaeaea;
+        }
+
+        @media (max-width: 980px) {
+        flex-wrap: wrap;
+    }
+    }
 `
 
 export const BottomContainer = styled.div`

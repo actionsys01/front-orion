@@ -48,7 +48,7 @@ export const CompanyRegister = styled.div`
             color: #1c496a;
             outline:  none;
             border-radius: 0;
-            
+            width: 100%;
         }
    }
    }

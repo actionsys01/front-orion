@@ -1,119 +1,161 @@
 import styled from "styled-components";
 
-export const EntranceRegisterStyle = styled.div`
+export const Section = styled.div`
+    width: 85%;
+    margin: 0 auto;
 
-    .outside-label {
-        margin: 0 95px;
+    h6 {
+        color: #444;
     }
+`
 
-     .content   {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 15px;
+export const OneLineContainer = styled.div`
+    border: 1px solid rgba(151, 151, 151, .45);
+    padding: 1rem;
+    display: flex;
 
-        .container {
-        border: 1px solid rgba(151, 151, 151, .45);
-        width: 85%;
-        display: flex;
-        align-items: center;
-        padding: 10px;
+    > div {
+        width: 100%;
+        span {
+                margin: 0 0.5rem;
+                font-size: 0.8rem;
+        }
 
-        .label {
-            display: flex;
-            border: none;
-            color: #444;
-            margin: 0 20px;
-            white-space: nowrap;
-     }
-
-    
-
-
-            .input-style  {
-                vertical-align: middle;
-                height: 35px;
-                width: 75%;
-                border-radius: 5px;
-                border: 1px solid #eaeaea;
-                margin: 7px 10px;
-
-                input {
-                    margin: 4px 10px;
-                    padding:0;
-                    box-shadow: none;
-                    font-size: .875rem;
-                    background-color: transparent;
-                    border: none;
-                    color: #1c496a;
-                    outline:  none;
-                    border-radius: 0;
-                
-                }
-            }
-
-            .input-style-medium {
-                vertical-align: middle;
-                height: 35px;
-                width: 35%;
-                border-radius: 5px;
-                border: 1px solid #eaeaea;
-                margin: 7px 10px;
-
-                input {
-                    margin: 4px 10px;
-                    padding:0;
-                    box-shadow: none;
-                    font-size: .875rem;
-                    background-color: transparent;
-                    border: none;
-                    color: #1c496a;
-                    outline:  none;
-                    border-radius: 0;
-                
-                }
-            }
-
-            .row {
-                display: flex;
-                align-items: center;
-                width: 100%;
-                justify-content: flex-start;
-
-                .input-style-small {
-                    vertical-align: middle;
-                    height: 35px;
-                    width: 12%;
-                    border-radius: 5px;
-                    border: 1px solid #eaeaea;
-                    margin: 7px 10px;
-
-                    input {
-                        margin: 5px 10px;
-                        padding:0;
-                        box-shadow: none;
-                        font-size: .875rem;
-                        background-color: transparent;
-                        border: none;
-                        color: #1c496a;
-                        outline:  none;
-                        border-radius: 0;
-                    }
-                }
-            }
+        input {
+            max-width: 420px;
+            width: 100%;
+            height: 22px;
+            border: 1px solid #eaeaea;
         }
     }
+    
+    @media (max-width: 830px) {
+        padding: .5rem;
+        flex-wrap: wrap;
+    }
+`
+export const Inline = styled.div`
+    border: 1px solid rgba(151, 151, 151, .45);
+    padding: 1rem;
 
-    .deliver-btn {
-        font-size: 0.85rem;
-        margin: 7px 10px;
+    > div {
+        width: 100%;
+        display: flex;
+        gap: 15%;
+
+        div {
+            display: flex;
+        }
+        span {
+                margin: 0 0.5rem;
+                font-size: 0.8rem;
+                white-space: nowrap;
+        }
+
+        input {
+            max-width: 250px;
+            width: 100%;
+            height: 22px;
+            border: 1px solid #eaeaea;
+        }
+    }
+    
+    
+    @media (max-width: 830px) {
+        div {flex-wrap: wrap}
+        span {white-space: normal}
+    }
+`
+
+
+
+
+
+export const FormContainer = styled.div`
+    border: 1px solid rgba(151, 151, 151, .45);
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    
+    @media (max-width: 830px) {
+        flex-wrap: wrap;
     }
 
-    @media (max-width: 1023px) {
-       color:red;
+`
 
-       .input-style-medium {
-        border: 1px solid red;
-       }
+export const Column = styled.div`
+    display: flex;
+    flex-direction: column;
+    
+
+    > div {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        align-items: center;
+
+        > span {
+            margin: 0 0.5rem;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        > input {
+            max-width: 150px;
+            width: 50%;
+            height: 22px;
+            border: 1px solid #eaeaea;
+        }
+
+        @media (max-width: 980px) {
+        flex-wrap: wrap;
+    }
+    }
+`
+
+export const EntranceGrid = styled.div`
+    margin: 0;
+    box-sizing: border-box;
+    overflow: auto;
+    width: 85%;
+    /* min-height: 55vh; */
+    
+    table {
+      width: 100%;
+      border-spacing: 0;
+      
+     
+      
+      thead {
+        display: table-header-group;
+        vertical-align: middle;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        background-color: #1C496A;
+        color: #fff;
+        height: 2.5rem;
+        border-radius: 5px;
+        
+        tr {
+          th:first-child {
+                    border-top-left-radius: 5px;
+                     border-bottom-left-radius: 5px;
+                }
+                th:last-child{
+                    border-top-right-radius: 5px;
+                     border-bottom-right-radius: 5px;
+                }
+          th {
+            min-width: 45px;
+            font-size: 0.75rem;
+            font-weight: normal;
+            text-align: left;
+            letter-spacing: 0;
+            padding: 0 15px;
+            white-space: nowrap;
+              }
+            }
+      }
+
     }
 `
