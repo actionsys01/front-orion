@@ -7,11 +7,12 @@ import {TableGrid} from "../../styles/tableStyle";
 import { Checkbox } from '@material-ui/core';
 
 export default function CadastrarEntrada() {
-    return <div style={{display: 'flex', gap: "10px", flexDirection: "column", alignItems: "center"}}>
+    return <>
         <Head>
             <title>Orion | Cadastrar Entrada</title>
         </Head>
         <BotaoVoltar />
+        <div style={{display: 'flex', gap: "10px", flexDirection: "column", alignItems: "center"}}>
             <Section>
                 <h6>Nf-e</h6>
                 <OneLineContainer>
@@ -132,8 +133,8 @@ export default function CadastrarEntrada() {
                     </thead>
                 </table>
                 </EntranceGrid>
-
-        </div>
+                </div>
+        </>
 }
 
 CadastrarEntrada.auth = true
