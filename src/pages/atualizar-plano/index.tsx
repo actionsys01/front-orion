@@ -18,26 +18,39 @@ export default function AtualizarPlano() {
     const [value, setValue] = useState<number>(Number(router.query.valor));
     const [applications, setApplications] = useState<number[]>([])
     const [, setToast] = useToasts();
+    const [appNames, setAppNames] = useState<string[]>([])
+
+    console.log("curry",router.query)
     
     // checkbox states
     const [nfe, setNfe] = useState<boolean>(false)
     const [cte, setCte] = useState<boolean>(false)
     const [nfse, setNfse] = useState<boolean>(false)
-    // const [entrada, setEntrada] = useState<boolean>(false)
+    const [entrada, setEntrada] = useState<boolean>(false)
     
  
+console.log("é isso",applications)
  
-   const appData = useMemo(() => {
-   const array: any = router.query.appIds;
-   const numbers = array.map((item: any) => Number(item))
-   setApplications(numbers)
-   return numbers
-   }, [])
+const appData = useMemo(() => {
+const numbData: any = []
+const appNumbers: any = router.query.appIds;
+if(Array.isArray(appNumbers)) {
+    const convertedNumbers = appNumbers.map((item: any) => Number(item))
+    setApplications(convertedNumbers)
+    return convertedNumbers
+} else {
+    numbData.push(router.query.appIds)
+    const convertedNumbers = numbData.map((item: any) => Number(item))
+    setApplications(convertedNumbers)
+    return convertedNumbers
+}
+}, [])
 
    const check = () => {
     if (applications.includes(1)) {setNfe(true)} 
     if (applications.includes(2)) {setCte(true)}
     if (applications.includes(3)) {setNfse(true)}
+    if(applications.includes(4)) {setEntrada(true)}
    } 
 
    useEffect(() => {
@@ -78,7 +91,7 @@ export default function AtualizarPlano() {
                 <title>Orion | Atualizar Plano</title>
             </Head>
             <BotaoVoltar />
-            <h2>Atualizar Planos {applications}</h2>
+            <h2>Atualizar Planos</h2>
             <InputContainer>
                 <div>
                     <div>
@@ -145,7 +158,7 @@ export default function AtualizarPlano() {
                         </div>
                         <div>
                             <span>
-                                <Checkbox />
+                                <Checkbox checked={entrada} onChange={() => gatherApplications(4)} onClick={entrada ? () => setEntrada(false) : () => setEntrada(true) }/>
                             </span>
                             <h6>Controle de Portaria</h6>
                         </div>

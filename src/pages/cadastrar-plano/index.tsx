@@ -120,7 +120,7 @@ export default function PlanoCadastro() {
                         </div>
                         <div>
                             <span>
-                                <Checkbox />
+                                <Checkbox onChange={() => gatherApplications(4)}/>
                             </span>
                             <h6>Controle de Portaria</h6>
                         </div>
