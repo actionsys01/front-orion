@@ -12,22 +12,14 @@ import { INfeDto } from "@services/nfe/dtos/INfeDTO"
 export default function CadastrarEntrada() {
     const [visible, setVisible] = useState<boolean>(false);
     const [mainKey, setMainKey] = useState<string>("");
-    // const [nfe, setNfe] = useState<INfeDto[]>([])
+    const [nfe, setNfe] = useState<INfeDto[]>([])
     const [, setToast] = useToasts();
     
+    // input de chave de acesso
     const getNfe = useCallback(async () => {
+        console.log("dentro", mainKey)
         try {
-            if(!mainKey) {
-                setToast({
-                    text: "Insira uma chave válida",
-                    type: "warning"
-                });
-                return
-            }
             const response = await nfeKey.buscar(mainKey)
-            console.log("dentro", mainKey)
-            const nfeData = response.data
-            console.log(nfeData)
             setToast({
                 text: "Sucesso",
                 type: "success"
@@ -42,6 +34,11 @@ export default function CadastrarEntrada() {
     }, [] )
 
     console.log("fora", mainKey)
+    console.log("fora2", nfe)
+
+    useEffect(() => {
+        console.log("fora2", mainKey)
+    },[])
  
     return <>
         <Head>
@@ -54,7 +51,7 @@ export default function CadastrarEntrada() {
                 <OneLineContainer>
                     <div>
                         <span>Chave de Acesso Nf-e</span>
-                        <input type="text" onChange={(e) => setMainKey(e.target.value)}/>
+                        <input value={mainKey} onChange={(e) => setMainKey(e.target.value)}/>
                     </div>
                         <button onClick={getNfe}>
                             enviar
