@@ -17,11 +17,11 @@ import {useSecurityContext} from "@contexts/security"
 interface Props  {
   company_id: number | undefined;
   token: string | undefined;
-  sefaz: {
+  sefaz?: {
     cor: "secondary" | "success" | "error" | "warning" | "default";
     message: string
   }
-  portaria: {
+  portaria?: {
     cor: "success" | "warning" | "default";
     message: string
   }
