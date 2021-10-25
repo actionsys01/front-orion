@@ -28,9 +28,6 @@ export default function CadastrarEmpresa() {
     const [account, setAccount] = useState<number>(81);
     const [, setToast] = useToasts();
     const [ accountData, setAccountData] = useState<AccountProps[]>([])
-    
-
-    // console.log("empresa:", company, "cnpj:", cnpj, "email:", email, "razao:", socialName, "plano", account)
 
     const getAccounts = useCallback(async () => {
         const response = await accounts.getAllAccounts();
@@ -44,6 +41,7 @@ export default function CadastrarEmpresa() {
 
 
     async function createCompany() {
+        if(!socialName || !company || !cnpj || !email )
         try {
             await companies.create({razao_social: socialName, nome_fantasia: company, cnpj: cnpj, email: email, status: 1, plano: Number(account)})
             setToast({

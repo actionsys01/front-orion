@@ -56,7 +56,7 @@ export default function PerfilCadastro() {
   
   // if (!data) return <Loading />;
 
-  console.log(session?.usuario.empresa.plano.aplicacoes)
+
 
   useEffect(() => {
     // Empresa em questão possui apenas duas aplicações

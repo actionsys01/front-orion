@@ -115,7 +115,6 @@ const getCompanyData = useCallback(async () => {
                 })
             })
         }
-        console.log("opa:", allData)
         return allData;
     }, [company])
     

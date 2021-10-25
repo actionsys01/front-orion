@@ -1,3 +1,4 @@
+import React, {useMemo} from "react";
 import BotaoVoltar from "@components/BotaoVoltar";
 import { Tabs } from "@geist-ui/react";
 import useRequest from "@hooks/useRequest";
@@ -39,12 +40,14 @@ export default function NfeDetalhes() {
   }>({
     url: `/ctes/${router.query?.chave_nota}`,
   });
+
+ 
  
   
   return (
     <>
       <Head>
-        <title>Orion | CTe - Detalhes </title>
+        <title>Orion | CT-e - Detalhes </title>
       </Head>
       <div style={{ padding: 10 }}>
         <BotaoVoltar />

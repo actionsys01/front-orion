@@ -20,7 +20,7 @@ export default function AtualizarPlano() {
     const [, setToast] = useToasts();
     const [appNames, setAppNames] = useState<string[]>([])
 
-    console.log("curry",router.query)
+   
     
     // checkbox states
     const [nfe, setNfe] = useState<boolean>(false)
@@ -29,7 +29,7 @@ export default function AtualizarPlano() {
     const [entrada, setEntrada] = useState<boolean>(false)
     
  
-console.log("é isso",applications)
+
  
 const appData = useMemo(() => {
 const numbData: any = []

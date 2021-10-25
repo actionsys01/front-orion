@@ -33,6 +33,13 @@ export default function PlanoCadastro() {
 
     async function createAccount () {
         try {
+            if(!name || !description || !value || !usersQuantity || !invoiceQuantity){
+                setToast({
+                    text: "Favor inserir dados válidos",
+                    type: "warning"
+                });
+                return
+            }
             await accounts.criar({nome: name, descricao: description, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: value, dias: duration, aplicacoes: applications })
             setToast({
                 text: "Plano cadastrado com sucesso.",

@@ -1,4 +1,4 @@
-interface INfeDto{
+export interface INfeDto{
     chave_nota: string;
     empresa_id: number;
     nota: string;

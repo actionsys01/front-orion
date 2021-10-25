@@ -2,11 +2,47 @@ import React, { useState, useMemo, useEffect, useCallback} from 'react';
 import Head from "next/head";
 import { useRouter } from "next/router";
 import BotaoVoltar from "@components/BotaoVoltar";
-import {  Section, FormContainer, Column, OneLineContainer, Inline, EntranceGrid } from './style';
-import {TableGrid} from "../../styles/tableStyle";
+import {  Section, FormContainer, Column, OneLineContainer, Inline, EntranceGrid, BtnStyle, ModalContainer } from './style';
 import { Checkbox } from '@material-ui/core';
+import * as nfeKey from "@services/nfe-mongo"
+import { useToasts } from "@geist-ui/react";
+import { INfeDto } from "@services/nfe/dtos/INfeDTO"
+
 
 export default function CadastrarEntrada() {
+    const [visible, setVisible] = useState<boolean>(false);
+    const [mainKey, setMainKey] = useState<string>("");
+    // const [nfe, setNfe] = useState<INfeDto[]>([])
+    const [, setToast] = useToasts();
+    
+    const getNfe = useCallback(async () => {
+        try {
+            if(!mainKey) {
+                setToast({
+                    text: "Insira uma chave válida",
+                    type: "warning"
+                });
+                return
+            }
+            const response = await nfeKey.buscar(mainKey)
+            console.log("dentro", mainKey)
+            const nfeData = response.data
+            console.log(nfeData)
+            setToast({
+                text: "Sucesso",
+                type: "success"
+            });
+        } catch (error) {
+            setToast({
+                text: "Houve um problema, por favor tente novamente",
+                type: "warning"
+            });
+        }
+        setMainKey("")
+    }, [] )
+
+    console.log("fora", mainKey)
+ 
     return <>
         <Head>
             <title>Orion | Cadastrar Entrada</title>
@@ -18,8 +54,11 @@ export default function CadastrarEntrada() {
                 <OneLineContainer>
                     <div>
                         <span>Chave de Acesso Nf-e</span>
-                        <input type="text" />
+                        <input type="text" onChange={(e) => setMainKey(e.target.value)}/>
                     </div>
+                        <button onClick={getNfe}>
+                            enviar
+                        </button>
                 </OneLineContainer>
             </Section>
             <Section>
@@ -34,18 +73,28 @@ export default function CadastrarEntrada() {
                             <span >Nome</span>
                             <input type="text" />
                         </div>
-                        <div>
-                            <Checkbox />
-                        </div>
                     </div>
                         </Inline>
                 </Section>
                 <Section>
                 <h6>Veículos</h6>
-                <Inline>
+                <ModalContainer>
                     <div>
                         <div>
-                            <span>Placa Principal</span>
+                            <span className="first">Placa Principal</span>
+                            <input type="text" />
+                        </div>
+                        <div>
+                            <span>Descrição</span>
+                            <input type="text" />
+                        </div>
+                        <span><Checkbox onChange={() => setVisible(!visible)}/></span>
+                    </div>
+                   {visible && 
+                   <>
+                   <div>
+                        <div>
+                            <span>Reboque 1</span>
                             <input type="text" />
                         </div>
                         <div>
@@ -53,7 +102,28 @@ export default function CadastrarEntrada() {
                             <input type="text" />
                         </div>
                     </div>
-                </Inline>
+                    <div>
+                        <div>
+                            <span>Reboque 2</span>
+                            <input type="text" />
+                        </div>
+                        <div>
+                            <span>Descrição</span>
+                            <input type="text" />
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <span>Reboque 3</span>
+                            <input type="text" />
+                        </div>
+                        <div>
+                            <span>Descrição</span>
+                            <input type="text" />
+                        </div>
+                    </div>
+                    </>}
+                </ModalContainer>
                 </Section>
                 <Section>
                     <h6>Dados de Chegada e Saída</h6>
@@ -94,10 +164,10 @@ export default function CadastrarEntrada() {
                                 <span>UM</span>
                                 <input style={{width: "35%"}}/>
                             </div>
-                            <div style={{justifyContent: "center", alignItems: "flex-end"}}>
-                                <button>
+                            <div style={{justifyContent: "center", alignItems: "flex-end", fontSize: "0.75rem"}}>
+                                <BtnStyle>
                                     Encerrar Entrega
-                                </button>
+                                </BtnStyle>
                             </div>
                         </Column>
                     </FormContainer>

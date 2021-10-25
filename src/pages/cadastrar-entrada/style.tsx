@@ -6,6 +6,7 @@ export const Section = styled.div`
 
     h6 {
         color: #444;
+        
     }
 `
 
@@ -22,7 +23,7 @@ export const OneLineContainer = styled.div`
         }
 
         input {
-            max-width: 420px;
+            max-width: 620px;
             width: 100%;
             height: 22px;
             border: 1px solid #eaeaea;
@@ -41,10 +42,12 @@ export const Inline = styled.div`
     > div {
         width: 100%;
         display: flex;
+        align-items: center;
         gap: 15%;
 
         div {
             display: flex;
+            align-items: center;
         }
         span {
                 margin: 0 0.5rem;
@@ -54,6 +57,57 @@ export const Inline = styled.div`
 
         input {
             max-width: 250px;
+            width: 100%;
+            height: 22px;
+            border: 1px solid #eaeaea;
+        }
+    }
+    
+    
+    @media (max-width: 830px) {
+        div {flex-wrap: wrap}
+        span {white-space: normal}
+    }
+`
+
+export const ModalContainer = styled.div`
+    border: 1px solid rgba(151, 151, 151, .45);
+    padding: 1rem;
+
+    > div {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 15%;
+        min-height: 38px;
+
+        div {
+            display: flex;
+            align-items: center;
+        }
+
+        .first {
+            margin: 0 0.5rem;
+        }
+
+         span {
+                margin: 0 1.3rem;
+                font-size: 0.8rem;
+                white-space: nowrap;
+
+                .MuiSvgIcon-root {
+                            font-size: 18px
+                        }
+
+                        .Mui-checked {
+                            color: #1C496A;
+                            
+                            
+                        }
+        }
+
+        input {
+            max-width: 100px;
             width: 100%;
             height: 22px;
             border: 1px solid #eaeaea;
@@ -118,7 +172,7 @@ export const EntranceGrid = styled.div`
     box-sizing: border-box;
     overflow: auto;
     width: 85%;
-    /* min-height: 55vh; */
+    min-height: 7rem;
     
     table {
       width: 100%;
@@ -158,4 +212,12 @@ export const EntranceGrid = styled.div`
       }
 
     }
+`
+
+export const BtnStyle = styled.button`
+    display: flex;
+    justify-content: flex-end;
+    font-size: 0.67rem;
+    padding: 4px;
+    cursor: pointer;
 `
