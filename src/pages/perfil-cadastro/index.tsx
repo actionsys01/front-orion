@@ -8,7 +8,8 @@ import Head from "next/head";
 import { ChevronDown, ChevronUp  } from '@geist-ui/react-icons'
 import {  useRouter } from "next/router";
 import React, { useMemo, useState, useEffect } from "react";
-import {useSecurityContext} from "@contexts/security"
+import {useSecurityContext} from "@contexts/security";
+import { useToasts} from "@geist-ui/react";
 
 
 type ICreateProfile = {
@@ -51,6 +52,7 @@ export default function PerfilCadastro() {
   const [isCte, setIsCte] = useState<boolean>(false)
   const [isNfse, setIsNfse] = useState<boolean>(false)
   const [profileApp, setProfileApp] = useState<number[]>([])
+  const [, setToast] = useToasts();
 
   //Portaria ainda não possui rotas de permissão, portanto a lógica ainda não aplicada a ela IMPORTANTE!
   
@@ -90,6 +92,13 @@ if (!findProfileApp) {
 
 async function createProfile ()  {
 try {
+  if(!profileApp.length) {
+    setToast({
+      text: "Por favor, selecione ao menos uma permissão",
+      type: "warning"
+    })
+    return
+  }
   await perfil.criar({name: String(router.query.nome), descricao: String(router.query.descricao), permissions: profileApp,  empresa_id: Number(session?.usuario.empresa.id) })
 } catch (error) {
   console.log(error);

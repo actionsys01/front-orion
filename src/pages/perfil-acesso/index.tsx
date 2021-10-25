@@ -20,11 +20,11 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { Grid } from "./styled";
+import {Pages} from "@styles/pages"
 import * as perfil from "@services/perfis";
-import { Pages } from './style'
 import {useSecurityContext} from "@contexts/security"
 import ProfilePopover from "./Popover";
-
+import capitalize from "@utils/capitalize"
 import getProfileAnTotalByCompanyId from '@services/perfis/getProfileAnTotalByCompanyId'
 
 
@@ -103,6 +103,7 @@ export default function PerfilAcesso() {
       perfisAplicacoes.forEach((item) => {
         perfis.push({
           ...item,
+          nome: capitalize(item.nome),
           link: (action: any, data: any) => (
            <ProfilePopover data={data}  setPerfisAplicacoes={setPerfisAplicacoes}/>
           ),
@@ -110,8 +111,19 @@ export default function PerfilAcesso() {
       });
     }
 
-    return perfis;
+    return perfis.sort(comparations);
   }, [perfisAplicacoes]);
+
+  function comparations (a: any, b: any) {
+    if ( a.nome < b.nome ){
+      return -1;
+    }
+    if ( a.nome > b.nome ){
+      return 1;
+    }
+    return 0;
+   }
+   
 
 
   async function cadastrar() {
