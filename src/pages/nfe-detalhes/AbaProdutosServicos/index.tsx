@@ -56,6 +56,7 @@ interface IProps {
       dhSaiEnt: string;
       vUnTrib: string;
     };
+    versao: string;
     total: {
       ICMSTot: { vNF: string };
     };
@@ -157,7 +158,7 @@ export default function AbaProdutosServicos({ data }: IProps) {
                   <Titulo>nItemPed (Linha pedido)</Titulo>
                   <Text size={12}>{produto?.prod?.nItemPed}</Text>
                 </Grid>
-              </Grid.Container>
+              </Grid.Container> as any
             }
           >
             <Grid.Container gap={2} direction="row">

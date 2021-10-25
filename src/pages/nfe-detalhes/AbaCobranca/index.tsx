@@ -14,6 +14,7 @@ interface IProps {
       dhEmi: string;
       dhSaiEnt: string;
     };
+    versao: string;
     total: {
       ICMSTot: {
         vNF: string;

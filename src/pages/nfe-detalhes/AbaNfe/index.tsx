@@ -73,13 +73,6 @@ export default function AbaNfe({ data }: IProps) {
 
   }, [data])
 
-  //  const dataTime = useMemo(() => {
-  //    if(data?.informacoes_nfe?.hSaiEnt) {
-  //      const dataFinal = format(new Date(data?.informacoes_nfe?.hSaiEnt), "dd-MM-yyyy")
-  //      return dataFinal;
-  //    }
-  //    return null
-  //  }, [data])
 
   return (
     <>

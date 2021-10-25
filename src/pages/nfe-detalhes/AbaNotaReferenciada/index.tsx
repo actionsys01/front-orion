@@ -12,8 +12,7 @@ interface IProps {
       verProc: string;
       dhEmi: string;
       dhSaiEnt: string;
-      NFref:
-        | [
+      NFref: [
             {
               refNFe: string;
               refNF: {
@@ -40,13 +39,14 @@ interface IProps {
             refECF: { nCOO: string; nECF: string };
           };
     };
+    versao: string;
   };
 }
 export default function AbaNotaReferenciada({ data }: IProps) {
   const [notasReferenciadas, setNotasReferenciadas] = useState([]);
 
   useEffect(() => {
-    let referenciadas = [];
+    let referenciadas: any = [];
     if (Array.isArray(data?.informacoes_nfe.NFref)) {
       referenciadas = data.informacoes_nfe.NFref.map((item) => {
         const { refNFe } = item;
