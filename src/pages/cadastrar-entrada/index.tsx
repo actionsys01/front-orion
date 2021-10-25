@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback} from 'react';
+import React, { useState, useMemo, useEffect, useCallback, useRef} from 'react';
 import Head from "next/head";
 import { useRouter } from "next/router";
 import BotaoVoltar from "@components/BotaoVoltar";
@@ -11,15 +11,18 @@ import { INfeDto } from "@services/nfe/dtos/INfeDTO"
 
 export default function CadastrarEntrada() {
     const [visible, setVisible] = useState<boolean>(false);
+    const key: any = useRef(null)
     const [mainKey, setMainKey] = useState<string>("");
     const [nfe, setNfe] = useState<INfeDto[]>([])
     const [, setToast] = useToasts();
     
     // input de chave de acesso
-    const getNfe = useCallback(async () => {
+    const getNfe = useCallback(async (e) => {
+        e.preventDefault()
         console.log("dentro", mainKey)
         try {
-            const response = await nfeKey.buscar(mainKey)
+            const response = await nfeKey.buscar(key.current.value)
+            setNfe(response.data)
             setToast({
                 text: "Sucesso",
                 type: "success"
@@ -49,13 +52,13 @@ export default function CadastrarEntrada() {
             <Section>
                 <h6>Nf-e</h6>
                 <OneLineContainer>
-                    <div>
+                    <form onSubmit={getNfe}>
                         <span>Chave de Acesso Nf-e</span>
-                        <input value={mainKey} onChange={(e) => setMainKey(e.target.value)}/>
-                    </div>
-                        <button onClick={getNfe}>
+                        <input type="text" ref={key}/>
+                        <button type="submit">
                             enviar
                         </button>
+                    </form>
                 </OneLineContainer>
             </Section>
             <Section>

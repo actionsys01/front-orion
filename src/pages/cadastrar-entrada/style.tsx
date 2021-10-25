@@ -15,7 +15,7 @@ export const OneLineContainer = styled.div`
     padding: 1rem;
     display: flex;
 
-    > div {
+    > form {
         width: 100%;
         span {
                 margin: 0 0.5rem;
