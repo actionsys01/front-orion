@@ -4,9 +4,25 @@ import { useRouter } from "next/router";
 import BotaoVoltar from "@components/BotaoVoltar";
 import {  Section, FormContainer, Column, OneLineContainer, Inline, EntranceGrid, BtnStyle, ModalContainer } from './style';
 import { Checkbox } from '@material-ui/core';
-import * as nfeKey from "@services/nfe-mongo"
 import { useToasts } from "@geist-ui/react";
-import { INfeDto } from "@services/nfe/dtos/INfeDTO"
+import { INfeDto } from "@services/nfe/dtos/INfeDTO";
+import getNfeById from "@services/nfe/getNfeById";
+import { useSession } from "next-auth/client";
+import  {format} from "date-fns";
+import {TopConfirmBtn} from "@styles/buttons"
+
+interface Props  {
+    company_id: number | undefined;
+    token: string | undefined;
+    sefaz?: {
+      cor: "secondary" | "success" | "error" | "warning" | "default";
+      message: string
+    }
+    portaria?: {
+      cor: "success" | "warning" | "default";
+      message: string
+    }
+  }
 
 
 export default function CadastrarEntrada() {
@@ -15,39 +31,71 @@ export default function CadastrarEntrada() {
     const [mainKey, setMainKey] = useState<string>("");
     const [nfe, setNfe] = useState<INfeDto[]>([])
     const [, setToast] = useToasts();
+    const [session] = useSession();
+    const company_id = Number(session?.usuario.empresa.id)
+    
     
     // input de chave de acesso
     const getNfe = useCallback(async (e) => {
         e.preventDefault()
         console.log("dentro", mainKey)
         try {
-            const response = await nfeKey.buscar(key.current.value)
-            setNfe(response.data)
+            const response = await getNfeById(key.current.value, company_id);
+            setNfe(state =>[...state, response.data])
             setToast({
                 text: "Sucesso",
                 type: "success"
             });
         } catch (error) {
+            console.log(error)
             setToast({
                 text: "Houve um problema, por favor tente novamente",
                 type: "warning"
             });
         }
-        setMainKey("")
+        
     }, [] )
 
-    console.log("fora", mainKey)
-    console.log("fora2", nfe)
+    
 
     useEffect(() => {
-        console.log("fora2", mainKey)
+        console.log("fora2", nfe)
     },[])
+
+    const gatheredData = useMemo(() => {
+        const allData: any = []
+        if(nfe) {
+            nfe.forEach((item) => {
+                allData.push({
+                    ...item,
+                    option: <span><Checkbox /></span>,
+                    portaria_status: (item.portaria_status === 0 ? "Na Portaria" : 
+                    item.portaria_status === 1 ? "Entrada Autorizada" :
+                    item.portaria_status === 2 ? "Entrada Fechada" : 
+                    item.portaria_status === 3 ? "Não se Aplica" :
+                    item.portaria_status === 4 ? "Entrega Cancelada": null),
+                    emissionDate: format(new Date(item.dt_hr_emi), "dd/MM/yyyy"),
+                    arrivalDate: format(new Date(item.portaria_status_ent_dt_hr), "dd/MM/yyyy"),
+                    arrivalTime: (item.portaria_status_ent_dt_hr).toString().slice(11, 16),
+                    exitDate: (item.portaria_status_sai_dt_hr === null ? "" : format(new Date(item?.portaria_status_sai_dt_hr), "dd/MM/yyyy")),
+                    exitTime: (item?.portaria_status_sai_dt_hr)?.toString().slice(11, 16),
+                })
+            })
+        }
+        return allData
+    }, [nfe])
+
  
     return <>
         <Head>
             <title>Orion | Cadastrar Entrada</title>
         </Head>
         <BotaoVoltar />
+        <TopConfirmBtn style={{width: "92.5%", margin: 0}}>
+            <button>
+                confirmar
+            </button>
+        </TopConfirmBtn>
         <div style={{display: 'flex', gap: "10px", flexDirection: "column", alignItems: "center"}}>
             <Section>
                 <h6>Nf-e</h6>
@@ -179,28 +227,37 @@ export default function CadastrarEntrada() {
                         <tr>
                             <th></th>
                             <th>Chave de Acesso Nf-e</th>
-                            <th>CNPJ Emitente</th>
-                            <th>Descrição Emitente</th>
+                            <th>CNPJ Fornecedor</th>
+                            <th>Nome Fornecedor</th>
                             <th>Número Nota Fiscal</th>
                             <th>Série</th>
                             <th>Data Emissão</th>
                             <th>Status Portaria</th>
-                            <th>Status Recebimento XML</th>
-                            <th>Número Entrega</th>
-                            <th>Data Portaria</th>
-                            <th>Hora Portaria</th>
-                            <th>Peso Inicial Veículo</th>
-                            <th>Horário Saída</th>
+                            <th>Data Entrada</th>
+                            <th>Hora Entrada</th>
                             <th>Data Saída</th>
-                            <th>Horário Chegada</th>
-                            <th>Data Chegada</th>
-                            <th>Fornecedor</th>
-                            <th>Chave Devolução</th>
-                            <th>Placa Reboque 1</th>
-                            <th>Placa Reboque 2</th>
-                            <th>Placa Reboque 3</th>
+                            <th>Horário Saída</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        {gatheredData?.map((item: any, i: any) => (
+                             <tr key={i}>
+                            <td>{item.option}</td>
+                            <td>{item.chave_nota}</td>
+                            <td>{item.emit_cnpj}</td>
+                            <td>{item.emit_nome}</td>
+                            <td>{item.nota}</td>
+                            <td>{item.serie}</td>
+                            <td>{item.emissionDate}</td>
+                            <td>{item.portaria_status}</td>
+                            <td>{item.arrivalDate}</td>
+                            <td>{item.arrivalTime}</td>
+                            <td>{item?.exitDate}</td>
+                            <td>{item.exitTime}</td>
+                        </tr>
+                        ))}
+                       
+                    </tbody>
                 </table>
                 </EntranceGrid>
                 </div>

@@ -40,7 +40,7 @@ export default function PlanoCadastro() {
                 });
                 return
             }
-            await accounts.criar({nome: name, descricao: description, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: value, dias: duration, aplicacoes: applications })
+            await accounts.criar({nome: name, descricao: description, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: Number(value.toFixed(2)), dias: duration, aplicacoes: applications })
             setToast({
                 text: "Plano cadastrado com sucesso.",
                 type: "success"
@@ -92,7 +92,7 @@ export default function PlanoCadastro() {
                             </div>
                             <div>
                                 <span>Valor da Mensalidade</span>
-                                <input type="text" onChange={(e) => setValue(Number(e.target.value))}/>
+                                <input placeholder="0,00" type="number" min="0,00" max="10000,00"  step="0.01" onChange={(e) => setValue(Number(e.target.value))}/>
                             </div>
                         </div>  
                     </Column>

@@ -14,8 +14,11 @@ export const OneLineContainer = styled.div`
     border: 1px solid rgba(151, 151, 151, .45);
     padding: 1rem;
     display: flex;
-
+    
     > form {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
         width: 100%;
         span {
                 margin: 0 0.5rem;
@@ -190,7 +193,7 @@ export const EntranceGrid = styled.div`
         height: 2.5rem;
         border-radius: 5px;
         
-        tr {
+        > tr {
           th:first-child {
                     border-top-left-radius: 5px;
                      border-bottom-left-radius: 5px;
@@ -210,6 +213,25 @@ export const EntranceGrid = styled.div`
               }
             }
       }
+
+    tbody {
+        
+        > tr {
+            
+            td:first-child {
+            padding-left: 10px;
+            }
+            td {
+            border-bottom: 1px solid #eaeaea;
+            color: #444;
+            height: 3rem;
+            white-space: nowrap;
+            padding: 0 15px;
+            text-align: center;
+            }
+        }
+            
+        }
 
     }
 `

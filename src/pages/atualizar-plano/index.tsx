@@ -123,7 +123,7 @@ if(Array.isArray(appNumbers)) {
                             </div>
                             <div>
                                 <span>Valor da Mensalidade</span>
-                                <input type="text"  value={value} onChange={(e) => setValue(Number(e.target.value))}/>
+                                <input type="text"  value={value.toFixed(2)} onChange={(e) => setValue(Number(e.target.value))}/>
                             </div>
                         </div>
                     </Column>
