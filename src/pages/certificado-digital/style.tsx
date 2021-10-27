@@ -20,6 +20,12 @@ export const Section = styled.div`
             flex-direction: column;
         }
     }
+
+    @media (max-width: 1075px) {
+        > div {
+            flex-direction: column;
+        }
+    }
 `
 
 export const InputStyle = styled.div`
@@ -90,15 +96,18 @@ export const UploadModal = styled.div`
     height: 100vh;
     width: 100vw;
     background: rgba(0,0,0,0.22);
+    box-sizing: border-box;
 
     >  div {
         width: 53%;
         height: 40%;
+        min-height: 250px;
         border: none;
         position: absolute;
         left: 31%;
         top: 30%;
         background-color: #fff;
+
 
         > span {
             position: absolute;
@@ -108,6 +117,7 @@ export const UploadModal = styled.div`
                 svg {
                     height: 36px;
                     width: 28px;
+                    cursor: pointer;
                 }
         }
 
@@ -118,30 +128,108 @@ export const UploadModal = styled.div`
             margin: 14px auto;
             vertical-align: middle;
             text-align: center ;
-            color: red;
+            color: #444;
         }
 
         form {
             padding: 0.5rem 3rem;
             box-sizing: border-box;
-                
-                div {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+               
+        }
+
+        @media (max-width: 495px) {
+            min-height: 275px;
+        }
+    }
+`
+
+export const FirstLine = styled.div`
+    display: flex;
+    justify-content: center;
+     
+    label {
                     border-radius: 5px;
                     border: 1px solid #eaeaea;
                     height: 25px;
-                    width: 85%;
+                    width: 75%;
                     display: flex;
-                    justify-content: flex-end;
-                    svg {
-                        
-                    }
+                    justify-content: center;
+                    color: #444;
+                    cursor: pointer;
                 }
-            
+                
 
             input {
                 display: none;
+                cursor: pointer;
             }
+
+`
+
+export const InsideModal = styled.div`
+    display: flex;
+    justify-content: center;
+    color: #444;
+    box-sizing: border-box;
+
+    > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        align-items: center;
+
+        > span {
+            margin: 0 0.5rem;
+            font-size: 0.8rem;
+            white-space: nowrap;
         }
 
+        > input {
+            max-width: 250px;
+            width: 85%;
+            height: 22px;
+            border: 1px solid #eaeaea;
+        }
+
+        @media (max-width: 980px) {
+        flex-wrap: wrap; 
+        input {
+            max-width: 150px;
+        }
     }
+    }
+`
+
+export const ProgressBarStyle = styled.div`
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+
+            > div {
+                border-radius: 5px;
+                border: 1px solid #eaeaea;
+                height: 24px;
+                width: 55%;
+                background-color: #d8d8d8;
+                display: flex;
+                align-items: center;
+
+                div {
+                    background-color: #1C496A;
+                    opacity: 0;
+                    border-radius: 5px;
+                    height: 20px;
+                    transition: ease-in 0.5s;
+                }
+
+               
+            }
+            button {
+                    cursor: pointer;
+                }
 `

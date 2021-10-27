@@ -85,12 +85,15 @@ export default function MenuLateral({
               {userPermission && <MenuItem onClick={() => router.push("/usuarios")}>
                 Usuários
               </MenuItem>}
-               <MenuItem onClick={() => router.push("/empresas")}>
+              <MenuItem onClick={() => router.push("/certificado-digital")}>
+                  Certificado Digital
+              </MenuItem>
+               {/* <MenuItem onClick={() => router.push("/empresas")}>
                 Cadastro de Empresa
               </MenuItem>
                <MenuItem onClick={() => router.push("/planos")}>
                 Cadastro de Plano
-              </MenuItem>
+              </MenuItem> */}
               </SubMenu>
           </Menu>
         </SidebarContent>

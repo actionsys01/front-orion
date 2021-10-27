@@ -2,13 +2,19 @@ import React, {useEffect, useState, useMemo, useCallback} from 'react';
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Plus } from "@geist-ui/react-icons";
-import { Section, InputStyle, InlineInputs, RightInput, UploadModal } from "./style"
+import { Section, InputStyle, InlineInputs, RightInput} from "./style"
 import {AddBtn} from "@styles/buttons";
-import { X, Search  } from '@geist-ui/react-icons'
+import Modal from "./modal"
+
 
 
 export default function CertificadoDigital() {
-    const [fileName, setFileName] = useState("")
+    const [ visibleModal, setVisibleModal] = useState(false)
+
+    const modalHandler = useCallback(() => {
+        setVisibleModal(!visibleModal)
+    }, [visibleModal])
+  
 
     return <>
             <Head>
@@ -30,13 +36,13 @@ export default function CertificadoDigital() {
                             <input type="text" />
                         </InputStyle>
                         <>
-                        <span>Validade</span>
-                        <InlineInputs style={{flexDirection: "row", width: "76%"}}>
-                            <span>De:</span>
-                            <input type="date" />
-                            <span>Até:</span>
-                            <input type="date" />
-                        </InlineInputs>
+                            <span>Validade</span>
+                            <InlineInputs style={{flexDirection: "row", width: "76%"}}>
+                                <span>De:</span>
+                                <input type="date" />
+                                <span>Até:</span>
+                                <input type="date" />
+                            </InlineInputs>
                         </>
                     </div>
                     <RightInput style={{width: "75%"}}>
@@ -46,25 +52,14 @@ export default function CertificadoDigital() {
                 </div>
             </Section>
             <AddBtn style={{width: "92%", marginTop: ".3rem"}}>
-                <button>
+                <button onClick={() => setVisibleModal(true)}>
                 <span><Plus /></span>
-                adicionar
+                    adicionar
                 </button>
             </AddBtn>
             </div>
-            {/* <UploadModal>
-                <div>
-                    <span><X /></span>
-                    <h4>Localize seu Certificado</h4>
-                    <div>
-                        <form action="">
-                            <div id="upload" >{fileName}<Search /></div>
-                            <input type="file" id="upload" onChange={(e) => setFileName(e.target.value)}/>
-                            
-                        </form>
-                    </div>
-                </div>
-            </UploadModal> */}
+           {visibleModal && <Modal modalHandler={modalHandler}/>}
+                
         </>
     
 }
