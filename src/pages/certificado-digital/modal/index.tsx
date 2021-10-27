@@ -4,6 +4,7 @@ import ProgressBar from '@components/ProgressBar';
 import {UploadModal, FirstLine, InsideModal, ProgressBarStyle} from "../style"
 import {sendCertificate} from "@services/empresas"
 import { useToasts } from "@geist-ui/react";
+import { useSession } from 'next-auth/client';
 
 interface ModalProps {
     modalHandler: () => void
@@ -14,6 +15,8 @@ const Modal = ({modalHandler}: ModalProps) => {
     const [ progress, setProgress ] = useState(0);
     const [ certificate, setCertificate] = useState<File | null>(null);
     const [, setToast] = useToasts();
+    const [session] = useSession();
+    const id = Number(session?.usuario.empresa.id)
 
     const registerFile = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         if(event.target.files) {
@@ -24,15 +27,14 @@ const Modal = ({modalHandler}: ModalProps) => {
 
     async function sendData() {
         try {
-            setProgress(50)
-            await sendCertificate(certificate, 162);
+            setProgress(30)
+            await sendCertificate(certificate, id);
             setProgress(100)
             setToast({
                 text: "Documento enviado com sucesso",
                 type: "success"
             })
         } catch (error) {
-            setProgress(0)
             setToast({
                 text: "Houve um problema tente novamente",
                 type: "warning"
