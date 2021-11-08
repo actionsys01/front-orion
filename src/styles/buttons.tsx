@@ -129,6 +129,7 @@ export const BottomConfirmBtn = styled.div`
         pointer-events: auto;
         box-shadow: none;
     }
+
 `
 
 

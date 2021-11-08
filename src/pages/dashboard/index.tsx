@@ -1,20 +1,8 @@
 import React, { useState, useMemo, useEffect} from 'react'; 
 import { SelectStyle, Speedometer } from './style';
 import {format, Locale} from "date-fns"
-import {
-    Button,
-    Loading,
-    Popover,
-    Row,
-    Spacer,
-    Table,
-    Select,
-    Text,
-  } from "@geist-ui/react";
-  import { Calendar } from '@geist-ui/react-icons'
 import { useSession } from "next-auth/client";
 import Head from "next/head";
-import api from '@services/api';
 import {useSecurityContext} from "@contexts/security"
 
 interface SelectProps {
