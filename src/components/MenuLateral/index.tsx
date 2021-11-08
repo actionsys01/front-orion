@@ -19,8 +19,6 @@ import {
   SidebarFooter,
   SubMenu,
 } from "react-pro-sidebar";
-// import logo from "@assets/images/actionsys.jpg"
-// import logo from "@assets/images/reckitt-logo.png";
 import {useSecurityContext} from "@contexts/security"
 
 interface IProps {

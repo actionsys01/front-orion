@@ -1,8 +1,10 @@
-import { Link, Modal, Popover, Text, Textarea, useModal } from "@geist-ui/react";
+import { Popover, Text, Textarea, useModal, useToasts } from "@geist-ui/react";
 import { MoreHorizontal } from "@geist-ui/react-icons";
 import { useCallback, useState } from "react";
 import router from "next/router";
-import {useSecurityContext} from "@contexts/security"
+import {useSecurityContext} from "@contexts/security";
+import buscar from "@services/cte-mongo/buscar";
+import Dacte from "@components/dacte"
 
 
 interface PopoverProps {
@@ -13,6 +15,7 @@ interface PopoverProps {
     const [visible, setVisible] = useState(false)
     // const [secondPopoverVisible, setSecondPopoverVisible] = useState(false)
     const {cteHistoricalPermission} = useSecurityContext()
+    const [, setToast] = useToasts()
 
     const changeHandler = useCallback((next) => {
         setVisible(next)
@@ -21,6 +24,25 @@ interface PopoverProps {
       // const changeHandlerSecondPopover = useCallback((next) => {
       //   setSecondPopoverVisible(next)
       // }, [])
+
+      const printData = useCallback(async (chave_nota) => {
+          const cteData: any = []
+          try {
+            const response = await buscar(chave_nota);
+            const cteResponse = response.data;
+            if(Array.isArray(cteResponse)){
+              Dacte(cteResponse)
+            } else {
+              cteData.push(cteResponse)
+              Dacte(cteData)
+            }
+          } catch (error) {
+            setToast({
+              text: "Houve um problema, por favor tente novamente",
+              type: "warning"
+            })
+          }
+        },[],)
 
     return <>
       <Popover
@@ -99,6 +121,17 @@ interface PopoverProps {
                     }}
                     >Histórico de nota</Text>
                   </Popover.Item>}
+                  <Popover.Item>
+                    <Text 
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      const chave_nota = item?.rowValue.chave_nota;
+                      printData(chave_nota)
+                    }}
+                    > 
+                      Imprimir Nota
+                    </Text>
+                  </Popover.Item>
                 </>
               }
             >

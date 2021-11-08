@@ -96,7 +96,6 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
         });
       });
     }
-
     return newData;
   }, [nfe]);
 
