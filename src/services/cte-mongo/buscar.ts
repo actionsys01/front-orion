@@ -1,6 +1,6 @@
-import api from "../api";
+import api from "@services/api";
 
 export default async function buscar(chave_nota: string) {
-  const response = await api.get(`/nfes/${chave_nota}`);
+  const response = await api.get(`/ctes/${chave_nota}`);
   return response;
 }
