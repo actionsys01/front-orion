@@ -3,13 +3,13 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import {Plus } from "@geist-ui/react-icons";
 import { CompaniesGrid } from './style';
-import { Modal } from "../../styles/modal"
-import {AddBtn} from "../../styles/buttons";
+import { Modal } from "@styles/modal"
+import {AddBtn} from "@styles/buttons";
 import * as companies from "@services/empresas"
 import Popover from '@components/Popover';
 import { useToasts } from "@geist-ui/react";
 import Pagination from "@material-ui/lab/Pagination";
-import { Pages } from "../../styles/pages"
+import { Pages } from "@styles/pages"
 
 interface CompanyProps {
     id: number;

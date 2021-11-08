@@ -5,7 +5,7 @@ import DadosGeraisNfe from "../DadosGeraisNfe";
 import { GridAlinhaTextoCentro, Titulo } from "../styled";
 import { Container, InsideGrid } from "./style";
 import {format} from "date-fns"
-interface IProps {
+export interface IProps {
   data: {
     informacoes_nfe: {
       mod: string;
@@ -16,6 +16,7 @@ interface IProps {
       dhEmi: string
       hSaiEnt: string;
       dSaiEnt: string;
+      dhSaiEnt?: string;
     };
     versao: string;
     total: {

@@ -42,6 +42,7 @@ export default function NfeDetalhes() {
       };
       IE: string;
     };
+    destinatario: string;
   }>({
     url: `/nfe/controle/${router.query?.chave_nota}`,
   });
