@@ -3,11 +3,19 @@ import styled from "styled-components";
 export const Section = styled.div`
     width: 85%;
     margin: 0 auto;
+    
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin: 0.3rem;
 
-    h6 {
+        h6 {
         color: #444;
         
     }
+    }
+    
 `
 
 export const OneLineContainer = styled.div`
@@ -18,8 +26,10 @@ export const OneLineContainer = styled.div`
     > form {
         display: flex;
         align-items: center;
-        justify-content: space-evenly;
+        justify-content: space-around;
         width: 100%;
+
+
         span {
                 margin: 0 0.5rem;
                 font-size: 0.8rem;
@@ -33,9 +43,12 @@ export const OneLineContainer = styled.div`
         }
     }
     
-    @media (max-width: 830px) {
-        padding: .5rem;
+    @media (max-width: 1020px) {
+        
         flex-wrap: wrap;
+        input {
+            max-width: 350px !important;
+        }
     }
 `
 export const Inline = styled.div`
@@ -83,23 +96,35 @@ export const ModalContainer = styled.div`
         align-items: center;
         gap: 15%;
         min-height: 38px;
+        position: relative;
+        
 
         div {
             display: flex;
             align-items: center;
+            transition: ease-in 5s;
         }
 
         .first {
             margin: 0 0.5rem;
+        
         }
 
          span {
                 margin: 0 1.3rem;
                 font-size: 0.8rem;
                 white-space: nowrap;
+                /* width: 6rem; */
+        }
 
-                .MuiSvgIcon-root {
-                            font-size: 18px
+        
+
+        .icon {
+            position: absolute;
+            right: 0;
+            .MuiSvgIcon-root {
+                            font-size: 18px;
+                            cursor: pointer;
                         }
 
                         .Mui-checked {
@@ -110,7 +135,14 @@ export const ModalContainer = styled.div`
         }
 
         input {
-            max-width: 100px;
+            max-width: 120px;
+            width: 100%;
+            height: 22px;
+            border: 1px solid #eaeaea;
+        }
+
+        .description {
+            max-width: 170px;
             width: 100%;
             height: 22px;
             border: 1px solid #eaeaea;
@@ -118,11 +150,40 @@ export const ModalContainer = styled.div`
     }
     
     
-    @media (max-width: 830px) {
-        div {flex-wrap: wrap}
+    @media (max-width: 1160px) {
+        div {
+            flex-wrap: wrap;
+            flex-direction: column;
+        }
         span {white-space: normal}
+        .icon{
+           margin: 0;
+           padding: 0;
+           right: -50px!important;
+           top: 0;
+       }
     }
+
+    
 `
+
+export const BtnPattern = styled.button`
+        color: #fff;
+        background-color: #1C496A;
+        border: 1px solid #1C496A;
+        border-radius: 5px;
+        padding: 0 1.25rem;
+        height: 1.7rem;
+        font-weight: 400;
+        font-size: 0.875rem;
+        cursor: pointer;
+
+        @media (max-width: 1030px) {
+            padding: 0 .75rem;
+            
+        }
+`
+
 
 
 
@@ -243,3 +304,4 @@ export const BtnStyle = styled.button`
     padding: 4px;
     cursor: pointer;
 `
+

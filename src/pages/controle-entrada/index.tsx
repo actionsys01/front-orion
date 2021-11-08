@@ -4,13 +4,113 @@ import { useRouter } from "next/router";
 import { Plus, Filter } from "@geist-ui/react-icons"
 import { EntranceGrid, BtnRow } from './style';
 import Popover from '@components/Popover';
+import * as entrances from "@services/controle-entrada";
+import { useToasts } from "@geist-ui/react";
+import { useSession } from "next-auth/client";
+import  {format} from "date-fns";
+import { Pages } from "@styles/pages";
+import Pagination from "@material-ui/lab/Pagination";
+
+
+interface Entrance {
+  chave_nota: string;
+  controle_entrada: ControleProps
+}
+
+interface ControleProps {
+    placa_principal: string;
+    placa_reboque1: string;
+    placa_reboque2: string;
+    placa_reboque3: string;
+    status: number;
+    descricao_status: string;
+    data_entrada: string;
+    data_saida: string;
+    peso_cheio: string;
+    peso_vazio: string;
+    unidade_medida: string
+}
+interface EntranceDataProps {
+    id: number;
+    chave_nota: string;
+    controle_entrada: ControleProps
+    option: any,
+    status: any,
+    arrivalDate: string
+    exitDate: string;
+    arrivalTime: string;
+    exitTime: string;
+}
+
 
 export default function ControleEntrada() {
-    const router = useRouter()
+    const router = useRouter();
+    const [entrance, setEntrance] = useState<Entrance[]>([]);
+    const [page, setPage] = useState(1);
+    const [quantityPage, setQuantityPage] = useState(1);
+    const [, setToast] = useToasts();
+    const [session] = useSession();
+
+    
+    const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {setPage(value)}
+
+    const getEntranceDataByPage = useCallback(async () => {
+            const response = await entrances.getEntrance(page, Number(session?.usuario.empresa.id))
+            const data = response.data
+            setQuantityPage(Math.ceil(data.total / 8))
+            return data.notas
+        },[page])
+
+
+        useEffect(() => {
+            getEntranceDataByPage().then(response => setEntrance(response))
+        }, [page])
 
     const handleEdit = useCallback(() => {
         console.log('Editado')      
     }, [])
+
+    const handleDelete = useCallback(() => {
+        console.log('Deletado')      
+    }, [])
+
+
+
+    const gatheredData = useMemo(() => {
+        const allData: any = [];
+        if(entrance){
+            entrance.forEach((item) => {
+                allData.push({
+                    ...item,
+                    option: <Popover content={[
+                        {
+                            optionName: 'Autorizar',
+                            onClick: handleEdit
+                        },
+                        {
+                            optionName: 'Editar',
+                            onClick: handleEdit
+                        },
+                        {
+                            optionName: 'Cancelar',
+                            onClick: handleDelete
+                        }
+                    ]}/>,
+                    status: (item.controle_entrada.status === 0 ? "Na Portaria" : 
+                    item.controle_entrada.status === 1 ? "Entrada Autorizada" :
+                    item.controle_entrada.status === 2 ? "Entrada Fechada" : 
+                    item.controle_entrada.status === 3 ? "Não se Aplica" :
+                    item.controle_entrada.status === 4 ? "Entrega Cancelada": null),
+                    arrivalDate: format(new Date(item.controle_entrada.data_entrada), "dd/MM/yyyy"),
+                    exitDate: format(new Date(item.controle_entrada.data_saida), "dd/MM/yyyy"),
+                    arrivalTime: item.controle_entrada.data_entrada.slice(11,16),
+                    exitTime: item.controle_entrada.data_saida.slice(11,16)
+                })
+            })
+        }
+
+        return allData
+    }, [entrance])
 
     return <>
             <Head>
@@ -33,61 +133,52 @@ export default function ControleEntrada() {
                         <tr>
                             <th></th>
                             <th>Chave de Acesso Nf-e</th>
-                            <th>CNPJ Emitente</th>
+                            {/* <th>CNPJ Emitente</th>
                             <th>Descrição Emitente</th>
                             <th>Número Nota Fiscal</th>
                             <th>Série</th>
-                            <th>Data de Emissão</th>
+                            <th>Data de Emissão</th> */}
                             <th>Status Portaria</th>
-                            <th>Status Recebimento XML</th>
+                            {/* <th>Status Recebimento XML</th> */}
                             <th>Número Entrega</th>
-                            <th>Data Portaria</th>
-                            <th>Hora Portaria</th>
                             <th>Peso Inicial do Veículo</th>
-                            <th>Horário Saída</th>
+                            <th>Data Chegada</th>
                             <th>Data Saída</th>
                             <th>Horário Chegada</th>
-                            <th>Data Chegada</th>
-                            <th>Fornecedor</th>
-                            <th>Chave Devolução</th>
+                            <th>Horário Saída</th>
+                            {/* <th>Fornecedor</th> */}
+                            {/* <th>Chave Devolução</th> */}
+                            <th>Placa Veículo</th>
                             <th>Placa Reboque 1</th>
                             <th>Placa Reboque 2</th>
                             <th>Placa Reboque 3</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td style={{width: "35px"}}><Popover content={[
-                                {
-                                    optionName: 'Editar',
-                                    onClick: handleEdit
-                                }
-                            ]} /></td>
-                            <td >878729 08776875 55653330001</td>
-                            <td>DJU-45586</td>
-                            <td>DFTY-3636352</td>
-                            <td>67676745545433</td>
-                            <td>989866GYG</td>
-                            <td>24/07/21</td>
-                            <td>Cancelado</td>
-                            <td>Recebido</td>
-                            <td>190663566</td>
-                            <td>24/07/21</td>
-                            <td>21:00</td>
-                            <td>790kg</td>
-                            <td>23:00</td>
-                            <td></td>
-                            <td>22:00</td>
-                            <td>24/07/21</td>
-                            <td>ELEANOR CIMENTOS LTDA</td>
-                            <td>DFR-9864552333</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        {gatheredData.map((item: EntranceDataProps, i: any) => (
+                            <tr key={i}>
+                            <td style={{width: "35px"}}>{item.option}</td>
+                            <td>{item.chave_nota}</td>
+                            <td>{item.status}</td>
+                            <td>{item.id}</td>
+                            <td>{item.controle_entrada.peso_cheio}</td>
+                            <td>{item.arrivalDate}</td>
+                            <td>{item.exitDate}</td>
+                            <td>{item.arrivalTime}</td>
+                            <td>{item.exitTime}</td>
+                            <td>{item.controle_entrada.placa_principal}</td>
+                            <td>{item.controle_entrada.placa_reboque1}</td>
+                            <td>{item.controle_entrada.placa_reboque2}</td>
+                            <td>{item.controle_entrada.placa_reboque3}</td>
                         </tr>
+                        ))}
+                        
                     </tbody>
                 </table>
             </EntranceGrid>
+            <Pages>
+            <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
+            </Pages>
         </>
     
 }

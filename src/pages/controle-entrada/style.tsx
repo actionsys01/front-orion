@@ -4,8 +4,7 @@ export const EntranceGrid = styled.div`
     margin: 0;
     box-sizing: border-box;
     overflow: auto;
-    width: 81.6vw;
-    min-height: 55vh;
+    /* width: 81.6vw; */
     
     table {
       width: 100%;
