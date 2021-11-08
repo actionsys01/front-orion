@@ -47,32 +47,43 @@ export const InputStyle = styled.div`
 `
 
 export const InlineInputs = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    background-color: #fff;
     margin-top: 0.8rem;
-    padding: 1.8rem;
+    width: 76% !important;
 
-    span {
-                margin: 0 0.5rem;
-                font-size: 0.8rem;
-                white-space: nowrap;
-        }
+    > span {
+        margin: 0 0.5rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
 
-        input {
-            max-width: 150px;
-            width: 100%;
-            height: 28px;
-            border: 1px solid #eaeaea;
-        }
+       > div {
+        display: flex;
+        flex-direction: row !important;
+        align-items: center;
+        background-color: #fff;
+        
+        padding: 1.8rem;
+
+            span {
+                        margin: 0 0.5rem;
+                        font-size: 0.8rem;
+                        white-space: nowrap;
+                }
+
+                input {
+                    max-width: 150px;
+                    width: 100%;
+                    height: 28px;
+                    border: 1px solid #eaeaea;
+                }
+    }    
 `
 
 export const RightInput = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 70%;
+        width: 75% !important;
         span {
                 margin: 0 0.5rem;
                 font-size: 0.8rem;
@@ -232,4 +243,65 @@ export const ProgressBarStyle = styled.div`
             button {
                     cursor: pointer;
                 }
+`
+
+export const BtnRow = styled.div`
+    margin: 1rem;
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    margin-left: calc(0 * 16pt / 2 );
+    margin-right: calc(0 * 16pt / 2 );
+    margin-bottom: 10px;
+    justify-content: space-evenly;
+    align-items: center;
+
+    button {
+        box-sizing: border-box;
+        display: inline-block;
+        padding: 0 1.25rem;
+        height: 2rem;
+        min-width: 13.375rem;
+        width: initial;
+        border-radius: 5px;
+        font-weight: 400;
+        font-size: 0.875rem;
+        user-select: none;
+        outline: none;
+        text-transform: capitalize;
+        justify-content: center;
+        text-align: center;
+        white-space: nowrap;
+        transition: background-color 200ms ease 0ms,box-shadow 200ms ease 0ms, border 200ms ease 0ms,color 200ms ease 0ms;
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        cursor: pointer;
+        pointer-events: auto;
+        box-shadow: none;
+    }
+
+        button:first-child {
+            background-color: #B11A27;
+            border: 1px solid #B11A27; 
+        }
+
+        button:last-child {
+            background-color: #0DD0B3;
+            border: 1px solid #0DD0B3;
+        }
+
+        span {
+            display: flex;
+            position: absolute;
+            top: 8px;
+            
+            svg {
+                display: flex;
+                align-items: center;
+                height: 15px;
+                width: 15px;
+            }
+        }
+    
 `

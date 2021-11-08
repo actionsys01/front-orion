@@ -1,4 +1,4 @@
-import React, {useEffect, useState, ChangeEvent, useCallback} from 'react';
+import React, {Dispatch, SetStateAction, useState, ChangeEvent, useCallback} from 'react';
 import { X, Search  } from '@geist-ui/react-icons'
 import ProgressBar from '@components/ProgressBar';
 import {UploadModal, FirstLine, InsideModal, ProgressBarStyle} from "../style"
@@ -7,10 +7,11 @@ import { useToasts } from "@geist-ui/react";
 import { useSession } from 'next-auth/client';
 
 interface ModalProps {
-    modalHandler: () => void
+    modalHandler: () => void;
+    setUpload: Dispatch<SetStateAction<boolean>>
 }
 
-const Modal = ({modalHandler}: ModalProps) => {
+const Modal = ({modalHandler, setUpload}: ModalProps) => {
     const [ fileName, setFileName ] = useState("");
     const [ progress, setProgress ] = useState(0);
     const [ certificate, setCertificate] = useState<File | null>(null);
@@ -27,7 +28,7 @@ const Modal = ({modalHandler}: ModalProps) => {
 
     async function sendData() {
         try {
-            setProgress(30)
+            setProgress(60)
             await sendCertificate(certificate, id);
             setProgress(100)
             setToast({
@@ -40,7 +41,7 @@ const Modal = ({modalHandler}: ModalProps) => {
                 type: "warning"
             })
         }
-        
+        modalHandler()
     }
     
 

@@ -1,15 +1,15 @@
 import React, {useEffect, useState, useMemo, useCallback} from 'react';
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { Plus } from "@geist-ui/react-icons";
-import { Section, InputStyle, InlineInputs, RightInput} from "./style"
-import {AddBtn} from "@styles/buttons";
+import { Plus,Trash2 } from "@geist-ui/react-icons";
+import { Section, InputStyle, InlineInputs, RightInput, BtnRow} from "./style"
 import Modal from "./modal"
 
 
 
 export default function CertificadoDigital() {
-    const [ visibleModal, setVisibleModal] = useState(false)
+    const [ visibleModal, setVisibleModal] = useState(false);
+    const [ upload, setUpload] = useState(false)
 
     const modalHandler = useCallback(() => {
         setVisibleModal(!visibleModal)
@@ -35,30 +35,34 @@ export default function CertificadoDigital() {
                             <span>CNPJ:</span>
                             <input type="text" />
                         </InputStyle>
-                        <>
-                            <span>Validade</span>
-                            <InlineInputs style={{flexDirection: "row", width: "76%"}}>
+                            <InlineInputs>
+                                <span>Validade</span>
+                                <div>
                                 <span>De:</span>
                                 <input type="date" />
                                 <span>Até:</span>
                                 <input type="date" />
+                                </div>
                             </InlineInputs>
-                        </>
                     </div>
-                    <RightInput style={{width: "75%"}}>
+                    <RightInput>
                             <span>Status:</span>
                             <input type="text" />
                     </RightInput>
                 </div>
             </Section>
-            <AddBtn style={{width: "92%", marginTop: ".3rem"}}>
+            <BtnRow>
+                <button >
+                <span><Trash2 /></span>
+                    deletar
+                </button>
                 <button onClick={() => setVisibleModal(true)}>
                 <span><Plus /></span>
                     adicionar
                 </button>
-            </AddBtn>
+            </BtnRow>
             </div>
-           {visibleModal && <Modal modalHandler={modalHandler}/>}
+           {visibleModal && <Modal modalHandler={modalHandler} setUpload={setUpload}/>}
                 
         </>
     
