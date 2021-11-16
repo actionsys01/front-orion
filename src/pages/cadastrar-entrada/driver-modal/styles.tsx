@@ -170,7 +170,7 @@ export const ModalStyle = styled.div`
         border: none;
         position: absolute;
         left: 31%;
-        top: 30%;
+        top: 20%;
         background-color: #fff;
 
         > span {

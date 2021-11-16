@@ -1,5 +1,6 @@
+import React, { useState, useCallback, useEffect} from 'react';
 import { useFiltro } from "@contexts/filtro";
-import { Avatar, useMediaQuery } from "@geist-ui/react";
+import { useMediaQuery } from "@geist-ui/react";
 import {
   ChevronsLeft,
   ChevronsRight,
@@ -20,6 +21,7 @@ import {
   SubMenu,
 } from "react-pro-sidebar";
 import {useSecurityContext} from "@contexts/security"
+import * as dashboard from "@services/empresas"
 
 interface IProps {
   setCollapsed(collapsed: boolean): void;
@@ -38,6 +40,26 @@ export default function MenuLateral({
   const router = useRouter();
   const { limpar } = useFiltro();
   const {nfePermission,ctePermission, nfsePermission, profilePermission, userPermission} = useSecurityContext()
+  const [certificated, setCertificated] = useState(false)
+
+
+  const confirmCertificate = useCallback(async () => {
+      try {
+        const response = await dashboard.getDashboard("120.099.2999-7")
+        const data = response.data
+        console.log("dash",data)
+        setCertificated(true)
+        return data
+      } catch (error) {
+        console.log('não tem')
+        setCertificated(false)
+      }
+    },[] )
+
+    useEffect(() => {
+      confirmCertificate()
+      
+    }, [])
 
   const isMD = useMediaQuery("lg");
 
@@ -45,6 +67,8 @@ export default function MenuLateral({
     await limpar();
     signOut();
   }
+
+
 
   return (
     <aside>
@@ -63,7 +87,8 @@ export default function MenuLateral({
                 onClick={() => setCollapsed(!collapsed)}
               />
             )}
-            <MenuItem icon={<img src="images/actionsys.jpg" style={{objectFit: "contain", borderRadius: "50%"}} />} onClick={() => router.push("/dashboard")}>
+            <MenuItem icon={<img src="images/actionsys.jpg" style={{objectFit: "contain", borderRadius: "50%"}} />}
+             onClick={() => router.push("/dashboard")}>
               Actionsys
             </MenuItem>
             <SubMenu title="Painéis" icon={<FileText />}>
@@ -83,7 +108,10 @@ export default function MenuLateral({
               {userPermission && <MenuItem onClick={() => router.push("/usuarios")}>
                 Usuários
               </MenuItem>}
-              <MenuItem onClick={() => router.push("/certificado-digital")}>
+              <MenuItem onClick={() => router.push({
+                pathname: "/certificado-digital",
+                query: {isCertificated: "true"}
+              })}>
                   Certificado Digital
               </MenuItem>
                {/* <MenuItem onClick={() => router.push("/empresas")}>
@@ -93,6 +121,12 @@ export default function MenuLateral({
                 Cadastro de Plano
               </MenuItem> */}
               </SubMenu>
+              {!certificated && <MenuItem style={{textShadow: "1px 0 red"}}
+              onClick={() => router.push({
+                pathname: "/dashboard",
+                query: {certificate: "open"}
+              })}
+              >Certificado Digital</MenuItem>}
           </Menu>
         </SidebarContent>
         <SidebarFooter>
