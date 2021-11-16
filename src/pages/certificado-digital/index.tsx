@@ -8,6 +8,7 @@ import  {format} from "date-fns";
 
 
 
+
 export default function CertificadoDigital() {
     const [ visibleModal, setVisibleModal ] = useState(false);
     const [ upload, setUpload ] = useState(false)
@@ -15,10 +16,17 @@ export default function CertificadoDigital() {
     const [ cnpj, setCnpj ] = useState("")
     const [ initialDate, setInitialDate ] = useState(new Date)
     const [ expiringDate, setExpiringDate ] = useState(new Date)
+    const router = useRouter()
     
     const modalHandler = useCallback(() => {
         setVisibleModal(!visibleModal)
     }, [visibleModal])
+
+    useEffect(() => {
+        if (router.query.isCertificated === "false" ) {
+            setVisibleModal(true)
+        }
+    }, [])
 
 
     return <>

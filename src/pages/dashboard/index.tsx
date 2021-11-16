@@ -1,13 +1,14 @@
 import React, { useState, useMemo, useEffect, useCallback} from 'react'; 
-import { SelectStyle, Speedometer, InfoContainer } from './style';
-import {format, Locale} from "date-fns"
+import { Speedometer, InfoContainer } from './style';
 import { useSession } from "next-auth/client";
 import Head from "next/head";
 import {useSecurityContext} from "@contexts/security"
 import GaugeChart from "react-gauge-chart"
 import { BsChevronCompactUp } from "react-icons/bs";
+import { useRouter } from "next/router";
 import * as planos from "@services/planos"
 import * as empresas from "@services/empresas"
+import CertificateConfirm from './modal';
 
 
 
@@ -33,7 +34,12 @@ export default function Dashboard() {
     const [accountDescription, setAccountDescription] = useState("")
     const [totalValue, setTotalValue] = useState(10)
     const [session] = useSession()
+    const router = useRouter()
     
+    // modal
+    const [ modal, setModal] = useState(false)
+    
+    console.log(router.query)
 
     const chartStyle = {
       height: 50,
@@ -43,7 +49,6 @@ export default function Dashboard() {
     const getAccountData = useCallback(async () => {
       const response = await planos.getAccountById(Number(session?.usuario.empresa.plano.id))
       const data = response.data
-      console.log("teste",data)
       return data
       },[])
 
@@ -51,9 +56,13 @@ export default function Dashboard() {
     const getDashboardData = useCallback(async() => {
       const response = await empresas.dashboardRequest(Number(session?.usuario.empresa.id))
       const data = response.data
-      console.log("dash", data)
       return data
       },[])
+
+    // const modalHandler = useCallback(() => {
+    //   router.query.certificate === "open" ? setModal(true) : 
+    //   setModal(false)
+    //   },[])
     
     
     function getPercentage(partial: number, total: number) {
@@ -70,14 +79,15 @@ export default function Dashboard() {
         setCteAmount(response.CteCount), 
         setNfseAmount(response.NfseCount), 
         setNfeAmount(response.NfeCount)})
-      const firstSpeedometer = getPercentage(totalAmount, totalValue)
-      const secondSpeedometer = getPercentage(totalUsersAmount, totalUsers)
-      setFirstPercentage(firstSpeedometer)
-      setSecondPercentage(secondSpeedometer)
-      console.log("teste")
+        const firstSpeedometer = getPercentage(totalAmount, totalValue)
+        const secondSpeedometer = getPercentage(totalUsersAmount, totalUsers)
+        setFirstPercentage(firstSpeedometer)
+        setSecondPercentage(secondSpeedometer)
     }, [totalValue, totalAmount, totalUsers, totalUsersAmount])
  
- 
+    // useEffect(() => {
+    //   modalHandler()
+    // }, [])
  
 
     return  <>
@@ -139,6 +149,7 @@ export default function Dashboard() {
               </span> 
           </div>
         </Speedometer>
+        {router.query.certificate === "open"  && <CertificateConfirm />}
     </>
 }
 
