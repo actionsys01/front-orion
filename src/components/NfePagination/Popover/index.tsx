@@ -106,6 +106,7 @@ interface Event {
           Danfe(nfeData, nfeFrontData)
         }
       } catch (error) {
+        console.log(error)
         setToast({
           text: "Houve um problema, por favor tente novamente",
           type: "warning"

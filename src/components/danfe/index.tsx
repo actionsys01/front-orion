@@ -10,19 +10,20 @@ function Danfe(nfeData: any, nfeFrontData: any){
     const gatherInvoiceData = nfeData?.map((data: any) => {
         gatheredNfeData.push({
             ...data,
-            emissionDate: format(new Date(data.informacoes_nfe.dhEmi), "dd/MM/yyyy HH:mm:ss"),
-            receiveDate: (data.informacoes_nfe.dhSaiEnt ?  format(new Date(data.informacoes_nfe?.dhSaiEnt), "dd/MM/yyyy HH:mm:ss") : ""),
-            ICMS: data.produtos_servicos.imposto?.ICMS.ICMS00 || 
-            data.produtos_servicos.imposto?.ICMS.ICMS10 || 
-            data.produtos_servicos.imposto?.ICMS.ICMS20 || 
-            data.produtos_servicos.imposto?.ICMS.ICMS30 || 
-            data.produtos_servicos.imposto?.ICMS.ICMS40 || 
-            data.produtos_servicos.imposto?.ICMS.ICMS51 || 
-            data.produtos_servicos.imposto?.ICMS.ICMS60 || 
-            data.produtos_servicos.imposto?.ICMS.ICMS70 || 
-            data.produtos_servicos.imposto?.ICMS.ICMS90 || 
-            data.produtos_servicos.imposto?.ICMS.ICMSST,
-            IPI: data.produtos_servicos.imposto?.IPI?.IPIINT || data.produtos_servicos.imposto?.IPI?.IPITrib
+            emissionDate: (data.informacoes_nfe.dhEmi ? format(new Date(data.informacoes_nfe?.dhEmi), "dd/MM/yyyy") : data.informacoes_nfe.dEmi ? format(new Date(data.informacoes_nfe?.dEmi), "dd/MM/yyyy") : ""),
+            receiveDate: (data.informacoes_nfe.dhSaiEnt ?  format(new Date(data.informacoes_nfe?.dhSaiEnt), "dd/MM/yyyy ") : data.informacoes_nfe.dSaiEnt ? format(new Date(data.informacoes_nfe?.dSaiEnt), "dd/MM/yyyy") : ""),
+            emissionTime:  (data.informacoes_nfe.dhEmi ? format(new Date(data.informacoes_nfe?.dhEmi), "HH:mm:ss") : data.informacoes_nfe.dEmi ? format(new Date(data.informacoes_nfe?.dEmi), "HH:mm:ss") : ""),
+            ICMS: data.produtos_servicos.imposto?.ICMS?.ICMS00 || 
+            data.produtos_servicos.imposto?.ICMS?.ICMS10 || 
+            data.produtos_servicos.imposto?.ICMS?.ICMS20 || 
+            data.produtos_servicos.imposto?.ICMS?.ICMS30 || 
+            data.produtos_servicos.imposto?.ICMS?.ICMS40 || 
+            data.produtos_servicos.imposto?.ICMS?.ICMS51 || 
+            data.produtos_servicos.imposto?.ICMS?.ICMS60 || 
+            data.produtos_servicos.imposto?.ICMS?.ICMS70 || 
+            data.produtos_servicos.imposto?.ICMS?.ICMS90 || 
+            data.produtos_servicos.imposto?.ICMS?.ICMSST,
+            IPI: data.produtos_servicos.imposto?.IPI?.IPINT || data.produtos_servicos.imposto?.IPI?.IPITrib
         })
         return gatheredNfeData
      })
@@ -106,9 +107,9 @@ function Danfe(nfeData: any, nfeFrontData: any){
         return [
             {text: item.destinatario.xNome, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
             {text: item.destinatario.CNPJ, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
-            {text: item.emissionDate.substr(0,8), fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
-            {text: item.receiveDate?.substr(0,8), fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
-            {text: item.emissionDate.substr(10,14), fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]}
+            {text: item.emissionDate, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.receiveDate, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.emissionTime, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]}
             
         ]
     });
@@ -140,13 +141,13 @@ function Danfe(nfeData: any, nfeFrontData: any){
     const impostoFirstRow = gatheredNfeData?.map((item: any) => {
        
         return [
-            {text: item.ICMS.vBC, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
-            {text: item.ICMS.vICMS, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.total.ICMSTot.vBCST, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.total.ICMSTot.vST, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.produtos_servicos.imposto.IPI.IPITrib.vIPI, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.produtos_servicos.imposto.PIS.PISAliq.vPIS, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.produtos_servicos.prod.vProd, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]}
+            {text: item.ICMS?.vBC, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.ICMS?.vICMS, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.total.ICMSTot?.vBCST, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.total.ICMSTot?.vST, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.produtos_servicos.imposto?.IPI?.IPITrib?.vIPI, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.produtos_servicos.imposto?.PIS?.PISAliq?.vPIS, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.produtos_servicos.prod?.vProd, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]}
             
         ]
     });
@@ -154,13 +155,13 @@ function Danfe(nfeData: any, nfeFrontData: any){
     const impostoSecondRow = gatheredNfeData?.map((item: any) => {
        
         return [
-            {text: item.produtos_servicos.prod.vFrete, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
-            {text: item.produtos_servicos.prod.vSeg, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.produtos_servicos.prod.vDesc, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.total.ICMSTot.vOutro, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.total.ICMSTot.vIPI, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.total.ICMSTot.vCOFINS, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.total.ICMSTot.vNF, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]}
+            {text: item.produtos_servicos.prod?.vFrete, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.produtos_servicos.prod?.vSeg, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.produtos_servicos.prod?.vDesc, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.total.ICMSTot?.vOutro, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.total.ICMSTot?.vIPI, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.total.ICMSTot?.vCOFINS, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.total.ICMSTot?.vNF, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]}
             
         ]
     });
@@ -169,34 +170,34 @@ function Danfe(nfeData: any, nfeFrontData: any){
 
     const tranportadorFirstRow = nfeData.map((item: any) => {
         return [
-            {text: item.transporte.transporta.xNome, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.transporte.transporta?.xNome, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
             {text: item.transporte.modFrete, fontSize: 7, bold: true, alignment: "center", border: [true, false, true, true]},
             {text: item.transporte.veicTransp?.RNTC, fontSize: 7, border: [true, false, true, true]},
             {text: item.transporte.veicTransp?.placa, fontSize: 7, bold: true, border: [true, false, true, true]},
-            {text: item.transporte.transporta.UF, fontSize: 7, bold: true, border: [true, false, true, true]},
-            {text: item.transporte.transporta.CNPJ, fontSize: 7, bold: true, border: [true, false, true, true]}
+            {text: item.transporte.transporta?.UF, fontSize: 7, bold: true, border: [true, false, true, true]},
+            {text: item.transporte.transporta?.CNPJ, fontSize: 7, bold: true, border: [true, false, true, true]}
         ]
     });
 
     const tranportadorSecondRow = nfeData.map((item: any) => {
         return [
-            {text: item.transporte.transporta.xEnder, fontSize: 7, colSpan: 2, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.transporte.transporta?.xEnder, fontSize: 7, colSpan: 2, alignment: "center", bold: true, border: [true, false, true, true]},
             {text: "", fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
-            {text: item.transporte.transporta.xMun, fontSize: 7, colSpan: 2, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.transporte.transporta?.xMun, fontSize: 7, colSpan: 2, alignment: "center", bold: true, border: [true, false, true, true]},
             {text: "", fontSize: 7, bold: true, alignment: "center", border: [true, false, true, true]},
-            {text: item.transporte.transporta.UF, fontSize: 7, bold: true, alignment: "center", border: [true, false, true, true]},
-            {text: item.transporte.transporta.IE, fontSize: 7, bold: true, alignment: "center", border: [true, false, true, true]}
+            {text: item.transporte.transporta?.UF, fontSize: 7, bold: true, alignment: "center", border: [true, false, true, true]},
+            {text: item.transporte.transporta?.IE, fontSize: 7, bold: true, alignment: "center", border: [true, false, true, true]}
         ]
     });
 
     const tranportadorThirdRow = nfeData.map((item: any) => {
         return [
-            {text: item.transporte.vol.qVol, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.transporte.vol.esp, fontSize: 7, bold: true, alignment: "center", border: [true, false, true, true]},
-            {text: item.transporte.vol.marca, fontSize: 7, alignment: "center", border: [true, false, true, true]},
-            {text: item.transporte.vol.nVol, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
-            {text: item.transporte.vol.pesoB, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
-            {text: item.transporte.vol.pesoL, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]}
+            {text: item.transporte.vol?.qVol, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.transporte.vol?.esp, fontSize: 7, bold: true, alignment: "center", border: [true, false, true, true]},
+            {text: item.transporte.vol?.marca, fontSize: 7, alignment: "center", border: [true, false, true, true]},
+            {text: item.transporte.vol?.nVol, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.transporte.vol?.pesoB, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.transporte.vol?.pesoL, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]}
         ]
     });
 
@@ -204,19 +205,36 @@ function Danfe(nfeData: any, nfeFrontData: any){
 
     const produtosTable = gatheredNfeData.map((item: any) => {
         return [
-            {text: item.produtos_servicos.prod.cProd, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod.xProd, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod.NCM, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS.CST, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod.CFOP, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod.uCom, fontSize: 6, alignment: "center", bold: true, border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod.qCom, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod.vUnCom, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod.vProd, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS.vBC, fontSize: 7, bold: true, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS.vICMS, fontSize: 7, bold: true, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS.pICMS, fontSize: 7, bold: true, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS.pIPI, fontSize: 7, bold: true, alignment: "center", border: [true, false, true, false]}
+            {text: item.produtos_servicos.prod?.cProd, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.xProd, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.NCM, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.ICMS?.CST, fontSize: 5, alignment: "center", bold: true, border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.CFOP, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.uCom, fontSize: 6, alignment: "center", bold: true, border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.qCom, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.vUnCom, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.vProd, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.ICMS?.vBC, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
+            {text: item.ICMS?.vICMS, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
+            {text: item.ICMS?.pICMS, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
+            {text: item.ICMS?.pIPI, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]}
+        ]
+    });
+    const produtosTable2 = gatheredNfeData.map((item: any) => {
+        return [
+            {text: item.produtos_servicos.prod?.cProd, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.xProd, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.NCM, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.ICMS?.CST, fontSize: 5, alignment: "center", bold: true, border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.CFOP, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.uCom, fontSize: 6, alignment: "center", bold: true, border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.qCom, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.vUnCom, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.produtos_servicos.prod?.vProd, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.ICMS?.vBC, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
+            {text: item.ICMS?.vICMS, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
+            {text: item.ICMS?.pICMS, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
+            {text: item.ICMS?.pIPI, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]}
         ]
     });
 
@@ -251,7 +269,7 @@ function Danfe(nfeData: any, nfeFrontData: any){
             table:{
                 headerRows: 1,
                 widths: ['*', 200, '*'],
-                heights: [2, 12, 2, 12],
+                heights: [1, 10, 1, 10],
                 body: [
                     [
                         {text: '', style: 'tableHeader', colSpan: 2, border: [true, true, true, false]},
@@ -297,7 +315,7 @@ function Danfe(nfeData: any, nfeFrontData: any){
             table:{
                 headerRows: 1,
                 widths: ['*', '*', '*'],
-                heights: [2, 12, 2, 12],
+                heights: [1, 10, 1, 10],
                 body: [
                     [
                         {text: "NATUREZA DA OPERAÇÃO", colSpan: 2, fontSize: 4,  border: [true, true, true, false]},
@@ -314,12 +332,12 @@ function Danfe(nfeData: any, nfeFrontData: any){
                 ]
             }
         },
-        {text: "DESTINATÁRIO / REMETENTE", bold: true, margin: [0, 8, 0, 4]},
+        {text: "DESTINATÁRIO / REMETENTE", fontSize:8, bold: true, margin: [0, 3, 0, 2]},
         {// emitente primeira fileira 
             table:{
                 headerRows: 1,
                 widths: [ 150, '*', '*', '*', '*'],
-                heights: [2, 12],
+                heights: [1, 10],
                 body: [
                     [
                         {text: "NOME /RAZÃO SOCIAL", fontSize: 4, border: [true, true, true, false]},
@@ -337,7 +355,7 @@ function Danfe(nfeData: any, nfeFrontData: any){
             table:{
                 headerRows: 1,
                 widths: [ 250, '*', '*'],
-                heights: [2, 12],
+                heights: [1, 10],
                 body: [
                     [
                         {text: "ENDEREÇO", fontSize: 4, border: [true, true, true, false]},
@@ -353,7 +371,7 @@ function Danfe(nfeData: any, nfeFrontData: any){
             table:{
                 headerRows: 1,
                 widths: [ 150, 30, '*', '*'],
-                heights: [2, 12],
+                heights: [1, 10],
                 body: [
                     [
                         {text: "MUNICÍPIO", fontSize: 4, border: [true, true, true, false]},
@@ -365,13 +383,13 @@ function Danfe(nfeData: any, nfeFrontData: any){
                 ]
             }
         },
-        {text: "CÁLCULO DE IMPOSTO", bold: true, margin: [0, 8, 0, 4]},
+        {text: "CÁLCULO DE IMPOSTO", fontSize:8, bold: true, margin: [0, 3, 0, 2]},
         { // imposto primeira fileira 
             style: "innerStyle",
             table:{
                 headerRows: 1,
                 widths: [ '*', '*', '*', '*', '*', '*','*'],
-                heights: [2, 12, 2, 12],
+                heights: [1, 10, 1, 10],
                 body: [
                     [
                         {text: "BASE DE CÁLCULO ICMS", fontSize: 4, alignment: "center", border: [true, true, true, false]},
@@ -396,13 +414,13 @@ function Danfe(nfeData: any, nfeFrontData: any){
                 ]
             }
         },
-        {text: "TRANSPORTADOR /VOLUME TRANSPORTADO", bold: true, margin: [0, 8, 0, 4]},
+        {text: "TRANSPORTADOR /VOLUME TRANSPORTADO", fontSize:8, bold: true, margin: [0, 3, 0, 2]},
         { // transportador primeira fileira 
             style: "innerStyle",
             table:{
                 headerRows: 1,
                 widths: [ 100, 100, '*', '*', 30, '*'],
-                heights: [2, 12, 2, 12],
+                heights: [1, 10, 1, 10],
                 body: [
                     [
                         {text: "NOME /RAZÃO SOCIAL", fontSize: 4, border: [true, true, true, false]},
@@ -421,7 +439,7 @@ function Danfe(nfeData: any, nfeFrontData: any){
             table:{
                 headerRows: 1,
                 widths: [ 120, 80, '*', '*', 30, '*'],
-                heights: [2, 12, 2, 12],
+                heights: [1, 10, 1, 10],
                 body: [
                     [
                         {text: "ENDEREÇO", colSpan: 2, fontSize: 4, border: [true, true, true, false]},
@@ -440,7 +458,7 @@ function Danfe(nfeData: any, nfeFrontData: any){
             table:{
                 headerRows: 1,
                 widths: [ 60, '*', '*', '*', '*', '*'],
-                heights: [2, 12, 2, 12],
+                heights: [1, 10, 1, 10],
                 body: [
                     [
                         {text: "QUANTIDADE", fontSize: 4, border: [true, true, true, false]},
@@ -454,13 +472,13 @@ function Danfe(nfeData: any, nfeFrontData: any){
                 ],
             }
         },
-        {text: "DADOS DOS PRODUTOS /SERVIÇOS", bold: true, margin: [0, 8, 0, 4]},
+        {text: "DADOS DOS PRODUTOS /SERVIÇOS",  fontSize:8, bold: true, margin: [0, 3, 0, 2]},
         { // transportador primeira fileira 
             style: "innerStyle",
             table:{
                 headerRows: 1,
                 widths: [ 30, 107, 40, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22],
-                heights: [2, 12, 12, 12],
+                heights: [1, 10, 10],
                 body: [
                     [
                         {text: "CÓDIGO DO PRODUTO", fontSize: 4, alignment: "center", border: [true, true, true, true]},
@@ -478,13 +496,12 @@ function Danfe(nfeData: any, nfeFrontData: any){
                         {text: "ALIQ. IPI", fontSize: 4, alignment: "center", border: [true, true, true, true]}
                     ],
                     ...produtosTable,
-                    ...produtosTable,
                     ...produtosLastRow,
                 ],
             }
         },
-        {text: "DADOS ADICIONAIS / INFORMAÇÕES COMPLEMENTARES", bold: true, margin: [0, 8, 0, 4]},
-         {// obs gerais
+        {text: "DADOS ADICIONAIS / INFORMAÇÕES COMPLEMENTARES", fontSize:8, bold: true, margin: [0, 3, 0, 2]},
+         {// obs gerais 
             table:{
                 headerRows: 1,
                 widths: [ '*'],

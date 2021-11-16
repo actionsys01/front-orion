@@ -27,22 +27,38 @@ interface PopoverProps {
 
       const printData = useCallback(async (chave_nota) => {
           const cteData: any = []
+          const medidasArray: any = []
+          const produtosArray: any = []
           try {
             const response = await buscar(chave_nota);
             const cteResponse = response.data;
             if(Array.isArray(cteResponse)){
-              Dacte(cteResponse)
+              const medidas = cteResponse.map((item) => item.informacoes_normal_substituto.infCarga.infQ)
+              const produtos = cteResponse.map((item) => item.valores_servicos.Comp)
+              Dacte(cteResponse, medidas, produtos)
+              
             } else {
               cteData.push(cteResponse)
-              Dacte(cteData)
+              const medidas = cteResponse.informacoes_normal_substituto.infCarga.infQ
+              const produtos = cteResponse.valores_servicos.Comp
+              console.log("etapa 1", medidas)
+              if(Array.isArray(medidas) && Array.isArray(produtos)){
+                Dacte(cteData, medidas, produtos)
+              } else{
+                medidasArray.push(medidas)
+                produtosArray.push(produtos)
+                console.log("etapa 2",medidas)
+                Dacte(cteData, medidasArray, produtosArray)
+              }
             }
           } catch (error) {
+            console.log(error)
             setToast({
               text: "Houve um problema, por favor tente novamente",
               type: "warning"
             })
           }
-        },[],)
+        },[])
 
     return <>
       <Popover
