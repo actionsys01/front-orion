@@ -31,7 +31,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
   const router = useRouter()
   const [page, setPage] = useState(1);
   const { ctes } = useFiltro()
-  const [quantityPage, setQuantityPage] = useState(0)
+  const [quantityPage, setQuantityPage] = useState(1)
   const {ctePermission} = useSecurityContext()
   
 
@@ -57,7 +57,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
     getCtesAndTotalPages();
 
 
-  }, [page, ctes])
+  }, [page])
 
   useEffect(() => {
     if(page > quantityPage){

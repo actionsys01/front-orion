@@ -63,16 +63,16 @@ export default function MenuLateral({
                 onClick={() => setCollapsed(!collapsed)}
               />
             )}
-            <MenuItem icon={<img src="assets/images/actionsys.jpg" style={{objectFit: "fill", borderRadius: "50%"}} />} onClick={() => router.push("/dashboard")}>
+            <MenuItem icon={<img src="images/actionsys.jpg" style={{objectFit: "contain", borderRadius: "50%"}} />} onClick={() => router.push("/dashboard")}>
               Actionsys
             </MenuItem>
             <SubMenu title="Painéis" icon={<FileText />}>
-              {nfePermission && <MenuItem onClick={() => router.push("/nfe")}>NFe</MenuItem>}
-              {ctePermission && <MenuItem onClick={() => router.push("/cte")}>CTe</MenuItem>}
+              {nfePermission && <MenuItem onClick={() => router.push("/nfe")}>NF-e</MenuItem>}
+              {ctePermission && <MenuItem onClick={() => router.push("/cte")}>CT-e</MenuItem>}
               {nfsePermission && <MenuItem>NFS-e</MenuItem>}
             </SubMenu>
             <SubMenu title="Aplicações" icon={<Grid />}>
-              <MenuItem>Controle de Portaria</MenuItem>
+              <MenuItem onClick={() => router.push("/controle-entrada")}>Controle de Entrada</MenuItem>
               {/* <MenuItem>Contagem Física</MenuItem>
               <MenuItem>Controle Divergência</MenuItem> */}
             </SubMenu>
@@ -83,11 +83,16 @@ export default function MenuLateral({
               {userPermission && <MenuItem onClick={() => router.push("/usuarios")}>
                 Usuários
               </MenuItem>}
-              {/* <MenuItem onClick={() => router.push("/funcionalidades")}>
-                Funcionalidades
+              <MenuItem onClick={() => router.push("/certificado-digital")}>
+                  Certificado Digital
               </MenuItem>
-              <MenuItem>Divergências</MenuItem> */}
-            </SubMenu>
+               {/* <MenuItem onClick={() => router.push("/empresas")}>
+                Cadastro de Empresa
+              </MenuItem>
+               <MenuItem onClick={() => router.push("/planos")}>
+                Cadastro de Plano
+              </MenuItem> */}
+              </SubMenu>
           </Menu>
         </SidebarContent>
         <SidebarFooter>

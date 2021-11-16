@@ -1,15 +1,13 @@
-import { Grid, GridStyle, Pages } from "./style";
+import { GridStyle } from "./style";
 import React, { useState, useMemo, useEffect, useCallback} from 'react'; 
 import {
   Button,
-  Loading,
-  Popover,
   Row,
   Spacer,
-  Text,
-  useToasts
+  Text
 } from "@geist-ui/react";
-import { MoreHorizontal, Plus } from "@geist-ui/react-icons";
+import { Pages } from "./style"
+import { Plus } from "@geist-ui/react-icons";
 import {useSecurityContext} from "@contexts/security"
 import Pagination from "@material-ui/lab/Pagination";
 import * as usuario from "@services/usuarios";
@@ -18,7 +16,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import getUsersByCompanyId from "@services/usuarios/getUsersByCompanyId";
 import UserPopover from "./Popover";
-import {capitalize} from "@utils/capitalize"
+import capitalize from "@utils/capitalize"
 
 export interface IUsuario  {
   id: number;

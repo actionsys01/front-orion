@@ -24,9 +24,9 @@ export default function Nfe() {
   return (
     <>
       <Head>
-        <title>Orion | Painel de Controle NFe</title>
+        <title>Orion | Painel de Controle NF-e</title>
       </Head>
-      <Text h2>Painel de Controle NFe</Text>
+      <Text h2>Painel de Controle NF-e</Text>
       <Row justify="end" align="middle">
         <Filtro abaAtual="nfe" data={nfes} />
         <Spacer x={0.2} />

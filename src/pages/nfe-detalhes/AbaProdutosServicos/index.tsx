@@ -57,6 +57,7 @@ interface IProps {
       dhSaiEnt: string;
       vUnTrib: string;
     };
+    versao: string;
     total: {
       ICMSTot: { vNF: string };
     };

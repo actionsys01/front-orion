@@ -14,6 +14,7 @@ interface IProps {
       dhEmi: string;
       dhSaiEnt: string;
     };
+    versao: string;
     total: {
       ICMSTot: {
         vNF: string;
@@ -30,7 +31,6 @@ interface IProps {
           ]
         | { nDup: string; dVenc: string; vDup: string };
     };
-    versao: string;
   };
 }
 export default function AbaCobranca({ data }: IProps) {

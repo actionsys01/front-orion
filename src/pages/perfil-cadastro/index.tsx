@@ -2,16 +2,14 @@ import BotaoVoltar from "@components/BotaoVoltar";
 import { Table, ButtonStyle } from "./style";
 import { useSession } from "next-auth/client";
 import NaoEncontrado from "@components/NaoEncontrado";
-import {  Button, Loading, Spacer, Text } from "@geist-ui/react";
 import { Checkbox } from '@material-ui/core';
-import useRequest from "@hooks/useRequest";
 import * as perfil from "@services/perfis"
 import Head from "next/head";
 import { ChevronDown, ChevronUp  } from '@geist-ui/react-icons'
 import {  useRouter } from "next/router";
 import React, { useMemo, useState, useEffect } from "react";
-import api from "@services/api"
-import {useSecurityContext} from "@contexts/security"
+import {useSecurityContext} from "@contexts/security";
+import { useToasts} from "@geist-ui/react";
 
 
 type ICreateProfile = {
@@ -33,6 +31,7 @@ interface Class {
 
 export default function PerfilCadastro() {
   const router = useRouter();
+  // checar permissões
   const {nfePermission, nfeHistoricalPermission, ctePermission,
         cteHistoricalPermission, userPermission, userUpdatePermission,
         userDeletePermission, profilePermission,
@@ -53,12 +52,13 @@ export default function PerfilCadastro() {
   const [isCte, setIsCte] = useState<boolean>(false)
   const [isNfse, setIsNfse] = useState<boolean>(false)
   const [profileApp, setProfileApp] = useState<number[]>([])
+  const [, setToast] = useToasts();
 
   //Portaria ainda não possui rotas de permissão, portanto a lógica ainda não aplicada a ela IMPORTANTE!
   
   // if (!data) return <Loading />;
 
-  console.log(session?.usuario.empresa.plano.aplicacoes)
+
 
   useEffect(() => {
     // Empresa em questão possui apenas duas aplicações
@@ -92,6 +92,13 @@ if (!findProfileApp) {
 
 async function createProfile ()  {
 try {
+  if(!profileApp.length) {
+    setToast({
+      text: "Por favor, selecione ao menos uma permissão",
+      type: "warning"
+    })
+    return
+  }
   await perfil.criar({name: String(router.query.nome), descricao: String(router.query.descricao), permissions: profileApp,  empresa_id: Number(session?.usuario.empresa.id) })
 } catch (error) {
   console.log(error);
@@ -99,14 +106,6 @@ try {
   router.push({pathname: "/perfil-acesso"})
 }
 
-// async function updateProfile() {
-//   try {
-//     await perfil.atualizar({id_profile: Number(router.query.perfilId), nome: String(router.query.nome), descricao: String(router.query.descricao), permissions: profileApp})
-//   } catch (error) {
-//     console.log(error);
-//   }
-//   router.push({pathname: "/perfil-acesso"})
-// }
 
 const handleNfeModal = () => {!nfeModal ? setNfeModal(true) : setNfeModal(false)}
 const handleCteModal = () => {!cteModal ? setCteModal(true) : setCteModal(false)}
@@ -124,14 +123,13 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
       <BotaoVoltar/>
       <h2>Perfil de Cadastro</h2>
       <ButtonStyle>
-      <Button
-          type="success-light"
-          size="small"
+      <button
+          type="button"
           className="btn"
           onClick={createProfile}
         >
           Confirmar
-        </Button>
+        </button>
         </ButtonStyle>
     <Table>
     <div className="main">

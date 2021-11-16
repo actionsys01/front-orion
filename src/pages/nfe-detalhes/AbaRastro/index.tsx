@@ -13,6 +13,7 @@ interface IProps {
       dhEmi: string;
       dhSaiEnt: string;
     };
+    versao: string;
     total: {
       ICMSTot: {
         vNF: string;
@@ -60,7 +61,7 @@ export default function AbaRastro({ data }: IProps) {
   const [rastros, setRastros] = useState([]);
 
   useEffect(() => {
-    const rastros = [];
+    const rastros: any = [];
 
     if (Array.isArray(data?.produtos_servicos)) {
       data?.produtos_servicos?.map((produto) => {

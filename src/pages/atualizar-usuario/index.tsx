@@ -1,9 +1,7 @@
 import BotaoVoltar from "@components/BotaoVoltar";
 import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
-import {
-    useToasts,
-  } from "@geist-ui/react";
+import { useToasts } from "@geist-ui/react";
 import React, { useState, useEffect } from "react";
 import * as usuarios from "../../services/usuarios";
 import Head from "next/head";
@@ -33,7 +31,7 @@ const AtualiarUsuario = () => {
     const [profileData, setProfileData] = useState<Perfil[]>([])
     const [, setToast] = useToasts();
     const [newProfileId, setNewProfileId] = useState<string>("")
-    console.log(newProfileId);
+    // console.log(newProfileId);
     
         const getProfileData = async () => {
             const response = await api.get(`/perfil/all/${session?.usuario.empresa.id}`)
@@ -45,7 +43,7 @@ const AtualiarUsuario = () => {
             getProfileData().then(response => setProfileData(response))
         }, [])
 
-        console.log(profileData);
+        // console.log(profileData);
         
         async function updateUser () {
             try {
@@ -70,31 +68,6 @@ const AtualiarUsuario = () => {
             setNewProfileId(""),
             router.back()
         }
-
-        // async function criarUsuario() {
-           
-        //     try {
-        //       if (session && router.query.nome) {
-        //         if (!nome || !perfilId) {
-        //           setLoading(false);
-        //           setToast({
-        //             text: "Informe todos os dados do usuário.",
-        //             type: "warning",
-        //           });
-        //           return;
-        //         }
-        //         await usuarios.atualizar({
-        //           nome,
-        //           perfil: perfilId,
-        //           senha,
-        //           id: Number(router.query.id as string),
-        //         });
-        //         setEmail("");
-        //         setSenha("");
-        //         setNome("");
-        //         router.back();
-        //         return;
-        //       }
         
 
     return <>

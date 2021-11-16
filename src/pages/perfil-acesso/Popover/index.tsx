@@ -38,7 +38,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
     const [session] = useSession()
     const [descricao, setDescricao] = useState<string>("");
     const [empresaId, setEmpresaId] = useState<number>()
-    const [perfilId, setPerfiId] = useState<number>();
+    const [perfilId, setPerfiId] = useState<number>(0);
     const [copiedPermissions, setCopiedPermissions] = useState<number[]>([])
    
     const [acao, setAcao] = useState<"editar" | "cadastrar" | "copiar" | "deletar">(

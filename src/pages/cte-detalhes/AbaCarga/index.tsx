@@ -154,7 +154,7 @@ export default function AbaCarga({ data }: IProps) {
           chave_nota,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
       const mensagem = error.response.data.mensagem;
       setToast({ text: mensagem, type: "warning" });

@@ -45,7 +45,8 @@ const Entrar = () => {
     if (res?.error) {
       console.log(res.error)
       setLoading(false);
-      setToast({ text: "E-mail ou usuário inválidos, por favor tente novamente.", type: "warning" });
+      setToast({  text: "E-mail ou usuário inválidos, por favor tente novamente.", 
+                  type: "warning" });
       return;
     }
 

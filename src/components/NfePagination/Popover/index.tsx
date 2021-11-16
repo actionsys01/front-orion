@@ -1,10 +1,14 @@
-import { Link, Modal, Popover, Text, Textarea, useModal, useToasts } from "@geist-ui/react";
+import { Modal, Popover, Text, Textarea, useModal, useToasts } from "@geist-ui/react";
 import { MoreHorizontal } from "@geist-ui/react-icons";
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, useMemo } from "react";
 import router, { useRouter } from "next/router";
 import {useSecurityContext} from "@contexts/security";
-import api from "@services/api"
-import { eventNames } from "cluster";
+import api from "@services/api";
+import Danfe from "@components/danfe";
+import getNfeData from "@services/nfe/getNfeData"
+import { useSession } from "next-auth/client";
+
+
 interface PopoverProps {
   item: any
 }
@@ -32,6 +36,9 @@ interface Event {
     const [companyId, setCompanyId] = useState<number>()
     const [cnpj, setCnpj] = useState<string>("")
     const [, setToast] = useToasts()
+    const [session] = useSession();
+    const company_id = Number(session?.usuario.empresa.id)
+    
 
     const changeHandler = useCallback((next) => {
       setVisible(next)
@@ -52,14 +59,13 @@ interface Event {
          setVisiblePop(true);
          setSecondPopoverVisible(false)
          setVisible(false) 
-        //  console.log("cod_estado:",stateCode, key, invoiceKey, company_id, dest_cnpj, "tipo:",eventType,"motivo:", reason)
         },[invoiceKey, cnpj ])
         
-        // console.log("cod_estado:",stateCode, "nota:", invoiceKey, "empresa:", companyId, "cnpj", cnpj, "tipo:",eventType,"motivo:", reason)
 
 
 
-      //chave_nota: invoiceKey, empresa_id: companyId, dest_cnpj: cnpj, tipo_evento: eventType, motivo: reason, cod_estado: stateCode, ambiente: "HOMOLOGACAO" 
+
+     
       
     async function eventRegister() {
      try {
@@ -84,7 +90,29 @@ interface Event {
       })
     }
     }
-    
+
+
+    const printData = async (nota: string, front: any) => {
+      const nfeData:  any = [];
+      const nfeFrontData: any = [];
+      nfeFrontData.push(front)
+      try {
+        const response = await getNfeData(nota, company_id);
+        const nfeResponse = response.data
+        if(Array.isArray(nfeResponse)) {
+          Danfe(nfeResponse, nfeFrontData)
+        } else {
+          nfeData.push(nfeResponse)
+          Danfe(nfeData, nfeFrontData)
+        }
+      } catch (error) {
+        console.log(error)
+        setToast({
+          text: "Houve um problema, por favor tente novamente",
+          type: "warning"
+        })
+      }
+    }
     
 
   return (
@@ -221,7 +249,13 @@ interface Event {
                 </a>
               </Popover.Item>
               <Popover.Item>
-                <Link href="#">Imprimir Nota</Link>
+                <Text
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  const front = item.rowValue;
+                  const nota = item.rowValue.chave_nota;
+                  printData(nota, front)
+                }}>Imprimir Nota</Text>
               </Popover.Item>
             </div>
           }

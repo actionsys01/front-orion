@@ -55,19 +55,24 @@ export default function AtualizarCadastro() {
   // console.log(id_profile);
  
   //checkbox states
+  // nfe
   const [nfeVisualizar, setNfeVizualizar] = useState<boolean>(false)
   const [nfeHistorico, setNfeHistorico] = useState<boolean>(false)
   const [nfeEventoCiencia, setNfeEventoCiencia] = useState<boolean>(false)
   const [nfeEventoConfirmar, setNfeEventoConfirmar] = useState<boolean>(false)
   const [nfeEventoDesconhecimento, setNfeEventoDesconhecimento] = useState<boolean>(false)
   const [nfeEventoNaoRealizado, setNfeEventoNaoRealizado] = useState<boolean>(false)
+  // cte
   const [cteVisualizar, setCteVizualizar] = useState<boolean>(false)
   const [cteHistorico, setCteHistorico] = useState<boolean>(false)
+  // nfse
   const [nfseVisualizar, setNfseVizualizar] = useState<boolean>(false)
   const [nfseHistorico, setNfseHistorico] = useState<boolean>(false)
+  // usuarios
   const [usuarioEditar, setUsuarioEditar] = useState<boolean>(false)
   const [usuarioAdcionar, setUsuarioAdicionar] = useState<boolean>(false)
   const [usuarioExcluir, setUsuarioExcluir] = useState<boolean>(false)
+  // perfis
   const [perfilEditar, setPerfilEditar] = useState<boolean>(false)
   const [perfilAdcionar, setPerfilAdicionar] = useState<boolean>(false)
   const [perfilExcluir, setPerfilExcluir] = useState<boolean>(false)
@@ -88,39 +93,47 @@ setProfileApp(currentPermissions)
   return currentPermissions
 }
 
-const getNfePermissions = useMemo(() => {
-const nfePermissions: ProfilePermissions[] = [];
+const getPermissions = useMemo(() => {
+const permissions: ProfilePermissions[] = [];
  if(profilePermissions) {
+   // nfe 
     const visualizarNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "VISUALIZAR");
     const historicoNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "HISTORICO")
     const eventoCienciaNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "CIENCIA")
     const eventoConfirmarNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "CONFIRMACAO")
     const eventoDesconhecimentoNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "DESCONHECIMENTO")
     const eventoNaoRealizadoNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "OPERACAO_NAO_REALIZADA")
+    // cte
     const visualizarCte = profilePermissions.find((item) => item.categoria === "CTE" && item.acao === "VISUALIZAR");
     const historicoCte = profilePermissions.find((item) => item.categoria === "CTE" && item.acao === "HISTORICO")
+    // usuários
     const editarUsuario = profilePermissions.find((item) => item.categoria === "USUARIO" && item.acao === "EDITAR")
     const adicionarUsuario = profilePermissions.find((item) => item.categoria === "USUARIO" && item.acao === "ADICIONAR")
     const excluirUsuario = profilePermissions.find((item) => item.categoria === "USUARIO" && item.acao === "EXCLUIR")
+    // perfis
     const editarPerfil = profilePermissions.find((item) => item.categoria === "PERFIS" && item.acao === "EDITAR")
     const adicionarPerfil = profilePermissions.find((item) => item.categoria === "PERFIS" && item.acao === "ADICIONAR")
     const excluirPerfil = profilePermissions.find((item) => item.categoria === "PERFIS" && item.acao === "EXCLUIR")
+    // nfe check
     if(visualizarNfe){setNfeVizualizar(true)}
     if(historicoNfe){setNfeHistorico(true)}
-    if(visualizarCte){setCteVizualizar(true)}
-    if(historicoCte){setCteHistorico(true)}
-    if(editarUsuario){setUsuarioEditar(true)}
-    if(adicionarUsuario) {setUsuarioAdicionar(true)}
-    if(excluirUsuario){setUsuarioExcluir(true)} 
-    if(editarPerfil) {setPerfilEditar(true)}
-    if(adicionarPerfil){setPerfilAdicionar(true)}
-    if(excluirPerfil) {setPerfilExcluir(true)}
     if(eventoCienciaNfe) {setNfeEventoCiencia(true)}
     if(eventoConfirmarNfe){setNfeEventoConfirmar(true)}
     if(eventoDesconhecimentoNfe) {setNfeEventoDesconhecimento(true)}
     if(eventoNaoRealizadoNfe) {setNfeEventoNaoRealizado(true)}
+    // cte check
+    if(visualizarCte){setCteVizualizar(true)}
+    if(historicoCte){setCteHistorico(true)}
+    // usuários check
+    if(editarUsuario){setUsuarioEditar(true)}
+    if(adicionarUsuario) {setUsuarioAdicionar(true)}
+    if(excluirUsuario){setUsuarioExcluir(true)} 
+    // perfis check
+    if(editarPerfil) {setPerfilEditar(true)}
+    if(adicionarPerfil){setPerfilAdicionar(true)}
+    if(excluirPerfil) {setPerfilExcluir(true)}
     }
-    return nfePermissions
+    return permissions
 }, [profilePermissions])
 
 
@@ -143,9 +156,6 @@ const nfePermissions: ProfilePermissions[] = [];
   
 
 const gatherData = (e: any)  => {
-
-
-
 
 const findProfileApp = profileApp.find(value => value === Number(e))
 
@@ -184,43 +194,43 @@ const handleProfileModal = () => {!profileModal ? setProfileModal(true) : setPro
       <BotaoVoltar/>
       <h2>Perfil de Cadastro </h2>
       <ButtonStyle>
-      <button
-          className="btn"
-          onClick={updateProfile}
-        >
-          Confirmar
+        <button
+            className="btn"
+            onClick={updateProfile}
+          >
+            Confirmar
         </button>
-        </ButtonStyle>
+      </ButtonStyle>
         <Spacer y={1} />
-    <Table>
-    <div className="main">
-      <header>
-        <span>
-          <h5>Aplicação</h5>
-          <h5 style={{width: "15%", display: "flex", justifyContent: "flex-end"}}>Descrição</h5>
-          <h5></h5>
-        </span>
-      </header>
-      {/* {isNfe  && nfePermission && */}
-      <div className="body-row">
-        <div onClick={handleNfeModal} style={{cursor: "pointer"}}>
-          <span className="line">
-          <h5>
-            Nf-e
-          </h5>
-          </span>
-          <span className="line">
-          <h5>
-            Painel e Visualização de Nf-e
-          </h5>
-          </span>
-          <span>
-            {!nfeModal ? <ChevronDown  className="icon"/> : <ChevronUp  className="icon"/> }
-          </span>
-        </div>
-          {nfeModal &&
-        <div className='modal'>
-          <div >
+        <Table>
+          <div className="main">
+            <header>
+              <span>
+                <h5>Aplicação</h5>
+                <h5 style={{width: "15%", display: "flex", justifyContent: "flex-end"}}>Descrição</h5>
+                <h5></h5>
+              </span>
+            </header>
+            {/* {isNfe  && nfePermission && */}
+            <div className="body-row">
+              <div onClick={handleNfeModal} style={{cursor: "pointer"}}>
+                <span className="line">
+                <h5>
+                  Nf-e
+                </h5>
+                </span>
+                <span className="line">
+                <h5>
+                  Painel e Visualização de Nf-e
+                </h5>
+                </span>
+                <span>
+                  {!nfeModal ? <ChevronDown  className="icon"/> : <ChevronUp  className="icon"/> }
+                </span>
+              </div>
+                {nfeModal &&
+              <div className='modal'>
+                <div >
             <span>
               <span><Checkbox  value={1} checked={nfeVisualizar}  onChange={() => gatherData(1)} onClick={nfeVisualizar ? ()=> setNfeVizualizar(false) : ()=> setNfeVizualizar(true)}/></span>
               Visualizar</span>

@@ -23,7 +23,7 @@ const UserPopover:  React.FC<PopoverProps> = ({data, setUsuarios, usuarios}) => 
     const router = useRouter();
     const [visible, setVisible] = useState(false)
     const { setVisible: setVisibleModal, bindings } = useModal();
-    const [userId, setUserId] = useState<number | undefined>();
+    const [userId, setUserId] = useState<number>(0);
     const [, setToast] = useToasts()
 
 
@@ -40,7 +40,7 @@ const UserPopover:  React.FC<PopoverProps> = ({data, setUsuarios, usuarios}) => 
 
      async function deleteUser() {
          try {
-            const id: number | undefined = userId
+            const id: number = userId
             await usuario.deletar(id);
             setVisibleModal(false)
             const usuariosAtualizados = usuarios?.filter((usuario) => usuario.id !== id);
