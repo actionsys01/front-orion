@@ -2,7 +2,8 @@ import { Container, Main } from "@components/App/index";
 import MenuLateral from "@components/MenuLateral";
 import PaginaCarregamento from "@components/PaginaCarregamento";
 import FiltroProvider from "@contexts/filtro";
-import {SecurityProvider} from "@contexts/security"
+import {SecurityProvider} from "@contexts/security";
+import { CertificateProvider } from "@contexts/certificate";
 import {
   CssBaseline,
   GeistProvider,
@@ -76,6 +77,7 @@ export default function App({ Component, pageProps }: any) {
         <CssBaseline />
         <FiltroProvider>
           <SecurityProvider>
+            <CertificateProvider>
           <ThemeProvider theme={orionTheme}>
             <Head>
               <link
@@ -103,6 +105,7 @@ export default function App({ Component, pageProps }: any) {
                <Component {...pageProps} />
            )}
           </ThemeProvider>
+          </CertificateProvider>
           </SecurityProvider>
         </FiltroProvider>
       </GeistProvider>

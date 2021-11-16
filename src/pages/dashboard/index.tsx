@@ -2,8 +2,9 @@ import React, { useState, useMemo, useEffect, useCallback} from 'react';
 import { Speedometer, InfoContainer } from './style';
 import { useSession } from "next-auth/client";
 import Head from "next/head";
-import {useSecurityContext} from "@contexts/security"
-import GaugeChart from "react-gauge-chart"
+import {useSecurityContext} from "@contexts/security";
+import  {useCertificateContext} from "@contexts/certificate"
+import GaugeChart from "react-gauge-chart";
 import { BsChevronCompactUp } from "react-icons/bs";
 import { useRouter } from "next/router";
 import * as planos from "@services/planos"
@@ -22,6 +23,7 @@ export default function Dashboard() {
       profilePermission, 
       entrancePermission} 
       = useSecurityContext()
+    const { isCertificated} = useCertificateContext()
     const [nfeAmount, setNfeAmount] = useState(0)
     const [cteAmount, setCteAmount] = useState(0)
     const [nfseAmount, setNfseAmount] = useState(0)
@@ -39,7 +41,7 @@ export default function Dashboard() {
     // modal
     const [ modal, setModal] = useState(false)
     
-    console.log(router.query)
+  
 
     const chartStyle = {
       height: 50,

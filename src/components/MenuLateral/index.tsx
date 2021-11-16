@@ -21,6 +21,7 @@ import {
   SubMenu,
 } from "react-pro-sidebar";
 import {useSecurityContext} from "@contexts/security"
+import { useCertificateContext } from '@contexts/certificate';
 import * as dashboard from "@services/empresas"
 
 interface IProps {
@@ -40,26 +41,8 @@ export default function MenuLateral({
   const router = useRouter();
   const { limpar } = useFiltro();
   const {nfePermission,ctePermission, nfsePermission, profilePermission, userPermission} = useSecurityContext()
-  const [certificated, setCertificated] = useState(false)
+  const {isCertificated} = useCertificateContext()
 
-
-  const confirmCertificate = useCallback(async () => {
-      try {
-        const response = await dashboard.getDashboard("120.099.2999-7")
-        const data = response.data
-        console.log("dash",data)
-        setCertificated(true)
-        return data
-      } catch (error) {
-        console.log('não tem')
-        setCertificated(false)
-      }
-    },[] )
-
-    useEffect(() => {
-      confirmCertificate()
-      
-    }, [])
 
   const isMD = useMediaQuery("lg");
 
@@ -121,7 +104,7 @@ export default function MenuLateral({
                 Cadastro de Plano
               </MenuItem> */}
               </SubMenu>
-              {!certificated && <MenuItem style={{textShadow: "1px 0 red"}}
+              {!isCertificated && <MenuItem style={{textShadow: "1px 0 red"}}
               onClick={() => router.push({
                 pathname: "/dashboard",
                 query: {certificate: "open"}

@@ -5,7 +5,7 @@ import {UploadModal, FirstLine, InsideModal, ProgressBarStyle} from "../style"
 import {sendCertificate} from "@services/empresas"
 import { useToasts } from "@geist-ui/react";
 import { useSession } from 'next-auth/client';
-import api from "@services/api"
+import {useCertificateContext} from "@contexts/certificate"
 
 interface ModalProps {
     modalHandler: () => void;
@@ -30,7 +30,7 @@ const Modal = ({modalHandler, responsible, setResponsible, cnpj, setCnpj, setUpl
     const [session] = useSession();
     const [ password, setPassword] = useState("")
     // const id = Number(session?.usuario.empresa.id)
-    const time = new Date
+    const { setIsCertificated} = useCertificateContext()
 
     const registerFile = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         if(event.target.files) {
@@ -55,6 +55,7 @@ const Modal = ({modalHandler, responsible, setResponsible, cnpj, setCnpj, setUpl
                 type: "success"
             })
             setUpload(true)
+            setIsCertificated(true)
         } catch (error) {
             console.log(error)
             setToast({
