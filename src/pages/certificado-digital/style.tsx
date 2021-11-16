@@ -75,6 +75,8 @@ export const InlineInputs = styled.div`
                     width: 100%;
                     height: 28px;
                     border: 1px solid #eaeaea;
+                    text-align: center;
+                    /* padding-inline-start: .425rem; */
                 }
     }    
 `
@@ -84,17 +86,29 @@ export const RightInput = styled.div`
         flex-direction: column;
         align-items: center;
         width: 75% !important;
-        span {
+        > span {
                 margin: 0 0.5rem;
                 font-size: 0.8rem;
                 white-space: nowrap;
         }
 
-        input {
+        > div {
             max-width: 200px;
             width: 100%;
             height: 88px;
             border: 1px solid #eaeaea;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .confirm {
+              max-width: 170px;
+              width: 100%;
+              height: 64px;
+              border: 1px solid #0DD0B3;
+              background-color: #0DD0B3;
+          }
         }
 `
 
@@ -150,11 +164,18 @@ export const UploadModal = styled.div`
             flex-direction: column;
                
         }
-
+    }
         @media (max-width: 495px) {
             min-height: 275px;
         }
-    }
+        @media (max-width: 820px) {
+           
+            > div {
+                min-height: 875px;
+                top: 10%;
+            }
+        }
+   
 `
 
 export const FirstLine = styled.div`
@@ -165,14 +186,13 @@ export const FirstLine = styled.div`
                     border-radius: 5px;
                     border: 1px solid #eaeaea;
                     height: 25px;
-                    width: 75%;
+                    width: 100%;
                     display: flex;
                     justify-content: center;
                     color: #444;
                     cursor: pointer;
                 }
                 
-
             input {
                 display: none;
                 cursor: pointer;
@@ -193,26 +213,61 @@ export const InsideModal = styled.div`
         margin-bottom: 1rem;
         align-items: center;
 
-        > span {
+        span {
             margin: 0 0.5rem;
             font-size: 0.8rem;
             white-space: nowrap;
         }
 
-        > input {
+         input {
             max-width: 250px;
             width: 85%;
-            height: 22px;
+            height: 32px;
             border: 1px solid #eaeaea;
         }
 
-        @media (max-width: 980px) {
-        flex-wrap: wrap; 
-        input {
-            max-width: 150px;
+         input[type= "date" ] {
+            min-width: 160px;
+            text-align: center;
+            font-size: 14px;
+            width: 80%;
+            height: 32px;
+            border: 1px solid #eaeaea;
+            padding-inline-start: .225rem;
         }
+   
     }
+        @media (max-width: 1060px) {
+        > div { 
+            input {
+            max-width: 150px;
+            }
+            input[type= "date" ] {
+                min-width: 120px;
+                width: 55%;
+                padding-inline: 0;
+                font-size: 10px;
+                
+            }
+            }
     }
+        @media (max-width: 820px) {
+        
+        flex-direction: column;
+        > div { 
+            input {
+            max-width: 150px;
+            }
+            input[type= "date" ] {
+                min-width: 120px;
+                width: 55%;
+                padding-inline: 0;
+                font-size: 10px;
+
+            }
+            }
+    }
+    
 `
 
 export const ProgressBarStyle = styled.div`
@@ -235,7 +290,7 @@ export const ProgressBarStyle = styled.div`
                     opacity: 0;
                     border-radius: 5px;
                     height: 20px;
-                    transition: ease-in 0.5s;
+                    transition: ease-in 0.8s;
                 }
 
                
