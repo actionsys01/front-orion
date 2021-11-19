@@ -57,7 +57,6 @@ interface IProps {
       dhSaiEnt: string;
       vUnTrib: string;
     };
-    versao: string;
     total: {
       ICMSTot: { vNF: string };
     };
@@ -122,9 +121,9 @@ export default function AbaProdutosServicos({ data }: IProps) {
       {produtos.map((produto, i) => (
         <Collapse.Group key={i}>
           <Collapse
-            style={{ padding: 5 }}
+            style={{ padding: 3 }}
             title={
-              <Grid.Container gap={2} direction="row">
+              <Grid.Container gap={1} direction="row">
                 <Grid
                   style={{
                     alignSelf: "center",
@@ -134,31 +133,31 @@ export default function AbaProdutosServicos({ data }: IProps) {
                 </Grid>
                 <Grid>
                   <Titulo>Número</Titulo>
-                  <Text key={i} size={12}>{produto?.prod?.cProd}</Text>
+                  <Text key={i} size={10}>{produto?.prod?.cProd}</Text>
                 </Grid>
                 <Grid>
                   <Titulo>Descrição</Titulo>
-                  <Text key={i} size={12}>{produto?.prod?.xProd}</Text>
+                  <Text key={i} size={10}>{produto?.prod?.xProd}</Text>
                 </Grid>
                 <Grid>
                   <Titulo>Quantidade</Titulo>
-                  <Text size={12}>{produto?.prod?.vUnCom}</Text>
+                  <Text size={10}>{produto?.prod?.vUnCom}</Text>
                 </Grid>
                 <Grid>
                   <Titulo>Unidade Comercial</Titulo>
-                  <Text size={12}>{produto?.prod?.uCom}</Text>
+                  <Text size={10}>{produto?.prod?.uCom}</Text>
                 </Grid>
                 <Grid>
                   <Titulo>Valor</Titulo>
-                  <Text size={12}>{produto?.prod?.vProd}</Text>
+                  <Text size={10}>{produto?.prod?.vProd}</Text>
                 </Grid>
                 <Grid>
                   <Titulo>xPed (Pedido)</Titulo>
-                  <Text size={12}>{produto?.prod?.xPed}</Text>
+                  <Text size={10}>{produto?.prod?.xPed}</Text>
                 </Grid>
                 <Grid>
                   <Titulo>nItemPed (Linha pedido)</Titulo>
-                  <Text size={12}>{produto?.prod?.nItemPed}</Text>
+                  <Text size={10}>{produto?.prod?.nItemPed}</Text>
                 </Grid>
               </Grid.Container> as any
             }
