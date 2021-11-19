@@ -1,6 +1,12 @@
-import getEntrance from "./getEntrance";
-import create from "./criar";
-import createDriver from "./create-driver";
-import createVehicle from "./create-vehicle";
+import getEntrance from "./controle/getEntrance";
+import create from "./controle/criar";
+import createDriver from "./motorista/create-driver";
+import createVehicle from "./veiculos/create-vehicle";
+import getDriverById from "./motorista/getDriverById";
+import getVehicleById from "./veiculos/getVehicleById";
+import updateEntrance from "./controle/updateEntrance";
+import getControlById from "./controle/getControlById";
 
-export {getEntrance, create, createDriver, createVehicle}
+export { getEntrance, create, updateEntrance, getControlById,
+    createDriver, getDriverById,
+    createVehicle,  getVehicleById, }

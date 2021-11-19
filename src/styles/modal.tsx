@@ -21,13 +21,14 @@ background-color: #fff;
 
 
 h4 {
-  font-size: 1.25rem; 
+  font-size: 1rem; 
   letter-spacing: 0.11rem;
   font-weight: 600;
   margin: 20px auto;
   vertical-align: middle;
-  text-align: center ;
-  display: inline-block;
+  text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
 div {
