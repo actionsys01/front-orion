@@ -33,7 +33,6 @@ export default function CadastrarCnpj() {
             await companyRequest.createCnpj(company_id, {
                 cnpj: cnpj,
                 nome: name,
-                nsu: "padrão",
                 uf: uf,
                 status_sefaz: 100
             })

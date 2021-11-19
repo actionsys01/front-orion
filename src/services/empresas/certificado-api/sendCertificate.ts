@@ -1,6 +1,7 @@
 import api from "@services/api";
 
 interface CertificateProps {
+    company_id: number;
     certificado: string;
     cnpj: string;
     senha: string;
@@ -18,6 +19,6 @@ export default async function sendCertificate(certificate: any, data: Certificat
     formData.append('data_vencimento', data.data_vencimento.toString())
 
 
-    const response = api.post("/empresas/certificado/criar", formData);
+    const response = api.post(`/empresas/certificado/criar/${data.company_id}`, formData);
     return response
 }

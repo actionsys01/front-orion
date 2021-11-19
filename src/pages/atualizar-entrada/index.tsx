@@ -6,7 +6,9 @@ import Head from "next/head";
 import  {format} from "date-fns";
 import { Checkbox } from '@material-ui/core';
 import { INfeDto } from "@services/nfe/dtos/INfeDTO";
+import {CteProps} from "@services/cte-mongo/cte-type/cte"
 import getNfeById from "@services/nfe/getNfeById";
+import buscar from "@services/cte-mongo/buscar"
 import { useRouter } from "next/router";
 import {TopConfirmBtn} from "@styles/buttons"
 import * as entrances from "@services/controle-entrada";
@@ -19,46 +21,54 @@ export default function AtualizarEntrada() {
     const [, setToast] = useToasts();
     const [ session ] = useSession();
     const [visible, setVisible] = useState<boolean>(false);
-    const [nota, setNota] = useState<INfeDto[]>([]);
+    const [nota, setNota] = useState<INfeDto[] | CteProps[]>([]);
     const router = useRouter();
     const company_id = Number(session?.usuario.empresa.id);
     const controlId = Number(router.query.id)
-    console.log(controlId)
+
     // checkbox
     const [reboque, setReboque] = useState(false)
     // input states
     const key: any = useRef(null)
     const [ queryKey, setQueryKey ] = useState()
     const [driverId, setDriverId] = useState("");
-    const [vehicleLicense, setVehicleLicense] = useState();
-    const [firstHaulage, setFirstHaulage] = useState();
-    const [secondHaulage, setSecondHaulage] = useState(2);
-    const [thirdHaulage, setThirdHaulage] = useState();
+    const [vehicleLicense, setVehicleLicense] = useState("");
+    const [firstHaulage, setFirstHaulage] = useState("");
+    const [secondHaulage, setSecondHaulage] = useState("");
+    const [thirdHaulage, setThirdHaulage] = useState("");
     const [ status, setStatus] = useState()
-    const [statusDescription, setStatusDescription] = useState();
-    const [arrivalDate, setArrivalDate] = useState(new Date())
-    const [exitDate, setExitDate] = useState(new Date())
-    const [loadedWeight, setLoadedWeight] = useState();
-    const [emptyWeight, setEmptyWeight] = useState();
-    const [measure, setMeasure] = useState();
+    const [statusDescription, setStatusDescription] = useState("");
+    const [arrivalDate, setArrivalDate] = useState(new Date)
+    const [exitDate, setExitDate] = useState(new Date)
+    const [loadedWeight, setLoadedWeight] = useState(0);
+    const [emptyWeight, setEmptyWeight] = useState(0);
+    const [measure, setMeasure] = useState("");
     const [entranceKeys, setEntranceKeys] = useState<string[]>([]);
     const [driver, setDriver] = useState("");
-    const [arrivalTime, setArrivalTime] = useState(new Date())
-    const [exitTime, setExitTime] = useState(new Date)
+    const [arrivalTime, setArrivalTime] = useState(new Date)
+    const [exitTime, setExitTime] = useState<Date | null>()
     const [ entranceId, setEntranceId] = useState(0)
-
-    console.log("curry",router.query)
 
     const getData = useCallback(async () => {
         try {
             const response = await entrances.getControlById(controlId)
             const data = response.data 
             const mappedData = data.entrada_notas.map((item) => item.chave_nota)
-            console.log("loginho", mappedData)
-            // setNota(mappedData)
             setEntranceKeys(mappedData)
-            console.log("data tese",data)
-        return data
+            getEntranceKeys(mappedData)
+            setDriverId(data.motorista.rg)
+            setDriver(data.motorista.nome)
+            setVehicleLicense(data.placa_principal)
+            setStatusDescription(data.descricao_status)
+            setFirstHaulage(data.placa_reboque1)
+            setSecondHaulage(data.placa_reboque2)
+            setThirdHaulage(data.placa_reboque3)
+            setArrivalDate(data.data_entrada)
+            setExitDate(data.data_saida)
+            setLoadedWeight(data.peso_cheio)
+            setEmptyWeight(data.peso_vazio === 0 ? "" : data.peso_vazio)
+            setMeasure(data.unidade_medida)
+            console.log(data)
         } catch (error) {
             console.log(error)
             setToast({
@@ -66,42 +76,105 @@ export default function AtualizarEntrada() {
                 type: "warning"
             });
         }
+        },[controlId])
+
+        useEffect(() => {
+            getData()
+        },[controlId])
+
         
-        },[])
 
-        console.log("mapa",entranceKeys.forEach(item => item))
-
-    const getNfe = useCallback(async () => {
-        try {
-            const response = await getNfeById(queryKey, company_id);
-            // setNota([response.data])
-            // setEntranceKeys(state =>[...state, key.current.value])
-            // setToast({
-            //     text: "Nota localizada com sucesso",
-            //     type: "success"
-            // });
+    const insertKey = useCallback(async (e) => {
+        e.preventDefault()
+        console.log("e", key.current.value )
+        const initial = key.current.value.toString().substring(0,2)
+        const ct = "CT"
+        if (initial.valueOf() == ct.valueOf()){
+            try {
+                const response = await buscar(key.current.value)
+                setNota(state =>[...state, response.data])
+                setEntranceKeys(state =>[...state, key.current.value])
+                setToast({
+                    text: "Nota localizada com sucesso",
+                    type: "success"
+                });
+            } catch (error) {
+                console.log(error)
+                setToast({
+                    text: "Houve um problema, por favor tente novamente",
+                    type: "warning"
+                });
+            }
+        } else {
+            try {
+            const response = await getNfeById(key.current.value, company_id);
+            console.log(response.data)
+            setNota(state =>[...state, response.data])
+            setEntranceKeys(state =>[...state, key.current.value])
+            setToast({
+                text: "Nota localizada com sucesso",
+                type: "success"
+            });
         } catch (error) {
             console.log(error)
             setToast({
                 text: "Houve um problema, por favor tente novamente",
                 type: "warning"
             });
+        }
+        }
+        e.target.reset()
+        }, [])
+
+    const getEntranceKeys = useCallback(async (entranceKeys) => {
+        if(entranceKeys.length) {
+            for (let i = 0; i < entranceKeys.length; i++) {
+                const mainKey = entranceKeys[i]
+                const initial = mainKey.toString().substring(0,2)
+                const ct = "CT"
+                if (initial.valueOf() == ct.valueOf()) {
+                    try {
+                        const response = await buscar(mainKey)
+                        setNota(state => [...state, response.data])
+                    } catch (error) {
+                        console.log(error)
+                        setToast({
+                            text: "Houve um problema, por favor tente novamente",
+                            type: "warning"
+                        });
+                    }
+                } else {
+                    try {
+                        const response = await getNfeById(mainKey, company_id);
+                        setNota(state =>[...state, response.data])
+                    } catch (error) {
+                        console.log(error)
+                        setToast({
+                            text: "Houve um problema, por favor tente novamente",
+                            type: "warning"
+                        });
+                    }
+                }
+            }
+           
         }
         
     }, [] )
 
-    useEffect(() => {
-        getData()
-    },[])
+    
 
     // useEffect(() => {
-    //     if(firstHaulage.length) {
-    //         setReboque(true)
-    //         setVisible(true)
-    //     } if(!firstHaulage.length) {
-    //         setReboque(false)
-    //     }
-    // }, [firstHaulage])
+    //     getNfe()
+    // },[entranceKeys] )
+
+    useEffect(() => {
+        if(firstHaulage?.length) {
+            setReboque(true)
+            setVisible(true)
+        } if(!firstHaulage?.length) {
+            setReboque(false)
+        }
+    }, [firstHaulage])
 
     // function reboqueCheckbox() {
     //     if(firstHaulage.length) {
@@ -123,6 +196,12 @@ export default function AtualizarEntrada() {
                     item.portaria_status === 2 ? "Entrada Fechada" : 
                     item.portaria_status === 3 ? "Não se Aplica" :
                     item.portaria_status === 4 ? "Entrega Cancelada": null),
+                    chave_nota: (item.chave_nota || item.informacoes_normal_substituto.infDoc.infNFe.chave),
+                    emit_cnpj: (item.emit_cnpj ||item.emitente.CNPJ ),
+                    emit_nome: (item.emit_nome || item.emitente.xNome),
+                    nota: (item.nota || item.informacoes_cte.nCT),
+                    serie: (item.serie || item.informacoes_cte.serie),
+                    emissionDate: (!item.informacoes_cte ? format(new Date(item.dt_hr_emi), "dd/MM/yyyy") : (format(new Date(item.informacoes_cte.dhEmi), "dd/MM/yyyy") || format(new Date(item.informacoes_cte.dEmi), "dd/MM/yyyy"))),
                     // emissionDate: format(new Date(item.dt_hr_emi), "dd/MM/yyyy"),
                     // arrivalDate: format(new Date(item.portaria_status_ent_dt_hr), "dd/MM/yyyy"),
                     // arrivalTime: (item.portaria_status_ent_dt_hr).toString().slice(11, 16),
@@ -135,6 +214,37 @@ export default function AtualizarEntrada() {
         return allData
     }, [nota])
 
+    async function updateEntrance() {
+        try {
+            await entrances.updateEntrance(entranceId, {
+                rg_motorista: driverId,
+                placa_principal: vehicleLicense,
+                placa_reboque1: firstHaulage,
+                placa_reboque2: secondHaulage,
+                placa_reboque3: thirdHaulage,
+                status: status,
+                descricao_status: statusDescription,
+                data_entrada: arrivalDate,
+                data_saida: exitDate,
+                peso_cheio: loadedWeight,
+                peso_vazio: emptyWeight,
+                empresa: company_id,
+                unidade_medida: measure,
+                entradas_notas: entranceKeys
+            })
+            setToast({
+                text: "Motorista cadastrado com sucesso",
+                type: "success"
+            })
+        } catch (error) {
+            console.log(error)
+            setToast({
+                text: "Houve um problema, por favor tente novamente",
+                type: "warning"
+            })
+        }
+    }
+
 
     return  <>
         <Head>
@@ -142,17 +252,17 @@ export default function AtualizarEntrada() {
         </Head>
         <BotaoVoltar />
         <TopConfirmBtn style={{width: "92.5%", margin: 0}}>
-            <button onClick={getNfe}>
+            <button onClick={updateEntrance}>
                 confirmar
             </button>
         </TopConfirmBtn>
         <div style={{display: 'flex', gap: "10px", flexDirection: "column", alignItems: "center"}}>
             <Section>
-                <h6>NF-e</h6>
+                <h6></h6>
                 <OneLineContainer>
-                    <form /* onSubmit={getNfe} */>
-                        <span>Chave de Acesso NF-e</span>
-                        <input type="text" value={queryKey}/* ref={key} *//>
+                    <form onSubmit={insertKey}>
+                        <span>Chave de Acesso</span>
+                        <input type="text" ref={key}/>
                     </form>
                 </OneLineContainer>
             </Section>
@@ -164,11 +274,11 @@ export default function AtualizarEntrada() {
                     <div>
                         <div>
                             <span>RG</span>
-                            <input type="text" /* value={driverId} onChange={(e) => setDriverId(e.target.value)} onBlur={(e) => findDriver(e.target.value)} */ />
+                            <input type="text" value={driverId} onChange={(e) => setDriverId(e.target.value)} /* onBlur={(e) => findDriver(e.target.value)}  *//>
                         </div>
                         <div>
                             <span >Nome</span>
-                            <input type="text" /* value={driver} onChange={(e) => setDriver(e.target.value)} *//>
+                            <input type="text" value={driver} onChange={(e) => setDriver(e.target.value)}/>
                         </div>
                     </div>
                         </Inline>
@@ -229,21 +339,21 @@ export default function AtualizarEntrada() {
                         <Column>
                             <div>
                                 <span>Data Chegada</span>
-                                <input defaultValue={format(new Date(arrivalDate), "dd/MM/yyyy")} onChange={(e) => setArrivalDate(new Date(e.target.value))} />
+                                <input value={format(new Date(arrivalDate), "dd/MM/yyyy")} onChange={(e) => setArrivalDate(new Date(e.target.value))} />
                             </div>
                             <div>
                                 <span>Data Saída</span>
-                                <input defaultValue={format(new Date(exitDate), "dd/MM/yyyy")} onChange={(e) => setExitDate(new Date(e.target.value))}/>
+                                <input value={exitDate === null ? "" : format(new Date(exitDate), "dd/MM/yyyy")} onChange={(e) => setExitDate(new Date(e.target.value))}/>
                             </div>
                         </Column>
                         <Column>
                             <div>
                                 <span>Hora Chegada</span>
-                                <input defaultValue={format(new Date(arrivalDate), "HH:mm")} onChange={(e) => setArrivalTime(new Date(e.target.value))}/>
+                                <input value={format(new Date(arrivalDate), "HH:mm")} onChange={(e) => setArrivalTime(new Date(e.target.value))}/>
                             </div>
                             <div>
                                 <span>Hora Saída</span>
-                                <input defaultValue={format(new Date(exitDate), "HH:mm")} onChange={(e) => setExitTime(new Date(e.target.value))}/>
+                                <input value={exitDate === null ? "" : format(new Date(exitDate), "HH:mm")} onChange={(e) => setExitTime(new Date(e.target.value))}/>
                             </div>
                         </Column>
                         

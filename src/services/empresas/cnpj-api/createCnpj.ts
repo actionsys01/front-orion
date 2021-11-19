@@ -3,7 +3,7 @@ import api from "@services/api";
 interface CreateCnpjToCompany {
     cnpj : string;
     nome : string;
-    nsu  : string;
+    nsu? : string;
     uf : string;
     status_sefaz : number;
 }

@@ -83,7 +83,6 @@ export default function CadastrarEntrada() {
         console.log("e", key.current.value )
         const initial = key.current.value.toString().substring(0,2)
         const ct = "CT"
-        console.log("init", initial)
         if (initial.valueOf() == ct.valueOf()){
             try {
                 const response = await buscar(key.current.value)
@@ -228,10 +227,10 @@ export default function CadastrarEntrada() {
         </TopConfirmBtn>
         <div style={{display: 'flex', gap: "10px", flexDirection: "column", alignItems: "center"}}>
             <Section>
-                <h6>NF-e</h6>
+                <h6></h6>
                 <OneLineContainer>
                     <form onSubmit={getNfe}>
-                        <span>Chave de Acesso NF-e</span>
+                        <span>Chave de Acesso</span>
                         <input type="text" ref={key}/>
                         <BtnPattern type="submit">
                             enviar

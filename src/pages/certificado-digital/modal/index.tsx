@@ -29,7 +29,8 @@ const Modal = ({modalHandler, responsible, setResponsible, cnpj, setCnpj, setUpl
     const [, setToast] = useToasts();
     const [session] = useSession();
     const [ password, setPassword] = useState("")
-    // const id = Number(session?.usuario.empresa.id)
+    const company_id = Number(session?.usuario.empresa.id)
+
     const { setIsCertificated} = useCertificateContext()
 
     const registerFile = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -43,6 +44,7 @@ const Modal = ({modalHandler, responsible, setResponsible, cnpj, setCnpj, setUpl
         try {
             setProgress(60)
             await sendCertificate(certificate, {
+                company_id,
                 certificado: '',
                 cnpj: cnpj,
                 data_inicio: initialDate,
