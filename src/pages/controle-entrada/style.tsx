@@ -26,6 +26,11 @@ export const EntranceGrid = styled.div`
           th:first-child {
                     border-top-left-radius: 5px;
                      border-bottom-left-radius: 5px;
+                     
+                }
+                th:nth-child(2) {
+                  text-align: left;
+                  padding-inline-start: 2rem;
                 }
                 th:last-child{
                     border-top-right-radius: 5px;
@@ -35,7 +40,7 @@ export const EntranceGrid = styled.div`
             min-width: 45px;
             font-size: 0.75rem;
             font-weight: normal;
-            text-align: left;
+            text-align: center;
             letter-spacing: 0;
             padding: 0 15px;
             white-space: nowrap;

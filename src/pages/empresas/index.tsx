@@ -11,7 +11,7 @@ import { useToasts } from "@geist-ui/react";
 import Pagination from "@material-ui/lab/Pagination";
 import { Pages } from "@styles/pages"
 
-interface CompanyProps {
+export interface CompanyProps {
     id: number;
     razao_social: string;
     nome_fantasia: string;
@@ -20,7 +20,7 @@ interface CompanyProps {
     plano: PlanoProps
 }
 
-interface PlanoProps {
+export interface PlanoProps {
     id: number;
     nome: string;
     dias: number;

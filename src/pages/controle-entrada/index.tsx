@@ -10,14 +10,23 @@ import { useSession } from "next-auth/client";
 import  {format} from "date-fns";
 import { Pages } from "@styles/pages";
 import Pagination from "@material-ui/lab/Pagination";
+import EntranceModal from "./modal"
 
 
 interface Entrance {
-  chave_nota: string;
-  controle_entrada: ControleProps
+    id: number
+    chave_nota: string;
+    controle_entrada: ControleProps
+}
+
+interface EntranceUpdateProps {
+    id: number
+    chave_nota: string;
+    controle_entrada: ControleProps
 }
 
 interface ControleProps {
+    id: number;
     placa_principal: string;
     placa_reboque1: string;
     placa_reboque2: string;
@@ -50,29 +59,142 @@ export default function ControleEntrada() {
     const [quantityPage, setQuantityPage] = useState(1);
     const [, setToast] = useToasts();
     const [session] = useSession();
-
+    const company_id = Number(session?.usuario.empresa.id)
+    const [ isCte, setIsCte] = useState(false)
+    //
+    const [driverId, setDriverId] = useState("");
+    const [vehicleLicense, setVehicleLicense] = useState("");
+    const [firstHaulage, setFirstHaulage] = useState("");
+    const [secondHaulage, setSecondHaulage] = useState("");
+    const [thirdHaulage, setThirdHaulage] = useState("");
+    const [ status, setStatus] = useState(0)
+    const [statusDescription, setStatusDescription] = useState("");
+    const [arrivalDate, setArrivalDate] = useState(new Date)
+    const [exitDate, setExitDate] = useState(new Date)
+    const [loadedWeight, setLoadedWeight] = useState(0);
+    const [emptyWeight, setEmptyWeight] = useState(0);
+    const [measure, setMeasure] = useState("");
+    const [entranceKeys, setEntranceKeys] = useState<string[]>([]);
+    const [driver, setDriver] = useState("");
+    const [arrivalTime, setArrivalTime] = useState(new Date)
+    const [exitTime, setExitTime] = useState()
+    const [ entranceId, setEntranceId] = useState(0)
+    // Modal
+    const [visibleModal, setVisibleModal] = useState(false)
+    const [ modalStatus, setModalStatus ] = useState("")
     
     const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {setPage(value)}
 
+    const modalHandler = useCallback(() => {
+        setVisibleModal(!visibleModal)
+    }, [visibleModal])
+
     const getEntranceDataByPage = useCallback(async () => {
+        try {
             const response = await entrances.getEntrance(page, Number(session?.usuario.empresa.id))
             const data = response.data
             setQuantityPage(Math.ceil(data.total / 8))
             return data.notas
-        },[page])
+        } catch (error) {
+            setToast({
+                text: "Houve um problema, por favor tente novamente",
+                type: "warning"
+            })
+        }
+            
+        },[page, entrance])
 
 
-        useEffect(() => {
-            getEntranceDataByPage().then(response => setEntrance(response))
-        }, [page])
+    useEffect(() => {
+        getEntranceDataByPage().then(response => setEntrance(response))
+    }, [page])
 
-    const handleEdit = useCallback(() => {
-        console.log('Editado')      
+    const handleApproval = useCallback(async (id) => {
+        const response = await entrances.getControlById(id)
+        const data = response.data 
+        const mappedData = data.entrada_notas.map((item) => item.chave_nota)
+        console.log(mappedData)
+        setEntranceId(id)
+        setDriverId(data.motorista.rg)
+        setVehicleLicense(data.placa_principal)
+        setFirstHaulage(data.placa_reboque1)
+        setSecondHaulage(data.placa_reboque2)
+        setThirdHaulage(data.placa_reboque3)
+        setStatus(1)
+        setStatusDescription(data.descricao_status)
+        setArrivalDate(new Date(data.data_entrada))
+        setExitDate(new Date(data.data_saida))
+        setLoadedWeight(Number(data.peso_cheio))
+        setEmptyWeight(Number(data.peso_vazio))
+        setMeasure(data.unidade_medida)
+        setEntranceKeys(mappedData)
+        setModalStatus("autorizar")
+        setVisibleModal(true)
+        console.log(entranceKeys)
+        return data
     }, [])
 
-    const handleDelete = useCallback(() => {
-        console.log('Deletado')      
+    const handleEdit = useCallback(( id) => {
+        console.log('Editado', id)     
+        router.push({
+            pathname: "/atualizar-entrada",
+            query: {id}
+        })
     }, [])
+
+    const handleCancel = useCallback(async (id) => {
+        const response = await entrances.getControlById(id)
+        const data = response.data 
+        const mappedData = data.entrada_notas.map((item) => item.chave_nota)
+        setEntranceId(id)
+        setDriverId(data.motorista.rg)
+        setVehicleLicense(data.placa_principal)
+        setFirstHaulage(data.placa_reboque1)
+        setSecondHaulage(data.placa_reboque2)
+        setThirdHaulage(data.placa_reboque3)
+        setStatus(4)
+        setStatusDescription(data.descricao_status)
+        setArrivalDate(new Date(data.data_entrada))
+        setExitDate(new Date(data.data_saida))
+        setLoadedWeight(Number(data.peso_cheio))
+        setEmptyWeight(Number(data.peso_vazio))
+        setMeasure(data.unidade_medida)
+        setEntranceKeys(mappedData)
+        setModalStatus("cancelar")
+        setVisibleModal(true)
+
+    }, [])
+
+    async function updateEntrance() {
+        try {
+            await entrances.updateEntrance(entranceId, {
+                rg_motorista: driverId,
+                placa_principal: vehicleLicense,
+                placa_reboque1: firstHaulage,
+                placa_reboque2: secondHaulage,
+                placa_reboque3: thirdHaulage,
+                status: status,
+                descricao_status: statusDescription,
+                data_entrada: arrivalDate,
+                data_saida: exitDate,
+                peso_cheio: loadedWeight,
+                peso_vazio: emptyWeight,
+                empresa: company_id,
+                unidade_medida: measure,
+                entradas_notas: entranceKeys
+            })
+            setToast({
+                text: "Motorista cadastrado com sucesso",
+                type: "success"
+            })
+        } catch (error) {
+            console.log(error)
+            setToast({
+                text: "Houve um problema, por favor tente novamente",
+                type: "warning"
+            })
+        }
+    }
 
 
 
@@ -85,15 +207,15 @@ export default function ControleEntrada() {
                     option: <Popover content={[
                         {
                             optionName: 'Autorizar',
-                            onClick: handleEdit
+                            onClick: () => handleApproval(item.controle_entrada.id)
                         },
                         {
                             optionName: 'Editar',
-                            onClick: handleEdit
+                            onClick: () => handleEdit(item.controle_entrada.id)
                         },
                         {
                             optionName: 'Cancelar',
-                            onClick: handleDelete
+                            onClick: () => handleCancel(item.controle_entrada.id)
                         }
                     ]}/>,
                     status: (item.controle_entrada.status === 0 ? "Na Portaria" : 
@@ -102,15 +224,51 @@ export default function ControleEntrada() {
                     item.controle_entrada.status === 3 ? "Não se Aplica" :
                     item.controle_entrada.status === 4 ? "Entrega Cancelada": null),
                     arrivalDate: format(new Date(item.controle_entrada.data_entrada), "dd/MM/yyyy"),
-                    exitDate: format(new Date(item.controle_entrada.data_saida), "dd/MM/yyyy"),
+                    exitDate: (item.controle_entrada.data_saida != null ? format(new Date(item.controle_entrada.data_saida), "dd/MM/yyyy") : ""),
                     arrivalTime: item.controle_entrada.data_entrada.slice(11,16),
-                    exitTime: item.controle_entrada.data_saida.slice(11,16)
+                    exitTime: item.controle_entrada.data_saida?.slice(11,16),
+                    emptyWeight: (Number(item.controle_entrada.peso_vazio) === 0 ? "" : item.controle_entrada.peso_vazio),
                 })
             })
         }
 
         return allData
-    }, [entrance])
+    }, [entrance ])
+
+
+    // function checkInvoiceType(string : any) {
+    //     const teste =  string.toString().substr(24,2)
+    //     console.log("aqui",teste)
+    //     return teste
+    // }
+
+    // function checkLentgh(string) {
+    //     const teste = string.length
+
+    //     console.log(teste)
+    //     return teste
+    // }
+
+    // function checkIfCte(string : any) {
+    //     const initial = string.toString().substring(0,2)
+    //     const ct = "CT"
+    //     console.log("valor inicial", initial)
+    //     console.log(typeof(initial))
+    //     if (initial.valueOf() == ct.valueOf())
+    //     {
+    //         setIsCte(true)
+    //         console.log("é cte")
+    //     } else {
+    //         setIsCte(false)
+    //         console.log("é nfe")
+    //     }
+    //     return initial
+    // }
+
+    // useEffect(() => {
+    //     console.log("state no effect",isCte)
+    // }, [isCte])
+
 
     return <>
             <Head>
@@ -177,8 +335,10 @@ export default function ControleEntrada() {
                 </table>
             </EntranceGrid>
             <Pages>
-            <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
+                <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
             </Pages>
+            {visibleModal && 
+            <EntranceModal modalStatus={modalStatus} modalHandler={modalHandler} updateEntrance={updateEntrance} />}
         </>
     
 }

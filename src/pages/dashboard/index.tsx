@@ -8,12 +8,9 @@ import GaugeChart from "react-gauge-chart";
 import { BsChevronCompactUp } from "react-icons/bs";
 import { useRouter } from "next/router";
 import * as planos from "@services/planos"
-import * as empresas from "@services/empresas"
+import * as empresas from "@services/empresas";
 import CertificateConfirm from './modal';
-
-
-
-
+import { useToasts } from "@geist-ui/react";
 export default function Dashboard() {
     const {
       nfePermission,
@@ -23,7 +20,7 @@ export default function Dashboard() {
       profilePermission, 
       entrancePermission} 
       = useSecurityContext()
-    const { isCertificated} = useCertificateContext()
+    const { isCertificated } = useCertificateContext()
     const [nfeAmount, setNfeAmount] = useState(0)
     const [cteAmount, setCteAmount] = useState(0)
     const [nfseAmount, setNfseAmount] = useState(0)
@@ -37,6 +34,7 @@ export default function Dashboard() {
     const [totalValue, setTotalValue] = useState(10)
     const [session] = useSession()
     const router = useRouter()
+    const [, setToast] = useToasts();
     
     // modal
     const [ modal, setModal] = useState(false)
@@ -49,23 +47,31 @@ export default function Dashboard() {
 
       // request de plano
     const getAccountData = useCallback(async () => {
-      const response = await planos.getAccountById(Number(session?.usuario.empresa.plano.id))
-      const data = response.data
-      return data
+      try {
+        const response = await planos.getAccountById(Number(session?.usuario.empresa.plano.id))
+        const data = response.data
+        return data
+      } catch (error) {
+        setToast({
+          text: "Houve um problema, por favor tente novamente",
+          type: "warning"
+        })
+      }
       },[])
 
       // request de dashboard data
     const getDashboardData = useCallback(async() => {
-      const response = await empresas.dashboardRequest(Number(session?.usuario.empresa.id))
+      try {
+        const response = await empresas.dashboardRequest(Number(session?.usuario.empresa.id))
       const data = response.data
       return data
+      } catch (error) {
+        setToast({
+          text: "Houve um problema, por favor tente novamente",
+          type: "warning"
+        })
+      }
       },[])
-
-    // const modalHandler = useCallback(() => {
-    //   router.query.certificate === "open" ? setModal(true) : 
-    //   setModal(false)
-    //   },[])
-    
     
     function getPercentage(partial: number, total: number) {
       return partial / total
@@ -73,24 +79,23 @@ export default function Dashboard() {
 
     useEffect(() => {
       getAccountData().then(response => {setTotalValue(response.notas), 
-        setTotalUsers(response.usuarios),
-        setAccountName(response.nome),
-        setAccountDescription(response.descricao)})
+        setTotalUsers(response.usuarios)})
       getDashboardData().then(response =>  {setTotalAmount(response.notas), 
-        setTotalUsersAmount(response.usuarios),
-        setCteAmount(response.CteCount), 
-        setNfseAmount(response.NfseCount), 
-        setNfeAmount(response.NfeCount)})
+        setTotalUsersAmount(response.usuarios)})
         const firstSpeedometer = getPercentage(totalAmount, totalValue)
         const secondSpeedometer = getPercentage(totalUsersAmount, totalUsers)
         setFirstPercentage(firstSpeedometer)
         setSecondPercentage(secondSpeedometer)
     }, [totalValue, totalAmount, totalUsers, totalUsersAmount])
- 
-    // useEffect(() => {
-    //   modalHandler()
-    // }, [])
- 
+
+    useEffect(() => {
+      getAccountData().then(response => {setAccountName(response.nome),
+      setAccountDescription(response.descricao)})
+      getDashboardData().then(response => {setCteAmount(response.CteCount), 
+        setNfseAmount(response.NfseCount), 
+        setNfeAmount(response.NfeCount)})
+    }, [])
+
 
     return  <>
         <Head>
@@ -122,15 +127,6 @@ export default function Dashboard() {
             </div>
           </div>
         </InfoContainer>
-       
-  {/* <div style={{height: "35vh"}}>
-  {nfePermission && <h3>Nf-e</h3>}
-  {ctePermission && <h3>Ct-e</h3>}
-  {nfsePermission &&  <h3>Nfs-e</h3>}
-  {entrancePermission && <h3>Portaria</h3>}
-  {profilePermission && <h3>Perfis</h3>}
-  {userPermission && <h3>Usuários</h3>}
-  </div> */}
         <Speedometer>
           <div>
             <h3>Notas</h3>

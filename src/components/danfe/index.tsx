@@ -3,8 +3,10 @@ import pdfFonts from 'pdfmake/build/vfs_fonts'
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import  {format} from "date-fns"
 
-function Danfe(nfeData: any, nfeFrontData: any){
+function Danfe(nfeData: any, nfeFrontData: any, products: any){
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+    // console.log("prodArray true", products)
 
     const gatheredNfeData: any = []
     const gatherInvoiceData = nfeData?.map((data: any) => {
@@ -28,10 +30,11 @@ function Danfe(nfeData: any, nfeFrontData: any){
         return gatheredNfeData
      })
 
-      console.log("teste 2",gatheredNfeData)
 
-    console.log("danfe 1:",nfeData)
-    console.log("danfe 2:",nfeFrontData)
+    //   console.log("teste 2",gatheredNfeData)
+
+    // console.log("danfe 1:",nfeData)
+    // console.log("danfe 2:",nfeFrontData)
 
     //Header
     const headerFirstRow = nfeFrontData.map((item: any) => {
@@ -141,13 +144,13 @@ function Danfe(nfeData: any, nfeFrontData: any){
     const impostoFirstRow = gatheredNfeData?.map((item: any) => {
        
         return [
-            {text: item.ICMS?.vBC, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
-            {text: item.ICMS?.vICMS, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.total.ICMSTot.vBC, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.total.ICMSTot.vICMS, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
             {text: item.total.ICMSTot?.vBCST, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
             {text: item.total.ICMSTot?.vST, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.produtos_servicos.imposto?.IPI?.IPITrib?.vIPI, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.produtos_servicos.imposto?.PIS?.PISAliq?.vPIS, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.produtos_servicos.prod?.vProd, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]}
+            {text: item.total.ICMSTot.vII, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.total.ICMSTot?.vPIS, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.total.ICMSTot?.vProd, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]}
             
         ]
     });
@@ -155,9 +158,9 @@ function Danfe(nfeData: any, nfeFrontData: any){
     const impostoSecondRow = gatheredNfeData?.map((item: any) => {
        
         return [
-            {text: item.produtos_servicos.prod?.vFrete, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
-            {text: item.produtos_servicos.prod?.vSeg, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
-            {text: item.produtos_servicos.prod?.vDesc, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.total.ICMSTot?.vFrete, fontSize: 7, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.total.ICMSTot?.vSeg, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
+            {text: item.total.ICMSTot?.vDesc, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
             {text: item.total.ICMSTot?.vOutro, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
             {text: item.total.ICMSTot?.vIPI, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
             {text: item.total.ICMSTot?.vCOFINS, fontSize: 7, alignment: "center", bold: true,  border: [true, false, true, true]},
@@ -203,40 +206,35 @@ function Danfe(nfeData: any, nfeFrontData: any){
 
     // PRODUTOS 
 
-    const produtosTable = gatheredNfeData.map((item: any) => {
+    const produtosTable = products.map((item: any, i: any) => {
+        const ICMS = (item.imposto?.ICMS?.ICMS00 || 
+            item.imposto?.ICMS?.ICMS10 || 
+            item.imposto?.ICMS?.ICMS20 || 
+            item.imposto?.ICMS?.ICMS30 || 
+            item.imposto?.ICMS?.ICMS40 || 
+            item.imposto?.ICMS?.ICMS51 || 
+            item.imposto?.ICMS?.ICMS60 || 
+            item.imposto?.ICMS?.ICMS70 || 
+            item.imposto?.ICMS?.ICMS90 || 
+            item.imposto?.ICMS?.ICMSST);
+            console.log("icms mapped",ICMS)
         return [
-            {text: item.produtos_servicos.prod?.cProd, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.xProd, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.NCM, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS?.CST, fontSize: 5, alignment: "center", bold: true, border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.CFOP, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.uCom, fontSize: 6, alignment: "center", bold: true, border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.qCom, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.vUnCom, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.vProd, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS?.vBC, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS?.vICMS, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS?.pICMS, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS?.pIPI, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]}
+            {text: item.prod.cProd, bold: true, fontSize: 6, alignment: "center", border: [true, false, true, false]},
+            {text: item.prod?.xProd, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.prod?.NCM, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: ICMS.CST, fontSize: 5, alignment: "center", bold: true, border: [true, false, true, false]},
+            {text: item.prod?.CFOP, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.prod?.uCom, fontSize: 6, alignment: "center", bold: true, border: [true, false, true, false]},
+            {text: item.prod?.qCom, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.prod?.vUnCom, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: item.prod?.vProd, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
+            {text: ICMS.vBC, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
+            {text: ICMS.vICMS, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
+            {text: ICMS.pICMS, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
+            {text: item.imposto.IPI?.IPITrib?.vIPI, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]}
         ]
-    });
-    const produtosTable2 = gatheredNfeData.map((item: any) => {
-        return [
-            {text: item.produtos_servicos.prod?.cProd, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.xProd, bold: true, fontSize: 7, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.NCM, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS?.CST, fontSize: 5, alignment: "center", bold: true, border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.CFOP, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.uCom, fontSize: 6, alignment: "center", bold: true, border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.qCom, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.vUnCom, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
-            {text: item.produtos_servicos.prod?.vProd, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS?.vBC, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS?.vICMS, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS?.pICMS, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]},
-            {text: item.ICMS?.pIPI, fontSize: 5, bold: true, alignment: "center", border: [true, false, true, false]}
-        ]
-    });
+    })
+
 
     const produtosLastRow = nfeData.map((item: any) => {
         return [
@@ -478,7 +476,7 @@ function Danfe(nfeData: any, nfeFrontData: any){
             table:{
                 headerRows: 1,
                 widths: [ 30, 107, 40, 22, 22, 22, 22, 22, 22, 22, 22, 22, 22],
-                heights: [1, 10, 10],
+                heights: [1, 8, 1],
                 body: [
                     [
                         {text: "CÓDIGO DO PRODUTO", fontSize: 4, alignment: "center", border: [true, true, true, true]},
