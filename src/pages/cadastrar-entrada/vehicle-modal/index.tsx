@@ -23,7 +23,7 @@ const VehicleModal = ({statusDescription, vehicleLicense,
         async function registerVehicle(e: any) {
             e.preventDefault()
             try {
-                if( !vehicleLicense || !statusDescription || !entranceDate) {
+                if( !vehicleLicense || !statusDescription) {
                     setToast({
                         text: "Por favor preencha os campos do formulário",
                         type: "warning"
@@ -33,7 +33,7 @@ const VehicleModal = ({statusDescription, vehicleLicense,
                 await entranceRequest.createVehicle({
                     placa: vehicleLicense,
                     descricao: statusDescription,
-                    data_entrada: entranceDate,
+                    data_entrada: new Date(),
                     empresa: Number(session?.usuario.empresa.id)
                 })
                 setToast({
@@ -52,27 +52,27 @@ const VehicleModal = ({statusDescription, vehicleLicense,
     return <ModalStyle>
         <div>
             <span><X  onClick={() => secondModalHandler()}/></span>
-            <h4>Cadastrar Veículo</h4>
+            <h4>Veículo não encontrado, complete o cadastro:</h4>
              <Section>
                     <form onSubmit={registerVehicle}>
                         <InputStyles>
                             <div>
                                 <span>Placa</span>
-                                <input type="text" onChange={(e) => setVehicleLicense(e.target.value)}/>
+                                <input type="text" value={vehicleLicense} onChange={(e) => setVehicleLicense(e.target.value)}/>
                             </div>
                         </InputStyles>
                         <InputStyles>
                             <div>
                                 <span>Descrição</span>
-                                <input type="text" onChange={(e) => setStatusDescription(e.target.value)}/>
+                                <textarea className="description"  onChange={(e) => setStatusDescription(e.target.value)}></textarea>
                             </div>
                         </InputStyles>
-                        <InputStyles>
+                        {/* <InputStyles>
                             <div>
                                 <span>Data de Entrada</span>
                                 <input type="date" onChange={(e) => setEntranceDate(new Date(e.target.value))}/>
                             </div>
-                        </InputStyles>
+                        </InputStyles> */}
                         <BottomConfirmBtn>
                             <button type="submit">
                                 adicionar

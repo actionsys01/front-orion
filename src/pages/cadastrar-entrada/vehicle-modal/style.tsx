@@ -5,6 +5,7 @@ export const Section = styled.div`
     align-items: center;
     box-sizing: border-box;
     height: 80%;
+
     form {
         margin: 0 auto;
         padding: 3.5rem ;
@@ -45,6 +46,14 @@ export const InputStyles = styled.div`
             max-width: 510px;
             width: 100%;
             height: 28px;
+            border: 1px solid #eaeaea;
+            padding-inline-start: .225rem;
+        }
+        
+        textarea {
+            min-width: 230px;
+            width: 100%;
+            height: 75px;
             border: 1px solid #eaeaea;
             padding-inline-start: .225rem;
         }
@@ -167,6 +176,16 @@ export const ModalStyle = styled.div`
             vertical-align: middle;
             text-align: center ;
             color: #444;
+        }
+    }
+
+    @media (max-width: 565px) {
+        > div {
+                min-width: 65%;
+                left: 15%;
+            h4 {
+                margin: 30px auto;
+            }
         }
     }
 `

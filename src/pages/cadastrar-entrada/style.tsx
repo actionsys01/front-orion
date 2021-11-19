@@ -110,6 +110,11 @@ export const ModalContainer = styled.div`
         
         }
 
+        .second {
+            margin: 0 1.2rem;
+        
+        }
+
          span {
                 margin: 0 1.3rem;
                 font-size: 0.8rem;
@@ -139,13 +144,22 @@ export const ModalContainer = styled.div`
             width: 100%;
             height: 22px;
             border: 1px solid #eaeaea;
+            /* text-align: center; */
         }
 
         .description {
-            max-width: 170px;
+            max-width: 150px;
             width: 100%;
             height: 22px;
             border: 1px solid #eaeaea;
+        }
+    }
+
+    @media (max-width: 1250px) {
+        .icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
     }
     
@@ -159,15 +173,28 @@ export const ModalContainer = styled.div`
         .icon{
            margin: 0;
            padding: 0;
-           right: -50px!important;
+           right: -45px!important;
            top: 0;
+       }
+       input {
+        max-width: 220px!important;
+        width: 100%;
        }
     }
 
-    
+    @media (max-width: 675px) {
+        .icon {
+            right: -20px;
+        }
+        input {
+        max-width: 180px!important;
+        width: 100%;
+       }
+    }
 `
 
 export const BtnPattern = styled.button`
+        display: none;
         color: #fff;
         background-color: #1C496A;
         border: 1px solid #1C496A;
@@ -194,6 +221,10 @@ export const FormContainer = styled.div`
     padding: 2rem;
     display: flex;
     justify-content: space-between;
+
+    @media (max-width: 1170px) {
+        flex-wrap: wrap;
+    }
     
     @media (max-width: 830px) {
         flex-wrap: wrap;
@@ -222,13 +253,34 @@ export const Column = styled.div`
             max-width: 150px;
             width: 50%;
             height: 22px;
+            text-align: center;
             border: 1px solid #eaeaea;
         }
 
-        @media (max-width: 980px) {
+        select {
+            min-width: 85px;
+            width: 50%;
+            height: 22px;
+            text-align: center;
+            border: 1px solid #eaeaea;
+            font-size: .8rem;
+            line-height: .8rem;
+
+            option {
+                line-height: 2rem;
+            }
+        }
+
+    }
+
+    @media (max-width: 1170px) {
         flex-wrap: wrap;
     }
-    }
+    
+    
+    @media (max-width: 980px) {
+    flex-wrap: wrap;
+}
 `
 
 export const EntranceGrid = styled.div`

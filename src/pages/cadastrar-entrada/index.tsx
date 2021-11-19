@@ -8,10 +8,12 @@ import {  Section, FormContainer, Column,
 import { Checkbox } from '@material-ui/core';
 import { useToasts } from "@geist-ui/react";
 import { INfeDto } from "@services/nfe/dtos/INfeDTO";
+import {CteProps} from "@services/cte-mongo/cte-type/cte"
 import getNfeById from "@services/nfe/getNfeById";
+import buscar from "@services/cte-mongo/buscar"
 import { useSession } from "next-auth/client";
 import  {format} from "date-fns";
-import {TopConfirmBtn} from "@styles/buttons"
+import {AddBtn, TopConfirmBtn} from "@styles/buttons"
 import * as entranceReq from "@services/controle-entrada"
 import DriverModal from "./driver-modal"
 import VehicleModal from "./vehicle-modal"
@@ -38,7 +40,7 @@ export default function CadastrarEntrada() {
     // nota 
     const key: any = useRef(null)
     const [mainKey, setMainKey] = useState<string>("");
-    const [nota, setNota] = useState<INfeDto[]>([])
+    const [nota, setNota] = useState<INfeDto[] | CteProps[]>([])
     const [, setToast] = useToasts();
     const [session] = useSession();
     const company_id = Number(session?.usuario.empresa.id);
@@ -51,10 +53,16 @@ export default function CadastrarEntrada() {
     const [vehicleLicense, setVehicleLicense] = useState("");
     const [loadedWeight, setLoadedWeight] = useState(0);
     const [emptyWeight, setEmptyWeight] = useState(0);
-    const [measure, setMeasure] = useState("");
+    const [measure, setMeasure] = useState("Kg");
     const [firstHaulage, setFirstHaulage] = useState("");
     const [secondHaulage, setSecondHaulage] = useState("");
     const [thirdHaulage, setThirdHaulage] = useState("");
+    const [arrivalDate, setArrivalDate] = useState(new Date)
+    const [arrivalTime, setArrivalTime] = useState(new Date)
+    const [exitDate, setExitDate] = useState<Date | null>()
+    const [exitTime, setExitTime] = useState()
+    
+
 
     const modalHandler = useCallback(() => {
         setVisibleModal(!visibleModal)
@@ -64,12 +72,38 @@ export default function CadastrarEntrada() {
         setSecondModal(!secondModal)
     }, [secondModal])
 
+    useEffect(() => {
+        console.log(exitDate)
+    }, [])
+
 
     // input de chave de acesso
     const getNfe = useCallback(async (e) => {
         e.preventDefault()
-        try {
+        console.log("e", key.current.value )
+        const initial = key.current.value.toString().substring(0,2)
+        const ct = "CT"
+        console.log("init", initial)
+        if (initial.valueOf() == ct.valueOf()){
+            try {
+                const response = await buscar(key.current.value)
+                setNota(state =>[...state, response.data])
+                setEntranceKeys(state =>[...state, key.current.value])
+                setToast({
+                    text: "Nota localizada com sucesso",
+                    type: "success"
+                });
+            } catch (error) {
+                console.log(error)
+                setToast({
+                    text: "Houve um problema, por favor tente novamente",
+                    type: "warning"
+                });
+            }
+        } else {
+            try {
             const response = await getNfeById(key.current.value, company_id);
+            console.log(response.data)
             setNota(state =>[...state, response.data])
             setEntranceKeys(state =>[...state, key.current.value])
             setToast({
@@ -83,6 +117,8 @@ export default function CadastrarEntrada() {
                 type: "warning"
             });
         }
+        }
+        e.target.reset()
     }, [] )
 
 
@@ -98,14 +134,20 @@ export default function CadastrarEntrada() {
                     item.portaria_status === 2 ? "Entrada Fechada" : 
                     item.portaria_status === 3 ? "Não se Aplica" :
                     item.portaria_status === 4 ? "Entrega Cancelada": null),
-                    emissionDate: format(new Date(item.dt_hr_emi), "dd/MM/yyyy"),
-                    arrivalDate: format(new Date(item.portaria_status_ent_dt_hr), "dd/MM/yyyy"),
-                    arrivalTime: (item.portaria_status_ent_dt_hr).toString().slice(11, 16),
-                    exitDate: (item.portaria_status_sai_dt_hr === null ? "" : format(new Date(item?.portaria_status_sai_dt_hr), "dd/MM/yyyy")),
-                    exitTime: (item?.portaria_status_sai_dt_hr)?.toString().slice(11, 16),
+                    chave_nota: (item.chave_nota || item.informacoes_normal_substituto.infDoc.infNFe.chave),
+                    emit_cnpj: (item.emit_cnpj ||item.emitente.CNPJ ),
+                    emit_nome: (item.emit_nome || item.emitente.xNome),
+                    nota: (item.nota || item.informacoes_cte.nCT),
+                    serie: (item.serie || item.informacoes_cte.serie),
+                    emissionDate: (!item.informacoes_cte ? format(new Date(item.dt_hr_emi), "dd/MM/yyyy") : (format(new Date(item.informacoes_cte.dhEmi), "dd/MM/yyyy") || format(new Date(item.informacoes_cte.dEmi), "dd/MM/yyyy"))),
+                    // arrivalDate: format(new Date(item.portaria_status_ent_dt_hr), "dd/MM/yyyy"),
+                    // arrivalTime: (item.portaria_status_ent_dt_hr).toString().slice(11, 16),
+                    // exitDate: (item.portaria_status_sai_dt_hr === null ? "" : format(new Date(item?.portaria_status_sai_dt_hr), "dd/MM/yyyy")),
+                    // exitTime: (item?.portaria_status_sai_dt_hr)?.toString().slice(11, 16),
                 })
             })
         }
+        console.log("ally",allData)
         return allData
     }, [nota])
 
@@ -122,8 +164,8 @@ export default function CadastrarEntrada() {
                     peso_cheio: loadedWeight,
                     peso_vazio: emptyWeight,
                     unidade_medida: measure,
-                    data_entrada: time,
-                    data_saida: time,
+                    data_entrada: arrivalDate,
+                    data_saida: exitDate,
                     placa_reboque1: firstHaulage,
                     placa_reboque2: secondHaulage,
                     placa_reboque3: thirdHaulage
@@ -143,6 +185,36 @@ export default function CadastrarEntrada() {
             })
         }
 
+        async function findDriver(rg : string) {
+            if(rg.length > 6) {
+                 try {
+                const response = await entranceReq.getDriverById(rg)
+                const data = response.data.nome
+                console.log("foi foi",data)
+                setDriver(data)
+                return data
+            } catch (error) {
+                setVisibleModal(true)
+            }
+            }
+           
+        }
+
+        async function findVehicle(placa : string) {
+            if(placa.length > 6) {
+                try {
+                const response = await entranceReq.getVehicleById(placa)
+                const data = response.data.descricao
+                console.log("vehicle",data)
+                setStatusDescription(data)
+                return data
+            } catch (error) {
+                setSecondModal(true)
+            }
+            }
+            
+        }
+
  
     return <>
         <Head>
@@ -156,10 +228,10 @@ export default function CadastrarEntrada() {
         </TopConfirmBtn>
         <div style={{display: 'flex', gap: "10px", flexDirection: "column", alignItems: "center"}}>
             <Section>
-                <h6>Nf-e</h6>
+                <h6>NF-e</h6>
                 <OneLineContainer>
                     <form onSubmit={getNfe}>
-                        <span>Chave de Acesso Nf-e</span>
+                        <span>Chave de Acesso NF-e</span>
                         <input type="text" ref={key}/>
                         <BtnPattern type="submit">
                             enviar
@@ -180,7 +252,7 @@ export default function CadastrarEntrada() {
                     <div>
                         <div>
                             <span>RG</span>
-                            <input type="text" value={driverId} onChange={(e) => setDriverId(e.target.value)}/>
+                            <input type="text" value={driverId} onChange={(e) => setDriverId(e.target.value)} onBlur={(e) => findDriver(e.target.value)} />
                         </div>
                         <div>
                             <span >Nome</span>
@@ -202,15 +274,15 @@ export default function CadastrarEntrada() {
                     <div>
                         <div>
                             <span className="first">Placa Principal</span>
-                            <input type="text" value={vehicleLicense} onChange={(e) => setVehicleLicense(e.target.value)}/>
+                            <input type="text" value={vehicleLicense} onChange={(e) => setVehicleLicense(e.target.value)} onBlur={(e) => findVehicle(e.target.value)} />
                         </div>
                         <div>
                             <span>Descrição</span>
                             <input type="text" value={statusDescription} className="description" onChange={(e) => setStatusDescription(e.target.value)}/>
                         </div>
                         <div>
-                         <span className="icon"><Checkbox onChange={() => setVisible(!visible)}/></span> 
-                         </div>
+                            <span className="icon">Reboque<Checkbox onChange={() => setVisible(!visible)}/></span> 
+                            </div>
                     </div>
                     {visible && 
                     <>
@@ -220,28 +292,18 @@ export default function CadastrarEntrada() {
                             <input type="text" onChange={(e) => setFirstHaulage(e.target.value)}/>
                         </div>
                         <div>
-                            <span>Descrição</span>
-                            <input type="text" className="description"/>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            <span>Reboque 2</span>
-                            <input type="text" onChange={(e) => setSecondHaulage(e.target.value)}/>
-                        </div>
-                        <div>
-                            <span>Descrição</span>
+                            <span className="second">Reboque 2</span>
                             <input type="text" className="description"/>
                         </div>
                     </div>
                     <div>
                         <div>
                             <span>Reboque 3</span>
-                            <input type="text" onChange={(e) => setThirdHaulage(e.target.value)}/>
+                            <input type="text" onChange={(e) => setSecondHaulage(e.target.value)}/>
                         </div>
                         <div>
-                            <span>Descrição</span>
-                            <input type="text" className="description"/>
+                            {/* <span>Descrição</span>
+                            <input type="text" className="description"/> */}
                         </div>
                     </div>
                     </>
@@ -254,17 +316,17 @@ export default function CadastrarEntrada() {
                         <Column>
                             <div>
                                 <span>Data Chegada</span>
-                                <input />
+                                <input defaultValue={format(new Date(), "dd/MM/yyyy")} onChange={(e) => setArrivalDate(new Date(e.target.value))} />
                             </div>
                             <div>
                                 <span>Data Saída</span>
-                                <input />
+                                <input /* defaultValue={format(new Date(), "dd/MM/yyyy")} */ onChange={(e) => setExitDate(new Date(e.target.value))}/>
                             </div>
                         </Column>
                         <Column>
                             <div>
                                 <span>Hora Chegada</span>
-                                <input />
+                                <input defaultValue={format(new Date(), "HH:mm")} onChange={(e) => setArrivalTime(new Date(e.target.value))}/>
                             </div>
                             <div>
                                 <span>Hora Saída</span>
@@ -285,7 +347,10 @@ export default function CadastrarEntrada() {
                         <Column style={{justifyContent: "space-between"}}>
                             <div style={{justifyContent: "center"}}>
                                 <span>UM</span>
-                                <input style={{width: "35%"}} onChange={(e) => setMeasure(e.target.value)}/>
+                                <select onChange={(e) => setMeasure(e.target.value)} >
+                                    <option value="Kg">Kg</option>
+                                    <option value="Ton">Ton</option>
+                                </select>
                             </div>
                             <div style={{justifyContent: "center", alignItems: "flex-end", fontSize: "0.75rem"}}>
                                 <BtnStyle>

@@ -17,12 +17,14 @@ interface ModalProps {
 const DriverModal = ({setDriverId, setDriver, driverId, driver, modalHandler}: ModalProps) => {
     const [entranceDate, setEntranceDate] = useState<Date>()
     const [, setToast] = useToasts();
+    const [session] = useSession();
+    const company_id = Number(session?.usuario?.empresa.id)
 
     
     async function registerDriver (e: any)  {
         e.preventDefault()
             try {
-                if(!driverId || !driverId || !entranceDate){
+                if(!driverId || !driverId ){
                     setToast({
                         text: "Por favor preencha os campos do formulário",
                         type: "warning"
@@ -32,8 +34,8 @@ const DriverModal = ({setDriverId, setDriver, driverId, driver, modalHandler}: M
                 await entranceRequest.createDriver({
                     rg: driverId,
                     nome: driver,
-                    data_entrada: entranceDate as Date,
-                    empresa: 22
+                    data_entrada: new Date(),
+                    empresa: company_id
                 })
                 setToast({
                     text: "Motorista cadastrado com sucesso",
@@ -52,31 +54,27 @@ const DriverModal = ({setDriverId, setDriver, driverId, driver, modalHandler}: M
     return <ModalStyle >
             <div>
                 <span><X onClick={() => modalHandler()}/></span>
-                <h4>Cadastrar Motorista</h4>
+                <h4>Motorista não encontrado, complete o cadastro:</h4>
                 <Section>
-                        <form onSubmit={registerDriver}>
-                            <InputStyles>
-                                <div><span>Nome</span></div>
-                                <input type="text" value={driver} onChange={(e) => setDriver(e.target.value)}/>
-                            </InputStyles>
-                            <InputDoubleStyles>
-                                <div>
-                                    <span>RG</span>
-                                    <input type="text" value={driverId} onChange={(e) => setDriverId(e.target.value)}/>
-                                </div>
-                                <div>
-                                    <span>Data de Entrada</span>
-                                    <input type="date" onChange={(e) => setEntranceDate(new Date(e.target.value))}/>
-                                </div>
-                            </InputDoubleStyles>
-                            <BottomConfirmBtn >
-                                <button type="submit">
-                                    Confirmar
-                                </button>
-                            </BottomConfirmBtn>
-                        </form>
-                    </Section>
-                </div>
+                    <form onSubmit={registerDriver}>
+                        <InputStyles>
+                                <div><span>RG</span></div>
+                                <input type="text" value={driverId} 
+                                    onChange={(e) => setDriverId(e.target.value)}/>
+                        </InputStyles>
+                        <InputStyles>
+                            <div><span>Nome</span></div>
+                            <input type="text" value={driver} 
+                                onChange={(e) => setDriver(e.target.value)}/>
+                        </InputStyles>
+                        <BottomConfirmBtn >
+                            <button type="submit">
+                                Confirmar
+                            </button>
+                        </BottomConfirmBtn>
+                    </form>
+                </Section>
+            </div>
     </ModalStyle>
 }
 
