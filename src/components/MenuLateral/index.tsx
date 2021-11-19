@@ -74,42 +74,47 @@ export default function MenuLateral({
              onClick={() => router.push("/dashboard")}>
               Actionsys
             </MenuItem>
-            <SubMenu title="Painéis" icon={<FileText />}>
-              {nfePermission && <MenuItem onClick={() => router.push("/nfe")}>NF-e</MenuItem>}
-              {ctePermission && <MenuItem onClick={() => router.push("/cte")}>CT-e</MenuItem>}
-              {nfsePermission && <MenuItem>NFS-e</MenuItem>}
-            </SubMenu>
-            <SubMenu title="Aplicações" icon={<Grid />}>
-              <MenuItem onClick={() => router.push("/controle-entrada")}>Controle de Entrada</MenuItem>
-              {/* <MenuItem>Contagem Física</MenuItem>
-              <MenuItem>Controle Divergência</MenuItem> */}
-            </SubMenu>
-            <SubMenu title="Configurações" icon={<Settings />}>
-              {profilePermission && <MenuItem onClick={() => router.push("/perfil-acesso")}>
-                Perfil de Acesso
-              </MenuItem>}
-              {userPermission && <MenuItem onClick={() => router.push("/usuarios")}>
-                Usuários
-              </MenuItem>}
-              <MenuItem onClick={() => router.push({
-                pathname: "/certificado-digital",
-                query: {isCertificated: "true"}
-              })}>
-                  Certificado Digital
-              </MenuItem>
-               {/* <MenuItem onClick={() => router.push("/empresas")}>
-                Cadastro de Empresa
-              </MenuItem>
-               <MenuItem onClick={() => router.push("/planos")}>
-                Cadastro de Plano
-              </MenuItem> */}
+              <SubMenu title="Painéis" icon={<FileText />}>
+                {nfePermission && <MenuItem onClick={() => router.push("/nfe")}>NF-e</MenuItem>}
+                {ctePermission && <MenuItem onClick={() => router.push("/cte")}>CT-e</MenuItem>}
+                {nfsePermission && <MenuItem>NFS-e</MenuItem>}
               </SubMenu>
-              {!isCertificated && <MenuItem style={{textShadow: "1px 0 red"}}
-              onClick={() => router.push({
-                pathname: "/dashboard",
-                query: {certificate: "open"}
-              })}
-              >Certificado Digital</MenuItem>}
+              <SubMenu title="Aplicações" icon={<Grid />}>
+                <MenuItem onClick={() => router.push("/controle-entrada")}>Controle de Entrada</MenuItem>
+                {/* <MenuItem>Contagem Física</MenuItem>
+                <MenuItem>Controle Divergência</MenuItem> */}
+              </SubMenu>
+              <SubMenu title="Configurações" icon={<Settings />}>
+                {profilePermission && <MenuItem onClick={() => router.push("/perfil-acesso")}>
+                  Perfil de Acesso
+                </MenuItem>}
+                {userPermission && <MenuItem onClick={() => router.push("/usuarios")}>
+                  Usuários
+                </MenuItem>}
+                <MenuItem onClick={() => router.push({
+                  pathname: "/certificado-digital",
+                  query: {isCertificated: "true"}
+                })}>
+                    Certificado Digital
+                </MenuItem>
+                <MenuItem
+                onClick={() => router.push("/cnpjs-empresa")}
+                >
+                  CNPJs da Empresa
+                </MenuItem>
+                {/* <MenuItem onClick={() => router.push("/empresas")}>
+                  Cadastro de Empresa
+                </MenuItem>
+                <MenuItem onClick={() => router.push("/planos")}>
+                  Cadastro de Plano
+                </MenuItem> */}
+                </SubMenu>
+                {!isCertificated && <MenuItem style={{textShadow: "1px 0 red"}}
+                onClick={() => router.push({
+                  pathname: "/dashboard",
+                  query: {certificate: "open"}
+                })}
+                >Certificado Digital</MenuItem>}
           </Menu>
         </SidebarContent>
         <SidebarFooter>
@@ -119,9 +124,9 @@ export default function MenuLateral({
                 Trocar senha
               </MenuItem>
             </SubMenu>
-            <MenuItem icon={<LogOut />} onClick={sair}>
-              Sair
-            </MenuItem>
+              <MenuItem icon={<LogOut />} onClick={sair}>
+                Sair
+              </MenuItem>
           </Menu>
         </SidebarFooter>
       </ProSidebar>

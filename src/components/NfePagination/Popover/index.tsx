@@ -28,7 +28,9 @@ interface Event {
     const router = useRouter()
     const { setVisible: setVisiblePop, bindings } = useModal();
     const [secondPopoverVisible, setSecondPopoverVisible] = useState(false)
-    const {nfeHistoricalPermission, nfeAwarePermission, nfeConfirmPermission, nfeUnawarePermission, nfeUnauthorizedPermission} = useSecurityContext()
+    const {nfeHistoricalPermission, 
+      nfeAwarePermission, nfeConfirmPermission, 
+      nfeUnawarePermission, nfeUnauthorizedPermission} = useSecurityContext()
     const [ reason, setReason] = useState<string>("")
     const [eventType, setEventType] = useState< string>("")
     const [stateCode, setStateCode] = useState<string>("") 
@@ -50,25 +52,25 @@ interface Event {
 
 
     const getEventData = useCallback((key, company_id, dest_cnpj) => {
-         const firstString = key.substring(0,1)
-         const cod_estado = firstString === "N" ? key.substring(3,5) : key.substring(0,2)
-         setStateCode(cod_estado);
-         setInvoiceKey(key)
-         setCompanyId(company_id)
-         setCnpj(dest_cnpj)
-         setVisiblePop(true);
-         setSecondPopoverVisible(false)
-         setVisible(false) 
+        const firstString = key.substring(0,1)
+        const cod_estado = firstString === "N" ? key.substring(3,5) : key.substring(0,2)
+        setStateCode(cod_estado);
+        setInvoiceKey(key)
+        setCompanyId(company_id)
+        setCnpj(dest_cnpj)
+        setVisiblePop(true);
+        setSecondPopoverVisible(false)
+        setVisible(false) 
         },[invoiceKey, cnpj ])
         
 
 
 
 
-     
+    
       
     async function eventRegister() {
-     try {
+    try {
       await api.post("/nfe/controle/evento-sefaz",{
         empresa_id: companyId,
         dest_cnpj: cnpj,
@@ -95,15 +97,23 @@ interface Event {
     const printData = async (nota: string, front: any) => {
       const nfeData:  any = [];
       const nfeFrontData: any = [];
+      const produtos: any = [];
       nfeFrontData.push(front)
       try {
         const response = await getNfeData(nota, company_id);
         const nfeResponse = response.data
         if(Array.isArray(nfeResponse)) {
-          Danfe(nfeResponse, nfeFrontData)
+          const products = nfeResponse.map((item) => item.produtos_servicos)
+          Danfe(nfeResponse, nfeFrontData, products)
         } else {
           nfeData.push(nfeResponse)
-          Danfe(nfeData, nfeFrontData)
+          const products = nfeResponse.produtos_servicos
+          if(Array.isArray(products)){
+            Danfe(nfeData, nfeFrontData, products)
+          } else {
+            produtos.push(products)
+            Danfe(nfeData, nfeFrontData, produtos)
+          }
         }
       } catch (error) {
         console.log(error)
