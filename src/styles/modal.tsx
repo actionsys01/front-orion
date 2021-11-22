@@ -12,7 +12,7 @@ background: rgba(0,0,0,0.20);
 
 >  div {
 width: 33%;
-height: 20%;
+height: 30%;
 border: none;
 position: absolute;
 left: 40%;
@@ -29,6 +29,8 @@ h4 {
   text-align: center;
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 60%;
 }
 
 div {

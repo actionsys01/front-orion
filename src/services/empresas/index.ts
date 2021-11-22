@@ -9,12 +9,13 @@ import getCnpj from "./cnpj-api/getCompanyCnpj";
 import createCnpj from "./cnpj-api/createCnpj";
 import deleteCnpj from "./cnpj-api/deleteCnpj";
 import updateCnpj from "./cnpj-api/updateCnpj";
+import deleteCertificate from "./certificado-api/deleteCertificate";
 
 export { // empresas requests
         getAllCompaniesByPage, create, update, deletar,
         // dashboard request
         dashboardRequest, 
         // certificados requests
-        getCertificate, sendCertificate,
+        getCertificate, sendCertificate, deleteCertificate,
         // CNPJ requests
         getCnpj, createCnpj, deleteCnpj, updateCnpj }

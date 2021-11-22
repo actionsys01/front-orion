@@ -5,9 +5,10 @@ import { Plus,Trash2 } from "@geist-ui/react-icons";
 import { Section, InputStyle, InlineInputs, RightInput, BtnRow} from "./style"
 import Modal from "./modal"
 import  {format} from "date-fns";
-import * as certificateRequest from "@services/empresas";
+import * as companyRequest from "@services/empresas";
 import { useSession } from "next-auth/client";
 import  {useCertificateContext} from "@contexts/certificate"
+import CnpjsModal from "./cnpjs-modal"
 
 
 interface CertificadoProps {
@@ -22,7 +23,10 @@ interface CertificadoProps {
 
 
 export default function CertificadoDigital() {
+    // modais
     const [ visibleModal, setVisibleModal ] = useState(false);
+    const [ secondModal, setSecondModal] = useState(false)
+    //
     const [ upload, setUpload ] = useState(false)
     const [ responsible, setResponsible ] = useState("")
     const [ cnpj, setCnpj ] = useState("")
@@ -33,26 +37,37 @@ export default function CertificadoDigital() {
     const company_id = Number(session?.usuario.empresa.id)
     const { isCertificated } = useCertificateContext()
 
-    
-    const modalHandler = useCallback(() => {
-        setVisibleModal(!visibleModal)
-    }, [visibleModal])
-
     useEffect(() => {
         if (router.query.isCertificated === "false" ) {
             setVisibleModal(true)
         }
     }, [])
 
+    useEffect(() => {
+        if(!isCertificated && upload ) {
+            setSecondModal(true)
+        }
+    }, [upload])
+
+    
+    const modalHandler = useCallback(() => {
+        setVisibleModal(!visibleModal)
+    }, [visibleModal])
+
+    const secondModalHandler = useCallback(() => {
+        setSecondModal(!secondModal)
+    }, [secondModal])
+
+
     async function getCerficateData() {
         try {
-            const response = await certificateRequest.getCertificate(company_id)
+            const response = await companyRequest.getCertificate(company_id)
             const data = response.data.certificate
             console.log("certi",data)
             setCnpj(data.cnpj)
             return data
         } catch (error) {
-            
+            console.log(error)
         }
     }
 
@@ -110,12 +125,15 @@ export default function CertificadoDigital() {
                 </button>
             </BtnRow>
             </div>
-           {visibleModal && <Modal modalHandler={modalHandler} setUpload={setUpload}
-           responsible={responsible} setResponsible={setResponsible} 
-           cnpj={cnpj} setCnpj={setCnpj}
-           initialDate={initialDate} setInitialDate={setInitialDate}
-           expiringDate={expiringDate} setExpiringDate={setExpiringDate} />}
-                
+           {visibleModal && 
+                <Modal modalHandler={modalHandler} setUpload={setUpload}
+                    responsible={responsible} setResponsible={setResponsible} 
+                    cnpj={cnpj} setCnpj={setCnpj}
+                    initialDate={initialDate} setInitialDate={setInitialDate}
+                    expiringDate={expiringDate} setExpiringDate={setExpiringDate} />}
+           {secondModal &&
+                <CnpjsModal secondModalHandler={secondModalHandler} />
+                }     
         </>
     
 }
