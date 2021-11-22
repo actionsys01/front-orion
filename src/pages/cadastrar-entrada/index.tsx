@@ -17,6 +17,7 @@ import {AddBtn, TopConfirmBtn} from "@styles/buttons"
 import * as entranceReq from "@services/controle-entrada"
 import DriverModal from "./driver-modal"
 import VehicleModal from "./vehicle-modal"
+import FinishModal from "./finish-modal"
 
 interface Props  {
     company_id: number | undefined;
@@ -37,6 +38,7 @@ export default function CadastrarEntrada() {
     const [visible, setVisible] = useState<boolean>(false);
     const [visibleModal, setVisibleModal] = useState(false);
     const [secondModal, setSecondModal] = useState(false);
+    const [thirdModal, setThirdModal] = useState(false);
     // nota 
     const key: any = useRef(null)
     const [mainKey, setMainKey] = useState<string>("");
@@ -44,6 +46,7 @@ export default function CadastrarEntrada() {
     const [, setToast] = useToasts();
     const [session] = useSession();
     const company_id = Number(session?.usuario.empresa.id);
+    const [ableInput, setAbleInput] = useState(true)
     const time = new Date();
     // states dos inputs
     const [entranceKeys, setEntranceKeys] = useState<string[]>([]);
@@ -61,7 +64,8 @@ export default function CadastrarEntrada() {
     const [arrivalTime, setArrivalTime] = useState(new Date)
     const [exitDate, setExitDate] = useState<Date | null>()
     const [exitTime, setExitTime] = useState()
-    
+    const [ status, setStatus] = useState(0)
+
 
 
     const modalHandler = useCallback(() => {
@@ -72,9 +76,11 @@ export default function CadastrarEntrada() {
         setSecondModal(!secondModal)
     }, [secondModal])
 
-    useEffect(() => {
-        console.log(exitDate)
-    }, [])
+    const thirdModalHandler = useCallback(() => {
+        setThirdModal(!thirdModal)
+    }, [thirdModal])
+
+    
 
 
     // input de chave de acesso
@@ -156,7 +162,7 @@ export default function CadastrarEntrada() {
                 await entranceReq.create({
                     rg_motorista: driverId,
                     placa_principal: vehicleLicense,
-                    status: 0,
+                    status: status,
                     descricao_status: statusDescription,
                     empresa: Number(session?.usuario.empresa.id),
                     entradas_notas: entranceKeys,
@@ -213,6 +219,17 @@ export default function CadastrarEntrada() {
             }
             
         }
+
+        function finishihEntrance() {
+            setStatus(2)
+        }
+
+        useEffect(() => {
+            console.log("arr",status)
+        }, [])
+        useEffect(() => {
+            console.log("arr ch",status)
+        }, [status])
 
  
     return <>
@@ -315,21 +332,22 @@ export default function CadastrarEntrada() {
                         <Column>
                             <div>
                                 <span>Data Chegada</span>
-                                <input defaultValue={format(new Date(), "dd/MM/yyyy")} onChange={(e) => setArrivalDate(new Date(e.target.value))} />
+                                <input type="date" defaultValue={format(new Date(), "yyyy-MM-dd")} onChange={(e) => setArrivalDate(new Date(e.target.value))} />
                             </div>
                             <div>
                                 <span>Data Saída</span>
-                                <input /* defaultValue={format(new Date(), "dd/MM/yyyy")} */ onChange={(e) => setExitDate(new Date(e.target.value))}/>
+                                <input type="date" className={!ableInput ? "" : "disabled"} defaultValue={!ableInput ? format(new Date(), "yyyy-MM-dd") : ""}
+                                    onFocus={() => setAbleInput(false)} onChange={(e) => setExitDate(new Date(e.target.value))}/>
                             </div>
                         </Column>
                         <Column>
                             <div>
                                 <span>Hora Chegada</span>
-                                <input defaultValue={format(new Date(), "HH:mm")} onChange={(e) => setArrivalTime(new Date(e.target.value))}/>
+                                <input  defaultValue={format(new Date(), "HH:mm")} onChange={(e) => setArrivalTime(new Date(e.target.value))}/>
                             </div>
                             <div>
                                 <span>Hora Saída</span>
-                                <input />
+                                <input className={!ableInput ? "" : "disabled"} onFocus={() => setAbleInput(false)} />
                             </div>
                         </Column>
                         
@@ -340,7 +358,8 @@ export default function CadastrarEntrada() {
                             </div>
                             <div>
                                 <span>Peso Vazio</span>
-                                <input onChange={(e) => setEmptyWeight(Number(e.target.value))}/>
+                                <input onChange={(e) => setEmptyWeight(Number(e.target.value))}
+                                className={!ableInput ? "" : "disabled"} onFocus={() => setAbleInput(false)} />
                             </div>
                         </Column>
                         <Column style={{justifyContent: "space-between"}}>
@@ -352,7 +371,8 @@ export default function CadastrarEntrada() {
                                 </select>
                             </div>
                             <div style={{justifyContent: "center", alignItems: "flex-end", fontSize: "0.75rem"}}>
-                                <BtnStyle>
+                                <BtnStyle disabled={exitDate === undefined && emptyWeight === 0 ? true : false} 
+                                    onClick={() => setThirdModal(true)} type="button">
                                     Encerrar Entrega
                                 </BtnStyle>
                             </div>
@@ -399,16 +419,20 @@ export default function CadastrarEntrada() {
                 </table>
                 </EntranceGrid>
                 </div>
-               { visibleModal &&
-               <DriverModal  setDriverId={setDriverId} 
-                setDriver={setDriver} driver={driver} 
-                driverId={driverId} modalHandler={modalHandler}/>}
+                { visibleModal &&
+                    <DriverModal  setDriverId={setDriverId} 
+                        setDriver={setDriver} driver={driver} 
+                        driverId={driverId} modalHandler={modalHandler}/>}
                 { secondModal &&
                     <VehicleModal setVehicleLicense={setVehicleLicense}
-                 vehicleLicense={vehicleLicense}
-                statusDescription={statusDescription} 
-                setStatusDescription={setStatusDescription}
-                secondModalHandler={secondModalHandler}/>}
+                        vehicleLicense={vehicleLicense}
+                        statusDescription={statusDescription} 
+                        setStatusDescription={setStatusDescription}
+                        secondModalHandler={secondModalHandler}/>}
+                {thirdModal && 
+                    <FinishModal thirdModalHandler={thirdModalHandler} 
+                        emptyWeight={emptyWeight} exitDate={exitDate} 
+                        finishihEntrance={finishihEntrance} />}
         </>
 }
 

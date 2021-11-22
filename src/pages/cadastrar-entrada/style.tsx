@@ -115,7 +115,7 @@ export const ModalContainer = styled.div`
         
         }
 
-         span {
+        span {
                 margin: 0 1.3rem;
                 font-size: 0.8rem;
                 white-space: nowrap;
@@ -171,16 +171,16 @@ export const ModalContainer = styled.div`
         }
         span {white-space: normal}
         .icon{
-           margin: 0;
-           padding: 0;
-           right: -45px!important;
-           top: 0;
-       }
-       input {
+            margin: 0;
+            padding: 0;
+            right: -45px!important;
+            top: 0;
+        }
+        input {
         max-width: 220px!important;
         width: 100%;
-       }
     }
+}
 
     @media (max-width: 675px) {
         .icon {
@@ -257,6 +257,29 @@ export const Column = styled.div`
             border: 1px solid #eaeaea;
         }
 
+        input[type= "date" ] {
+            max-width: 150px;
+            width: 50%;
+            height: 26px;
+            text-align: center;
+            border: 1px solid #eaeaea;
+            font-size: .9rem;
+        }
+
+        .disabled::-webkit-calendar-picker-indicator {
+            display: none;
+            
+        }
+
+        .disabled[type= "date" ], .disabled {
+            color: rgba(0, 0, 0, 0);
+            background-color: #eaeaea;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            margin: 0;
+}
+
         select {
             min-width: 85px;
             width: 50%;
@@ -291,12 +314,10 @@ export const EntranceGrid = styled.div`
     min-height: 7rem;
     
     table {
-      width: 100%;
-      border-spacing: 0;
-      
-     
-      
-      thead {
+        width: 100%;
+        border-spacing: 0;
+    
+    thead {
         display: table-header-group;
         vertical-align: middle;
         border-top-left-radius: 5px;
@@ -307,15 +328,15 @@ export const EntranceGrid = styled.div`
         border-radius: 5px;
         
         > tr {
-          th:first-child {
+            th:first-child {
                     border-top-left-radius: 5px;
-                     border-bottom-left-radius: 5px;
+                    border-bottom-left-radius: 5px;
                 }
                 th:last-child{
                     border-top-right-radius: 5px;
-                     border-bottom-right-radius: 5px;
+                    border-bottom-right-radius: 5px;
                 }
-          th {
+            th {
             min-width: 45px;
             font-size: 0.75rem;
             font-weight: normal;
@@ -323,9 +344,9 @@ export const EntranceGrid = styled.div`
             letter-spacing: 0;
             padding: 0 15px;
             white-space: nowrap;
-              }
             }
-      }
+            }
+    }
 
     tbody {
         
@@ -345,7 +366,6 @@ export const EntranceGrid = styled.div`
         }
             
         }
-
     }
 `
 

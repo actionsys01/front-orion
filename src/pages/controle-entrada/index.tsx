@@ -225,13 +225,13 @@ export default function ControleEntrada() {
                     item.controle_entrada.status === 4 ? "Entrega Cancelada": null),
                     arrivalDate: format(new Date(item.controle_entrada.data_entrada), "dd/MM/yyyy"),
                     exitDate: (item.controle_entrada.data_saida != null ? format(new Date(item.controle_entrada.data_saida), "dd/MM/yyyy") : ""),
-                    arrivalTime: item.controle_entrada.data_entrada.slice(11,16),
+                    arrivalTime: format(new Date(item.controle_entrada.data_entrada),"HH:mm"),
                     exitTime: item.controle_entrada.data_saida?.slice(11,16),
                     emptyWeight: (Number(item.controle_entrada.peso_vazio) === 0 ? "" : item.controle_entrada.peso_vazio),
                 })
             })
         }
-
+        console.log("gth", allData)
         return allData
     }, [entrance ])
 
@@ -241,6 +241,7 @@ export default function ControleEntrada() {
     //     console.log("aqui",teste)
     //     return teste
     // }
+    // item.controle_entrada.data_entrada.slice(11,16),
 
     // function checkLentgh(string) {
     //     const teste = string.length

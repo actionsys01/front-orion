@@ -15,6 +15,7 @@ import * as entrances from "@services/controle-entrada";
 import {  Section, FormContainer, Column, 
     OneLineContainer, Inline, EntranceGrid, 
     BtnStyle, ModalContainer, BtnPattern } from '../cadastrar-entrada/style';
+import FinishUpdateModal from "./finish-modal";
 
 
 export default function AtualizarEntrada() {
@@ -25,7 +26,7 @@ export default function AtualizarEntrada() {
     const router = useRouter();
     const company_id = Number(session?.usuario.empresa.id);
     const controlId = Number(router.query.id)
-
+    const [ modalVisible, setModalVisible] = useState(false)
     // checkbox
     const [reboque, setReboque] = useState(false)
     // input states
@@ -36,10 +37,10 @@ export default function AtualizarEntrada() {
     const [firstHaulage, setFirstHaulage] = useState("");
     const [secondHaulage, setSecondHaulage] = useState("");
     const [thirdHaulage, setThirdHaulage] = useState("");
-    const [ status, setStatus] = useState()
+    const [ status, setStatus] = useState(0)
     const [statusDescription, setStatusDescription] = useState("");
     const [arrivalDate, setArrivalDate] = useState(new Date)
-    const [exitDate, setExitDate] = useState(new Date)
+    const [exitDate, setExitDate] = useState<Date | null>(new Date)
     const [loadedWeight, setLoadedWeight] = useState(0);
     const [emptyWeight, setEmptyWeight] = useState(0);
     const [measure, setMeasure] = useState("");
@@ -48,6 +49,10 @@ export default function AtualizarEntrada() {
     const [arrivalTime, setArrivalTime] = useState(new Date)
     const [exitTime, setExitTime] = useState<Date | null>()
     const [ entranceId, setEntranceId] = useState(0)
+
+    const modalHandler = useCallback(() => {
+        setModalVisible(!modalVisible)
+    }, [modalVisible])
 
     const getData = useCallback(async () => {
         try {
@@ -64,7 +69,7 @@ export default function AtualizarEntrada() {
             setSecondHaulage(data.placa_reboque2)
             setThirdHaulage(data.placa_reboque3)
             setArrivalDate(data.data_entrada)
-            setExitDate(data.data_saida)
+            setExitDate(data.data_saida === null ? new Date() : data.data_saida)
             setLoadedWeight(data.peso_cheio)
             setEmptyWeight(data.peso_vazio === 0 ? "" : data.peso_vazio)
             setMeasure(data.unidade_medida)
@@ -161,11 +166,17 @@ export default function AtualizarEntrada() {
         
     }, [] )
 
-    
+
+    function finishihEntrance() {
+        setStatus(2)
+    }
 
     // useEffect(() => {
-    //     getNfe()
-    // },[entranceKeys] )
+    //     console.log("yay 1",exitDate)
+    // },[exitDate] )
+    // useEffect(() => {
+    //     console.log("yay 2",exitDate)
+    // },[] )
 
     useEffect(() => {
         if(firstHaulage?.length) {
@@ -175,12 +186,6 @@ export default function AtualizarEntrada() {
             setReboque(false)
         }
     }, [firstHaulage])
-
-    // function reboqueCheckbox() {
-    //     if(firstHaulage.length) {
-    //         setReboque(true)
-    //     }
-    // }
 
 
     const gatheredData = useMemo(() => {
@@ -210,13 +215,13 @@ export default function AtualizarEntrada() {
                 })
             })
         }
-        console.log("all",allData)
+        // console.log("all",allData)
         return allData
     }, [nota])
 
     async function updateEntrance() {
         try {
-            await entrances.updateEntrance(entranceId, {
+            await entrances.updateEntrance(controlId, {
                 rg_motorista: driverId,
                 placa_principal: vehicleLicense,
                 placa_reboque1: firstHaulage,
@@ -243,7 +248,13 @@ export default function AtualizarEntrada() {
                 type: "warning"
             })
         }
+        router.push("/controle-entrada")
     }
+
+    // const [ test, setTest] =  useState<Date>()
+    // useEffect(() => {
+    //   console.log(test)
+    // }, [test])
 
 
     return  <>
@@ -339,11 +350,11 @@ export default function AtualizarEntrada() {
                         <Column>
                             <div>
                                 <span>Data Chegada</span>
-                                <input value={format(new Date(arrivalDate), "dd/MM/yyyy")} onChange={(e) => setArrivalDate(new Date(e.target.value))} />
+                                <input type="date" value={format(new Date(arrivalDate), "yyyy-MM-dd")}  readOnly/>
                             </div>
                             <div>
                                 <span>Data Saída</span>
-                                <input value={exitDate === null ? "" : format(new Date(exitDate), "dd/MM/yyyy")} onChange={(e) => setExitDate(new Date(e.target.value))}/>
+                                <input type="date"  defaultValue={format(new Date(exitDate), "yyyy-MM-dd")}  onChange={(e) => setExitDate(new Date(e.target.value))}/>
                             </div>
                         </Column>
                         <Column>
@@ -353,7 +364,7 @@ export default function AtualizarEntrada() {
                             </div>
                             <div>
                                 <span>Hora Saída</span>
-                                <input value={exitDate === null ? "" : format(new Date(exitDate), "HH:mm")} onChange={(e) => setExitTime(new Date(e.target.value))}/>
+                                <input  onChange={(e) => setExitTime(new Date(e.target.value))}/>
                             </div>
                         </Column>
                         
@@ -371,13 +382,13 @@ export default function AtualizarEntrada() {
                             <div style={{justifyContent: "center"}}>
                                 <span>UM</span>
                                 <select defaultValue={measure}  onChange={(e) => setMeasure(e.target.value)} >
-                                    <option selected> {measure}</option>
+                                    <option defaultValue={measure}> {measure}</option>
                                     {measure != "Kg" &&  <option value="Kg">Kg</option>}
                                     {measure != "Ton" && <option value="Ton">Ton</option>}
                                 </select>
                             </div>
                             <div style={{justifyContent: "center", alignItems: "flex-end", fontSize: "0.75rem"}}>
-                                <BtnStyle>
+                                <BtnStyle onClick={() => setModalVisible(true)} type="button">
                                     Encerrar Entrega
                                 </BtnStyle>
                             </div>
@@ -434,7 +445,9 @@ export default function AtualizarEntrada() {
                 statusDescription={statusDescription} 
                 setStatusDescription={setStatusDescription}
                 secondModalHandler={secondModalHandler}/>} */}
-       
+                {modalVisible && 
+                    <FinishUpdateModal modalHandler={modalHandler} 
+                    finishihEntrance={finishihEntrance}/>}
             
         </>
     
