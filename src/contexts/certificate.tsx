@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useCallback, useReducer, useState, useMemo, Dispatch, SetStateAction } from "react";
-import * as dashboard from "@services/empresas"
+import * as companyRequest from "@services/empresas"
 import { useSession } from "next-auth/client";
 
 interface ContextProps {
@@ -16,17 +16,20 @@ const CertificateProvider:  React.FC = ({ children }: any) => {
     // console.log(company_id)
    
     const confirmCertificate = useCallback(async () => {
+        const page = ""
         if(session) {
             try {
-                const response = await dashboard.getCertificate(Number(session?.usuario.empresa.id))
-                // console.log(response)
+                const response = await companyRequest.getCertificate(Number(session?.usuario.empresa.id))
+                const cnpjResponse = await companyRequest.getCnpj(Number(session?.usuario.empresa.id), Number(page))
+                // console.log("cnpj",cnpjResponse)
                 const data = response.data.certificate.certificado
-                setIsCertificated(true)
+                const cnpjData = cnpjResponse.data.total
+                setIsCertificated(data && cnpjData > 0 ? true : false)
                 return data
             } catch (error) {
                 setIsCertificated(false)
             }}
-        },[session] )
+        },[session] )   
     
         useEffect(() => {
             confirmCertificate()

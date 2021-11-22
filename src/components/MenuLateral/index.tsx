@@ -114,7 +114,7 @@ export default function MenuLateral({
                   pathname: "/dashboard",
                   query: {certificate: "open"}
                 })}
-                >Certificado Digital</MenuItem>}
+                >Cadastro Pendente</MenuItem>}
           </Menu>
         </SidebarContent>
         <SidebarFooter>
