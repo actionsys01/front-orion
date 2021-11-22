@@ -224,12 +224,12 @@ export default function CadastrarEntrada() {
             setStatus(2)
         }
 
-        useEffect(() => {
-            console.log("arr",status)
-        }, [])
-        useEffect(() => {
-            console.log("arr ch",status)
-        }, [status])
+        // useEffect(() => {
+        //     console.log("arr",status)
+        // }, [])
+        // useEffect(() => {
+        //     console.log("arr ch",status)
+        // }, [status])
 
  
     return <>

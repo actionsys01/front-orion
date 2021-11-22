@@ -94,6 +94,7 @@ export default function ControleEntrada() {
             const response = await entrances.getEntrance(page, Number(session?.usuario.empresa.id))
             const data = response.data
             setQuantityPage(Math.ceil(data.total / 8))
+            setEntrance(data.notas)
             return data.notas
         } catch (error) {
             setToast({
@@ -106,7 +107,7 @@ export default function ControleEntrada() {
 
 
     useEffect(() => {
-        getEntranceDataByPage().then(response => setEntrance(response))
+        getEntranceDataByPage()
     }, [page])
 
     const handleApproval = useCallback(async (id) => {

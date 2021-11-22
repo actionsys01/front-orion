@@ -256,6 +256,14 @@ export default function AtualizarEntrada() {
     //   console.log(test)
     // }, [test])
 
+    // useEffect(() => {
+    //     console.log("arr",status)
+    // }, [])
+    // useEffect(() => {
+    //     console.log("arr ch",status)
+    // }, [status])
+
+
 
     return  <>
         <Head>

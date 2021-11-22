@@ -1,7 +1,5 @@
 import React, {Dispatch, SetStateAction, useState, useMemo, useEffect, useCallback, useRef} from 'react';
 import { useSession } from "next-auth/client";
-import { useToasts } from "@geist-ui/react";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import{ Modal } from "@styles/modal"
 
