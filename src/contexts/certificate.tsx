@@ -13,13 +13,13 @@ const CertificateProvider:  React.FC = ({ children }: any) => {
     const [isCertificated, setIsCertificated] = useState(false)
     const [session] = useSession();
     const company_id = Number(session?.usuario.empresa.id)
-    console.log(company_id)
+    // console.log(company_id)
    
     const confirmCertificate = useCallback(async () => {
         if(session) {
             try {
                 const response = await dashboard.getCertificate(Number(session?.usuario.empresa.id))
-                console.log(response)
+                // console.log(response)
                 const data = response.data
                 setIsCertificated(true)
                 return data
