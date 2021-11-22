@@ -12,7 +12,7 @@ background: rgba(0,0,0,0.20);
 
 >  div {
 width: 33%;
-  height: 25%;
+height: 20%;
 border: none;
 position: absolute;
 left: 40%;

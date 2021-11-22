@@ -42,7 +42,8 @@ export default function Dashboard() {
   
 
     const chartStyle = {
-      height: 50,
+      width: 225,
+      height:20,
     }
 
       // request de plano

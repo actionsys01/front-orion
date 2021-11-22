@@ -37,7 +37,7 @@ export const InputStyle = styled.div`
         align-items: center;
 
     > div {
-        width: 40%;
+        width: 46%;
         display: flex;
         span {
                 margin: 0 0.5rem;
@@ -82,6 +82,7 @@ export const Column = styled.div`
     .uf{
         display: flex;
         flex-direction: column;
+     
         /* margin-bottom: .5rem; */
         
 
@@ -105,6 +106,13 @@ export const Column = styled.div`
         flex-wrap: wrap;
         flex-direction: column;
         gap: 1.5rem;
+        .uf {
+            width: 55%;
+         }
+        input {
+            max-width: 180px;
+            width: 55%!important;
+        }
     }
 `
 
