@@ -60,7 +60,7 @@ export default function ControleEntrada() {
     const [, setToast] = useToasts();
     const [session] = useSession();
     const company_id = Number(session?.usuario.empresa.id)
-    const [ isCte, setIsCte] = useState(false)
+    const [ reload, setReload] = useState(true)
     //
     const [driverId, setDriverId] = useState("");
     const [vehicleLicense, setVehicleLicense] = useState("");
@@ -103,18 +103,17 @@ export default function ControleEntrada() {
             })
         }
             
-        },[page, entrance, status])
+        },[page, entrance, reload])
 
 
     useEffect(() => {
         getEntranceDataByPage()
-    }, [page, status])
+    }, [page, reload])
 
     const handleApproval = useCallback(async (id) => {
         const response = await entrances.getControlById(id)
         const data = response.data 
         const mappedData = data.entrada_notas.map((item) => item.chave_nota)
-        console.log(mappedData)
         setEntranceId(id)
         setDriverId(data.motorista.rg)
         setVehicleLicense(data.placa_principal)
@@ -194,6 +193,7 @@ export default function ControleEntrada() {
                 type: "warning"
             })
         }
+        setReload(!reload)
     }
 
 
