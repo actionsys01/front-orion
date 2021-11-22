@@ -5,6 +5,18 @@ import { Plus,Trash2 } from "@geist-ui/react-icons";
 import { Section, InputStyle, InlineInputs, RightInput, BtnRow} from "./style"
 import Modal from "./modal"
 import  {format} from "date-fns";
+import * as certificateRequest from "@services/empresas";
+import { useSession } from "next-auth/client";
+import  {useCertificateContext} from "@contexts/certificate"
+
+
+interface CertificadoProps {
+    id: number;
+    cnpj: string;
+    certificado: string;
+    data_inicio: Date;
+    data_vencimento: Date;
+}
 
 
 
@@ -17,6 +29,10 @@ export default function CertificadoDigital() {
     const [ initialDate, setInitialDate ] = useState(new Date)
     const [ expiringDate, setExpiringDate ] = useState(new Date)
     const router = useRouter()
+    const [session] = useSession();
+    const company_id = Number(session?.usuario.empresa.id)
+    const { isCertificated } = useCertificateContext()
+
     
     const modalHandler = useCallback(() => {
         setVisibleModal(!visibleModal)
@@ -26,6 +42,22 @@ export default function CertificadoDigital() {
         if (router.query.isCertificated === "false" ) {
             setVisibleModal(true)
         }
+    }, [])
+
+    async function getCerficateData() {
+        try {
+            const response = await certificateRequest.getCertificate(company_id)
+            const data = response.data.certificate
+            console.log("certi",data)
+            setCnpj(data.cnpj)
+            return data
+        } catch (error) {
+            
+        }
+    }
+
+    useEffect(() => {
+        getCerficateData()
     }, [])
 
 
@@ -42,28 +74,28 @@ export default function CertificadoDigital() {
                     <div>
                         <InputStyle>
                             <span>Responsável:</span>
-                            <input type="text" value={upload ? responsible : ""}/>
+                            <input type="text" readOnly value={isCertificated ? "Jorge Lubrinni": ""}/>
                         </InputStyle>
                         <InputStyle>
                             <span>CNPJ:</span>
-                            <input type="text" value={upload ? cnpj: ""} />
+                            <input type="text" readOnly value={isCertificated ? cnpj: ""} />
                         </InputStyle>
                             <InlineInputs>
                                 <span>Validade</span>
                                 <div>
                                     <span>De:</span>
-                                    <input type="text" value={upload ? format(new Date(initialDate), "dd/MM/yyyy"): ""} />
+                                    <input type="text" readOnly value={isCertificated ? format(new Date(initialDate), "dd/MM/yyyy"): ""} />
                                     <span>Até:</span>
-                                    <input type="text" value={upload ? format(new Date(expiringDate), "dd/MM/yyyy"): ""} />
+                                    <input type="text" readOnly value={isCertificated ? format(new Date(expiringDate), "dd/MM/yyyy"): ""} />
                                 </div>
                             </InlineInputs>
                     </div>
                     <RightInput>
                             <span>Status:</span>
                             <div>
-                                <div className={upload ? "confirm" : ""}></div>
+                                <div className={isCertificated ? "confirm" : ""}></div>
                             </div>
-                            {upload && <span>Confirmado</span>}
+                            {isCertificated && <span>Confirmado</span>}
                     </RightInput>
                 </div>
             </Section>

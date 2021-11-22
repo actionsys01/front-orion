@@ -103,12 +103,12 @@ export default function ControleEntrada() {
             })
         }
             
-        },[page, entrance])
+        },[page, entrance, status])
 
 
     useEffect(() => {
         getEntranceDataByPage()
-    }, [page])
+    }, [page, status])
 
     const handleApproval = useCallback(async (id) => {
         const response = await entrances.getControlById(id)
@@ -163,7 +163,6 @@ export default function ControleEntrada() {
         setEntranceKeys(mappedData)
         setModalStatus("cancelar")
         setVisibleModal(true)
-
     }, [])
 
     async function updateEntrance() {
@@ -234,7 +233,7 @@ export default function ControleEntrada() {
         }
         console.log("gth", allData)
         return allData
-    }, [entrance ])
+    }, [entrance, status ])
 
 
     // function checkInvoiceType(string : any) {

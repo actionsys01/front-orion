@@ -20,7 +20,7 @@ const CertificateProvider:  React.FC = ({ children }: any) => {
             try {
                 const response = await dashboard.getCertificate(Number(session?.usuario.empresa.id))
                 // console.log(response)
-                const data = response.data
+                const data = response.data.certificate.certificado
                 setIsCertificated(true)
                 return data
             } catch (error) {
