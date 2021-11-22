@@ -258,7 +258,10 @@ function Danfe(nfeData: any, nfeFrontData: any, products: any){
 
     const lastTable = nfeData.map((item: any) => {
         return [
-            {text: item.informacoes_adicionais.infCpl, fontSize: 7, lineHeight: 1.5, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.informacoes_adicionais.infCpl, fontSize: 6, lineHeight: 1.2, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.cobrancas?.fat?.dup?.nDUP, fontSize: 7, lineHeight: 1.5, alignment: "center", bold: true, border: [true, true, false, true]},
+            {text: item.cobrancas?.fat?.dup?.dVenc, fontSize: 7, lineHeight: 1.5, alignment: "center", bold: true, border: [false, true, false, true]},
+            {text: item.cobrancas?.fat?.dup?.vDup, fontSize: 7, lineHeight: 1.5, alignment: "center", bold: true, border: [false, true, true, true]},
         ]
     })
 
@@ -498,15 +501,19 @@ function Danfe(nfeData: any, nfeFrontData: any, products: any){
                 ],
             }
         },
-        {text: "DADOS ADICIONAIS / INFORMAÇÕES COMPLEMENTARES", fontSize:8, bold: true, margin: [0, 3, 0, 2]},
+        {text: "DADOS ADICIONAIS / INFORMAÇÕES COMPLEMENTARES", fontSize:8, bold: true, margin: [0, 3, 0, -10]},
+        {text: "DUPLICATAS", fontSize:8,  alignment: "right", bold: true, margin: [-30, 0, 20, 2]},
          {// obs gerais 
             table:{
                 headerRows: 1,
-                widths: [ '*'],
+                widths: [ '*', 20, 20,20],
                 heights: [2, 30],
                 body: [
                     [
-                        {text: "", fontSize: 4, border: [true, true, true, false]}
+                        {text: "", fontSize: 4, border: [true, true, true, false]},
+                        {text: "NÚMERO", fontSize: 4, border: [true, true, false, true]},
+                        {text: "VENC.", fontSize: 4, border: [false, true, false, true]},
+                        {text: "VALOR", fontSize: 4, border: [false, true, true, true]},
                     ],
                     ...lastTable
                 ]
