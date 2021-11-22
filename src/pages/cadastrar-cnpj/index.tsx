@@ -55,9 +55,13 @@ export default function CadastrarCnpj() {
         router.push("/cnpjs-empresa")
     }
 
-    useEffect(() => {
-        console.log("ua",uf)
-    }, [uf])
+    // function formatCnpj(string : string) {
+        
+    // }
+
+    // useEffect(() => {
+    //     console.log("ua",uf)
+    // }, [uf])
 
 
     return <>

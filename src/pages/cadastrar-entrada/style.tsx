@@ -266,6 +266,14 @@ export const Column = styled.div`
             font-size: .9rem;
         }
 
+        input[type="time"] {
+            min-width: 100px;
+            width: 50%;
+            height: 26px;
+            text-align: center;
+            border: 1px solid #eaeaea;
+        }
+
         .disabled::-webkit-calendar-picker-indicator {
             display: none;
             
@@ -279,6 +287,9 @@ export const Column = styled.div`
         input[type="date"]::-webkit-calendar-picker-indicator {
             margin: 0;
 }
+        input[type= "time"]::-webkit-calendar-picker-indicator {
+            display: none
+        }
 
         select {
             min-width: 85px;

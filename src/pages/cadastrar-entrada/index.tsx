@@ -47,7 +47,7 @@ export default function CadastrarEntrada() {
     const [session] = useSession();
     const company_id = Number(session?.usuario.empresa.id);
     const [ableInput, setAbleInput] = useState(true)
-    const time = new Date();
+    const timeLocal = new Date()
     // states dos inputs
     const [entranceKeys, setEntranceKeys] = useState<string[]>([]);
     const [driverId, setDriverId] = useState("");
@@ -61,10 +61,16 @@ export default function CadastrarEntrada() {
     const [secondHaulage, setSecondHaulage] = useState("");
     const [thirdHaulage, setThirdHaulage] = useState("");
     const [arrivalDate, setArrivalDate] = useState(new Date)
-    const [arrivalTime, setArrivalTime] = useState(new Date)
+    const [arrivalTime, setArrivalTime] = useState("")
     const [exitDate, setExitDate] = useState<Date | null>()
-    const [exitTime, setExitTime] = useState()
+    const [exitTime, setExitTime] = useState("")
     const [ status, setStatus] = useState(0)
+
+    const [dataEntrada, setDataEntrada] = useState("")
+    const [ hasChanged, setHasChanged] = useState(false)
+    const [dataSaida, setDataSaida] = useState("")
+    const [ hasSChanged, setHasSChanged] = useState(false)
+
 
 
 
@@ -157,7 +163,15 @@ export default function CadastrarEntrada() {
     }, [nota])
 
     async function registerEntrance ()  {
-        console.log("req", driverId,vehicleLicense, statusDescription,entranceKeys, loadedWeight,emptyWeight,measure,time )
+        console.log("req", driverId,vehicleLicense, 
+        statusDescription,entranceKeys, 
+        loadedWeight,emptyWeight,measure, arrivalDate )
+        const [ diaE , mesE, anoE ] = dataEntrada.split("-")
+        const [ horaE, minutoE ] = arrivalTime.split(":")
+        // setArrivalDate()
+        const [ diaS, mesS, anoS ] = dataSaida.split("-")
+        const [ horaS, minutoS ] = exitTime.split(":")
+        
             try {
                 await entranceReq.create({
                     rg_motorista: driverId,
@@ -169,8 +183,8 @@ export default function CadastrarEntrada() {
                     peso_cheio: loadedWeight,
                     peso_vazio: emptyWeight,
                     unidade_medida: measure,
-                    data_entrada: arrivalDate,
-                    data_saida: exitDate,
+                    data_entrada: (hasChanged ? (new Date(Number(diaE), Number(mesE), Number(anoE), (Number(horaE) - 3), Number(minutoE))) : arrivalDate),
+                    data_saida: (hasSChanged  ? (new Date(Number(diaS), Number(mesS), Number(anoS), (Number(horaS) - 3), Number(minutoS))) : exitDate),
                     placa_reboque1: firstHaulage,
                     placa_reboque2: secondHaulage,
                     placa_reboque3: thirdHaulage
@@ -225,11 +239,24 @@ export default function CadastrarEntrada() {
         }
 
         // useEffect(() => {
-        //     console.log("arr",status)
+        //     console.log("arr 1",dataEntrada)
+        //     console.log("urr 1",arrivalTime)
+        //     console.log("arr 2",dataSaida)
+        //     console.log("urr 2",exitTime)
         // }, [])
         // useEffect(() => {
-        //     console.log("arr ch",status)
-        // }, [status])
+        //     console.log("arr ch 1",dataEntrada)
+        //     console.log("urr ch 1",arrivalTime)
+        //     console.log("arr ch 2",dataSaida)
+        //     console.log("urr ch 2",exitTime)
+        // }, [dataSaida, exitTime, dataEntrada, arrivalTime])
+
+        // function testeHour() {
+        //     const [dia , mes, ano] = dataEntrada.split("-")
+        //     console.log([ano, mes, dia])
+        //     const [ hora, minuto] = arrivalTime.split(":")
+        //     console.log("minino", new Date(Number(dia) , Number(mes), Number(ano), Number(hora), Number(minuto)).toString())
+        // }
 
  
     return <>
@@ -332,22 +359,25 @@ export default function CadastrarEntrada() {
                         <Column>
                             <div>
                                 <span>Data Chegada</span>
-                                <input type="date" defaultValue={format(new Date(), "yyyy-MM-dd")} onChange={(e) => setArrivalDate(new Date(e.target.value))} />
+                                <input type="date" defaultValue={format(new Date(), "yyyy-MM-dd")} 
+                                    onChange={(e) => {setDataEntrada(e.target.value), setHasChanged(true)}} />
                             </div>
                             <div>
                                 <span>Data Saída</span>
                                 <input type="date" className={!ableInput ? "" : "disabled"} defaultValue={!ableInput ? format(new Date(), "yyyy-MM-dd") : ""}
-                                    onFocus={() => setAbleInput(false)} onChange={(e) => setExitDate(new Date(e.target.value))}/>
+                                    onFocus={() => setAbleInput(false)} onChange={(e) => {setDataSaida(e.target.value), setHasSChanged(true)}}/>
                             </div>
                         </Column>
                         <Column>
                             <div>
                                 <span>Hora Chegada</span>
-                                <input  defaultValue={format(new Date(), "HH:mm")} onChange={(e) => setArrivalTime(new Date(e.target.value))}/>
+                                <input type="time"  defaultValue={format(new Date(), "HH:mm")} 
+                                    onChange={(e) => {setArrivalTime(e.target.value), setHasChanged(true)}}/>
                             </div>
                             <div>
                                 <span>Hora Saída</span>
-                                <input className={!ableInput ? "" : "disabled"} onFocus={() => setAbleInput(false)} />
+                                <input type="time"  className={!ableInput ? "" : "disabled"} 
+                                    onChange={(e) => {setExitTime(e.target.value), setHasSChanged}} onFocus={() => setAbleInput(false)} />
                             </div>
                         </Column>
                         

@@ -46,9 +46,14 @@ export default function AtualizarEntrada() {
     const [measure, setMeasure] = useState("");
     const [entranceKeys, setEntranceKeys] = useState<string[]>([]);
     const [driver, setDriver] = useState("");
-    const [arrivalTime, setArrivalTime] = useState(new Date)
-    const [exitTime, setExitTime] = useState<Date | null>()
+    const [arrivalTime, setArrivalTime] = useState("")
+    const [exitTime, setExitTime] = useState("")
     const [ entranceId, setEntranceId] = useState(0)
+
+    const [dataEntrada, setDataEntrada] = useState("")
+    const [ hasChanged, setHasChanged] = useState(false)
+    const [dataSaida, setDataSaida] = useState("")
+    const [ hasSChanged, setHasSChanged] = useState(false)
 
     const modalHandler = useCallback(() => {
         setModalVisible(!modalVisible)
@@ -220,6 +225,11 @@ export default function AtualizarEntrada() {
     }, [nota])
 
     async function updateEntrance() {
+        const [ diaE , mesE, anoE ] = dataEntrada.split("-")
+        const [ horaE, minutoE ] = arrivalTime.split(":")
+    
+        const [ diaS, mesS, anoS ] = dataSaida.split("-")
+        const [ horaS, minutoS ] = exitTime.split(":")
         try {
             await entrances.updateEntrance(controlId, {
                 rg_motorista: driverId,
@@ -229,8 +239,8 @@ export default function AtualizarEntrada() {
                 placa_reboque3: thirdHaulage,
                 status: status,
                 descricao_status: statusDescription,
-                data_entrada: arrivalDate,
-                data_saida: exitDate,
+                data_entrada: (hasChanged ? (new Date(Number(diaE), Number(mesE), Number(anoE), Number(horaE), Number(minutoE))) : arrivalDate),
+                data_saida: (hasSChanged  ? (new Date(Number(diaS), Number(mesS), Number(anoS), (Number(horaS) - 3), Number(minutoS))) : exitDate),
                 peso_cheio: loadedWeight,
                 peso_vazio: emptyWeight,
                 empresa: company_id,
@@ -293,11 +303,11 @@ export default function AtualizarEntrada() {
                     <div>
                         <div>
                             <span>RG</span>
-                            <input type="text" value={driverId} onChange={(e) => setDriverId(e.target.value)} /* onBlur={(e) => findDriver(e.target.value)}  *//>
+                            <input type="text" readOnly value={driverId} onChange={(e) => setDriverId(e.target.value)} /* onBlur={(e) => findDriver(e.target.value)}  *//>
                         </div>
                         <div>
                             <span >Nome</span>
-                            <input type="text" value={driver} onChange={(e) => setDriver(e.target.value)}/>
+                            <input type="text" readOnly value={driver} onChange={(e) => setDriver(e.target.value)}/>
                         </div>
                     </div>
                         </Inline>
@@ -310,11 +320,11 @@ export default function AtualizarEntrada() {
                     <div>
                         <div>
                             <span className="first">Placa Principal</span>
-                            <input type="text"  value={vehicleLicense} onChange={(e) => setVehicleLicense(e.target.value)} /* onBlur={(e) => findVehicle(e.target.value)} */  />
+                            <input type="text" readOnly value={vehicleLicense} onChange={(e) => setVehicleLicense(e.target.value)} /* onBlur={(e) => findVehicle(e.target.value)} */  />
                         </div>
                         <div>
                             <span>Descrição</span>
-                            <input type="text" value={statusDescription} className="description" onChange={(e) => setStatusDescription(e.target.value)} />
+                            <input type="text" readOnly value={statusDescription} className="description" onChange={(e) => setStatusDescription(e.target.value)} />
                         </div>
                         <div>
                             <span className="icon">Reboque<Checkbox checked={reboque ? reboque || visible : visible} 
@@ -358,21 +368,24 @@ export default function AtualizarEntrada() {
                         <Column>
                             <div>
                                 <span>Data Chegada</span>
-                                <input type="date" value={format(new Date(arrivalDate), "yyyy-MM-dd")}  readOnly/>
+                                <input type="date" defaultValue={format(new Date(arrivalDate), "yyyy-MM-dd")}  
+                                    onChange={(e) => {setDataEntrada(e.target.value), setHasChanged(true)}}/>
                             </div>
                             <div>
                                 <span>Data Saída</span>
-                                <input type="date"  defaultValue={format(new Date(exitDate), "yyyy-MM-dd")}  onChange={(e) => setExitDate(new Date(e.target.value))}/>
+                                <input type="date"  defaultValue={format(new Date(exitDate), "yyyy-MM-dd")}  
+                                    onChange={(e) => {setDataSaida(e.target.value), setHasSChanged(true)}}/>
                             </div>
                         </Column>
                         <Column>
                             <div>
                                 <span>Hora Chegada</span>
-                                <input value={format(new Date(arrivalDate), "HH:mm")} onChange={(e) => setArrivalTime(new Date(e.target.value))}/>
+                                <input type="time"  defaultValue={format(new Date(arrivalDate), "HH:mm")} 
+                                onChange={(e) => {setArrivalTime(e.target.value), setHasChanged(true)}}/>
                             </div>
                             <div>
                                 <span>Hora Saída</span>
-                                <input  onChange={(e) => setExitTime(new Date(e.target.value))}/>
+                                <input type="time"   onChange={(e) => {setExitTime(e.target.value), setHasSChanged}}/>
                             </div>
                         </Column>
                         
