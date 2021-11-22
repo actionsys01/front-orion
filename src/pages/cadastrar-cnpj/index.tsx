@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useCallback} from 'react';
+import React, { useState, useEffect, useCallback} from 'react';
 import Head from "next/head";
 import BotaoVoltar from "@components/BotaoVoltar";
 import { Section, Column, SmallInputs, InputStyle, CheckboxContainer } from './style';
@@ -17,6 +17,10 @@ export default function CadastrarCnpj() {
     const [ session ] = useSession()
     const [, setToast] = useToasts();
     const company_id = Number(session.usuario.empresa.id)
+
+    const estados = [ "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO",
+        "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI" , "RJ", "RN",
+        "RS", "RO", "RR", "SC", "SP", "SE", "TO"]
 
 
 
@@ -51,6 +55,10 @@ export default function CadastrarCnpj() {
         router.push("/cnpjs-empresa")
     }
 
+    useEffect(() => {
+        console.log("ua",uf)
+    }, [uf])
+
 
     return <>
             <Head>
@@ -77,9 +85,16 @@ export default function CadastrarCnpj() {
                         <Column>
                         <div className="uf">
                             <span>UF</span>
-                            <input type="text" onChange={(e) => setUf(e.target.value)}/>
+                            <select onChange={(e) => setUf(e.target.value)}>
+                                <option value='' selected></option>
+                                {estados.map((item, i ) => 
+                                <option value={item} key={i}>{item}</option>
+                                )}
+                                
+                            </select>
+                            {/* <input type="text" onChange={(e) => setUf(e.target.value)}/> */}
                         </div>
-                          
+                        
                         <CheckboxContainer>
                         <span>
                             <span><Checkbox /></span>

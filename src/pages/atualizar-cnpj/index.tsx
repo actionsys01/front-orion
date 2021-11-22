@@ -10,13 +10,17 @@ import { useToasts } from "@geist-ui/react";
 import router from 'next/router';
 
 export default function AtualizarCnpj() {
-    const [name, setName] = useState(router.query.nome.toString())
-    const [cnpj, setCnpj] = useState(router.query.cnpj.toString())
-    const [uf, setUf] = useState(router.query.uf.toString().toUpperCase())
-    const [ session ] = useSession()
+    const [name, setName] = useState(router.query.nome.toString());
+    const [cnpj, setCnpj] = useState(router.query.cnpj.toString());
+    const [uf, setUf] = useState(router.query.uf.toString().toUpperCase());
+    const [ session ] = useSession();
     const [, setToast] = useToasts();
-    const id = Number(router.query.id)
-    console.log("curry",router.query)
+    const id = Number(router.query.id);
+    console.log("curry",router.query);
+
+    const estados = [ "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO",
+    "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI" , "RJ", "RN",
+    "RS", "RO", "RR", "SC", "SP", "SE", "TO"]
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -75,7 +79,13 @@ export default function AtualizarCnpj() {
                         <Column>
                         <div className="uf">
                             <span>UF</span>
-                            <input type="text" value={uf} onChange={(e) => setUf(e.target.value)}/>
+                            <select onChange={(e) => setUf(e.target.value)}>
+                                <option value={uf} selected>{uf}</option>
+                                {estados.map((item, i ) => 
+                                <option value={item} key={i}>{item}</option>
+                                )}
+                                
+                            </select>
                         </div>
                         
                         <CheckboxContainer>

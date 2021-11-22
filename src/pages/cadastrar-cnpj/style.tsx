@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const Section = styled.form`
 
     section {
-
     width: 85%;
     margin: 0 auto;
     display: flex;
@@ -35,14 +34,20 @@ export const InputStyle = styled.div`
         flex-direction: column;
         width: 100%;
         align-items: center;
+        margin-top: 12px;
 
     > div {
-        width: 46%;
+        width: 49%;
         display: flex;
+        position: relative;
+        
         span {
+                position: absolute;
                 margin: 0 0.5rem;
                 font-size: 0.8rem;
                 white-space: nowrap;
+                bottom: 5%;
+                left: 4%;
         }
     }
 
@@ -76,7 +81,7 @@ export const Column = styled.div`
     display: flex;
     width: 425px;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 5rem;
 
     .uf{
@@ -92,11 +97,12 @@ export const Column = styled.div`
             white-space: nowrap;
         }
 
-    input {
-            max-width: 225px;
-            width: 90%;
+    select {
+            min-width: 85px!important;
+            width: 90%!important;
             height: 28px;
             border: 1px solid #eaeaea;
+            text-align: center;
         }
 
     }
