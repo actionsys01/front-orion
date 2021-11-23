@@ -92,7 +92,7 @@ export default function CadastrarEntrada() {
     // input de chave de acesso
     const getNfe = useCallback(async (e) => {
         e.preventDefault()
-        console.log("e", key.current.value )
+        // console.log("e", key.current.value )
         const initial = key.current.value.toString().substring(0,2)
         const ct = "CT"
         if (initial.valueOf() == ct.valueOf()){
@@ -114,7 +114,7 @@ export default function CadastrarEntrada() {
         } else {
             try {
             const response = await getNfeById(key.current.value, company_id);
-            console.log(response.data)
+            // console.log(response.data)
             setNota(state =>[...state, response.data])
             setEntranceKeys(state =>[...state, key.current.value])
             setToast({
@@ -158,20 +158,20 @@ export default function CadastrarEntrada() {
                 })
             })
         }
-        console.log("ally",allData)
+        // console.log("ally",allData)
         return allData
     }, [nota])
 
     async function registerEntrance ()  {
-        console.log("req", driverId,vehicleLicense, 
-        statusDescription,entranceKeys, 
-        loadedWeight,emptyWeight,measure, arrivalDate )
-        const [ diaE , mesE, anoE ] = dataEntrada.split("-")
+        // console.log("req", driverId,vehicleLicense, 
+        // statusDescription,entranceKeys, 
+        // loadedWeight,emptyWeight,measure, arrivalDate )
+        const [  anoE, mesE,diaE  ] = dataEntrada.split("-")
         const [ horaE, minutoE ] = arrivalTime.split(":")
-        // setArrivalDate()
         const [ diaS, mesS, anoS ] = dataSaida.split("-")
         const [ horaS, minutoS ] = exitTime.split(":")
-        
+        const finalDate =  new Date(`${anoE}-${mesE}-${diaE} ${horaE}:${minutoE}`)
+        // console.log("final",finalDate)
             try {
                 await entranceReq.create({
                     rg_motorista: driverId,
@@ -183,8 +183,8 @@ export default function CadastrarEntrada() {
                     peso_cheio: loadedWeight,
                     peso_vazio: emptyWeight,
                     unidade_medida: measure,
-                    data_entrada: (hasChanged ? (new Date(Number(diaE), Number(mesE), Number(anoE), (Number(horaE) - 3), Number(minutoE))) : arrivalDate),
-                    data_saida: (hasSChanged  ? (new Date(Number(diaS), Number(mesS), Number(anoS), (Number(horaS) - 3), Number(minutoS))) : exitDate),
+                    data_entrada: hasChanged ? new Date(`${anoE}-${mesE}-${diaE} ${horaE}:${minutoE}`) : arrivalDate,
+                    data_saida:  hasSChanged ? new Date(`${anoS}-${mesS}-${diaS} ${horaS}:${minutoS}`) : exitDate,
                     placa_reboque1: firstHaulage,
                     placa_reboque2: secondHaulage,
                     placa_reboque3: thirdHaulage
@@ -194,6 +194,7 @@ export default function CadastrarEntrada() {
                     type: "success"
                 });
             } catch (error) {
+                console.log(error)
                 setToast({
                     text: "Houve um problema, por favor tente novamente",
                     type: "warning"
@@ -224,7 +225,7 @@ export default function CadastrarEntrada() {
                 try {
                 const response = await entranceReq.getVehicleById(placa)
                 const data = response.data.descricao
-                console.log("vehicle",data)
+                // console.log("vehicle",data)
                 setStatusDescription(data)
                 return data
             } catch (error) {
@@ -238,26 +239,20 @@ export default function CadastrarEntrada() {
             setStatus(2)
         }
 
-        // useEffect(() => {
-        //     console.log("arr 1",dataEntrada)
-        //     console.log("urr 1",arrivalTime)
-        //     console.log("arr 2",dataSaida)
-        //     console.log("urr 2",exitTime)
-        // }, [])
-        // useEffect(() => {
-        //     console.log("arr ch 1",dataEntrada)
-        //     console.log("urr ch 1",arrivalTime)
-        //     console.log("arr ch 2",dataSaida)
-        //     console.log("urr ch 2",exitTime)
-        // }, [dataSaida, exitTime, dataEntrada, arrivalTime])
-
         // function testeHour() {
-        //     const [dia , mes, ano] = dataEntrada.split("-")
-        //     console.log([ano, mes, dia])
+        //     const [ano , mes, dia] = dataEntrada.split("-")
+        //     console.log("ano mes e dia", [ano, mes, dia])
         //     const [ hora, minuto] = arrivalTime.split(":")
-        //     console.log("minino", new Date(Number(dia) , Number(mes), Number(ano), Number(hora), Number(minuto)).toString())
+        //     console.log("hora e minuto", [hora, minuto])
+        //     console.log("tempo final", new Date(`${ano}-${mes}-${dia} ${hora}:${minuto}`))
         // }
 
+        // useEffect(() => {
+        //     console.log("entrada data",dataEntrada)
+        //     console.log("entrada hora",arrivalTime)
+        // }, [ dataEntrada, arrivalTime])
+
+       
  
     return <>
         <Head>
