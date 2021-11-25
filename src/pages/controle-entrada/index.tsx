@@ -11,12 +11,15 @@ import  {format} from "date-fns";
 import { Pages } from "@styles/pages";
 import Pagination from "@material-ui/lab/Pagination";
 import EntranceModal from "./modal"
-
+import FiltroModal from "./filtro-modal"
+import AltModal from "./filtro-alt"
+import FilterModal from "@components/FilterModal"
 
 interface Entrance {
     id: number
     chave_nota: string;
     controle_entrada: ControleProps
+    data_entrada: string
 }
 
 interface EntranceUpdateProps {
@@ -82,6 +85,41 @@ export default function ControleEntrada() {
     // Modal
     const [visibleModal, setVisibleModal] = useState(false)
     const [ modalStatus, setModalStatus ] = useState("")
+    const [ filterModal, setFilterModal ] = useState(false)
+    const [ uFilterModal, setUFilterModal] = useState(false)
+    // filtros
+    const [ filtersObject, setFiltersObject] = useState({})
+    const [ statusQuery, setStatusQuery] = useState("")
+    const [ entranceQuery, setEntranceQuery] = useState("")
+    const [ exitQuery, setExitQuery ] = useState("")
+    const [ keyQuery, setKeyQuery] = useState("")
+
+    useEffect(() => {
+        console.log({ statusQuery, entranceQuery, exitQuery, keyQuery })
+    }, [statusQuery, entranceQuery, exitQuery, keyQuery])
+    
+
+    useEffect(() => {
+        let filtersObj = JSON.parse(localStorage.getItem("filtersObj"));
+        console.log({ filtersObj, toAqui: 2 })
+        if (filtersObj?.status || filtersObj?.data_entrada || filtersObj?.data_saida || filtersObj?.chave_nota) {
+            console.log("pt I")
+          setFiltersObject(filtersObj);
+        } else {
+            let filtersObj =  {
+                "data_saida" : exitQuery,
+                "data_entrada" : entranceQuery,
+                "status" : statusQuery,
+                "chave_nota" : keyQuery
+            };
+            console.log("pt II", { filtersObj })
+        const firstF = Object.entries(filtersObj).filter( objProp => !!objProp[1])
+        console.log(`firstF`, firstF)
+        const filters = Object.fromEntries(firstF)
+        console.log(`filters`, filters)
+        setFiltersObject(filters);
+        }
+      },[])
     
     const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {setPage(value)}
 
@@ -89,26 +127,68 @@ export default function ControleEntrada() {
         setVisibleModal(!visibleModal)
     }, [visibleModal])
 
-    const getEntranceDataByPage = useCallback(async () => {
-        try {
-            const response = await entrances.getEntrance(page, Number(session?.usuario.empresa.id))
+
+
+    const modalUFilterHandler = useCallback(() => {
+        setUFilterModal(!uFilterModal)
+    }, [uFilterModal])
+
+    // useEffect(() => {
+    //     filtersObj()
+    //  console.log("feito")
+    // }, [])
+
+    // const filtersObj = getLocalStorage
+    // console.log(`getLocalStorage`, getLocalStorage)
+    // const firstF = Object.entries(getLocalStorage).filter( objProp => !!objProp[1])
+    // console.log(`firstF`, firstF)
+    // const filters = Object.fromEntries(firstF)
+    // console.log(`filters process`, filters)
+
+    // const getEntranceDataByPage = useCallback(async () => {
+    //     try {
+    //         const response = await entrances.getEntrance(page , Number(session?.usuario.empresa.id), filtersObject)
+    //         const data = response.data
+    //         setQuantityPage(Math.ceil(data.total / 8))
+    //         setEntrance(data.notas)
+    //         return data.notas
+    //     } catch (error) {
+    //         setToast({
+    //             text: "Houve um problema, por favor tente novamente",
+    //             type: "warning"
+    //         })
+    //     }
+            
+    //     },[filtersObject])
+
+    useEffect(() => {
+        const formattedFilters = {
+            chave_nota: keyQuery,
+            status: statusQuery,
+            data_entrada: entranceQuery,
+            data_saida: exitQuery,
+        }
+
+        entrances.getEntrance(page , Number(session?.usuario.empresa.id), formattedFilters)
+        .then(response => {
             const data = response.data
             setQuantityPage(Math.ceil(data.total / 8))
             setEntrance(data.notas)
-            return data.notas
-        } catch (error) {
+        }).catch(err => {
             setToast({
                 text: "Houve um problema, por favor tente novamente",
                 type: "warning"
             })
-        }
-            
-        },[page, entrance, reload])
+        })
+},[page, reload, uFilterModal, exitQuery, entranceKeys, statusQuery, keyQuery])
 
 
     useEffect(() => {
-        getEntranceDataByPage()
-    }, [page, reload])
+
+        console.log(`loaded`)
+    }, [page, reload, uFilterModal, exitQuery, entranceKeys, statusQuery, keyQuery])
+
+  
 
     const handleApproval = useCallback(async (id) => {
         const response = await entrances.getControlById(id)
@@ -123,19 +203,19 @@ export default function ControleEntrada() {
         setStatus(1)
         setStatusDescription(data.descricao_status)
         setArrivalDate(new Date(data.data_entrada))
-        setExitDate(new Date(data.data_saida))
+        setExitDate(data.data_saida === null ? new Date() : new Date(data.data_saida))              
         setLoadedWeight(Number(data.peso_cheio))
         setEmptyWeight(Number(data.peso_vazio))
         setMeasure(data.unidade_medida)
         setEntranceKeys(mappedData)
         setModalStatus("autorizar")
         setVisibleModal(true)
-        console.log(entranceKeys)
+        // console.log(entranceKeys)
         return data
     }, [])
 
     const handleEdit = useCallback(( id) => {
-        console.log('Editado', id)     
+        // console.log('Editado', id)     
         router.push({
             pathname: "/atualizar-entrada",
             query: {id}
@@ -155,7 +235,7 @@ export default function ControleEntrada() {
         setStatus(4)
         setStatusDescription(data.descricao_status)
         setArrivalDate(new Date(data.data_entrada))
-        setExitDate(new Date(data.data_saida))
+        setExitDate(data.data_saida === null ? new Date() : new Date(data.data_saida))
         setLoadedWeight(Number(data.peso_cheio))
         setEmptyWeight(Number(data.peso_vazio))
         setMeasure(data.unidade_medida)
@@ -218,22 +298,31 @@ export default function ControleEntrada() {
                             onClick: () => handleCancel(item.controle_entrada.id)
                         }
                     ]}/>,
-                    status: (item.controle_entrada.status === 0 ? "Na Portaria" : 
-                    item.controle_entrada.status === 1 ? "Entrada Autorizada" :
-                    item.controle_entrada.status === 2 ? "Entrada Fechada" : 
-                    item.controle_entrada.status === 3 ? "Não se Aplica" :
-                    item.controle_entrada.status === 4 ? "Entrega Cancelada": null),
-                    arrivalDate: format(new Date(item.controle_entrada.data_entrada), "dd/MM/yyyy"),
-                    exitDate: (item.controle_entrada.data_saida != null ? format(new Date(item.controle_entrada.data_saida), "dd/MM/yyyy") : ""),
-                    arrivalTime: format(new Date(item.controle_entrada.data_entrada),"HH:mm"),
-                    exitTime: item.controle_entrada.data_saida?.slice(11,16),
-                    emptyWeight: (Number(item.controle_entrada.peso_vazio) === 0 ? "" : item.controle_entrada.peso_vazio),
+                    status: (item.controle_entrada?.status === 0 ? "Na Portaria" : 
+                    item.controle_entrada?.status === 1 ? "Entrada Autorizada" :
+                    item.controle_entrada?.status === 2 ? "Entrada Fechada" : 
+                    item.controle_entrada?.status === 3 ? "Não se Aplica" :
+                    item.controle_entrada?.status === 4 ? "Entrega Cancelada": null),
+                    arrivalDate: (item.controle_entrada === null ?  format(new Date(item.data_entrada), "dd/MM/yyyy") : format(new Date(item.controle_entrada?.data_entrada), "dd/MM/yyyy")),
+                    exitDate: (item.controle_entrada?.data_saida != null ? format(new Date(item.controle_entrada?.data_saida), "dd/MM/yyyy") : ""),
+                    arrivalTime:(item.controle_entrada === null ? format(new Date(item.data_entrada), "HH:mm"):  format(new Date(item.controle_entrada?.data_entrada),"HH:mm")),
+                    exitTime:  (item.controle_entrada?.data_saida != null ? format(new Date(item.controle_entrada?.data_saida), "HH:mm") : ""),
+                    emptyWeight: (Number(item.controle_entrada?.peso_vazio) === 0 ? "" : item.controle_entrada?.peso_vazio),
                 })
             })
         }
-        console.log("gth", allData)
         return allData
-    }, [entrance, status ])
+    }, [entrance ])
+
+   function sendToLocal()  {
+       const objF = { data_entrada: entranceQuery, status: statusQuery, 
+        chave_nota: keyQuery, data_saida: exitQuery}
+        console.log({ objF })
+        
+        setFiltersObject(objF)
+        localStorage.setItem("filtersObj", JSON.stringify(objF))
+        console.log({ stringFado: JSON.stringify(objF) })
+   }
 
 
     // function checkInvoiceType(string : any) {
@@ -250,25 +339,10 @@ export default function ControleEntrada() {
     //     return teste
     // }
 
-    // function checkIfCte(string : any) {
-    //     const initial = string.toString().substring(0,2)
-    //     const ct = "CT"
-    //     console.log("valor inicial", initial)
-    //     console.log(typeof(initial))
-    //     if (initial.valueOf() == ct.valueOf())
-    //     {
-    //         setIsCte(true)
-    //         console.log("é cte")
-    //     } else {
-    //         setIsCte(false)
-    //         console.log("é nfe")
-    //     }
-    //     return initial
-    // }
 
     // useEffect(() => {
-    //     console.log("state no effect",isCte)
-    // }, [isCte])
+    //     console.log(`uFilterModal`, uFilterModal)
+    // }, [uFilterModal])
 
 
     return <>
@@ -277,7 +351,7 @@ export default function ControleEntrada() {
             </Head>
                 <h2>Controle de Entrada</h2>
                 <BtnRow>
-                    <button type="button" className="filter"> 
+                    <button type="button" className="filter" onClick={() => setUFilterModal(true)}> 
                     <span><Filter/></span>
                             Filtrar
                     </button>
@@ -292,22 +366,13 @@ export default function ControleEntrada() {
                         <tr>
                             <th></th>
                             <th>Chave de Acesso Nf-e</th>
-                            {/* <th>CNPJ Emitente</th>
-                            <th>Descrição Emitente</th>
-                            <th>Número Nota Fiscal</th>
-                            <th>Série</th>
-                            <th>Data de Emissão</th> */}
                             <th>Status Portaria</th>
-                            {/* <th>Status Recebimento XML</th> */}
                             <th>Número Entrega</th>
                             <th>Peso Inicial do Veículo</th>
                             <th>Data Chegada</th>
                             <th>Data Saída</th>
                             <th>Horário Chegada</th>
                             <th>Horário Saída</th>
-                            {/* <th>Fornecedor</th> */}
-                            {/* <th>Chave Devolução</th> */}
-                            <th>Placa Veículo</th>
                             <th>Placa Reboque 1</th>
                             <th>Placa Reboque 2</th>
                             <th>Placa Reboque 3</th>
@@ -320,15 +385,15 @@ export default function ControleEntrada() {
                             <td>{item.chave_nota}</td>
                             <td>{item.status}</td>
                             <td>{item.id}</td>
-                            <td>{item.controle_entrada.peso_cheio}</td>
+                            <td>{item.controle_entrada?.peso_cheio}</td>
                             <td>{item.arrivalDate}</td>
                             <td>{item.exitDate}</td>
                             <td>{item.arrivalTime}</td>
                             <td>{item.exitTime}</td>
-                            <td>{item.controle_entrada.placa_principal}</td>
-                            <td>{item.controle_entrada.placa_reboque1}</td>
-                            <td>{item.controle_entrada.placa_reboque2}</td>
-                            <td>{item.controle_entrada.placa_reboque3}</td>
+                            <td>{item.controle_entrada?.placa_principal}</td>
+                            <td>{item.controle_entrada?.placa_reboque1}</td>
+                            <td>{item.controle_entrada?.placa_reboque2}</td>
+                            <td>{item.controle_entrada?.placa_reboque3}</td>
                         </tr>
                         ))}
                         
@@ -339,7 +404,16 @@ export default function ControleEntrada() {
                 <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
             </Pages>
             {visibleModal && 
-            <EntranceModal modalStatus={modalStatus} modalHandler={modalHandler} updateEntrance={updateEntrance} />}
+                <EntranceModal modalStatus={modalStatus} modalHandler={modalHandler} updateEntrance={updateEntrance} />}
+            {/* {filterModal &&
+                <FiltroModal modalFilterHandler={modalFilterHandler} />} */}
+            {uFilterModal && 
+                <FilterModal  setStatusQuery={setStatusQuery} statusQuery={statusQuery} sendToLocal={sendToLocal}
+                setEntranceQuery={setEntranceQuery}  entranceQuery={entranceQuery}
+                setExitQuery={setExitQuery}  exitQuery={exitQuery}
+                modalUFilterHandler={modalUFilterHandler}
+                setKeyQuery={setKeyQuery} keyQuery={keyQuery}
+                setUFilterModal={setUFilterModal}/> }
         </>
     
 }

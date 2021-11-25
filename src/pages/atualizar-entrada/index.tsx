@@ -174,6 +174,8 @@ export default function AtualizarEntrada() {
 
     function finishihEntrance() {
         setStatus(2)
+        setHasChanged(hasSChanged)
+        setHasSChanged(hasSChanged)
     }
 
     // useEffect(() => {
@@ -225,10 +227,10 @@ export default function AtualizarEntrada() {
     }, [nota])
 
     async function updateEntrance() {
-        const [ diaE , mesE, anoE ] = dataEntrada.split("-")
+        const [ anoE, mesE,diaE] = dataEntrada.split("-")
         const [ horaE, minutoE ] = arrivalTime.split(":")
     
-        const [ diaS, mesS, anoS ] = dataSaida.split("-")
+        const [ anoS, mesS, diaS ] = dataSaida.split("-")
         const [ horaS, minutoS ] = exitTime.split(":")
         try {
             await entrances.updateEntrance(controlId, {
@@ -240,7 +242,7 @@ export default function AtualizarEntrada() {
                 status: status,
                 descricao_status: statusDescription,
                 data_entrada: hasChanged ? new Date(`${anoE}-${mesE}-${diaE} ${horaE}:${minutoE}`) : arrivalDate,
-                data_saida: hasSChanged ? new Date(`${anoS}-${mesS}-${diaS} ${horaS}:${minutoS}`) : exitDate,
+                data_saida: (hasSChanged || status === 2 ) ? new Date(`${anoS}-${mesS}-${diaS} ${horaS}:${minutoS}`) : exitDate,
                 peso_cheio: loadedWeight,
                 peso_vazio: emptyWeight,
                 empresa: company_id,
@@ -261,19 +263,14 @@ export default function AtualizarEntrada() {
         router.push("/controle-entrada")
     }
 
-    // const [ test, setTest] =  useState<Date>()
-    // useEffect(() => {
-    //   console.log(test)
-    // }, [test])
+   useEffect(() => {
+       console.log(`dataSaida`, dataSaida)
+       console.log(`exitTime`, exitTime)
+   }, [dataSaida, exitTime])
 
-    // useEffect(() => {
-    //     console.log("arr",status)
-    // }, [])
-    // useEffect(() => {
-    //     console.log("arr ch",status)
-    // }, [status])
-
-
+    useEffect(() => {
+        console.log(`hasSChanged`, hasSChanged)
+    }, [hasSChanged])
 
     return  <>
         <Head>
@@ -303,11 +300,11 @@ export default function AtualizarEntrada() {
                     <div>
                         <div>
                             <span>RG</span>
-                            <input type="text" readOnly value={driverId} onChange={(e) => setDriverId(e.target.value)} /* onBlur={(e) => findDriver(e.target.value)}  *//>
+                            <input type="text"  value={driverId} onChange={(e) => setDriverId(e.target.value)} /* onBlur={(e) => findDriver(e.target.value)}  *//>
                         </div>
                         <div>
                             <span >Nome</span>
-                            <input type="text" readOnly value={driver} onChange={(e) => setDriver(e.target.value)}/>
+                            <input type="text"  value={driver} onChange={(e) => setDriver(e.target.value)}/>
                         </div>
                     </div>
                         </Inline>
@@ -320,11 +317,11 @@ export default function AtualizarEntrada() {
                     <div>
                         <div>
                             <span className="first">Placa Principal</span>
-                            <input type="text" readOnly value={vehicleLicense} onChange={(e) => setVehicleLicense(e.target.value)} /* onBlur={(e) => findVehicle(e.target.value)} */  />
+                            <input type="text"  value={vehicleLicense} onChange={(e) => setVehicleLicense(e.target.value)} /* onBlur={(e) => findVehicle(e.target.value)} */  />
                         </div>
                         <div>
                             <span>Descrição</span>
-                            <input type="text" readOnly value={statusDescription} className="description" onChange={(e) => setStatusDescription(e.target.value)} />
+                            <input type="text"  value={statusDescription} className="description" onChange={(e) => setStatusDescription(e.target.value)} />
                         </div>
                         <div>
                             <span className="icon">Reboque<Checkbox checked={reboque ? reboque || visible : visible} 
@@ -385,7 +382,7 @@ export default function AtualizarEntrada() {
                             </div>
                             <div>
                                 <span>Hora Saída</span>
-                                <input type="time"   onChange={(e) => {setExitTime(e.target.value), setHasSChanged}}/>
+                                <input type="time" defaultValue={format(new Date(exitDate), "HH:mm")}  onChange={(e) => {setExitTime(e.target.value), setHasSChanged(true)}}/>
                             </div>
                         </Column>
                         

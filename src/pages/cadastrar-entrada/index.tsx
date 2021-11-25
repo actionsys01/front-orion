@@ -41,13 +41,11 @@ export default function CadastrarEntrada() {
     const [thirdModal, setThirdModal] = useState(false);
     // nota 
     const key: any = useRef(null)
-    const [mainKey, setMainKey] = useState<string>("");
     const [nota, setNota] = useState<INfeDto[] | CteProps[]>([])
     const [, setToast] = useToasts();
     const [session] = useSession();
     const company_id = Number(session?.usuario.empresa.id);
     const [ableInput, setAbleInput] = useState(true)
-    const timeLocal = new Date()
     // states dos inputs
     const [entranceKeys, setEntranceKeys] = useState<string[]>([]);
     const [driverId, setDriverId] = useState("");
@@ -163,15 +161,14 @@ export default function CadastrarEntrada() {
     }, [nota])
 
     async function registerEntrance ()  {
-        // console.log("req", driverId,vehicleLicense, 
-        // statusDescription,entranceKeys, 
-        // loadedWeight,emptyWeight,measure, arrivalDate )
+        console.log("req", driverId,vehicleLicense, 
+        statusDescription,entranceKeys, 
+        loadedWeight,emptyWeight,measure, arrivalDate, exitDate )
         const [  anoE, mesE,diaE  ] = dataEntrada.split("-")
         const [ horaE, minutoE ] = arrivalTime.split(":")
-        const [ diaS, mesS, anoS ] = dataSaida.split("-")
+        const [ anoS , mesS , diaS ] = dataSaida.split("-")
         const [ horaS, minutoS ] = exitTime.split(":")
-        const finalDate =  new Date(`${anoE}-${mesE}-${diaE} ${horaE}:${minutoE}`)
-        // console.log("final",finalDate)
+        
             try {
                 await entranceReq.create({
                     rg_motorista: driverId,
@@ -251,8 +248,6 @@ export default function CadastrarEntrada() {
         //     console.log("entrada data",dataEntrada)
         //     console.log("entrada hora",arrivalTime)
         // }, [ dataEntrada, arrivalTime])
-
-       
  
     return <>
         <Head>
