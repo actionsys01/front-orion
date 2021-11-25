@@ -4,14 +4,16 @@ export const SelectStyle = styled.div`
   display: flex;
   justify-content: flex-end;
   margin: 25px;
-  select {
+  input {
     margin: 10px;
-    width:125px;
-    height: 35px;
+    width: 175px;
+    height: 30px;
+    border: 1px solid #eaeaea;
+    text-align: center;
+    font-size: .9rem;
+    padding: .2rem;
 }
 `
-
-
 
 export const Speedometer = styled.div`
   display: flex;
@@ -49,7 +51,7 @@ export const Speedometer = styled.div`
 
 export const InfoContainer = styled.div`
   display: flex;
-  height: 35%;
+  height: 30%;
   gap: 7rem;
   white-space: nowrap;
   align-items: center;

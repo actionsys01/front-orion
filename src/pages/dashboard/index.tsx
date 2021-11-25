@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useCallback} from 'react'; 
-import { Speedometer, InfoContainer } from './style';
+import { Speedometer, InfoContainer, SelectStyle } from './style';
 import { useSession } from "next-auth/client";
 import Head from "next/head";
 import {useSecurityContext} from "@contexts/security";
@@ -11,6 +11,7 @@ import * as planos from "@services/planos"
 import * as empresas from "@services/empresas";
 import CertificateConfirm from './modal';
 import { useToasts } from "@geist-ui/react";
+import { setDate } from 'date-fns';
 export default function Dashboard() {
     const {
       nfePermission,
@@ -35,6 +36,8 @@ export default function Dashboard() {
     const [session] = useSession()
     const router = useRouter()
     const [, setToast] = useToasts();
+
+    const [ dateDash, setDateDash ] = useState("")
     
     // modal
     const [ modal, setModal] = useState(false)
@@ -62,8 +65,9 @@ export default function Dashboard() {
 
       // request de dashboard data
     const getDashboardData = useCallback(async() => {
+      const date = dateDash
       try {
-        const response = await empresas.dashboardRequest(Number(session?.usuario.empresa.id))
+        const response = await empresas.dashboardRequest(Number(session?.usuario.empresa.id), date)
       const data = response.data
       return data
       } catch (error) {
@@ -97,12 +101,20 @@ export default function Dashboard() {
         setNfeAmount(response.NfeCount)})
     }, [])
 
+    useEffect(() => {
+      console.log("date dash",dateDash)
+    }, [dateDash])
+
 
     return  <>
         <Head>
             <title>Orion | Dashboard</title>
         </Head>
         <h2>Dashboard</h2>
+        <SelectStyle>
+          <input type="month" onChange={(e) => setDateDash(e.target.value)} />
+          {/* <select name="" id="">Ano</select> */}
+        </SelectStyle>
         <InfoContainer>
           <div>
             <div>
