@@ -102,7 +102,7 @@ export default function ControleEntrada() {
     useEffect(() => {
         let filtersObj = JSON.parse(localStorage.getItem("filtersObj"));
         console.log({ filtersObj, toAqui: 2 })
-        if (filtersObj?.status || filtersObj?.data_entrada || filtersObj?.data_saida || filtersObj?.chave_nota) {
+        if (filtersObj) {
             console.log("pt I")
           setFiltersObject(filtersObj);
         } else {
