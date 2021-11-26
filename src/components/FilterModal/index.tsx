@@ -5,54 +5,35 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { FilterModalStyle, ModalLines, AddRow, ButtonsRow } from "./style"
 import { PlusCircle, X } from '@geist-ui/react-icons'
+import { useFiltro } from "@contexts/filtro";
 
 interface ModalProps {
     modalUFilterHandler: () => void
     setUFilterModal: Dispatch<SetStateAction<boolean>>
-    setStatusQuery: Dispatch<SetStateAction<string>>
-    setEntranceQuery: Dispatch<SetStateAction<string>>
-    setExitQuery: Dispatch<SetStateAction<string>>
-    setKeyQuery: Dispatch<SetStateAction<string>> 
-    exitQuery: string
-    statusQuery: string
-    entranceQuery: string
-    keyQuery: string
+    // setStatusQuery: Dispatch<SetStateAction<string>>
+    // setEntranceQuery: Dispatch<SetStateAction<string>>
+    // setExitQuery: Dispatch<SetStateAction<string>>
+    // setKeyQuery: Dispatch<SetStateAction<string>> 
     sendToLocal: () => void
 }
 
 const FilterModal = ({modalUFilterHandler, sendToLocal,
-     setStatusQuery, statusQuery,
-     setEntranceQuery, entranceQuery,
-    setExitQuery, exitQuery, keyQuery,
-    setKeyQuery, setUFilterModal} : ModalProps) => {
+     /* setStatusQuery, 
+     setEntranceQuery, entranceRef,
+    setExitQuery, statusRef,
+    setKeyQuery, */ setUFilterModal} : ModalProps) => {
     const [ firstLine, setFirstLine] = useState(false)
     const [ secondLine, setSecondLine ] = useState(false)
     const [ thirdLine, setThirdLine ] = useState(false)
     const [ fourthLine, setFourthLine ] = useState(false)
 
-    const [ control, setControl] = useState(false)
+    const { setEntranceQuery, setExitQuery, setKeyQuery, setStatusQuery} = useFiltro()
 
-    const [ firstItem, setFirstItem] = useState(false)
+    const [ firstInput, setFirstInput] = useState<"Data de Entrada" | "Data de Saída" | "Status" | "Chave de Acesso" | "">("")
 
-    const [ test, setTest] = useState("")
-
+    
     const selectOptions = [ "Data de Entrada", "Data de Saída", "Status" , "Chave de Acesso"]
 
-    // function getLocalData() {
-    //     let filtersObj =  JSON.parse(localStorage.getItem("filtersObj"))
-    //     console.log(`filters`, filtersObj)
-    //         for (var i in filtersObj) {
-    //         if (!filtersObj[i]) {
-    //             delete filtersObj[i];
-    //         }
-    //         }
-            
-    //         console.log("truthy",Object.values(filtersObj));
-    //         console.log("truthy 2", Object.keys(filtersObj))
-    //         console.log("truthy 3", Object.entries(filtersObj))
-    //         return filtersObj;
-        
-    // }
 
     const getLocal = useMemo(() => {
         let filtersObj =  JSON.parse(localStorage.getItem("filtersObj"))
@@ -95,12 +76,15 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
         // console.log(`e`, e)
         if(e.target[0].value === "Status") {
             setStatusQuery(e.target[1].value)
-            
+            console.log("vim aqui 1")
+            setFirstInput("Status")
         }
         if(e.target[0].value === "Data de Entrada") {
             const string = e.target[1].value
             const [dia, mes, ano] = string.split("/")
              setEntranceQuery(`${ano}-${mes}-${dia}`)
+             console.log("vim aqui 2")
+            setFirstInput("Data de Entrada")
         }
         if(e.target[0].value === "Data de Saída") {
             const string = e.target[1].value
@@ -166,8 +150,8 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
         if(e.target[6] && e.target[6].type != "button" && e.target[6].value === "Chave de Acesso") {
             setKeyQuery(e.target[7].value)
         }
-        sendToLocal()
-        modalUFilterHandler()
+        // sendToLocal()
+        // modalUFilterHandler()
     }
 
 
@@ -181,7 +165,9 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
          modalUFilterHandler()
     }
 
-    
+    useEffect(() => {
+       console.log(`firstInput`, firstInput)
+    }, [firstInput])
 
     return <FilterModalStyle>
         <div>
@@ -196,7 +182,7 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
                         <option key={i} value={item}>{item}</option>
                         )}
                     </select>
-                    <input type="text" name="1" id="1" onChange={(e) => setTest(e.target.value)} />
+                    <input type="text" name="1" id="1"   />
                     <X onClick={() => setFirstLine(false)}/>
                 </>}
                 {secondLine &&
@@ -239,7 +225,7 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
             </ModalLines>
             <ButtonsRow>
                 <button type="button" onClick={closeModal }>Cancelar</button>
-                <button type="submit" /* onClick={() => replaceString(test)}  *//* onClick={() => setReload(!reload)} */ disabled={!firstLine ? true : false}>Confirmar</button>
+                <button type="button" /* onClick={() => replaceString(test)}  *//* onClick={() => setReload(!reload)} */ disabled={!firstLine ? true : false}>Confirmar</button>
             </ButtonsRow>
             </form>
         </div>

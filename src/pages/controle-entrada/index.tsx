@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback} from 'react';
+import React, { useState, useMemo, useEffect, useCallback, useRef} from 'react';
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { Plus, Filter } from "@geist-ui/react-icons"
@@ -11,9 +11,11 @@ import  {format} from "date-fns";
 import { Pages } from "@styles/pages";
 import Pagination from "@material-ui/lab/Pagination";
 import EntranceModal from "./modal"
+import { useFiltro } from "@contexts/filtro";
 import FiltroModal from "./filtro-modal"
 import AltModal from "./filtro-alt"
 import FilterModal from "@components/FilterModal"
+
 
 interface Entrance {
     id: number
@@ -89,10 +91,15 @@ export default function ControleEntrada() {
     const [ uFilterModal, setUFilterModal] = useState(false)
     // filtros
     const [ filtersObject, setFiltersObject] = useState({})
-    const [ statusQuery, setStatusQuery] = useState("")
-    const [ entranceQuery, setEntranceQuery] = useState("")
-    const [ exitQuery, setExitQuery ] = useState("")
-    const [ keyQuery, setKeyQuery] = useState("")
+    // const [ statusQuery, setStatusQuery] = useState("")
+    // const [ entranceQuery, setEntranceQuery] = useState("")
+    // const [ exitQuery, setExitQuery ] = useState("")
+    // const [ keyQuery, setKeyQuery] = useState("")
+
+    const { entranceQuery, exitQuery, keyQuery, statusQuery } = useFiltro()
+   
+        
+
 
     useEffect(() => {
         console.log({ statusQuery, entranceQuery, exitQuery, keyQuery })
@@ -126,8 +133,6 @@ export default function ControleEntrada() {
     const modalHandler = useCallback(() => {
         setVisibleModal(!visibleModal)
     }, [visibleModal])
-
-
 
     const modalUFilterHandler = useCallback(() => {
         setUFilterModal(!uFilterModal)
@@ -185,8 +190,8 @@ export default function ControleEntrada() {
 
     useEffect(() => {
 
-        console.log(`loaded`)
-    }, [page, reload, uFilterModal, exitQuery, entranceKeys, statusQuery, keyQuery])
+        console.log(`loaded`, filtersObject)
+    }, [filtersObject])
 
   
 
@@ -314,15 +319,17 @@ export default function ControleEntrada() {
         return allData
     }, [entrance ])
 
-   function sendToLocal()  {
-       const objF = { data_entrada: entranceQuery, status: statusQuery, 
-        chave_nota: keyQuery, data_saida: exitQuery}
-        console.log({ objF })
-        
+   const sendToLocal = useCallback (() => {
+       const objF = { "data_entrada": entranceQuery, 
+                        "status": statusQuery, 
+                        "chave_nota": keyQuery, 
+                        "data_saida": exitQuery}
+
+        console.log("aqui",{ objF })
         setFiltersObject(objF)
         localStorage.setItem("filtersObj", JSON.stringify(objF))
         console.log({ stringFado: JSON.stringify(objF) })
-   }
+   }, [entranceQuery, statusQuery, keyQuery, exitQuery] )
 
 
     // function checkInvoiceType(string : any) {
@@ -339,10 +346,6 @@ export default function ControleEntrada() {
     //     return teste
     // }
 
-
-    // useEffect(() => {
-    //     console.log(`uFilterModal`, uFilterModal)
-    // }, [uFilterModal])
 
 
     return <>
@@ -408,11 +411,11 @@ export default function ControleEntrada() {
             {/* {filterModal &&
                 <FiltroModal modalFilterHandler={modalFilterHandler} />} */}
             {uFilterModal && 
-                <FilterModal  setStatusQuery={setStatusQuery} statusQuery={statusQuery} sendToLocal={sendToLocal}
-                setEntranceQuery={setEntranceQuery}  entranceQuery={entranceQuery}
-                setExitQuery={setExitQuery}  exitQuery={exitQuery}
+                <FilterModal  /* setStatusQuery={setStatusQuery} */ sendToLocal={sendToLocal}
+                // setEntranceQuery={setEntranceQuery} 
+                // setExitQuery={setExitQuery}  entranceRef={entranceRef} 
                 modalUFilterHandler={modalUFilterHandler}
-                setKeyQuery={setKeyQuery} keyQuery={keyQuery}
+                // setKeyQuery={setKeyQuery} statusRef={statusRef}
                 setUFilterModal={setUFilterModal}/> }
         </>
     

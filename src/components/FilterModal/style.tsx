@@ -96,6 +96,10 @@ export const ModalLines = styled.div`
         color: #fff;
     }
 
+    .test {
+        background-color: red;
+    }
+
     > svg {
         height: 1rem;
         cursor: pointer;

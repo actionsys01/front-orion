@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect,  Dispatch, SetStateAction } from "react";
 import { useContext, useState } from "react";
 import { createContext } from "react";
 import colunas from "@utils/painel-controle-filtro";
@@ -20,6 +20,14 @@ interface FiltroContextType {
   cadastrarCte(ctes: IFiltro[]): void;
   inicializarScope(filtro: IUnform[]): IFiltro[];
   limpar(): void;
+  statusQuery: string;
+  entranceQuery: string;
+  exitQuery: string;
+  keyQuery: string;
+  setStatusQuery: Dispatch<SetStateAction<string>>
+  setEntranceQuery: Dispatch<SetStateAction<string>>
+  setExitQuery: Dispatch<SetStateAction<string>>
+  setKeyQuery: Dispatch<SetStateAction<string>> 
 }
 
 interface IFiltroProps{
@@ -35,6 +43,10 @@ export function useFiltro() {
 export default function FiltroProvider({ children } : IFiltroProps) {
   const [nfes, setNfes] = useState<IFiltro[]>([]);
   const [ctes, setCtes] = useState<IFiltro[]>([]);
+  const [ statusQuery, setStatusQuery] = useState("")
+  const [ entranceQuery, setEntranceQuery] = useState("")
+  const [ exitQuery, setExitQuery ] = useState("")
+  const [ keyQuery, setKeyQuery] = useState("")
 
   useEffect(() => {
     async function carregarStorage() {
@@ -90,6 +102,14 @@ export default function FiltroProvider({ children } : IFiltroProps) {
         cadastrarNfe,
         inicializarScope,
         limpar,
+        statusQuery,
+        entranceQuery,
+        exitQuery,
+        keyQuery,
+        setStatusQuery,
+        setEntranceQuery,
+        setExitQuery,
+        setKeyQuery
       }}
     >
       {children}
