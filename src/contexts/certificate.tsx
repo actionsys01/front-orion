@@ -24,6 +24,7 @@ const CertificateProvider:  React.FC = ({ children }: any) => {
                 // console.log("cnpj",cnpjResponse)
                 const data = response.data.certificate.certificado
                 const cnpjData = cnpjResponse.data.total
+                // console.log(`cnpjData`, cnpjData)
                 setIsCertificated(data && cnpjData > 0 ? true : false)
                 return data
             } catch (error) {

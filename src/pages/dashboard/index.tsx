@@ -65,7 +65,8 @@ export default function Dashboard() {
 
       // request de dashboard data
     const getDashboardData = useCallback(async() => {
-      const date = dateDash
+      let date = dateDash
+      console.log(`date na função`, date)
       try {
         const response = await empresas.dashboardRequest(Number(session?.usuario.empresa.id), date)
       const data = response.data
@@ -76,7 +77,7 @@ export default function Dashboard() {
           type: "warning"
         })
       }
-      },[])
+      },[dateDash])
     
     function getPercentage(partial: number, total: number) {
       return partial / total
@@ -102,7 +103,7 @@ export default function Dashboard() {
     }, [])
 
     useEffect(() => {
-      console.log("date dash",dateDash)
+      console.log("date dash", typeof(dateDash), dateDash)
     }, [dateDash])
 
 
