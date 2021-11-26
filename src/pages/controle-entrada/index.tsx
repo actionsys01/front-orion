@@ -101,15 +101,15 @@ export default function ControleEntrada() {
         
 
 
-    useEffect(() => {
-        console.log({ statusQuery, entranceQuery, exitQuery, keyQuery })
-    }, [statusQuery, entranceQuery, exitQuery, keyQuery])
+    // useEffect(() => {
+    //     console.log({ statusQuery, entranceQuery, exitQuery, keyQuery })
+    // }, [statusQuery, entranceQuery, exitQuery, keyQuery])
     
 
     useEffect(() => {
         let filtersObj = JSON.parse(localStorage.getItem("filtersObj"));
         console.log({ filtersObj, toAqui: 2 })
-        if (filtersObj) {
+        if (filtersObj.status || filtersObj.data_chegada || filtersObj.data_saida || filtersObj.chave_nota) {
             console.log("pt I")
           setFiltersObject(filtersObj);
         } else {
@@ -121,9 +121,9 @@ export default function ControleEntrada() {
             };
             console.log("pt II", { filtersObj })
         const firstF = Object.entries(filtersObj).filter( objProp => !!objProp[1])
-        console.log(`firstF`, firstF)
+        // console.log(`firstF`, firstF)
         const filters = Object.fromEntries(firstF)
-        console.log(`filters`, filters)
+        // console.log(`filters`, filters)
         setFiltersObject(filters);
         }
       },[])
@@ -185,11 +185,10 @@ export default function ControleEntrada() {
                 type: "warning"
             })
         })
-},[page, reload, uFilterModal, exitQuery, entranceKeys, statusQuery, keyQuery])
+},[page, reload, exitQuery, entranceKeys, statusQuery, keyQuery, filtersObject])
 
 
     useEffect(() => {
-
         console.log(`loaded`, filtersObject)
     }, [filtersObject])
 
@@ -387,7 +386,7 @@ export default function ControleEntrada() {
                             <td style={{width: "35px"}}>{item.option}</td>
                             <td>{item.chave_nota}</td>
                             <td>{item.status}</td>
-                            <td>{item.id}</td>
+                            <td>{item.controle_entrada.id}</td>
                             <td>{item.controle_entrada?.peso_cheio}</td>
                             <td>{item.arrivalDate}</td>
                             <td>{item.exitDate}</td>
