@@ -91,27 +91,71 @@ export default function ControleEntrada() {
     const [ uFilterModal, setUFilterModal] = useState(false)
     // filtros
     const [ filtersObject, setFiltersObject] = useState({})
-    // const [ statusQuery, setStatusQuery] = useState("")
-    // const [ entranceQuery, setEntranceQuery] = useState("")
-    // const [ exitQuery, setExitQuery ] = useState("")
-    // const [ keyQuery, setKeyQuery] = useState("")
 
-    const { entranceQuery, exitQuery, keyQuery, statusQuery } = useFiltro()
+
+    const {
+        entranceQuery,
+        exitQuery,
+        keyQuery,
+        statusQuery,
+        setEntranceQuery,
+        setExitQuery,
+        setKeyQuery,
+        setStatusQuery
+    } = useFiltro()
    
         
 
-
-    // useEffect(() => {
-    //     console.log({ statusQuery, entranceQuery, exitQuery, keyQuery })
-    // }, [statusQuery, entranceQuery, exitQuery, keyQuery])
     
+
+    const filterList = useCallback((filter) => {
+        entrances.getEntrance(page , Number(session?.usuario.empresa.id), filter)
+        .then(response => {
+            const data = response.data
+            setQuantityPage(Math.ceil(data.total / 8))
+            setEntrance(data.notas)
+        }).catch(err => {
+            setToast({
+                text: "Houve um problema, por favor tente novamente",
+                type: "warning"
+            })
+        })
+    }, [page, session?.usuario?.empresa?.id])
+
+    useEffect(() => {
+        const formattedFilters = {
+            chave_nota: keyQuery,
+            status: statusQuery,
+            data_entrada: entranceQuery,
+            data_saida: exitQuery,
+        }
+        // console.log(`formattedFilters`, formattedFilters)
+
+        entrances.getEntrance(page , Number(session?.usuario.empresa.id), formattedFilters)
+        .then(response => {
+            const data = response.data
+            setQuantityPage(Math.ceil(data.total / 8))
+            setEntrance(data.notas)
+        }).catch(err => {
+            setToast({
+                text: "Houve um problema, por favor tente novamente",
+                type: "warning"
+            })
+        })
+    },[page, reload, exitQuery, entranceKeys, statusQuery, keyQuery])
 
     useEffect(() => {
         let filtersObj = JSON.parse(localStorage.getItem("filtersObj"));
-        console.log({ filtersObj, toAqui: 2 })
+        // console.log({ filtersObj, toAqui: 2 })
         if (filtersObj?.status || filtersObj?.data_chegada || filtersObj?.data_saida || filtersObj?.chave_nota) {
-            console.log("pt I")
-          setFiltersObject(filtersObj);
+            // console.log("pt I", { filtersObj })
+            setFiltersObject(filtersObj);
+            setStatusQuery(filtersObj?.status)
+            setEntranceQuery(filtersObj?.data_chegada)
+            setExitQuery(filtersObj?.data_saida)
+            setKeyQuery(filtersObj?.chave_nota)
+          
+          filterList(filtersObj)
         } else {
             let filtersObj =  {
                 "data_saida" : exitQuery,
@@ -119,7 +163,7 @@ export default function ControleEntrada() {
                 "status" : statusQuery,
                 "chave_nota" : keyQuery
             };
-            console.log("pt II", { filtersObj })
+            // console.log("pt II", { filtersObj })
         const firstF = Object.entries(filtersObj).filter( objProp => !!objProp[1])
         // console.log(`firstF`, firstF)
         const filters = Object.fromEntries(firstF)
@@ -166,31 +210,21 @@ export default function ControleEntrada() {
             
     //     },[filtersObject])
 
-    useEffect(() => {
-        const formattedFilters = {
-            chave_nota: keyQuery,
-            status: statusQuery,
-            data_entrada: entranceQuery,
-            data_saida: exitQuery,
-        }
+    // useEffect(() => {
+    //     entrances.getEntrance(page , Number(session?.usuario.empresa.id), filtersObject)
+    //     .then(response => {
+    //         const data = response.data
+    //         setQuantityPage(Math.ceil(data.total / 8))
+    //         setEntrance(data.notas)
+    //     }).catch(err => {
+    //         setToast({
+    //             text: "Houve um problema, por favor tente novamente",
+    //             type: "warning"
+    //         })
+    //     })
 
-        entrances.getEntrance(page , Number(session?.usuario.empresa.id), formattedFilters)
-        .then(response => {
-            const data = response.data
-            setQuantityPage(Math.ceil(data.total / 8))
-            setEntrance(data.notas)
-        }).catch(err => {
-            setToast({
-                text: "Houve um problema, por favor tente novamente",
-                type: "warning"
-            })
-        })
-},[page, reload, exitQuery, entranceKeys, statusQuery, keyQuery, filtersObject])
-
-
-    useEffect(() => {
-        console.log(`loaded`, filtersObject)
-    }, [filtersObject])
+    //     console.log(`loaded`, filtersObject)
+    // }, [filtersObject])
 
   
 
@@ -324,11 +358,15 @@ export default function ControleEntrada() {
                         "chave_nota": keyQuery, 
                         "data_saida": exitQuery}
 
-        console.log("aqui",{ objF })
-        setFiltersObject(objF)
+        // console.log("aqui",{ objF })
         localStorage.setItem("filtersObj", JSON.stringify(objF))
-        console.log({ stringFado: JSON.stringify(objF) })
+        // console.log({ stringFado: JSON.stringify(objF) })
    }, [entranceQuery, statusQuery, keyQuery, exitQuery] )
+
+   // Save into the localStorage
+   useEffect(() => {
+    sendToLocal()
+   }, [entranceQuery, statusQuery, keyQuery, exitQuery])
 
 
     // function checkInvoiceType(string : any) {

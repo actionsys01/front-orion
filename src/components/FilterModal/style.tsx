@@ -83,12 +83,13 @@ export const ModalLines = styled.div`
             overflow: hidden;
             box-sizing: border-box;
             flex-wrap: wrap;
+            text-align: center;
         }
     }
 
     input {
         font-size: 12px;
-        padding: 10px;
+        padding-inline-start: 15px;
         border-radius: 5px;
         border: 1px solid #1C496A;
         background-color: #1C496A;
@@ -96,9 +97,6 @@ export const ModalLines = styled.div`
         color: #fff;
     }
 
-    .test {
-        background-color: red;
-    }
 
     > svg {
         height: 1rem;

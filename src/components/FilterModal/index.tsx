@@ -57,23 +57,23 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
     
 
     function getRowNumber() {
-        valores.push(getLocal.val[0])
+        valores.push(getLocal?.val[0])
         console.log(`valores`, valores[0])
-        console.log(`typeof(getLocal.val)`, typeof(getLocal.val), typeof(valores), typeof(localValues))
-        if(getLocal.trully.length === 1) {
+        console.log(`typeof(getLocal.val)`, typeof(getLocal?.val), typeof(valores), typeof(localValues))
+        if(getLocal?.trully?.length === 1) {
             setFirstLine(true)
-            // setFirstInput(getLocal.val.at(0))
+            
         }
-        if(getLocal.trully.length === 2) {
+        if(getLocal?.trully?.length === 2) {
             setFirstLine(true)
             setSecondLine(true)
         }
-        if(getLocal.trully.length === 3) {
+        if(getLocal?.trully?.length === 3) {
             setFirstLine(true)
             setSecondLine(true)
             setThirdLine(true)
         }
-        if(getLocal.trully.length === 4) {
+        if(getLocal?.trully?.length === 4) {
             setFirstLine(true)
             setSecondLine(true)
             setThirdLine(true)
@@ -84,8 +84,9 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
     useEffect(() => {
         // getLocalData()
         getRowNumber()
-        console.log(`getLocal`,getLocal.val)
-        console.log(`getLocal.trully`, getLocal.trully)
+        console.log(`getlocal`, getLocal.filters)
+        console.log(`getLocal.val`,getLocal?.val)
+        console.log(`getLocal.trully`, getLocal?.trully.length)
     }, [])
 
     function addRows() {
@@ -109,18 +110,19 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
         if(e.target[0].value === "Status") {
             setStatusQuery(e.target[1].value)
             console.log("vim aqui 1")
+            console.log(`object`, e.target[1].value)
         }
         if(e.target[0].value === "Data de Entrada") {
             const string = e.target[1].value
             const [dia, mes, ano] = string.split("/")
              setEntranceQuery(`${ano}-${mes}-${dia}`)
-             console.log("vim aqui 2")
+            console.log(`e.target[1].value`, e.target[1].value)
         }
         if(e.target[0].value === "Data de Saída") {
             const string = e.target[1].value
             const [dia, mes, ano] = string.split("/")
              setExitQuery(`${ano}-${mes}-${dia}`)
-            // console.log(`saida`, (e.target[1].value))
+            console.log(`saida`, (e.target[1].value))
         }
         if(e.target[0].value === "Chave de Acesso") {
             setKeyQuery(e.target[1].value)
@@ -180,7 +182,7 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
         if(e.target[6] && e.target[6].type != "button" && e.target[6].value === "Chave de Acesso") {
             setKeyQuery(e.target[7].value)
         }
-        sendToLocal()
+        // sendToLocal()
         modalUFilterHandler()
     }
 
@@ -209,23 +211,23 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
                 {firstLine &&
                 <>
                     <select name="0" id="0">
-                        <option defaultValue=""></option>
+                        <option value={getLocal?.trully[0]}>{getLocal?.trully[0]?.toString()}</option>
                         {selectOptions.map((item, i ) => 
                         <option key={i} value={item}>{item}</option>
                         )}
                     </select>
-                    <input  name="1" id="1" defaultValue={getLocal.val[0].toString()} /* onChange={(e) => setFirstInput(e.target.value)} */ />
+                    <input  name="1" id="1" defaultValue={getLocal?.val[0]?.toString()} /* onChange={(e) => setFirstInput(e.target.value)} */ />
                     <X onClick={() => setFirstLine(false)}/>
                 </>}
                 {secondLine &&
                 <>
                     <select name="2" id="2">
-                        <option defaultValue=""></option>
+                        <option value={getLocal?.trully[1]}>{getLocal?.trully[1].toString()}</option>
                         {selectOptions.map((item, i ) => 
                         <option key={i} value={item}>{item}</option>
                         )}
                     </select>
-                    <input type="text" name="3" id="3"/>
+                    <input type="text" name="3" id="3" defaultValue={getLocal?.val[1]?.toString()}/>
                     <X onClick={() => setSecondLine(false)}/>
                 </>}
                 {thirdLine &&
