@@ -9,6 +9,8 @@ import * as companyRequest from "@services/empresas";
 import { useSession } from "next-auth/client";
 import  {useCertificateContext} from "@contexts/certificate"
 import CnpjsModal from "./cnpjs-modal"
+import { useToasts } from "@geist-ui/react";
+import DeletarModal from "./delete-modal"
 
 
 interface CertificadoProps {
@@ -25,7 +27,8 @@ interface CertificadoProps {
 export default function CertificadoDigital() {
     // modais
     const [ visibleModal, setVisibleModal ] = useState(false);
-    const [ secondModal, setSecondModal] = useState(false)
+    const [ secondModal, setSecondModal ] = useState(false)
+    const [ deleteModal, setDeleteModal ] = useState(false)
     //
     const [ upload, setUpload ] = useState(false)
     const [ responsible, setResponsible ] = useState("")
@@ -36,6 +39,8 @@ export default function CertificadoDigital() {
     const [session] = useSession();
     const company_id = Number(session?.usuario.empresa.id)
     const { isCertificated } = useCertificateContext()
+    const [, setToast] = useToasts();
+    
 
     useEffect(() => {
         if (router.query.isCertificated === "false" ) {
@@ -58,6 +63,10 @@ export default function CertificadoDigital() {
         setSecondModal(!secondModal)
     }, [secondModal])
 
+    const deleteModalHandler = useCallback(() => {
+        setDeleteModal(!deleteModal)
+    }, [deleteModal])
+
 
     async function getCerficateData() {
         try {
@@ -68,12 +77,29 @@ export default function CertificadoDigital() {
             return data
         } catch (error) {
             console.log(error)
+            setToast({
+                text: "Certificado excluído com sucesso",
+                type: "success"
+            })
         }
+    }
+
+    async function deleteCertificate() {
+        try {
+            await companyRequest.deleteCertificate(Number(session.usuario.empresa.id))
+        } catch (error) {
+            console.log(error)
+            setToast({
+                text: "Houve um problema, por favor tente novamente",
+                type: "warning"
+            })
+        }
+        deleteModalHandler()
     }
 
     useEffect(() => {
         getCerficateData()
-    }, [])
+    }, [deleteModal])
 
 
     return <>
@@ -115,7 +141,7 @@ export default function CertificadoDigital() {
                 </div>
             </Section>
             <BtnRow>
-                <button >
+                <button onClick={() => setDeleteModal(true)}>
                     <span><Trash2 /></span>
                         deletar
                 </button>
@@ -125,15 +151,17 @@ export default function CertificadoDigital() {
                 </button>
             </BtnRow>
             </div>
-           {visibleModal && 
+        {visibleModal && 
                 <Modal modalHandler={modalHandler} setUpload={setUpload}
                     responsible={responsible} setResponsible={setResponsible} 
                     cnpj={cnpj} setCnpj={setCnpj}
                     initialDate={initialDate} setInitialDate={setInitialDate}
                     expiringDate={expiringDate} setExpiringDate={setExpiringDate} />}
-           {secondModal &&
+        {secondModal &&
                 <CnpjsModal secondModalHandler={secondModalHandler} />
-                }     
+                }   
+        {deleteModal && 
+        <DeletarModal deleteModalHandler={deleteModalHandler} deleteCertificate={deleteCertificate} />}
         </>
     
 }

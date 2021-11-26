@@ -27,33 +27,65 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
     const [ thirdLine, setThirdLine ] = useState(false)
     const [ fourthLine, setFourthLine ] = useState(false)
 
+    const [ localValues, setLocalValues] = useState<string[] | unknown[]>([])
+
     const { setEntranceQuery, setExitQuery, setKeyQuery, setStatusQuery} = useFiltro()
 
-    const [ firstInput, setFirstInput] = useState<"Data de Entrada" | "Data de Saída" | "Status" | "Chave de Acesso" | "">("")
+    const [ firstInput, setFirstInput] = useState<string>()
 
-    
     const selectOptions = [ "Data de Entrada", "Data de Saída", "Status" , "Chave de Acesso"]
 
 
     const getLocal = useMemo(() => {
-        let filtersObj =  JSON.parse(localStorage.getItem("filtersObj"))
+        let filtersObj =  localStorage.getItem("filtersObj")
         if(filtersObj) {
-
+            const filters = JSON.parse(filtersObj)
         
-        for (var i in filtersObj) {
-            if (!filtersObj[i]) {
-                delete filtersObj[i];
+        for (var i in filters) {
+            if (!filters[i]) {
+                delete filters[i];
             }
             }
-            const val = Object.values(filtersObj)
-            const trully = Object.keys(filtersObj)
-            return {filtersObj, val, trully}
+            const val = Object.values(filters)
+            const trully = Object.keys(filters)
+            setLocalValues(val)
+            return {filters, val, trully}
         }
     }, [])
 
+    const valores = []
+    
+
+    function getRowNumber() {
+        valores.push(getLocal.val[0])
+        console.log(`valores`, valores[0])
+        console.log(`typeof(getLocal.val)`, typeof(getLocal.val), typeof(valores), typeof(localValues))
+        if(getLocal.trully.length === 1) {
+            setFirstLine(true)
+            // setFirstInput(getLocal.val.at(0))
+        }
+        if(getLocal.trully.length === 2) {
+            setFirstLine(true)
+            setSecondLine(true)
+        }
+        if(getLocal.trully.length === 3) {
+            setFirstLine(true)
+            setSecondLine(true)
+            setThirdLine(true)
+        }
+        if(getLocal.trully.length === 4) {
+            setFirstLine(true)
+            setSecondLine(true)
+            setThirdLine(true)
+            setFourthLine(true)
+        }
+    }
+
     useEffect(() => {
         // getLocalData()
-        console.log(`getLocal`, getLocal)
+        getRowNumber()
+        console.log(`getLocal`,getLocal.val)
+        console.log(`getLocal.trully`, getLocal.trully)
     }, [])
 
     function addRows() {
@@ -77,14 +109,12 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
         if(e.target[0].value === "Status") {
             setStatusQuery(e.target[1].value)
             console.log("vim aqui 1")
-            setFirstInput("Status")
         }
         if(e.target[0].value === "Data de Entrada") {
             const string = e.target[1].value
             const [dia, mes, ano] = string.split("/")
              setEntranceQuery(`${ano}-${mes}-${dia}`)
              console.log("vim aqui 2")
-            setFirstInput("Data de Entrada")
         }
         if(e.target[0].value === "Data de Saída") {
             const string = e.target[1].value
@@ -150,8 +180,8 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
         if(e.target[6] && e.target[6].type != "button" && e.target[6].value === "Chave de Acesso") {
             setKeyQuery(e.target[7].value)
         }
-        // sendToLocal()
-        // modalUFilterHandler()
+        sendToLocal()
+        modalUFilterHandler()
     }
 
 
@@ -166,8 +196,10 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
     }
 
     useEffect(() => {
+        console.log(`local values`, localValues)
        console.log(`firstInput`, firstInput)
-    }, [firstInput])
+    //    console.log(`local Test`, getLocal.val.at(0))
+    }, [firstInput, localValues])
 
     return <FilterModalStyle>
         <div>
@@ -182,7 +214,7 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
                         <option key={i} value={item}>{item}</option>
                         )}
                     </select>
-                    <input type="text" name="1" id="1"   />
+                    <input  name="1" id="1" defaultValue={getLocal.val[0].toString()} /* onChange={(e) => setFirstInput(e.target.value)} */ />
                     <X onClick={() => setFirstLine(false)}/>
                 </>}
                 {secondLine &&
@@ -225,7 +257,7 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
             </ModalLines>
             <ButtonsRow>
                 <button type="button" onClick={closeModal }>Cancelar</button>
-                <button type="button" /* onClick={() => replaceString(test)}  *//* onClick={() => setReload(!reload)} */ disabled={!firstLine ? true : false}>Confirmar</button>
+                <button type="submit" /* onClick={() => replaceString(test)}  *//* onClick={() => setReload(!reload)} */ disabled={!firstLine ? true : false}>Confirmar</button>
             </ButtonsRow>
             </form>
         </div>
