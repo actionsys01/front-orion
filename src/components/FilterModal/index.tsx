@@ -222,7 +222,7 @@ const FilterModal = ({modalUFilterHandler, sendToLocal,
                 {secondLine &&
                 <>
                     <select name="2" id="2">
-                        <option value={getLocal?.trully[1]}>{getLocal?.trully[1].toString()}</option>
+                        <option value={getLocal?.trully[1]}>{getLocal?.trully[1]?.toString()}</option>
                         {selectOptions.map((item, i ) => 
                         <option key={i} value={item}>{item}</option>
                         )}
