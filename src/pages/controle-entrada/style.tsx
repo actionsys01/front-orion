@@ -78,10 +78,14 @@ export const BtnRow = styled.div`
     margin-right: calc(0 * 16pt / 2 );
     margin-bottom: 10px;
     row-gap: calc(0 * 16pt);
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
+   
 
+    > div {
+      display: flex;
+      gap: 10px;
+    }
     .add {
         box-sizing: border-box;
         display: inline-block;
