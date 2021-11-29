@@ -4,6 +4,7 @@ import PaginaCarregamento from "@components/PaginaCarregamento";
 import FiltroProvider from "@contexts/filtro";
 import {SecurityProvider} from "@contexts/security";
 import { CertificateProvider } from "@contexts/certificate";
+import ControlFilterProvider from "@contexts/ControlFilter";
 import {
   CssBaseline,
   GeistProvider,
@@ -76,6 +77,7 @@ export default function App({ Component, pageProps }: any) {
       <GeistProvider themes={[orionTheme]} themeType="orion">
         <CssBaseline />
         <FiltroProvider>
+        <ControlFilterProvider>
           <SecurityProvider>
             <CertificateProvider>
           <ThemeProvider theme={orionTheme}>
@@ -104,9 +106,10 @@ export default function App({ Component, pageProps }: any) {
             )  : (
                <Component {...pageProps} />
            )}
-          </ThemeProvider>
-          </CertificateProvider>
-          </SecurityProvider>
+                </ThemeProvider>
+              </CertificateProvider>
+            </SecurityProvider>
+          </ControlFilterProvider>
         </FiltroProvider>
       </GeistProvider>
     </Provider>

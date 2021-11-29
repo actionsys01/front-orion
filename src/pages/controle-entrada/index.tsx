@@ -10,11 +10,10 @@ import { useSession } from "next-auth/client";
 import  {format} from "date-fns";
 import { Pages } from "@styles/pages";
 import Pagination from "@material-ui/lab/Pagination";
-import EntranceModal from "./modal"
-import { useFiltro } from "@contexts/filtro";
-import FiltroModal from "./filtro-modal"
-import AltModal from "./filtro-alt"
 import FilterModal from "@components/FilterModal"
+import { useControlFilter } from "@contexts/ControlFilter"
+import { ListItem } from '@material-ui/core';
+import RadioFilter from "@components/FilterRadio"
 
 
 interface Entrance {
@@ -92,227 +91,47 @@ export default function ControleEntrada() {
     // filtros
     const [ filtersObject, setFiltersObject] = useState({})
 
-
-    const {
-        entranceQuery,
-        exitQuery,
-        keyQuery,
-        statusQuery,
-        setEntranceQuery,
-        setExitQuery,
-        setKeyQuery,
-        setStatusQuery
-    } = useFiltro()
-   
-        
-
-    
-
-    const filterList = useCallback((filter) => {
-        entrances.getEntrance(page , Number(session?.usuario.empresa.id), filter)
-        .then(response => {
-            const data = response.data
-            setQuantityPage(Math.ceil(data.total / 8))
-            setEntrance(data.notas)
-        }).catch(err => {
-            setToast({
-                text: "Houve um problema, por favor tente novamente",
-                type: "warning"
-            })
-        })
-    }, [page, session?.usuario?.empresa?.id])
-
-    useEffect(() => {
-        const formattedFilters = {
-            chave_nota: keyQuery,
-            status: statusQuery,
-            data_entrada: entranceQuery,
-            data_saida: exitQuery,
-        }
-        // console.log(`formattedFilters`, formattedFilters)
-
-        entrances.getEntrance(page , Number(session?.usuario.empresa.id), formattedFilters)
-        .then(response => {
-            const data = response.data
-            setQuantityPage(Math.ceil(data.total / 8))
-            setEntrance(data.notas)
-        }).catch(err => {
-            setToast({
-                text: "Houve um problema, por favor tente novamente",
-                type: "warning"
-            })
-        })
-    },[page, reload, exitQuery, entranceKeys, statusQuery, keyQuery])
-
-    useEffect(() => {
-        let filtersObj = JSON.parse(localStorage.getItem("filtersObj"));
-        // console.log({ filtersObj, toAqui: 2 })
-        if (filtersObj?.status || filtersObj?.data_chegada || filtersObj?.data_saida || filtersObj?.chave_nota) {
-            // console.log("pt I", { filtersObj })
-            setFiltersObject(filtersObj);
-            setStatusQuery(filtersObj?.status)
-            setEntranceQuery(filtersObj?.data_chegada)
-            setExitQuery(filtersObj?.data_saida)
-            setKeyQuery(filtersObj?.chave_nota)
-          
-          filterList(filtersObj)
-        } else {
-            let filtersObj =  {
-                "data_saida" : exitQuery,
-                "data_entrada" : entranceQuery,
-                "status" : statusQuery,
-                "chave_nota" : keyQuery
-            };
-            // console.log("pt II", { filtersObj })
-        const firstF = Object.entries(filtersObj).filter( objProp => !!objProp[1])
-        // console.log(`firstF`, firstF)
-        const filters = Object.fromEntries(firstF)
-        // console.log(`filters`, filters)
-        setFiltersObject(filters);
-        }
-      },[])
+    const {filters} = useControlFilter()
     
     const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {setPage(value)}
+        
+    
+        const modalHandler = useCallback(() => {
+            setVisibleModal(!visibleModal)
+        }, [visibleModal])
 
-    const modalHandler = useCallback(() => {
-        setVisibleModal(!visibleModal)
-    }, [visibleModal])
-
-    const modalUFilterHandler = useCallback(() => {
-        setUFilterModal(!uFilterModal)
-    }, [uFilterModal])
-
-    // useEffect(() => {
-    //     filtersObj()
-    //  console.log("feito")
-    // }, [])
-
-    // const filtersObj = getLocalStorage
-    // console.log(`getLocalStorage`, getLocalStorage)
-    // const firstF = Object.entries(getLocalStorage).filter( objProp => !!objProp[1])
-    // console.log(`firstF`, firstF)
-    // const filters = Object.fromEntries(firstF)
-    // console.log(`filters process`, filters)
-
-    // const getEntranceDataByPage = useCallback(async () => {
-    //     try {
-    //         const response = await entrances.getEntrance(page , Number(session?.usuario.empresa.id), filtersObject)
-    //         const data = response.data
-    //         setQuantityPage(Math.ceil(data.total / 8))
-    //         setEntrance(data.notas)
-    //         return data.notas
-    //     } catch (error) {
-    //         setToast({
-    //             text: "Houve um problema, por favor tente novamente",
-    //             type: "warning"
-    //         })
-    //     }
-            
-    //     },[filtersObject])
-
-    // useEffect(() => {
-    //     entrances.getEntrance(page , Number(session?.usuario.empresa.id), filtersObject)
-    //     .then(response => {
-    //         const data = response.data
-    //         setQuantityPage(Math.ceil(data.total / 8))
-    //         setEntrance(data.notas)
-    //     }).catch(err => {
-    //         setToast({
-    //             text: "Houve um problema, por favor tente novamente",
-    //             type: "warning"
-    //         })
-    //     })
-
-    //     console.log(`loaded`, filtersObject)
-    // }, [filtersObject])
+        
 
   
 
-    const handleApproval = useCallback(async (id) => {
-        const response = await entrances.getControlById(id)
-        const data = response.data 
-        const mappedData = data.entrada_notas.map((item) => item.chave_nota)
-        setEntranceId(id)
-        setDriverId(data.motorista.rg)
-        setVehicleLicense(data.placa_principal)
-        setFirstHaulage(data.placa_reboque1)
-        setSecondHaulage(data.placa_reboque2)
-        setThirdHaulage(data.placa_reboque3)
-        setStatus(1)
-        setStatusDescription(data.descricao_status)
-        setArrivalDate(new Date(data.data_entrada))
-        setExitDate(data.data_saida === null ? new Date() : new Date(data.data_saida))              
-        setLoadedWeight(Number(data.peso_cheio))
-        setEmptyWeight(Number(data.peso_vazio))
-        setMeasure(data.unidade_medida)
-        setEntranceKeys(mappedData)
-        setModalStatus("autorizar")
-        setVisibleModal(true)
-        // console.log(entranceKeys)
-        return data
-    }, [])
+    const getControlData = useCallback(async () => {
+            try {
+                const response = await entrances.getEntrance(page,  Number(session?.usuario.empresa.id), filters)
+                const { data } = response;
+                setEntrance(data.notas)
+                setQuantityPage(Math.ceil(data.total / 8));
+            } catch (error) {
+                setToast({
+                    text: "Houve um problema, por favor tente novamente",
+                    type: "warning"
+                })
+            }
 
-    const handleEdit = useCallback(( id) => {
-        // console.log('Editado', id)     
-        router.push({
-            pathname: "/atualizar-entrada",
-            query: {id}
-        })
-    }, [])
+        },[page, filters])
 
-    const handleCancel = useCallback(async (id) => {
-        const response = await entrances.getControlById(id)
-        const data = response.data 
-        const mappedData = data.entrada_notas.map((item) => item.chave_nota)
-        setEntranceId(id)
-        setDriverId(data.motorista.rg)
-        setVehicleLicense(data.placa_principal)
-        setFirstHaulage(data.placa_reboque1)
-        setSecondHaulage(data.placa_reboque2)
-        setThirdHaulage(data.placa_reboque3)
-        setStatus(4)
-        setStatusDescription(data.descricao_status)
-        setArrivalDate(new Date(data.data_entrada))
-        setExitDate(data.data_saida === null ? new Date() : new Date(data.data_saida))
-        setLoadedWeight(Number(data.peso_cheio))
-        setEmptyWeight(Number(data.peso_vazio))
-        setMeasure(data.unidade_medida)
-        setEntranceKeys(mappedData)
-        setModalStatus("cancelar")
-        setVisibleModal(true)
-    }, [])
+        useEffect(() => {
 
-    async function updateEntrance() {
-        try {
-            await entrances.updateEntrance(entranceId, {
-                rg_motorista: driverId,
-                placa_principal: vehicleLicense,
-                placa_reboque1: firstHaulage,
-                placa_reboque2: secondHaulage,
-                placa_reboque3: thirdHaulage,
-                status: status,
-                descricao_status: statusDescription,
-                data_entrada: arrivalDate,
-                data_saida: exitDate,
-                peso_cheio: loadedWeight,
-                peso_vazio: emptyWeight,
-                empresa: company_id,
-                unidade_medida: measure,
-                entradas_notas: entranceKeys
-            })
-            setToast({
-                text: "Motorista cadastrado com sucesso",
-                type: "success"
-            })
-        } catch (error) {
-            console.log(error)
-            setToast({
-                text: "Houve um problema, por favor tente novamente",
-                type: "warning"
-            })
+            getControlData();
+        
+        
+        }, [page, filters])
+        
+    
+        useEffect(() => {
+        if(page > quantityPage){
+            setPage(1)
         }
-        setReload(!reload)
-    }
+        }, [filters, quantityPage, page])
 
 
 
@@ -325,15 +144,15 @@ export default function ControleEntrada() {
                     option: <Popover content={[
                         {
                             optionName: 'Autorizar',
-                            onClick: () => handleApproval(item.controle_entrada.id)
+                            onClick: () => ""/* handleApproval(item.controle_entrada.id) */
                         },
                         {
                             optionName: 'Editar',
-                            onClick: () => handleEdit(item.controle_entrada.id)
+                            onClick: () => ""/* handleEdit(item.controle_entrada.id) */
                         },
                         {
                             optionName: 'Cancelar',
-                            onClick: () => handleCancel(item.controle_entrada.id)
+                            onClick: ""/* () => handleCancel(item.controle_entrada.id) */
                         }
                     ]}/>,
                     status: (item.controle_entrada?.status === 0 ? "Na Portaria" : 
@@ -352,36 +171,6 @@ export default function ControleEntrada() {
         return allData
     }, [entrance ])
 
-   const sendToLocal = useCallback (() => {
-       const objF = { "data_entrada": entranceQuery, 
-                        "status": statusQuery, 
-                        "chave_nota": keyQuery, 
-                        "data_saida": exitQuery}
-
-        // console.log("aqui",{ objF })
-        localStorage.setItem("filtersObj", JSON.stringify(objF))
-        // console.log({ stringFado: JSON.stringify(objF) })
-   }, [entranceQuery, statusQuery, keyQuery, exitQuery] )
-
-   // Save into the localStorage
-   useEffect(() => {
-    sendToLocal()
-   }, [entranceQuery, statusQuery, keyQuery, exitQuery])
-
-
-    // function checkInvoiceType(string : any) {
-    //     const teste =  string.toString().substr(24,2)
-    //     console.log("aqui",teste)
-    //     return teste
-    // }
-    // item.controle_entrada.data_entrada.slice(11,16),
-
-    // function checkLentgh(string) {
-    //     const teste = string.length
-
-    //     console.log(teste)
-    //     return teste
-    // }
 
 
 
@@ -391,14 +180,16 @@ export default function ControleEntrada() {
             </Head>
                 <h2>Controle de Entrada</h2>
                 <BtnRow>
-                    <button type="button" className="filter" onClick={() => setUFilterModal(true)}> 
-                    <span><Filter/></span>
-                            Filtrar
-                    </button>
+                    <div>
+                <RadioFilter />
+                    </div>
+                <div>
+                <FilterModal data={filters} /> 
                     <button type="button" className="add" onClick={() => router.push({pathname: "/cadastrar-entrada"})}>
                         <span><Plus /></span>
                             Adicionar
                     </button>
+                </div>
                 </BtnRow>
             <EntranceGrid>
                 <table>
@@ -413,6 +204,7 @@ export default function ControleEntrada() {
                             <th>Data Saída</th>
                             <th>Horário Chegada</th>
                             <th>Horário Saída</th>
+                            <th>Placa Veículo</th>
                             <th>Placa Reboque 1</th>
                             <th>Placa Reboque 2</th>
                             <th>Placa Reboque 3</th>
@@ -443,17 +235,10 @@ export default function ControleEntrada() {
             <Pages>
                 <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
             </Pages>
-            {visibleModal && 
-                <EntranceModal modalStatus={modalStatus} modalHandler={modalHandler} updateEntrance={updateEntrance} />}
-            {/* {filterModal &&
-                <FiltroModal modalFilterHandler={modalFilterHandler} />} */}
-            {uFilterModal && 
-                <FilterModal  /* setStatusQuery={setStatusQuery} */ sendToLocal={sendToLocal}
-                // setEntranceQuery={setEntranceQuery} 
-                // setExitQuery={setExitQuery}  entranceRef={entranceRef} 
-                modalUFilterHandler={modalUFilterHandler}
-                // setKeyQuery={setKeyQuery} statusRef={statusRef}
-                setUFilterModal={setUFilterModal}/> }
+            {/* {visibleModal && 
+                <EntranceModal modalStatus={modalStatus} modalHandler={modalHandler} updateEntrance={updateEntrance} />} */}
+            
+                
         </>
     
 }
