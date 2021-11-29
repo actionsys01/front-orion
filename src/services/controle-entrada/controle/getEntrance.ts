@@ -1,23 +1,10 @@
 import api from "@services/api";
 
-interface IQueryParams {
-    chave_nota?: string;
-    status?: string;
-    data_entrada?: string;
-    data_saida?: string;
-}
-
-
 interface IFiltro {
     campo: string;
     valor: string;
   }
 
-  interface Teste {
-      String : string
-  }
-
-  
 interface FilterProps {
     [key: string] : string;
   }
