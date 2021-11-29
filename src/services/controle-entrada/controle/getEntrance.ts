@@ -12,6 +12,11 @@ interface FilterProps {
   export default async function getEntrance(page: number, id: number, filters: IFiltro[]) {
     console.log("filtros na request", filters) 
     const filtros = filters.reduce((acc, {campo, valor}) => {
+        if(campo === "data_entrada" || campo === "data_saida") {
+            console.log("vai")
+            const [dia, mes, ano] = valor.split("/")
+            valor = `${ano}-${mes}-${dia}`
+        }
         return {...acc, [campo] : valor}
     }, {})
 

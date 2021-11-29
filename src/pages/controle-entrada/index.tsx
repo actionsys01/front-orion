@@ -12,8 +12,8 @@ import { Pages } from "@styles/pages";
 import Pagination from "@material-ui/lab/Pagination";
 import FilterModal from "@components/FilterModal"
 import { useControlFilter } from "@contexts/ControlFilter"
-import { ListItem } from '@material-ui/core';
 import RadioFilter from "@components/FilterRadio"
+import EntranceModal from "./modal"
 
 
 interface Entrance {
@@ -100,7 +100,92 @@ export default function ControleEntrada() {
             setVisibleModal(!visibleModal)
         }, [visibleModal])
 
-        
+    
+        const handleApproval = useCallback(async (id) => {
+            const response = await entrances.getControlById(id)
+            const data = response.data 
+            const mappedData = data.entrada_notas.map((item) => item.chave_nota)
+            setEntranceId(id)
+            setDriverId(data.motorista.rg)
+            setVehicleLicense(data.placa_principal)
+            setFirstHaulage(data.placa_reboque1)
+            setSecondHaulage(data.placa_reboque2)
+            setThirdHaulage(data.placa_reboque3)
+            setStatus(1)
+            setStatusDescription(data.descricao_status)
+            setArrivalDate(new Date(data.data_entrada))
+            setExitDate(data.data_saida === null ? new Date() : new Date(data.data_saida))              
+            setLoadedWeight(Number(data.peso_cheio))
+            setEmptyWeight(Number(data.peso_vazio))
+            setMeasure(data.unidade_medida)
+            setEntranceKeys(mappedData)
+            setModalStatus("autorizar")
+            setVisibleModal(true)
+            // console.log(entranceKeys)
+            return data
+        }, [])
+    
+        const handleEdit = useCallback(( id) => {
+            // console.log('Editado', id)     
+            router.push({
+                pathname: "/atualizar-entrada",
+                query: {id}
+            })
+        }, [])
+    
+        const handleCancel = useCallback(async (id) => {
+            const response = await entrances.getControlById(id)
+            const data = response.data 
+            const mappedData = data.entrada_notas.map((item) => item.chave_nota)
+            setEntranceId(id)
+            setDriverId(data.motorista.rg)
+            setVehicleLicense(data.placa_principal)
+            setFirstHaulage(data.placa_reboque1)
+            setSecondHaulage(data.placa_reboque2)
+            setThirdHaulage(data.placa_reboque3)
+            setStatus(4)
+            setStatusDescription(data.descricao_status)
+            setArrivalDate(new Date(data.data_entrada))
+            setExitDate(data.data_saida === null ? new Date() : new Date(data.data_saida))
+            setLoadedWeight(Number(data.peso_cheio))
+            setEmptyWeight(Number(data.peso_vazio))
+            setMeasure(data.unidade_medida)
+            setEntranceKeys(mappedData)
+            setModalStatus("cancelar")
+            setVisibleModal(true)
+        }, [])
+    
+        async function updateEntrance() {
+            try {
+                await entrances.updateEntrance(entranceId, {
+                    rg_motorista: driverId,
+                    placa_principal: vehicleLicense,
+                    placa_reboque1: firstHaulage,
+                    placa_reboque2: secondHaulage,
+                    placa_reboque3: thirdHaulage,
+                    status: status,
+                    descricao_status: statusDescription,
+                    data_entrada: arrivalDate,
+                    data_saida: exitDate,
+                    peso_cheio: loadedWeight,
+                    peso_vazio: emptyWeight,
+                    empresa: company_id,
+                    unidade_medida: measure,
+                    entradas_notas: entranceKeys
+                })
+                setToast({
+                    text: "Motorista cadastrado com sucesso",
+                    type: "success"
+                })
+            } catch (error) {
+                console.log(error)
+                setToast({
+                    text: "Houve um problema, por favor tente novamente",
+                    type: "warning"
+                })
+            }
+            setReload(!reload)
+        }
 
   
 
@@ -117,14 +202,14 @@ export default function ControleEntrada() {
                 })
             }
 
-        },[page, filters])
+        },[page, filters, reload])
 
         useEffect(() => {
 
             getControlData();
         
         
-        }, [page, filters])
+        }, [page, filters, reload])
         
     
         useEffect(() => {
@@ -144,15 +229,15 @@ export default function ControleEntrada() {
                     option: <Popover content={[
                         {
                             optionName: 'Autorizar',
-                            onClick: () => ""/* handleApproval(item.controle_entrada.id) */
+                            onClick: () => handleApproval(item.controle_entrada.id)
                         },
                         {
                             optionName: 'Editar',
-                            onClick: () => ""/* handleEdit(item.controle_entrada.id) */
+                            onClick: () => handleEdit(item.controle_entrada.id)
                         },
                         {
                             optionName: 'Cancelar',
-                            onClick: ""/* () => handleCancel(item.controle_entrada.id) */
+                            onClick: () => handleCancel(item.controle_entrada.id)
                         }
                     ]}/>,
                     status: (item.controle_entrada?.status === 0 ? "Na Portaria" : 
@@ -235,8 +320,8 @@ export default function ControleEntrada() {
             <Pages>
                 <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
             </Pages>
-            {/* {visibleModal && 
-                <EntranceModal modalStatus={modalStatus} modalHandler={modalHandler} updateEntrance={updateEntrance} />} */}
+            {visibleModal && 
+                <EntranceModal modalStatus={modalStatus} modalHandler={modalHandler} updateEntrance={updateEntrance} />}
             
                 
         </>

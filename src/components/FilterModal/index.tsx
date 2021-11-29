@@ -38,7 +38,7 @@ export default function Filtro({ data }: IProps) {
   const {registerFilter, scopeIgnition } = useControlFilter();
   const [error, setError] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
-  const [controlFilters, setControlFilters] = useState<string[]>();
+  const [controlFilters, setControlFilters] = useState<string[]>([]);
 
 
   // PRIMEIRA
@@ -54,8 +54,8 @@ export default function Filtro({ data }: IProps) {
 
 
   useEffect(() => {
-    console.log(`controlFilters`, controlFilters)
-    console.log(`data`, data)
+    // console.log(`controlFilters`, controlFilters)
+    // console.log(`data`, data)
     if (controlFilters.length === data.length)
       formRef.current?.setData({ filtros: data });
   }, [controlFilters]);
