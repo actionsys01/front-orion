@@ -37,8 +37,8 @@ export default function Filtro({ data }: IProps) {
   const formRef = useRef<FormHandles>(null);
   const {registerFilter, scopeIgnition } = useControlFilter();
   const [error, setError] = useState(false);
-  const [controlFilters, setControlFilters] = useState<string[]>([]);
   const [visibleModal, setVisibleModal] = useState(false);
+  const [controlFilters, setControlFilters] = useState<string[]>();
 
 
   // PRIMEIRA

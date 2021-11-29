@@ -46,7 +46,7 @@ export default function ControlFilterProvider({ children } : IFiltroProps) {
       const controlStorage = localStorage.getItem("filtersObj");
       if (controlStorage) setFilters(JSON.parse(controlStorage));
     }
-    // console.log(`filters no context`, filters)
+    console.log(`filters no context`, filters)
     loadStorage();
   }, []);
 
@@ -58,12 +58,12 @@ export default function ControlFilterProvider({ children } : IFiltroProps) {
 
   function scopeIgnition(array: IUnform[]): IFiltro[] {
     let filtro = array.map(({campo, valor}) => {
-     const coluna =  colunas.find((option) => option.value === campo)
-     if(coluna) {
-       return { campo ,valor}
-     }
+      const coluna =  colunas.find((option) => option.value === campo)
+      if(coluna) {
+        return { campo ,valor}
+      }
     });
-   
+
     return filtro;
   }
 
