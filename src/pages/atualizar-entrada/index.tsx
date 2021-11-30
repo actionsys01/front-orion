@@ -31,7 +31,6 @@ export default function AtualizarEntrada() {
     const [reboque, setReboque] = useState(false)
     // input states
     const key: any = useRef(null)
-    const [ queryKey, setQueryKey ] = useState()
     const [driverId, setDriverId] = useState("");
     const [vehicleLicense, setVehicleLicense] = useState("");
     const [firstHaulage, setFirstHaulage] = useState("");
@@ -39,7 +38,7 @@ export default function AtualizarEntrada() {
     const [thirdHaulage, setThirdHaulage] = useState("");
     const [ status, setStatus] = useState(0)
     const [statusDescription, setStatusDescription] = useState("");
-    const [arrivalDate, setArrivalDate] = useState(new Date)
+    const [arrivalDate, setArrivalDate] = useState<Date | null>(new Date)
     const [exitDate, setExitDate] = useState<Date | null>(new Date)
     const [loadedWeight, setLoadedWeight] = useState(0);
     const [emptyWeight, setEmptyWeight] = useState(0);
@@ -48,16 +47,25 @@ export default function AtualizarEntrada() {
     const [driver, setDriver] = useState("");
     const [arrivalTime, setArrivalTime] = useState("")
     const [exitTime, setExitTime] = useState("")
-    const [ entranceId, setEntranceId] = useState(0)
+    // const [ entranceId, setEntranceId] = useState(0)
 
     const [dataEntrada, setDataEntrada] = useState("")
     const [ hasChanged, setHasChanged] = useState(false)
     const [dataSaida, setDataSaida] = useState("")
     const [ hasSChanged, setHasSChanged] = useState(false)
+    const [ entranceFocus, setEntranceFocus ] = useState(false)
+    const [ entranceTimeFocus, setEntranceTimeFocus ] = useState(false)
+    const [ exitFocus, setExitFocus ] = useState(false)
+    const [ exitTimeFocus, setExitTimeFocus ] = useState(false)
+    const [ entranceFinished, setEntranceFinished ] = useState(false)
+
+
 
     const modalHandler = useCallback(() => {
         setModalVisible(!modalVisible)
     }, [modalVisible])
+
+    
 
     const getData = useCallback(async () => {
         try {
@@ -79,6 +87,9 @@ export default function AtualizarEntrada() {
             setEmptyWeight(data.peso_vazio === 0 ? "" : data.peso_vazio)
             setMeasure(data.unidade_medida)
             console.log(data)
+            if(data.status === 2) {
+                setEntranceFinished(true)
+            }
         } catch (error) {
             console.log(error)
             setToast({
@@ -176,14 +187,11 @@ export default function AtualizarEntrada() {
         setStatus(2)
         setHasChanged(hasSChanged)
         setHasSChanged(hasSChanged)
+        setEntranceFinished(true)
+        updateEntrance()
+        
     }
 
-    // useEffect(() => {
-    //     console.log("yay 1",exitDate)
-    // },[exitDate] )
-    // useEffect(() => {
-    //     console.log("yay 2",exitDate)
-    // },[] )
 
     useEffect(() => {
         if(firstHaulage?.length) {
@@ -232,6 +240,7 @@ export default function AtualizarEntrada() {
     
         const [ anoS, mesS, diaS ] = dataSaida.split("-")
         const [ horaS, minutoS ] = exitTime.split(":")
+        if(entranceFinished) {setStatus(2)}
         try {
             await entrances.updateEntrance(controlId, {
                 rg_motorista: driverId,
@@ -263,14 +272,14 @@ export default function AtualizarEntrada() {
         router.push("/controle-entrada")
     }
 
-   useEffect(() => {
-       console.log(`dataSaida`, dataSaida)
-       console.log(`exitTime`, exitTime)
-   }, [dataSaida, exitTime])
+//    useEffect(() => {
+//        console.log(`dataSaida`, dataSaida)
+//        console.log(`exitTime`, exitTime)
+//    }, [dataSaida, exitTime])
 
     useEffect(() => {
-        console.log(`hasSChanged`, hasSChanged)
-    }, [hasSChanged])
+        console.log(`status`, status)
+    }, [status])
 
     return  <>
         <Head>
@@ -278,7 +287,7 @@ export default function AtualizarEntrada() {
         </Head>
         <BotaoVoltar />
         <TopConfirmBtn style={{width: "92.5%", margin: 0}}>
-            <button onClick={updateEntrance}>
+            <button onClick={updateEntrance} disabled={entranceFinished}>
                 confirmar
             </button>
         </TopConfirmBtn>
@@ -288,7 +297,7 @@ export default function AtualizarEntrada() {
                 <OneLineContainer>
                     <form onSubmit={insertKey}>
                         <span>Chave de Acesso</span>
-                        <input type="text" ref={key}/>
+                        <input type="text" ref={key} readOnly={entranceFinished}/>
                     </form>
                 </OneLineContainer>
             </Section>
@@ -300,11 +309,13 @@ export default function AtualizarEntrada() {
                     <div>
                         <div>
                             <span>RG</span>
-                            <input type="text"  value={driverId} onChange={(e) => setDriverId(e.target.value)} /* onBlur={(e) => findDriver(e.target.value)}  *//>
+                            <input type="text"  readOnly={entranceFinished}
+                            value={driverId} onChange={(e) => setDriverId(e.target.value)} /* onBlur={(e) => findDriver(e.target.value)}  *//>
                         </div>
                         <div>
                             <span >Nome</span>
-                            <input type="text"  value={driver} onChange={(e) => setDriver(e.target.value)}/>
+                            <input type="text"  readOnly={entranceFinished}
+                            value={driver} onChange={(e) => setDriver(e.target.value)}/>
                         </div>
                     </div>
                         </Inline>
@@ -317,14 +328,17 @@ export default function AtualizarEntrada() {
                     <div>
                         <div>
                             <span className="first">Placa Principal</span>
-                            <input type="text"  value={vehicleLicense} onChange={(e) => setVehicleLicense(e.target.value)} /* onBlur={(e) => findVehicle(e.target.value)} */  />
+                            <input type="text"  readOnly={entranceFinished}
+                            value={vehicleLicense} onChange={(e) => setVehicleLicense(e.target.value)} /* onBlur={(e) => findVehicle(e.target.value)} */  />
                         </div>
                         <div>
                             <span>Descrição</span>
-                            <input type="text"  value={statusDescription} className="description" onChange={(e) => setStatusDescription(e.target.value)} />
+                            <input type="text"  readOnly={entranceFinished}
+                            value={statusDescription} className="description" onChange={(e) => setStatusDescription(e.target.value)} />
                         </div>
                         <div>
                             <span className="icon">Reboque<Checkbox checked={reboque ? reboque || visible : visible} 
+                            disabled={entranceFinished}
                             onChange={reboque ? () => null : () => setVisible(!visible)}
                             // onClick={reboque ? () => null : () => setVisible(!visible)}
                             /></span> 
@@ -365,48 +379,54 @@ export default function AtualizarEntrada() {
                         <Column>
                             <div>
                                 <span>Data Chegada</span>
-                                <input type="date" defaultValue={format(new Date(arrivalDate), "yyyy-MM-dd")}  
-                                    onChange={(e) => {setDataEntrada(e.target.value), setHasChanged(true)}}/>
+                                <input type="date" readOnly={entranceFinished}
+                                value={!entranceFocus ? format(new Date(arrivalDate), "yyyy-MM-dd")  : dataEntrada}   
+                                    onChange={(e) => {setDataEntrada(e.target.value), setHasChanged(true)}} onFocus={() => setEntranceFocus(true)}/>
                             </div>
                             <div>
                                 <span>Data Saída</span>
-                                <input type="date"  defaultValue={format(new Date(exitDate), "yyyy-MM-dd")}  
+                                <input type="date" readOnly={entranceFinished}
+                                 value={format(new Date(exitDate), "yyyy-MM-dd")}  
                                     onChange={(e) => {setDataSaida(e.target.value), setHasSChanged(true)}}/>
                             </div>
                         </Column>
                         <Column>
                             <div>
                                 <span>Hora Chegada</span>
-                                <input type="time"  defaultValue={format(new Date(arrivalDate), "HH:mm")} 
-                                onChange={(e) => {setArrivalTime(e.target.value), setHasChanged(true)}}/>
+                                <input type="time"  readOnly={entranceFinished}
+                                value={!entranceTimeFocus ? format(new Date(arrivalDate), "HH:mm") : arrivalTime} 
+                                onChange={(e) => {setArrivalTime(e.target.value), setHasChanged(true)}} onFocus={() => setEntranceTimeFocus(true)} />
                             </div>
                             <div>
                                 <span>Hora Saída</span>
-                                <input type="time" defaultValue={format(new Date(exitDate), "HH:mm")}  onChange={(e) => {setExitTime(e.target.value), setHasSChanged(true)}}/>
+                                <input type="time" readOnly={entranceFinished}
+                                 defaultValue={format(new Date(exitDate), "HH:mm")}  onChange={(e) => {setExitTime(e.target.value), setHasSChanged(true)}}/>
                             </div>
                         </Column>
                         
                         <Column>
                             <div>
                                 <span>Peso Carregado</span>
-                                <input value={loadedWeight} onChange={(e) => setLoadedWeight(Number(e.target.value))}/>
+                                <input value={loadedWeight} readOnly={entranceFinished}
+                                 onChange={(e) => setLoadedWeight(Number(e.target.value))}/>
                             </div>
                             <div>
                                 <span>Peso Vazio</span>
-                                <input value={emptyWeight} onChange={(e) => setEmptyWeight(Number(e.target.value))}/>
+                                <input value={emptyWeight} readOnly={entranceFinished}
+                                 onChange={(e) => setEmptyWeight(Number(e.target.value))}/>
                             </div>
                         </Column>
                         <Column style={{justifyContent: "space-between"}}>
                             <div style={{justifyContent: "center"}}>
                                 <span>UM</span>
-                                <select defaultValue={measure}  onChange={(e) => setMeasure(e.target.value)} >
+                                <select defaultValue={measure} disabled={entranceFinished}  onChange={(e) => setMeasure(e.target.value)} >
                                     <option defaultValue={measure}> {measure}</option>
                                     {measure != "Kg" &&  <option value="Kg">Kg</option>}
                                     {measure != "Ton" && <option value="Ton">Ton</option>}
                                 </select>
                             </div>
                             <div style={{justifyContent: "center", alignItems: "flex-end", fontSize: "0.75rem"}}>
-                                <BtnStyle onClick={() => setModalVisible(true)} type="button">
+                                <BtnStyle onClick={() => {setStatus(2), setModalVisible(true)}} type="button" disabled={entranceFinished}>
                                     Encerrar Entrega
                                 </BtnStyle>
                             </div>
@@ -464,7 +484,7 @@ export default function AtualizarEntrada() {
                 setStatusDescription={setStatusDescription}
                 secondModalHandler={secondModalHandler}/>} */}
                 {modalVisible && 
-                    <FinishUpdateModal modalHandler={modalHandler} 
+                    <FinishUpdateModal modalHandler={modalHandler} setStatus={setStatus}
                     finishihEntrance={finishihEntrance}/>}
             
         </>

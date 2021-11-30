@@ -90,43 +90,95 @@ export default function CadastrarEntrada() {
     // input de chave de acesso
     const getNfe = useCallback(async (e) => {
         e.preventDefault()
-        // console.log("e", key.current.value )
-        const initial = key.current.value.toString().substring(0,2)
-        const ct = "CT"
-        if (initial.valueOf() == ct.valueOf()){
-            try {
-                const response = await buscar(key.current.value)
-                setNota(state =>[...state, response.data])
-                setEntranceKeys(state =>[...state, key.current.value])
-                setToast({
-                    text: "Nota localizada com sucesso",
-                    type: "success"
-                });
-            } catch (error) {
-                console.log(error)
-                setToast({
-                    text: "Houve um problema, por favor tente novamente",
-                    type: "warning"
-                });
-            }
+        console.log("e", key.current.value )
+        console.log(`key.current.value.length`, key.current.value.length)
+        // nova func
+        if(key.current.value.startsWith("NFe") || key.current.value.startsWith("CTe") && key.current.value.length === 47){
+            console.log("het")
+                const notaPura =  key.current.value.slice(3, 47)
+                console.log(`notaPura`, notaPura)
+                console.log(notaPura.substring(20, 22) )
+                if(Number(notaPura.substring(20,22)) === 57 ) {
+                    console.log("veio aqui")
+                   try {
+                                const response = await buscar(key.current.value)
+                                setNota(state =>[...state, response.data])
+                                setEntranceKeys(state =>[...state, key.current.value])
+                                setToast({
+                                    text: "Nota localizada com sucesso",
+                                    type: "success"
+                                });
+                            } catch (error) {
+                                console.log(error)
+                                setToast({
+                                    text: "Houve um problema, por favor tente novamente CTE",
+                                    type: "warning"
+                                });
+                            }
+                } else {
+                    try {
+                        const response = await getNfeById(key.current.value, company_id);
+                        // console.log(response.data)
+                        setNota(state =>[...state, response.data])
+                        setEntranceKeys(state =>[...state, key.current.value])
+                        setToast({
+                            text: "Nota localizada com sucesso",
+                            type: "success"
+                        });
+                    } catch (error) {
+                        console.log(error)
+                        setToast({
+                            text: "Houve um problema, por favor tente novamente",
+                            type: "warning"
+                        });
+                    }
+                }
+            
         } else {
-            try {
-            const response = await getNfeById(key.current.value, company_id);
-            // console.log(response.data)
-            setNota(state =>[...state, response.data])
-            setEntranceKeys(state =>[...state, key.current.value])
             setToast({
-                text: "Nota localizada com sucesso",
-                type: "success"
-            });
-        } catch (error) {
-            console.log(error)
-            setToast({
-                text: "Houve um problema, por favor tente novamente",
+                text: "Chave inválida, por favor tente novamente",
                 type: "warning"
             });
         }
-        }
+
+// velha func
+        // const initial = key.current.value.toString().substring(0,2)
+        // const ct = "CT"
+        // if (initial.valueOf() == ct.valueOf()){
+        //     try {
+        //         const response = await buscar(key.current.value)
+        //         setNota(state =>[...state, response.data])
+        //         setEntranceKeys(state =>[...state, key.current.value])
+        //         setToast({
+        //             text: "Nota localizada com sucesso",
+        //             type: "success"
+        //         });
+        //     } catch (error) {
+        //         console.log(error)
+        //         setToast({
+        //             text: "Houve um problema, por favor tente novamente",
+        //             type: "warning"
+        //         });
+        //     }
+        // } else {
+        //     try {
+        //     const response = await getNfeById(key.current.value, company_id);
+        //     // console.log(response.data)
+        //     setNota(state =>[...state, response.data])
+        //     setEntranceKeys(state =>[...state, key.current.value])
+        //     setToast({
+        //         text: "Nota localizada com sucesso",
+        //         type: "success"
+        //     });
+        // } catch (error) {
+        //     console.log(error)
+        //     setToast({
+        //         text: "Houve um problema, por favor tente novamente",
+        //         type: "warning"
+        //     });
+        // }
+        // }
+        console.log("no fim")
         e.target.reset()
     }, [] )
 

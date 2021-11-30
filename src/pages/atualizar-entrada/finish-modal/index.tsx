@@ -6,16 +6,17 @@ import{ Modal } from "@styles/modal";
 interface ModalProps {
     modalHandler: () => void;
     finishihEntrance: () => void
+    setStatus: Dispatch<SetStateAction<number>>
 }
 
-const FinishUpdateModal = ({modalHandler, finishihEntrance} : ModalProps) => {
+const FinishUpdateModal = ({modalHandler,setStatus, finishihEntrance} : ModalProps) => {
     
 
     return <Modal>
         <div>
             <h4>Deseja finalizar a entrega?</h4>
             <div>
-                <button onClick={()  => modalHandler()}>CANCELAR</button>
+                <button onClick={()  => {setStatus(0), modalHandler()}}>CANCELAR</button>
                 <button onClick={() => {finishihEntrance(), modalHandler()}}>CONFIRMAR</button>
             </div>
         </div>

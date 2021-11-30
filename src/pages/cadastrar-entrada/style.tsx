@@ -26,12 +26,13 @@ export const OneLineContainer = styled.div`
     > form {
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: flex-start;
         width: 100%;
+        gap: 3rem;
 
 
         span {
-                margin: 0 0.5rem;
+                margin: 0 0.2rem;
                 font-size: 0.8rem;
         }
 
@@ -218,7 +219,7 @@ export const BtnPattern = styled.button`
 
 export const FormContainer = styled.div`
     border: 1px solid rgba(151, 151, 151, .45);
-    padding: 2rem;
+    padding: 1rem;
     display: flex;
     justify-content: space-between;
 
