@@ -302,7 +302,7 @@ export default function AtualizarEntrada() {
                 status: status,
                 descricao_status: statusDescription,
                 data_entrada: hasChanged ? new Date(`${anoE}-${mesE}-${diaE} ${horaE}:${minutoE}`) : arrivalDate,
-                data_saida: (hasSChanged || status === 2 ) ? new Date(`${anoS}-${mesS}-${diaS} ${horaS}:${minutoS}`) : exitDate,
+                data_saida: hasSChanged  ? new Date(`${anoS}-${mesS}-${diaS} ${horaS}:${minutoS}`) : exitDate,
                 peso_cheio: loadedWeight,
                 peso_vazio: emptyWeight,
                 empresa: company_id,
