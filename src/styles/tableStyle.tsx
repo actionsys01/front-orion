@@ -4,6 +4,7 @@ export const TableGrid = styled.div`
       margin: 0;
       box-sizing: border-box;
       overflow: visible;
+      white-space: nowrap;
     
     
     table {
@@ -31,12 +32,13 @@ export const TableGrid = styled.div`
                      border-bottom-right-radius: 5px;
                 }
           th {
-            width: 0%;
+            min-width: 45px;
+            /* width: 0%; */
             font-size: 0.75rem;
             font-weight: normal;
             text-align: left;
             letter-spacing: 0;
-            
+            padding: 0 15px;
               }
             }
       }
@@ -52,6 +54,9 @@ export const TableGrid = styled.div`
             border-bottom: 1px solid #eaeaea;
             color: #444;
             height: 3rem;
+            white-space: nowrap;
+            padding: 0 15px;
+            text-align: center;
           }
         }
             
