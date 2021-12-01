@@ -16,6 +16,7 @@ import {  Section, FormContainer, Column,
     OneLineContainer, Inline, EntranceGrid, 
     BtnStyle, ModalContainer, BtnPattern } from '../cadastrar-entrada/style';
 import FinishUpdateModal from "./finish-modal";
+import getCteById from "@services/cte-mongo/getCteById"
 
 
 export default function AtualizarEntrada() {
@@ -86,7 +87,7 @@ export default function AtualizarEntrada() {
             setLoadedWeight(data.peso_cheio)
             setEmptyWeight(data.peso_vazio === 0 ? "" : data.peso_vazio)
             setMeasure(data.unidade_medida)
-            console.log(data)
+            // console.log(data)
             if(data.status === 2) {
                 setEntranceFinished(true)
             }
@@ -107,42 +108,90 @@ export default function AtualizarEntrada() {
 
     const insertKey = useCallback(async (e) => {
         e.preventDefault()
-        console.log("e", key.current.value )
-        const initial = key.current.value.toString().substring(0,2)
-        const ct = "CT"
-        if (initial.valueOf() == ct.valueOf()){
-            try {
-                const response = await buscar(key.current.value)
-                setNota(state =>[...state, response.data])
-                setEntranceKeys(state =>[...state, key.current.value])
+        // console.log("e", key.current.value )
+        if(key.current.value.startsWith("NFe") || key.current.value.startsWith("CTe") && key.current.value.length === 47){
+            // console.log("com tag")
+                const notaPura =  key.current.value.slice(3, 47)
+                // console.log(`notaPura`, notaPura)
+                // console.log(notaPura.substring(20, 22) )
+                if(Number(notaPura.substring(20,22)) === 57 ) {
+                    try {
+                        const response = await getCteById(key.current.value, company_id)
+                        console.log(`response cte`, response)
+                        setNota(state =>[...state, response.data])
+                        setEntranceKeys(state =>[...state, key.current.value])
+                        setToast({
+                            text: "Nota localizada com sucesso",
+                            type: "success"
+                        });
+                    } catch (error) {
+                        console.log(error)
+                        setToast({
+                            text: "Houve um problema, por favor tente novamente CTE",
+                            type: "warning"
+                        });
+                    }
+                } else {
+                    try {
+                        const response = await getNfeById(key.current.value, company_id);
+                        setNota(state =>[...state, response.data])
+                        setEntranceKeys(state =>[...state, key.current.value])
+                        setToast({
+                            text: "Nota localizada com sucesso",
+                            type: "success"
+                        });
+                    } catch (error) {
+                        console.log(error)
+                        setToast({
+                            text: "Houve um problema, por favor tente novamente",
+                            type: "warning"
+                        });
+                    }
+                }
+        } else if (key.current.value.length === 44) {
+            if(Number(key.current.value.substring(20,22)) === 57 ) {
+                try {
+                    const response = await getCteById(key.current.value, company_id)
+                    setNota(state =>[...state, response.data])
+                    setEntranceKeys(state =>[...state, key.current.value])
+                    setToast({
+                        text: "Nota localizada com sucesso",
+                        type: "success"
+                    });
+                } catch (error) {
+                    console.log(error)
+                    setToast({
+                        text: "Houve um problema, por favor tente novamente CTE",
+                        type: "warning"
+                    });
+                }
+            } else if(Number(key.current.value.substring(20,22)) === 55) {
+                try {
+                    const response = await getNfeById(key.current.value, company_id);
+                    setNota(state =>[...state, response.data])
+                    setEntranceKeys(state =>[...state, key.current.value])
+                    setToast({
+                        text: "Nota localizada com sucesso",
+                        type: "success"
+                    });
+                } catch (error) {
+                    console.log(error)
+                    setToast({
+                        text: "Houve um problema, por favor tente novamente",
+                        type: "warning"
+                    });
+                }
+            } else {
                 setToast({
-                    text: "Nota localizada com sucesso",
-                    type: "success"
-                });
-            } catch (error) {
-                console.log(error)
-                setToast({
-                    text: "Houve um problema, por favor tente novamente",
+                    text: "Chave inválida, por favor tente novamente",
                     type: "warning"
                 });
             }
         } else {
-            try {
-            const response = await getNfeById(key.current.value, company_id);
-            console.log(response.data)
-            setNota(state =>[...state, response.data])
-            setEntranceKeys(state =>[...state, key.current.value])
             setToast({
-                text: "Nota localizada com sucesso",
-                type: "success"
-            });
-        } catch (error) {
-            console.log(error)
-            setToast({
-                text: "Houve um problema, por favor tente novamente",
+                text: "Chave inválida, por favor tente novamente",
                 type: "warning"
             });
-        }
         }
         e.target.reset()
         }, [])
@@ -151,30 +200,34 @@ export default function AtualizarEntrada() {
         if(entranceKeys.length) {
             for (let i = 0; i < entranceKeys.length; i++) {
                 const mainKey = entranceKeys[i]
-                const initial = mainKey.toString().substring(0,2)
-                const ct = "CT"
-                if (initial.valueOf() == ct.valueOf()) {
-                    try {
-                        const response = await buscar(mainKey)
-                        setNota(state => [...state, response.data])
-                    } catch (error) {
-                        console.log(error)
-                        setToast({
-                            text: "Houve um problema, por favor tente novamente",
-                            type: "warning"
-                        });
-                    }
-                } else {
-                    try {
-                        const response = await getNfeById(mainKey, company_id);
-                        setNota(state =>[...state, response.data])
-                    } catch (error) {
-                        console.log(error)
-                        setToast({
-                            text: "Houve um problema, por favor tente novamente",
-                            type: "warning"
-                        });
-                    }
+                if(mainKey.startsWith("NFe") || mainKey.startsWith("CTe") && mainKey.length === 47){
+                    const notaPura =  mainKey.slice(3, 47)
+                        if(Number(notaPura.substring(20,22)) === 57 ) {
+                            console.log("veio aqui")
+                            try {
+                                const response = await getCteById(mainKey, company_id)
+                                setNota(state =>[...state, response.data])
+                                setEntranceKeys(state =>[...state, mainKey])
+                            } catch (error) {
+                                console.log(error)
+                                setToast({
+                                    text: "Houve um problema, por favor tente novamente CTE",
+                                    type: "warning"
+                                });
+                            }
+                        } else {
+                            try {
+                                const response = await getNfeById(mainKey, company_id);
+                                setNota(state =>[...state, response.data])
+                                setEntranceKeys(state =>[...state, mainKey])
+                            } catch (error) {
+                                console.log(error)
+                                setToast({
+                                    text: "Houve um problema, por favor tente novamente NFE",
+                                    type: "warning"
+                                });
+                            }
+                        }
                 }
             }
            
@@ -230,7 +283,6 @@ export default function AtualizarEntrada() {
                 })
             })
         }
-        // console.log("all",allData)
         return allData
     }, [nota])
 
@@ -240,7 +292,6 @@ export default function AtualizarEntrada() {
     
         const [ anoS, mesS, diaS ] = dataSaida.split("-")
         const [ horaS, minutoS ] = exitTime.split(":")
-        if(entranceFinished) {setStatus(2)}
         try {
             await entrances.updateEntrance(controlId, {
                 rg_motorista: driverId,
@@ -277,9 +328,7 @@ export default function AtualizarEntrada() {
 //        console.log(`exitTime`, exitTime)
 //    }, [dataSaida, exitTime])
 
-    useEffect(() => {
-        console.log(`status`, status)
-    }, [status])
+
 
     return  <>
         <Head>
@@ -386,21 +435,22 @@ export default function AtualizarEntrada() {
                             <div>
                                 <span>Data Saída</span>
                                 <input type="date" readOnly={entranceFinished}
-                                 value={format(new Date(exitDate), "yyyy-MM-dd")}  
-                                    onChange={(e) => {setDataSaida(e.target.value), setHasSChanged(true)}}/>
+                                 value={!exitFocus ? format(new Date(exitDate), "yyyy-MM-dd"): dataSaida}  
+                                    onChange={(e) => {setDataSaida(e.target.value), setHasSChanged(true)}} onFocus={() => setExitFocus(true)}/>
                             </div>
                         </Column>
                         <Column>
                             <div>
                                 <span>Hora Chegada</span>
                                 <input type="time"  readOnly={entranceFinished}
-                                value={!entranceTimeFocus ? format(new Date(arrivalDate), "HH:mm") : arrivalTime} 
-                                onChange={(e) => {setArrivalTime(e.target.value), setHasChanged(true)}} onFocus={() => setEntranceTimeFocus(true)} />
+                                value={!entranceFocus ? format(new Date(arrivalDate), "HH:mm") : arrivalTime} 
+                                onChange={(e) => {setArrivalTime(e.target.value), setHasChanged(true)}} onFocus={() => setEntranceFocus(true)} />
                             </div>
                             <div>
                                 <span>Hora Saída</span>
                                 <input type="time" readOnly={entranceFinished}
-                                 defaultValue={format(new Date(exitDate), "HH:mm")}  onChange={(e) => {setExitTime(e.target.value), setHasSChanged(true)}}/>
+                                 value={!exitFocus ? format(new Date(exitDate), "HH:mm"): exitTime}  
+                                 onChange={(e) => {setExitTime(e.target.value), setHasSChanged(true)}} onFocus={() => setExitFocus(true)}/>
                             </div>
                         </Column>
                         

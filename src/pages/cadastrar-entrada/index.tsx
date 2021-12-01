@@ -10,7 +10,7 @@ import { useToasts } from "@geist-ui/react";
 import { INfeDto } from "@services/nfe/dtos/INfeDTO";
 import {CteProps} from "@services/cte-mongo/cte-type/cte"
 import getNfeById from "@services/nfe/getNfeById";
-import buscar from "@services/cte-mongo/buscar"
+import getCteById from "@services/cte-mongo/getCteById"
 import { useSession } from "next-auth/client";
 import  {format} from "date-fns";
 import {AddBtn, TopConfirmBtn} from "@styles/buttons"
@@ -68,6 +68,7 @@ export default function CadastrarEntrada() {
     const [ hasChanged, setHasChanged] = useState(false)
     const [dataSaida, setDataSaida] = useState("")
     const [ hasSChanged, setHasSChanged] = useState(false)
+    const [ entranceFinished, setEntranceFinished ] = useState(false)
 
 
 
@@ -90,31 +91,30 @@ export default function CadastrarEntrada() {
     // input de chave de acesso
     const getNfe = useCallback(async (e) => {
         e.preventDefault()
-        console.log("e", key.current.value )
-        console.log(`key.current.value.length`, key.current.value.length)
+        // console.log("e", key.current.value )
+        // console.log(`key.current.value.length`, key.current.value.length)
         // nova func
         if(key.current.value.startsWith("NFe") || key.current.value.startsWith("CTe") && key.current.value.length === 47){
-            console.log("het")
+            console.log("com tag")
                 const notaPura =  key.current.value.slice(3, 47)
-                console.log(`notaPura`, notaPura)
-                console.log(notaPura.substring(20, 22) )
+                // console.log(`notaPura`, notaPura)
+                // console.log(notaPura.substring(20, 22) )
                 if(Number(notaPura.substring(20,22)) === 57 ) {
-                    console.log("veio aqui")
-                   try {
-                                const response = await buscar(key.current.value)
-                                setNota(state =>[...state, response.data])
-                                setEntranceKeys(state =>[...state, key.current.value])
-                                setToast({
-                                    text: "Nota localizada com sucesso",
-                                    type: "success"
-                                });
-                            } catch (error) {
-                                console.log(error)
-                                setToast({
-                                    text: "Houve um problema, por favor tente novamente CTE",
-                                    type: "warning"
-                                });
-                            }
+                    try {
+                        const response = await getCteById(key.current.value, company_id)
+                        setNota(state =>[...state, response.data])
+                        setEntranceKeys(state =>[...state, key.current.value])
+                        setToast({
+                            text: "Nota localizada com sucesso",
+                            type: "success"
+                        });
+                    } catch (error) {
+                        console.log(error)
+                        setToast({
+                            text: "Houve um problema, por favor tente novamente CTE",
+                            type: "warning"
+                        });
+                    }
                 } else {
                     try {
                         const response = await getNfeById(key.current.value, company_id);
@@ -133,52 +133,53 @@ export default function CadastrarEntrada() {
                         });
                     }
                 }
-            
+        } else if (key.current.value.length === 44) {
+            if(Number(key.current.value.substring(20,22)) === 57 ) {
+                try {
+                    const response = await getCteById(key.current.value, company_id)
+                    // console.log(`response cte nova req`, response.data)
+                    setNota(state =>[...state, response.data])
+                    setEntranceKeys(state =>[...state, key.current.value])
+                    setToast({
+                        text: "Nota localizada com sucesso",
+                        type: "success"
+                    });
+                } catch (error) {
+                    console.log(error)
+                    setToast({
+                        text: "Houve um problema, por favor tente novamente CTE",
+                        type: "warning"
+                    });
+                }
+            } else if(Number(key.current.value.substring(20,22)) === 55) {
+                try {
+                    const response = await getNfeById(key.current.value, company_id);
+                    // console.log(response.data)
+                    setNota(state =>[...state, response.data])
+                    setEntranceKeys(state =>[...state, key.current.value])
+                    setToast({
+                        text: "Nota localizada com sucesso",
+                        type: "success"
+                    });
+                } catch (error) {
+                    console.log(error)
+                    setToast({
+                        text: "Houve um problema, por favor tente novamente",
+                        type: "warning"
+                    });
+                }
+            } else {
+                setToast({
+                    text: "Chave inválida, por favor tente novamente",
+                    type: "warning"
+                });
+            }
         } else {
             setToast({
                 text: "Chave inválida, por favor tente novamente",
                 type: "warning"
             });
         }
-
-// velha func
-        // const initial = key.current.value.toString().substring(0,2)
-        // const ct = "CT"
-        // if (initial.valueOf() == ct.valueOf()){
-        //     try {
-        //         const response = await buscar(key.current.value)
-        //         setNota(state =>[...state, response.data])
-        //         setEntranceKeys(state =>[...state, key.current.value])
-        //         setToast({
-        //             text: "Nota localizada com sucesso",
-        //             type: "success"
-        //         });
-        //     } catch (error) {
-        //         console.log(error)
-        //         setToast({
-        //             text: "Houve um problema, por favor tente novamente",
-        //             type: "warning"
-        //         });
-        //     }
-        // } else {
-        //     try {
-        //     const response = await getNfeById(key.current.value, company_id);
-        //     // console.log(response.data)
-        //     setNota(state =>[...state, response.data])
-        //     setEntranceKeys(state =>[...state, key.current.value])
-        //     setToast({
-        //         text: "Nota localizada com sucesso",
-        //         type: "success"
-        //     });
-        // } catch (error) {
-        //     console.log(error)
-        //     setToast({
-        //         text: "Houve um problema, por favor tente novamente",
-        //         type: "warning"
-        //     });
-        // }
-        // }
-        console.log("no fim")
         e.target.reset()
     }, [] )
 
@@ -208,14 +209,14 @@ export default function CadastrarEntrada() {
                 })
             })
         }
-        // console.log("ally",allData)
+        console.log("ally",allData)
         return allData
     }, [nota])
 
     async function registerEntrance ()  {
-        console.log("req", driverId,vehicleLicense, 
-        statusDescription,entranceKeys, 
-        loadedWeight,emptyWeight,measure, arrivalDate, exitDate )
+        // console.log("req", driverId,vehicleLicense, 
+        // statusDescription,entranceKeys, 
+        // loadedWeight,emptyWeight,measure, arrivalDate, exitDate )
         const [  anoE, mesE,diaE  ] = dataEntrada.split("-")
         const [ horaE, minutoE ] = arrivalTime.split(":")
         const [ anoS , mesS , diaS ] = dataSaida.split("-")
@@ -259,7 +260,7 @@ export default function CadastrarEntrada() {
                  try {
                 const response = await entranceReq.getDriverById(rg)
                 const data = response.data.nome
-                console.log("foi foi",data)
+                // console.log("motorista",data)
                 setDriver(data)
                 return data
             } catch (error) {
@@ -285,16 +286,8 @@ export default function CadastrarEntrada() {
         }
 
         function finishihEntrance() {
-            setStatus(2)
+            registerEntrance()
         }
-
-        // function testeHour() {
-        //     const [ano , mes, dia] = dataEntrada.split("-")
-        //     console.log("ano mes e dia", [ano, mes, dia])
-        //     const [ hora, minuto] = arrivalTime.split(":")
-        //     console.log("hora e minuto", [hora, minuto])
-        //     console.log("tempo final", new Date(`${ano}-${mes}-${dia} ${hora}:${minuto}`))
-        // }
 
         // useEffect(() => {
         //     console.log("entrada data",dataEntrada)
@@ -444,7 +437,7 @@ export default function CadastrarEntrada() {
                             </div>
                             <div style={{justifyContent: "center", alignItems: "flex-end", fontSize: "0.75rem"}}>
                                 <BtnStyle disabled={exitDate === undefined && emptyWeight === 0 ? true : false} 
-                                    onClick={() => setThirdModal(true)} type="button">
+                                    onClick={() => {setStatus(2), setEntranceFinished(true), setThirdModal(true)}} type="button">
                                     Encerrar Entrega
                                 </BtnStyle>
                             </div>
@@ -502,9 +495,8 @@ export default function CadastrarEntrada() {
                         setStatusDescription={setStatusDescription}
                         secondModalHandler={secondModalHandler}/>}
                 {thirdModal && 
-                    <FinishModal thirdModalHandler={thirdModalHandler} 
-                        emptyWeight={emptyWeight} exitDate={exitDate} 
-                        finishihEntrance={finishihEntrance} />}
+                    <FinishModal thirdModalHandler={thirdModalHandler} setStatus={setStatus}
+                        finishihEntrance={finishihEntrance} setEntranceFinished={setEntranceFinished} />}
         </>
 }
 

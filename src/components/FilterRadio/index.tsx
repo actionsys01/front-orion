@@ -11,19 +11,19 @@ const RadioFilter = () => {
 
     function sendStatusData()  {
         let filtro = []
-           if(radioValue === "Todos") {
-              const campo = "status"
-              const valor = null
-              filtro.push({campo, valor})
-              registerFilter(filtro)
-           } else {
-            const campo = "status"
-            const valor = radioValue
-            filtro.push({campo, valor})
-            registerFilter(filtro)
-           }
+            if(radioValue === "Todos") {
+                const campo = "status"
+                const valor = null
+                filtro.push({campo, valor})
+                registerFilter(filtro)
+            } else {
+                const campo = "status"
+                const valor = radioValue
+                filtro.push({campo, valor})
+                registerFilter(filtro)
+            }
         
-        console.log(`filtro no comp novo`, filtro )
+        // console.log(`filtro no comp novo`, filtro )
         return filtro
     }
 
@@ -31,7 +31,7 @@ const RadioFilter = () => {
         sendStatusData() 
     }, [radioValue])
 
-    console.log(`radioValue`, radioValue)
+    // console.log(`radioValue`, radioValue)
     return <RadioFilterComponent>
                 <FormControl component="fieldset">
                     <RadioGroup row

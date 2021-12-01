@@ -46,7 +46,7 @@ export default function ControlFilterProvider({ children } : IFiltroProps) {
       const controlStorage = localStorage.getItem("filtersObj");
       if (controlStorage) setFilters(JSON.parse(controlStorage));
     }
-    console.log(`filters no context`, filters)
+    // console.log(`filters no context`, filters)
     loadStorage();
   }, []);
 

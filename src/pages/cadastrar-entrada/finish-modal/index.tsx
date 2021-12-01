@@ -5,12 +5,12 @@ import{ Modal } from "@styles/modal"
 
 interface ModalProps {
     thirdModalHandler: () => void;
-    emptyWeight: number;
-    exitDate: Date | null;
-    finishihEntrance: () => void
+    finishihEntrance: () => void;
+    setStatus: Dispatch<SetStateAction<number>>;
+    setEntranceFinished:  Dispatch<SetStateAction<boolean>>;
 }
 
-const FisishModal = ({thirdModalHandler, emptyWeight, exitDate, finishihEntrance}:ModalProps ) => {
+const FisishModal = ({ thirdModalHandler, setStatus, finishihEntrance, setEntranceFinished } : ModalProps ) => {
 
 
     return <Modal>
@@ -19,7 +19,7 @@ const FisishModal = ({thirdModalHandler, emptyWeight, exitDate, finishihEntrance
                 Deseja finalizar a entrega?
             </h4>
             <div>
-                <button onClick={() => thirdModalHandler()}>CANCELAR</button>
+                <button onClick={() => {setStatus(0), setEntranceFinished(false), thirdModalHandler()}}>CANCELAR</button>
                 <button onClick={() => {finishihEntrance(), thirdModalHandler()}} >CONFIRMAR</button>
             </div>
         </div>

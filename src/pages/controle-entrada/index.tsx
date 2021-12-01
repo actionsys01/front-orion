@@ -223,7 +223,9 @@ export default function ControleEntrada() {
     const gatheredData = useMemo(() => {
         const allData: any = [];
         if(entrance){
-            entrance.forEach((item) => {
+            const sliceNullControl = entrance.filter((item) => item.controle_entrada != null)
+            // console.log(`sliceNullControl`, sliceNullControl)
+            sliceNullControl.forEach((item) => {
                 allData.push({
                     ...item,
                     option: <Popover content={[
@@ -253,6 +255,7 @@ export default function ControleEntrada() {
                 })
             })
         }
+        console.log(`allData`, allData)
         return allData
     }, [entrance ])
 
@@ -301,7 +304,7 @@ export default function ControleEntrada() {
                             <td style={{width: "35px"}}>{item.option}</td>
                             <td>{item.chave_nota}</td>
                             <td>{item.status}</td>
-                            <td>{item.controle_entrada.id}</td>
+                            <td>{item.controle_entrada?.id}</td>
                             <td>{item.controle_entrada?.peso_cheio}</td>
                             <td>{item.arrivalDate}</td>
                             <td>{item.exitDate}</td>
