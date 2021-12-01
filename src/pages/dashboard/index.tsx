@@ -66,7 +66,7 @@ export default function Dashboard() {
       // request de dashboard data
     const getDashboardData = useCallback(async() => {
       let date = dateDash
-      console.log(`date na função`, date)
+      // console.log(`date na função`, date)
       try {
         const response = await empresas.dashboardRequest(Number(session?.usuario.empresa.id), date)
       const data = response.data
@@ -102,9 +102,9 @@ export default function Dashboard() {
         setNfeAmount(response.NfeCount)})
     }, [])
 
-    useEffect(() => {
-      console.log("date dash", typeof(dateDash), dateDash)
-    }, [dateDash])
+    // useEffect(() => {
+    //   console.log("date dash", typeof(dateDash), dateDash)
+    // }, [dateDash])
 
 
     return  <>

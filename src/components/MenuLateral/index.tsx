@@ -77,7 +77,7 @@ export default function MenuLateral({
               <SubMenu title="Painéis" icon={<FileText />}>
                 {nfePermission && <MenuItem onClick={() => router.push("/nfe")}>NF-e</MenuItem>}
                 {ctePermission && <MenuItem onClick={() => router.push("/cte")}>CT-e</MenuItem>}
-                {nfsePermission && <MenuItem>NFS-e</MenuItem>}
+               {/*  {nfsePermission && */} <MenuItem onClick={() => router.push("/nfse")}>NFS-e</MenuItem>
               </SubMenu>
               <SubMenu title="Aplicações" icon={<Grid />}>
                 <MenuItem onClick={() => router.push("/controle-entrada")}>Controle de Entrada</MenuItem>
