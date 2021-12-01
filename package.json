@@ -48,7 +48,6 @@
     "@types/react-select": "^4.0.15",
     "@types/styled-components": "5.1.9",
     "babel-plugin-styled-components": "^1.12.0",
-    "miragejs": "^0.1.42",
     "typescript": "4.2.4"
   },
   "license": "MIT"
