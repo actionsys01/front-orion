@@ -14,7 +14,7 @@ const Popover = (props: any) => {
             <PopStyle>
                 <BsThreeDots onClick={visibleHandler} /> 
                 {visible && 
-                <div onMouseLeave={() => setVisible(false)}>
+                <div /* onMouseLeave={() => setVisible(false)} */>
                     {props?.content?.map((item: any, i: any) => (
                         <p key={i} onClick={item.onClick}>{item.optionName}</p>
                     ))}

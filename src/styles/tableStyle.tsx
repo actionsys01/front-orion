@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const TableGrid = styled.div`
       margin: 0;
       box-sizing: border-box;
-      overflow: visible;
-      white-space: nowrap;
+      overflow: auto;
+      
     
     
     table {
@@ -36,9 +36,10 @@ export const TableGrid = styled.div`
             /* width: 0%; */
             font-size: 0.75rem;
             font-weight: normal;
-            text-align: left;
+            text-align: center;
             letter-spacing: 0;
             padding: 0 15px;
+            white-space: nowrap;
               }
             }
       }
@@ -49,6 +50,7 @@ export const TableGrid = styled.div`
         tr {
           td:first-child {
             padding-left: 10px;
+            
           }
           td {
             border-bottom: 1px solid #eaeaea;

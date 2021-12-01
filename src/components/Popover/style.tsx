@@ -6,9 +6,10 @@ export const PopStyle = styled.div`
     div /* primeira div */ {
     position: absolute;
     width: -webkit-fill-available;
-    min-width: 85px;
+    min-width: 95px;
     height: fit-content;
-    bottom: -1.865rem;
+    min-height: 90px;
+    bottom: -2.865rem;
     left: 24.89825px;
     background-color: #fff;
     color: #1c496a;
@@ -17,10 +18,10 @@ export const PopStyle = styled.div`
     box-shadow: 0 8px 30px rgb(0 0 0 / 12%);
     border: none;
     box-sizing: border-box;
-    padding: 8pt 0;
+    padding: 8pt;
     text-align: center;
     
-        p {
+        p { 
             cursor: pointer;
             margin: 0;
             font-size: 0.875rem;
