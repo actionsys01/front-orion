@@ -15,16 +15,7 @@ function Danfe(nfeData: any, nfeFrontData: any, products: any){
             emissionDate: (data.informacoes_nfe.dhEmi ? format(new Date(data.informacoes_nfe?.dhEmi), "dd/MM/yyyy") : data.informacoes_nfe.dEmi ? format(new Date(data.informacoes_nfe?.dEmi), "dd/MM/yyyy") : ""),
             receiveDate: (data.informacoes_nfe.dhSaiEnt ?  format(new Date(data.informacoes_nfe?.dhSaiEnt), "dd/MM/yyyy ") : data.informacoes_nfe.dSaiEnt ? format(new Date(data.informacoes_nfe?.dSaiEnt), "dd/MM/yyyy") : ""),
             emissionTime:  (data.informacoes_nfe.dhEmi ? format(new Date(data.informacoes_nfe?.dhEmi), "HH:mm:ss") : data.informacoes_nfe.dEmi ? format(new Date(data.informacoes_nfe?.dEmi), "HH:mm:ss") : ""),
-            ICMS: data.produtos_servicos.imposto?.ICMS?.ICMS00 || 
-            data.produtos_servicos.imposto?.ICMS?.ICMS10 || 
-            data.produtos_servicos.imposto?.ICMS?.ICMS20 || 
-            data.produtos_servicos.imposto?.ICMS?.ICMS30 || 
-            data.produtos_servicos.imposto?.ICMS?.ICMS40 || 
-            data.produtos_servicos.imposto?.ICMS?.ICMS51 || 
-            data.produtos_servicos.imposto?.ICMS?.ICMS60 || 
-            data.produtos_servicos.imposto?.ICMS?.ICMS70 || 
-            data.produtos_servicos.imposto?.ICMS?.ICMS90 || 
-            data.produtos_servicos.imposto?.ICMS?.ICMSST,
+            dup_vencimento: (data.cobranca ? format(new Date(data.cobranca.dup?.dVenc), "dd/MM/yyyy ") : ""),
             IPI: data.produtos_servicos.imposto?.IPI?.IPINT || data.produtos_servicos.imposto?.IPI?.IPITrib
         })
         return gatheredNfeData
@@ -33,8 +24,8 @@ function Danfe(nfeData: any, nfeFrontData: any, products: any){
 
     //   console.log("teste 2",gatheredNfeData)
 
-    // console.log("danfe 1:",nfeData)
-    // console.log("danfe 2:",nfeFrontData)
+    console.log("danfe 1:",nfeData)
+    console.log("danfe 2:",nfeFrontData)
 
     //Header
     const headerFirstRow = nfeFrontData.map((item: any) => {
@@ -217,7 +208,7 @@ function Danfe(nfeData: any, nfeFrontData: any, products: any){
             item.imposto?.ICMS?.ICMS70 || 
             item.imposto?.ICMS?.ICMS90 || 
             item.imposto?.ICMS?.ICMSST);
-            console.log("icms mapped",ICMS)
+            // console.log("icms mapped",ICMS)
         return [
             {text: item.prod.cProd, bold: true, fontSize: 6, alignment: "center", border: [true, false, true, false]},
             {text: item.prod?.xProd, bold: true, fontSize: 5, alignment: "center", border: [true, false, true, false]},
@@ -256,12 +247,12 @@ function Danfe(nfeData: any, nfeFrontData: any, products: any){
 
     // FOOTER
 
-    const lastTable = nfeData.map((item: any) => {
+    const lastTable = gatheredNfeData.map((item: any) => {
         return [
-            {text: item.informacoes_adicionais.infCpl, fontSize: 6, lineHeight: 1.2, alignment: "center", bold: true, border: [true, false, true, true]},
-            {text: item.cobrancas?.fat?.dup?.nDUP, fontSize: 7, lineHeight: 1.5, alignment: "center", bold: true, border: [true, true, false, true]},
-            {text: item.cobrancas?.fat?.dup?.dVenc, fontSize: 7, lineHeight: 1.5, alignment: "center", bold: true, border: [false, true, false, true]},
-            {text: item.cobrancas?.fat?.dup?.vDup, fontSize: 7, lineHeight: 1.5, alignment: "center", bold: true, border: [false, true, true, true]},
+            {text: item.informacoes_adicionais.infCpl, fontSize: 5, lineHeight: 1, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.cobranca?.dup?.nDUP, fontSize: 5, lineHeight: 1, alignment: "center", bold: true, border: [true, true, false, true]},
+            {text: item.dup_vencimento, fontSize: 5, lineHeight: 1, alignment: "center", bold: true, border: [false, true, false, true]},
+            {text: item.cobranca?.dup?.vDup, fontSize: 5, lineHeight: 1, alignment: "center", bold: true, border: [false, true, true, true]},
         ]
     })
 
@@ -502,11 +493,11 @@ function Danfe(nfeData: any, nfeFrontData: any, products: any){
             }
         },
         {text: "DADOS ADICIONAIS / INFORMAÇÕES COMPLEMENTARES", fontSize:8, bold: true, margin: [0, 3, 0, -10]},
-        {text: "DUPLICATAS", fontSize:8,  alignment: "right", bold: true, margin: [-30, 0, 20, 2]},
+        {text: "DUPLICATAS", fontSize:8,  alignment: "right", bold: true, margin: [-40, 0, 20, 2]},
          {// obs gerais 
             table:{
                 headerRows: 1,
-                widths: [ '*', 20, 20,20],
+                widths: [ '*', 30, 30, 30],
                 heights: [2, 30],
                 body: [
                     [
