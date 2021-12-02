@@ -2,7 +2,7 @@ import api from "@services/api";
 
 interface IFiltro {
     campo: string;
-    valor: string;
+    valor: string | number;
   }
 
 interface FilterProps {
@@ -10,18 +10,16 @@ interface FilterProps {
   }
 
   export default async function getEntrance(page: number, id: number, filters: IFiltro[]) {
-    console.log("filtros na request", filters) 
+    // console.log("filtros na request", filters)
     const filtros = filters.reduce((acc, {campo, valor}) => {
         if(campo === "data_entrada" || campo === "data_saida") {
             console.log("vai")
-            const [dia, mes, ano] = valor.split("/")
+            const [dia, mes, ano] = valor.toString().split("/")
             valor = `${ano}-${mes}-${dia}`
         }
-        if (campo === "numero_entrega") {
-            console.log("numero entrega")
-           console.log(`typeof(valor)`, typeof(valor))
-            valor = parseInt(valor, 10)
-        }
+        // if (campo === "numero_entrega") {
+        //     valor = parseInt(valor, 10)
+        // }
         return {...acc, [campo] : valor}
     }, {})
 

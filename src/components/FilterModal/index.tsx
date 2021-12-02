@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { HiPlusCircle } from "react-icons/hi";
 import { useControlFilter } from "@contexts/ControlFilter";
 import colunas from "@utils/filtros-controle";
+import colunas_status from "@utils/colunas-status"
 import {
   BotaoIncluir,
   BotaoRemover,
@@ -13,8 +14,8 @@ import {
   InputCustomizado,
   Modal,
   ModalBackground,
-  SelectCustomizado,
 } from "@components/Filtro/styled";
+import { CustomSelect, SelectValue } from "./style"
 
 
 interface FormFilterData {
@@ -35,22 +36,18 @@ interface FilterProps {
 
 export default function Filtro({ data }: IProps) {
   const formRef = useRef<FormHandles>(null);
-  const {registerFilter, scopeIgnition } = useControlFilter();
+  const {registerFilter, scopeIgnition, isStatusSelected } = useControlFilter();
   const [error, setError] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
   const [controlFilters, setControlFilters] = useState<string[]>([]);
 
 
-  // PRIMEIRA
-
- 
   useEffect(() => {
     data.map(() => {
       setControlFilters([...controlFilters, ""]);
     });
   }, []);
 
-  //SEGUNDA
 
 
   useEffect(() => {
@@ -60,14 +57,10 @@ export default function Filtro({ data }: IProps) {
       formRef.current?.setData({ filtros: data });
   }, [controlFilters]);
 
-// TERCEIRA
 
   function addFilter() {
     setControlFilters([...controlFilters, ""]);
   }
-
-// QUARTA
-
 
   function removeFilter (index: number) {
     const data = formRef.current?.getData() as FormFilterData;
@@ -86,9 +79,7 @@ export default function Filtro({ data }: IProps) {
     setControlFilters(totalFiltros);
   }
 
-  // QUINTA
 
-  
   const filterSubmitHandler: SubmitHandler = (data: FormFilterData) => {
     // console.log(`data.filtros`, data.filtros)
     // console.log(`data debaixo de data.fitros`, data)
@@ -114,7 +105,6 @@ export default function Filtro({ data }: IProps) {
     setVisibleModal(false);
   };
 
-  // SEXTA
 
   async function closerModal() {
     const data = formRef.current?.getData() as FormFilterData;
@@ -152,8 +142,10 @@ export default function Filtro({ data }: IProps) {
           <ContainerFiltro>
             {controlFilters.map((item, index) => (
               <Scope path={`filtros[${index}]`} key={index}>
-                <SelectCustomizado name="campo" options={colunas} />
-                <InputCustomizado name="valor" placeholder="valor" />
+                <CustomSelect name="campo" options={colunas} />
+                { !isStatusSelected ?
+                  <InputCustomizado name="valor" placeholder="valor" /> :
+                  <SelectValue name="valor" options={colunas_status} />}
                 <BotaoRemover size={15} onClick={() => removeFilter(index)} />
               </Scope>
             ))}

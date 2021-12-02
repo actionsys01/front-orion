@@ -10,4 +10,3 @@ export default [
     {value: "placa_reboque_2", label: "Placa Reboque 2"},
     {value: "placa_reboque_3", label: "Placa Reboque 3"},
 ]
-
