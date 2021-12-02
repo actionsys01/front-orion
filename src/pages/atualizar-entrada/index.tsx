@@ -304,7 +304,7 @@ export default function AtualizarEntrada() {
                 data_entrada: hasChanged ? new Date(`${anoE}-${mesE}-${diaE} ${horaE}:${minutoE}`) : arrivalDate,
                 data_saida: hasSChanged  ? new Date(`${anoS}-${mesS}-${diaS} ${horaS}:${minutoS}`) : exitDate,
                 peso_cheio: loadedWeight,
-                peso_vazio: emptyWeight,
+                peso_vazio: emptyWeight.toString() === "" ? 0 : emptyWeight,
                 empresa: company_id,
                 unidade_medida: measure,
                 entradas_notas: entranceKeys
