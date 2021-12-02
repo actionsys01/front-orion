@@ -117,7 +117,7 @@ export default function AtualizarEntrada() {
                 if(Number(notaPura.substring(20,22)) === 57 ) {
                     try {
                         const response = await getCteById(key.current.value, company_id)
-                        console.log(`response cte`, response)
+                        // console.log(`response cte`, response)
                         setNota(state =>[...state, response.data])
                         setEntranceKeys(state =>[...state, key.current.value])
                         setToast({
@@ -203,7 +203,7 @@ export default function AtualizarEntrada() {
                 if(mainKey.startsWith("NFe") || mainKey.startsWith("CTe") && mainKey.length === 47){
                     const notaPura =  mainKey.slice(3, 47)
                         if(Number(notaPura.substring(20,22)) === 57 ) {
-                            console.log("veio aqui")
+                            // console.log("veio aqui")
                             try {
                                 const response = await getCteById(mainKey, company_id)
                                 setNota(state =>[...state, response.data])
@@ -302,7 +302,7 @@ export default function AtualizarEntrada() {
                 status: status,
                 descricao_status: statusDescription,
                 data_entrada: hasChanged ? new Date(`${anoE}-${mesE}-${diaE} ${horaE}:${minutoE}`) : arrivalDate,
-                data_saida: (hasSChanged || status === 2 ) ? new Date(`${anoS}-${mesS}-${diaS} ${horaS}:${minutoS}`) : exitDate,
+                data_saida: hasSChanged  ? new Date(`${anoS}-${mesS}-${diaS} ${horaS}:${minutoS}`) : exitDate,
                 peso_cheio: loadedWeight,
                 peso_vazio: emptyWeight,
                 empresa: company_id,

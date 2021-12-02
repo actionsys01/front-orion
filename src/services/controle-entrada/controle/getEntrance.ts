@@ -17,6 +17,11 @@ interface FilterProps {
             const [dia, mes, ano] = valor.split("/")
             valor = `${ano}-${mes}-${dia}`
         }
+        if (campo === "numero_entrega") {
+            console.log("numero entrega")
+           console.log(`typeof(valor)`, typeof(valor))
+            valor = parseInt(valor, 10)
+        }
         return {...acc, [campo] : valor}
     }, {})
 

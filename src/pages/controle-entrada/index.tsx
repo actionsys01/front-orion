@@ -255,7 +255,7 @@ export default function ControleEntrada() {
                 })
             })
         }
-        console.log(`allData`, allData)
+        // console.log(`allData`, allData)
         return allData
     }, [entrance ])
 
