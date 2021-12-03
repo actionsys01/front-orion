@@ -7,10 +7,10 @@ import { useControlFilter } from "@contexts/ControlFilter";
 
 const RadioFilter = () => {
     const [radioValue, setRadioValue] = useState("Todos");
-    const {registerFilter } = useControlFilter();
+    const {registerFilter, filters } = useControlFilter();
 
     function sendStatusData()  {
-        let filtro = []
+        let filtro = [...filters]
             if(radioValue === "Todos") {
                 const campo = "status"
                 const valor = null
