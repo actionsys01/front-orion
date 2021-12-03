@@ -6,17 +6,41 @@ import { useControlFilter } from "@contexts/ControlFilter";
 
 
 const RadioFilter = () => {
-    const [radioValue, setRadioValue] = useState("Todos");
-    const {registerFilter } = useControlFilter();
+    const [radioValue, setRadioValue] = useState("");
+    const {registerFilter, filters } = useControlFilter();
 
-    function sendStatusData()  {
+    // function sendStatusData()  {
+    //     console.log("veio aqui")
+    //     let filtro = []
+    //         if(radioValue === "Todos") {
+    //             const campo = "status"
+    //             const valor = null
+    //             filtro.push({campo, valor})
+    //             registerFilter([])
+    //         } else {
+    //             const campo = "status"
+    //             const valor = radioValue
+    //             filtro.push({campo, valor})
+    //             registerFilter(filtro)
+    //         }
+        
+    //     // console.log(`filtro no comp novo`, filtro )
+    //     return filtro
+    // }
+
+    const sendStatusData = useCallback(() => {
+        console.log("veio aqui")
         let filtro = []
-            if(radioValue === "Todos") {
+            if (radioValue === "") {
+                return
+            } 
+            if (radioValue === "Todos") {
                 const campo = "status"
                 const valor = null
                 filtro.push({campo, valor})
-                registerFilter(filtro)
-            } else {
+                registerFilter([])
+            } 
+             else {
                 const campo = "status"
                 const valor = radioValue
                 filtro.push({campo, valor})
@@ -25,7 +49,7 @@ const RadioFilter = () => {
         
         // console.log(`filtro no comp novo`, filtro )
         return filtro
-    }
+    }, [radioValue])
 
     useEffect(() => {
         sendStatusData() 

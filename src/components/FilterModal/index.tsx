@@ -36,7 +36,7 @@ interface FilterProps {
 
 export default function Filtro({ data }: IProps) {
   const formRef = useRef<FormHandles>(null);
-  const {registerFilter, scopeIgnition, isStatusSelected } = useControlFilter();
+  const {registerFilter, scopeIgnition } = useControlFilter();
   const [error, setError] = useState(false);
   const [visibleModal, setVisibleModal] = useState(false);
   const [controlFilters, setControlFilters] = useState<string[]>([]);
@@ -143,9 +143,7 @@ export default function Filtro({ data }: IProps) {
             {controlFilters.map((item, index) => (
               <Scope path={`filtros[${index}]`} key={index}>
                 <CustomSelect name="campo" options={colunas} />
-                { !isStatusSelected ?
-                  <InputCustomizado name="valor" placeholder="valor" /> :
-                  <SelectValue name="valor" options={colunas_status} />}
+                  <InputCustomizado name="valor" placeholder="valor" /> 
                 <BotaoRemover size={15} onClick={() => removeFilter(index)} />
               </Scope>
             ))}

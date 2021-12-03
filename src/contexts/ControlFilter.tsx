@@ -20,8 +20,6 @@ interface FiltroContextType {
   registerFilter( filters: IFiltro[]): void
   scopeIgnition(filtro: IUnform[]): IFiltro[];
   limpar(): void;
-  isStatusSelected: boolean;
-  setIsStatusSelected: Dispatch<SetStateAction<boolean>>
 }
 
 interface FilterProps {
@@ -40,11 +38,7 @@ export function useControlFilter() {
 
 export default function ControlFilterProvider({ children } : IFiltroProps) {
   const [filters, setFilters] = useState<IFiltro[]>([]);
-  const  [ isStatusSelected, setIsStatusSelected] = useState(false)
 
-  useEffect(() => {
-   console.log(`isStatusSelected`, isStatusSelected)
-  }, [isStatusSelected])
 
   useEffect(() => {
     async function loadStorage() {
@@ -83,8 +77,6 @@ export default function ControlFilterProvider({ children } : IFiltroProps) {
         registerFilter,
         scopeIgnition,
         limpar,
-        setIsStatusSelected,
-        isStatusSelected
       }}
     >
       {children}
