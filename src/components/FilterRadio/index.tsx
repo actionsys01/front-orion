@@ -11,8 +11,7 @@ const RadioFilter = () => {
 
 
     const sendStatusData = useCallback(() => {
-        console.log("veio aqui")
-        let filtro = []
+        let filtro = [...filters]
             if (radioValue === "") {
                 return
             } 
