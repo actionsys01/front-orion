@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const PopStyle = styled.div`
     position: relative;
     cursor: pointer;
+    z-index: 1000!important;
 
     div /* primeira div */ {
     position: absolute;

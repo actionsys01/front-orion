@@ -4,13 +4,15 @@ export const TableGrid = styled.div`
       margin: 0;
       box-sizing: border-box;
        overflow-x: auto;
+       overflow-y: auto;
        /* scrollbar-gutter: unset; */
      /* overflow-y: visible;
      */
-     body::-webkit-scrollbar{
-        z-index: 2;
-        background-color: orange;
-     }
+     /* ::-webkit-scrollbar-thumb,::-webkit-scrollbar-track{
+        z-index: -10!important;
+        background-color: orange!important;
+        display: none;
+     } */
 
     table {
       width: 100%;
@@ -56,6 +58,7 @@ export const TableGrid = styled.div`
 
           td:first-child {
             /* padding-left: 10px; */
+            z-index: 100;
           
           }
           td {

@@ -114,7 +114,6 @@ export default function Dashboard() {
         <h2>Dashboard</h2>
         <SelectStyle>
           <input type="month" onChange={(e) => setDateDash(e.target.value)} />
-          {/* <select name="" id="">Ano</select> */}
         </SelectStyle>
         <InfoContainer>
           <div>

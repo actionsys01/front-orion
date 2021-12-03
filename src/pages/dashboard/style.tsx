@@ -3,16 +3,19 @@ import styled from "styled-components";
 export const SelectStyle = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin: 25px;
-  input {
-    margin: 10px;
-    width: 175px;
+  margin: 15px 25px;
+  input[type= "month" ] {
+    width: 195px;
     height: 30px;
     border: 1px solid #eaeaea;
     text-align: center;
     font-size: .9rem;
     padding: .2rem;
 }
+input[type= "month" ]::-webkit-calendar-picker {
+  background-color: orange;
+}
+
 `
 
 export const Speedometer = styled.div`
@@ -51,7 +54,7 @@ export const Speedometer = styled.div`
 
 export const InfoContainer = styled.div`
   display: flex;
-  height: 25%;
+  height: 30%;
   gap: 7rem;
   white-space: nowrap;
   align-items: center;
