@@ -10,6 +10,7 @@ import {TableGrid} from "@styles/tableStyle"
 import {  Pages } from "@styles/pages";
 import Pagination from "@material-ui/lab/Pagination";
 import { nfseNotas } from '@utils/mock-data/nfse-pages'
+import { nfseXmlData } from "@utils/mock-data/nfse-xml"
 import { NfseProps } from '@services/nfse/types/NfseProps';
 import NfsePopover from './popover';
 import { FilterBtn } from "@styles/buttons"
@@ -40,6 +41,8 @@ export default function Nfse() {
    const [quantityPage, setQuantityPage] = useState(1)
    const [session] = useSession();
    const router = useRouter()
+
+   console.log(`nfseXmlData`, nfseXmlData)
 
 
    const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {

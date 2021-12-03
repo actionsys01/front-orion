@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const MainGrid = styled.div`
     margin: 0;
     box-sizing: border-box;
-    overflow: auto;
+    /* overflow-x: visible; */
     /* width: 81.6vw; */
     
     table {

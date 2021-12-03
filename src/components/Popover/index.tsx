@@ -11,7 +11,7 @@ const Popover = (props: any) => {
     }
 
     return <>
-            <PopStyle>
+            <PopStyle onMouseLeave={() => setVisible(false)}>
                 <BsThreeDots onClick={visibleHandler} /> 
                 {visible && 
                 <div /* onMouseLeave={() => setVisible(false)} */>

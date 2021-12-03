@@ -3,15 +3,20 @@ import styled from "styled-components";
 export const TableGrid = styled.div`
       margin: 0;
       box-sizing: border-box;
-      overflow: auto;
-      
-    
-    
+       overflow-x: auto;
+       /* scrollbar-gutter: unset; */
+     /* overflow-y: visible;
+     */
+     body::-webkit-scrollbar{
+        z-index: 2;
+        background-color: orange;
+     }
+
     table {
       width: 100%;
       border-spacing: 0;
       border-radius: 5px;
-     
+      
       
       thead {
         display: table-header-group;
@@ -46,11 +51,12 @@ export const TableGrid = styled.div`
 
 
       tbody {
-           
+        position: relative;
         tr {
+
           td:first-child {
-            padding-left: 10px;
-            
+            /* padding-left: 10px; */
+          
           }
           td {
             border-bottom: 1px solid #eaeaea;

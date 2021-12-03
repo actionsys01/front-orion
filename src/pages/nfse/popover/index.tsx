@@ -11,15 +11,13 @@ const NfsePopover = (props: any) => {
     }
 
     return <>
-            <PopStyle>
+            <PopStyle /* onMouseLeave={() => setVisible(false)} */>
                 <BsThreeDots onClick={visibleHandler} /> 
                 {visible && 
-                <div>
                 <div /* onMouseLeave={() => setVisible(false)} */>
                     {props?.content?.map((item: any, i: any) => (
                         <p key={i} onClick={item.onClick}>{item.optionName}</p>
-                    ))}
-                     </div>      
+                    ))}   
                 </div>}
             </PopStyle>
         </>
