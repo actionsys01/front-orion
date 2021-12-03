@@ -99,7 +99,7 @@ export default function Dashboard() {
         const secondSpeedometer = getPercentage(totalUsersAmount, totalUsers)
         setFirstPercentage(firstSpeedometer)
         setSecondPercentage(secondSpeedometer)
-    }, [totalValue, totalAmount, totalUsers, totalUsersAmount])
+    }, [totalValue, totalAmount, totalUsers, totalUsersAmount, dateDash])
 
 
     // useEffect(() => {

@@ -51,7 +51,7 @@ export const Speedometer = styled.div`
 
 export const InfoContainer = styled.div`
   display: flex;
-  height: 30%;
+  height: 25%;
   gap: 7rem;
   white-space: nowrap;
   align-items: center;
