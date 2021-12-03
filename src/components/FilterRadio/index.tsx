@@ -9,24 +9,6 @@ const RadioFilter = () => {
     const [radioValue, setRadioValue] = useState("");
     const {registerFilter, filters } = useControlFilter();
 
-    // function sendStatusData()  {
-    //     console.log("veio aqui")
-    //     let filtro = []
-    //         if(radioValue === "Todos") {
-    //             const campo = "status"
-    //             const valor = null
-    //             filtro.push({campo, valor})
-    //             registerFilter([])
-    //         } else {
-    //             const campo = "status"
-    //             const valor = radioValue
-    //             filtro.push({campo, valor})
-    //             registerFilter(filtro)
-    //         }
-        
-    //     // console.log(`filtro no comp novo`, filtro )
-    //     return filtro
-    // }
 
     const sendStatusData = useCallback(() => {
         console.log("veio aqui")
