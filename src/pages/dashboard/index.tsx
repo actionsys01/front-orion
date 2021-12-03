@@ -50,61 +50,61 @@ export default function Dashboard() {
     }
 
       // request de plano
-    const getAccountData = useCallback(async () => {
-      try {
-        const response = await planos.getAccountById(Number(session?.usuario.empresa.plano.id))
+      const getAccountData = useCallback(async () => {
+        try {
+          const response = await planos.getAccountById(Number(session?.usuario.empresa.plano.id))
+          const data = response.data
+          setTotalValue(data.notas)
+          setTotalUsers(data.usuarios)
+          setAccountName(data.nome)
+          setAccountDescription(data.descricao)
+          return data
+        } catch (error) {
+          setToast({
+            text: "Houve um problema, por favor tente novamente",
+            type: "warning"
+          })
+        }
+        },[])
+  
+        // request de dashboard data
+      const getDashboardData = useCallback(async() => {
+        let date = dateDash
+        // console.log(`date na função`, date)
+        try {
+          const response = await empresas.dashboardRequest(Number(session?.usuario.empresa.id), date)
         const data = response.data
+        setTotalAmount(data.notas)
+        setTotalUsersAmount(data.usuarios)
+        setNfeAmount(data?.NfeCount)
+        setCteAmount(data.CteCount)
+        setNfseAmount(data.NfseCount)
         return data
-      } catch (error) {
-        setToast({
-          text: "Houve um problema, por favor tente novamente",
-          type: "warning"
-        })
+        } catch (error) {
+          setToast({
+            text: "Houve um problema, por favor tente novamente",
+            type: "warning"
+          })
+        }
+        },[dateDash])
+      
+      function getPercentage(partial: number, total: number) {
+        return partial / total
       }
-      },[])
-
-      // request de dashboard data
-    const getDashboardData = useCallback(async() => {
-      let date = dateDash
-      // console.log(`date na função`, date)
-      try {
-        const response = await empresas.dashboardRequest(Number(session?.usuario.empresa.id), date)
-      const data = response.data
-      return data
-      } catch (error) {
-        setToast({
-          text: "Houve um problema, por favor tente novamente",
-          type: "warning"
-        })
-      }
-      },[dateDash])
-    
-    function getPercentage(partial: number, total: number) {
-      return partial / total
-    }
-
-    useEffect(() => {
-      getAccountData().then(response => {setTotalValue(response.notas), 
-        setTotalUsers(response.usuarios)})
-      getDashboardData().then(response =>  {setTotalAmount(response.notas), 
-        setTotalUsersAmount(response.usuarios)})
-        const firstSpeedometer = getPercentage(totalAmount, totalValue)
-        const secondSpeedometer = getPercentage(totalUsersAmount, totalUsers)
-        setFirstPercentage(firstSpeedometer)
-        setSecondPercentage(secondSpeedometer)
-    }, [totalValue, totalAmount, totalUsers, totalUsersAmount])
-
-    useEffect(() => {
-      getAccountData().then(response => {setAccountName(response.nome),
-      setAccountDescription(response.descricao)})
-      getDashboardData().then(response => {setCteAmount(response.CteCount), 
-        setNfseAmount(response.NfseCount), 
-        setNfeAmount(response.NfeCount)})
-    }, [])
-
-    // useEffect(() => {
-    //   console.log("date dash", typeof(dateDash), dateDash)
-    // }, [dateDash])
+  
+      useEffect(() => {
+        getAccountData()
+        getDashboardData()
+          const firstSpeedometer = getPercentage(totalAmount, totalValue)
+          const secondSpeedometer = getPercentage(totalUsersAmount, totalUsers)
+          setFirstPercentage(firstSpeedometer)
+          setSecondPercentage(secondSpeedometer)
+      }, [totalValue, totalAmount, totalUsers, totalUsersAmount, dateDash])
+  
+  
+      // useEffect(() => {
+      //   console.log("date dash", typeof(dateDash), dateDash)
+      // }, [dateDash])
 
 
     return  <>
