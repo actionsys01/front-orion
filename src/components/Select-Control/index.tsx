@@ -13,18 +13,9 @@ interface Props extends SelectProps<OptionTypeBase> {
 export default function Select({ name, options, ...rest }: Props) {
   const selectRef = useRef(null);
   const { fieldName, defaultValue, registerField, error } = useField(name);
-  const { setIsStatusSelected } = useControlFilter();
   const [ fieldStatus, setFieldStatus ] = useState("")
 
-  function getField(field) {
-      console.log(`e?.value`, field)
-    if(field === "status") {
-      console.log("foi foi foi")
-      setIsStatusSelected(true)
-    } if (field != "status") {
-        setIsStatusSelected(false)
-    }
-  }
+
 
   useEffect(() => {
     registerField({
@@ -56,7 +47,6 @@ export default function Select({ name, options, ...rest }: Props) {
       defaultValue={
         defaultValue && options.find((option) => option.value === defaultValue)
       }
-      onChange={(e: any) => getField(e?.value)}
       ref={selectRef}
       classNamePrefix="react-select"
       options={options}
