@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { Plus, Filter } from "@geist-ui/react-icons"
 import { EntranceGrid, BtnRow } from './style';
-import Popover from '@components/Popover';
+import Popover from "@components/Popover";
 import * as entrances from "@services/controle-entrada";
 import { useToasts } from "@geist-ui/react";
 import { useSession } from "next-auth/client";
@@ -225,10 +225,10 @@ export default function ControleEntrada() {
         if(entrance){
             const sliceNullControl = entrance.filter((item) => item.controle_entrada != null)
             // console.log(`sliceNullControl`, sliceNullControl)
-            sliceNullControl.forEach((item) => {
+            sliceNullControl.forEach((item, i) => {
                 allData.push({
                     ...item,
-                    option: <Popover content={[
+                    option: <Popover num={i} content={[
                         {
                             optionName: 'Autorizar',
                             onClick: () => handleApproval(item.controle_entrada.id)

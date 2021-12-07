@@ -116,7 +116,7 @@ export default function Planos() {
             accountData.forEach((item) => {
                 allData.push({
                     ...item,
-                    option: <Popover content={[
+                    option: <Popover  quant={2} content={[
                         {optionName: "Editar", 
                         onClick: () => {const apps = item.aplicacoes;
                         edit(item, apps)}},

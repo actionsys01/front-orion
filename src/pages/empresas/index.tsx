@@ -107,7 +107,7 @@ const getCompanyData = useCallback(async () => {
             company.forEach((item) => {
                 allData.push({
                     ...item,
-                    option:  <Popover content={[{optionName: "Editar", 
+                    option:  <Popover quant={2} content={[{optionName: "Editar", 
                     onClick: () => {const accountData = item.plano; 
                     edit(item, accountData)} }, {optionName: "Deletar", 
                     onClick: () => exclude(item.id)}]}/>,

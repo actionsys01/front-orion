@@ -107,10 +107,10 @@ export default function CnpjsEmpresa() {
     const gatheredData = useMemo(() => {
         const allData: any = [];
         if(cnpj) {
-            cnpj.forEach((item) => {
+            cnpj.forEach((item, i) => {
                 allData.push({
                     ...item,
-                    option: <Popover content={[
+                    option: <Popover num={i} quant={2} content={[
                         {
                             optionName: "Editar",
                             onClick: () => handleEdit(item)
@@ -125,7 +125,7 @@ export default function CnpjsEmpresa() {
         }
         return allData
     }, [cnpj])
-    console.log(cnpj)
+    // console.log(cnpj)
 
     return <>
             <Head>

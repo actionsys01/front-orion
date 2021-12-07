@@ -5,11 +5,11 @@ export const EntranceGrid = styled.div`
     box-sizing: border-box;
     overflow: auto;
     /* width: 81.6vw; */
+    min-height: 26rem;
     
     table {
       width: 100%;
       border-spacing: 0;
-      
      
       
       thead {
@@ -50,7 +50,6 @@ export const EntranceGrid = styled.div`
 
 
       tbody {
-           
         tr {
           td:first-child {
             padding-left: 10px;
