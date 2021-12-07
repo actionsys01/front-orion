@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { HiPlusCircle } from "react-icons/hi";
 import { useControlFilter } from "@contexts/ControlFilter";
 import colunas from "@utils/filtros-controle";
-import colunas_status from "@utils/colunas-status"
 import {
   BotaoIncluir,
   BotaoRemover,
@@ -15,7 +14,7 @@ import {
   Modal,
   ModalBackground,
 } from "@components/Filtro/styled";
-import { CustomSelect, SelectValue } from "./style"
+import { CustomSelect } from "./style"
 
 
 interface FormFilterData {
