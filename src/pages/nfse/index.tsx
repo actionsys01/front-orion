@@ -76,7 +76,7 @@ export default function Nfse() {
    const gatheredData = useMemo(() => {
       const allData: GatheredProps[] = []
       if(nfseData){                            
-         nfseData.forEach((item) => {
+         nfseData.forEach((item, i) => {
             allData.push({
                ...item,
                status_nota: (
@@ -86,34 +86,41 @@ export default function Nfse() {
                ),
                emissionDate: format(new Date(item.dt_hr_emi), "dd/MM/yyyy HH:mm:ss"),
                receiveDate: format(new Date(item.dt_hr_receb), "dd/MM/yyyy HH:mm:ss"),
-               option: <NfsePopover  content={[
+               option: <NfsePopover num={i}  content={[
+               {
+                     optionName: 'Visualizar',
+                     onClick: () => {
+                        const nfse_id = item.chave_nota;
+                        const status = item.prefeitura_status;
+                        router.push({
+                           pathname: "/nfse-detalhes",
+                           query: {nfse_id, status}
+                        })
+                     }
+               },
+               {
+                     optionName: 'Histórico de Nota',
+                     onClick: () => {
+                        const chave_nota = item.chave_nota;
+                        router.push({
+                           pathname: "/historico-notas",
+                           query: chave_nota
+                        })
+                     }
+               },
                   {
-                      optionName: 'Visualizar',
-                      onClick: () => {
-                         const nfse_id = item.id;
-                         router.push({
-                            pathname: "/nfse-detalhes",
-                            query: {nfse_id}
-                         })
-                      }
-                  },
-                  {
-                      optionName: 'Histórico de Nota',
-                      onClick: () => ""
-                  },
-                  {
-                      optionName: 'Download',
-                      onClick: () => ""
-                  },
-                  {
-                      optionName: 'Imprimir Nota',
-                      onClick: () => ""
-                  }
-              ]}/>
-            })
+                     optionName: 'Download',
+                     onClick: () => ""
+               },
+               {
+                     optionName: 'Imprimir Nota',
+                     onClick: () => ""
+               }
+            ]}/>
          })
+      })
       }
-      console.log(`allData`, allData)
+      // console.log(`allData`, allData)
       return allData
    }, [nfseData])
 

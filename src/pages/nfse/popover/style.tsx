@@ -48,6 +48,21 @@ div:before {
 	margin-top: -17px;
 	margin-left: -11px;
 }
+    .beforeLast-prop {
+            bottom: -1.565rem;
+    }
+
+    .beforeLast-prop:before {
+        margin-top: 36px;
+    }
+
+    .last-prop {
+            bottom: -.565rem;
+    }
+
+    .last-prop:before {
+        margin-top: 52px;
+    }
 `
 
 export const PopBackground = styled.div`

@@ -1,6 +1,6 @@
 export const nfseXmlData = [
     {
-    "@versao": "1.2",
+    "versao": "1.2",
     "Id": "00001530",
     "Numero": "00001530",
     "CodigoVerificacao": "PSTJ-WVWT",
@@ -92,22 +92,22 @@ export const nfseXmlData = [
     "OutrasInformacoes": "PEDIDO:400339#(1) ESTA NFS-E FOI EMITIDA COM RESPAIDO NA LEI NO 14.097/2005; (2) DOCUMENTO EMITIDO POR ME OU EPP OPTANTE PEIO SIMPIES NACIONAI; (3) ESTA NFS-E SUBSTITUI O RPS NO 407 SERIE 1, EMITIDO EM 07/01/2021;",
     "ImpostosRetidos": {
        "AlqCsll": "0",
-       "VlrCsll": "0",
-       "AlqCofins": "0",
-       "VlrCofins": "0",
-       "AlqPisPasep": "0",
+       "VlrCsll": "155.00",
+       "AlqCofins": "25,00",
+       "VlrCofins": "33,00",
+       "AlqPisPasep": "21,92",
        "VlrPisPasep": "0",
-       "AlqIrrf": "0",
-       "VlrIrrf": "0",
+       "AlqIrrf": "42.55",
+       "VlrIrrf": "12.90",
        "AlqIssRetido": "0",
        "VlrIssRetido": "0",
-       "AlqInss": "0",
-       "VlrInss": "0"
+       "AlqInss": "16.22",
+       "VlrInss": "4.24"
     },
     "Iss": {
-       "BaseCalculo": "0",
-       "Aliquota": "0",
-       "Vlr": "0",
+       "BaseCalculo": "26.15",
+       "Aliquota": "0.6",
+       "Vlr": "26.20",
        "DtVenc": "2021-01-07T00:00:00"
     },
     "Rps": {
