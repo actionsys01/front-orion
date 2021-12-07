@@ -42,7 +42,7 @@ interface IProps {
     versao: string;
   };
 }
-export default function AbaNotaReferenciada({ data }: IProps) {
+export default function AbaNotaReferenciada({ data }) {
   const [notasReferenciadas, setNotasReferenciadas] = useState([]);
 
   useEffect(() => {

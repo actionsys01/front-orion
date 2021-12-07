@@ -38,7 +38,7 @@ export default function NfeDetalhes() {
       IE: string;
     };
   } | any>({
-    url: `/ctes/${router.query?.chave_nota}`,
+    url: `/ctes/informations/${router.query?.chave_nota}`,
   });
 
  

@@ -5,6 +5,7 @@ import DadosGeraisNfe from "../DadosGeraisNfe";
 import { Titulo, GridAlinhaTextoCentro } from "../styled";
 import { BackgroundCinza } from "@components/BackgroundCinza/styled";
 import { Tag } from "@geist-ui/react-icons";
+import { nfeXmlProps } from "@services/nfe/dtos/nfeXml"
 
 interface Produto {
   cProd: string;
@@ -75,7 +76,7 @@ interface IProps {
   };
 }
 
-export default function AbaProdutosServicos({ data }: IProps) {
+export default function AbaProdutosServicos({ data }) {
 
   const produtos = useMemo(() => {
     let products: any[] = [];

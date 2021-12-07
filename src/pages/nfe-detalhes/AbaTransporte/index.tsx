@@ -52,7 +52,7 @@ interface IProps {
     };
   };
 }
-export default function AbaTransporte({ data }: IProps) {
+export default function AbaTransporte({ data }) {
   const volumes = useTransformArray(data?.transporte.vol);
   
   return (

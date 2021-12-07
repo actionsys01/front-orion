@@ -33,7 +33,7 @@ interface IProps {
     };
   };
 }
-export default function AbaCobranca({ data }: IProps) {
+export default function AbaCobranca({ data }) {
   const cobrancas = useTransformArray(data?.cobranca?.dup);
 
   return (
