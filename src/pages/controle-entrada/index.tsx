@@ -154,6 +154,11 @@ export default function ControleEntrada() {
             setModalStatus("cancelar")
             setVisibleModal(true)
         }, [])
+
+        function handleFinished() {
+            setModalStatus("fechado")
+            setVisibleModal(true)
+        }
     
         async function updateEntrance() {
             try {
@@ -231,7 +236,7 @@ export default function ControleEntrada() {
                     option: <Popover content={[
                         {
                             optionName: 'Autorizar',
-                            onClick: () => handleApproval(item.controle_entrada.id)
+                            onClick: item.controle_entrada?.status === 2 ? () => handleFinished() : () => handleApproval(item.controle_entrada.id)
                         },
                         {
                             optionName: 'Editar',

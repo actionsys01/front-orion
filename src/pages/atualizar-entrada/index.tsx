@@ -430,13 +430,15 @@ export default function AtualizarEntrada() {
                                 <span>Data Chegada</span>
                                 <input type="date" readOnly={entranceFinished}
                                 value={!entranceFocus ? format(new Date(arrivalDate), "yyyy-MM-dd")  : dataEntrada}   
-                                    onChange={(e) => {setDataEntrada(e.target.value), setHasChanged(true)}} onFocus={() => setEntranceFocus(true)}/>
+                                    onChange={(e) => {setDataEntrada(e.target.value), setHasChanged(true)}} 
+                                    onFocus={entranceFinished ? () => "" : () => setEntranceFocus(true)}/>
                             </div>
                             <div>
                                 <span>Data Saída</span>
                                 <input type="date" readOnly={entranceFinished}
                                  value={!exitFocus ? format(new Date(exitDate), "yyyy-MM-dd"): dataSaida}  
-                                    onChange={(e) => {setDataSaida(e.target.value), setHasSChanged(true)}} onFocus={() => setExitFocus(true)}/>
+                                    onChange={(e) => {setDataSaida(e.target.value), setHasSChanged(true)}} 
+                                    onFocus={entranceFinished ? () => "" : () => setExitFocus(true)}/>
                             </div>
                         </Column>
                         <Column>
@@ -444,13 +446,15 @@ export default function AtualizarEntrada() {
                                 <span>Hora Chegada</span>
                                 <input type="time"  readOnly={entranceFinished}
                                 value={!entranceFocus ? format(new Date(arrivalDate), "HH:mm") : arrivalTime} 
-                                onChange={(e) => {setArrivalTime(e.target.value), setHasChanged(true)}} onFocus={() => setEntranceFocus(true)} />
+                                onChange={(e) => {setArrivalTime(e.target.value), setHasChanged(true)}} 
+                                onFocus={entranceFinished ? () => "" : () => setEntranceFocus(true)} />
                             </div>
                             <div>
                                 <span>Hora Saída</span>
                                 <input type="time" readOnly={entranceFinished}
                                  value={!exitFocus ? format(new Date(exitDate), "HH:mm"): exitTime}  
-                                 onChange={(e) => {setExitTime(e.target.value), setHasSChanged(true)}} onFocus={() => setExitFocus(true)}/>
+                                 onChange={(e) => {setExitTime(e.target.value), setHasSChanged(true)}} 
+                                 onFocus={entranceFinished ? () => "" : () => setExitFocus(true)}/>
                             </div>
                         </Column>
                         
