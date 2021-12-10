@@ -30,14 +30,14 @@ const formattedData = useMemo(() => {
         xmlData.forEach((item) => {
             allData.push({
                 ...item,
-                emissionDate: format(new Date(item.DtEmissao), "dd/MM/yyyy"),
+                emissionDate: format(new Date(item.dtEmissao), "dd/MM/yyyy"),
                 chave_nota: router.query?.nfse_id,
                 status_prefeitura: router.query?.status.toString() === "100" ? "Autorizado" : "Cancelada",
-                expiringIssDate: format(new Date(item.Iss.DtVenc),"dd/MM/yyyy")
+                expiringIssDate: format(new Date(item.iss.dtVenc),"dd/MM/yyyy")
             })
         }) 
     }
-    console.log(`allD`, allData)
+    // console.log(`allD`, allData)
     return allData
 }, [xmlData])
 
@@ -70,7 +70,7 @@ console.log(`xmlData`, xmlData)
                         </div>
                         <div>
                             <h5>Número</h5>
-                            <h6>{item.Numero} </h6>
+                            <h6>{item.numero} </h6>
                         </div>
                         <div>
                             <h5>Status</h5>
@@ -78,7 +78,7 @@ console.log(`xmlData`, xmlData)
                         </div>
                         <div>
                             <h5>Código de Verificação</h5>
-                            <h6>{item.CodigoVerificacao}</h6>
+                            <h6>{item.codigoVerificacao}</h6>
                         </div>
                     </div>
                     ) )}

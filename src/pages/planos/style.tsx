@@ -91,6 +91,13 @@ export const AccountGrid = styled.div`
           td:first-child {
             padding-left: 10px;
           }
+          td:nth-child(3) {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 305px;
+            padding-right: 20px;
+
+          }
           td {
             border-bottom: 1px solid #eaeaea;
             color: #444;

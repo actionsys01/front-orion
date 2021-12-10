@@ -15,158 +15,159 @@ export interface NfseProps {
 
 export interface NfseFormattedProps {
     versao: string,
-    Id: string,
-    Numero: string,
-    CodigoVerificacao: string,
-    DtEmissao: string
-    NumeroNFSeSubstituida: string,
-    Serie: string,
-    DtPrestacaoServico:string,
-    Exigibilidade: string,
-    DadosTomador: {
+    id: string,
+    numero: string,
+    codigoVerificacao: string,
+    dtEmissao: string
+    numeroNFSeSubstituida: string,
+    serie: string,
+    dtPrestacaoServico:string,
+    exigibilidade: string,
+    dadosTomador: {
       //  Cpf: ,
-       Cnpj: string,
-       InscricaoMunicipal: string,
-       InscricaoEstadual: string,
-       Nome: string,
-       RazaoSocial: string,
-       NomeFantasia: string,
-       Endereco: {
-          Endereco: string,
-          Numero: string,
-          Complemento: string,
-          Bairro:string,
-          Cep: string,
-          Municipio: string,
-          Uf: string,
-          Pais: string,
-          CodigoIBGE: string
+       cnpj: string,
+       inscricaoMunicipal: string,
+       inscricaoEstadual: string,
+       nome: string,
+       razaoSocial: string,
+       nomeFantasia: string,
+       endereco: {
+          logradouro: string,
+          numero: string,
+          complemento: string,
+          bairro:string,
+          cep: string,
+          municipio: string,
+          uf: string,
+          pais: string,
+          codigoIBGE: string
        },
-       Contato: {
-          Telefone: string,
-          Email: string
+       contato: {
+          telefone: string,
+          email: string
        },
-       Regime: string
-       CodigoMobiliario: string
+       regime: string
+       codigoMobiliario: string
     },
-    DadosPrestador: {
+    dadosPrestador: {
       //  Cpf: [],
-       Cnpj: string,
-       InscricaoMunicipal: string,
-       InscricaoEstadual: string,
-       Nome: string,
-       RazaoSocial: string,
-       NomeFantasia: string,
-       Endereco: {
-          Endereco:string
-          Numero: string
-          Complemento: string
-          Bairro: string
-          Cep: string
-          Municipio: string
-          Uf: string
-          Pais: string,
-          CodigoIBGE: string
+       cnpj: string,
+       inscricaoMunicipal: string,
+       inscricaoEstadual: string,
+       nome: string,
+       razaoSocial: string,
+       nomeFantasia: string,
+       endereco: {
+          logradouro:string
+          numero: string
+          complemento: string
+          bairro: string
+          cep: string
+          municipio: string
+          uf: string
+          pais: string,
+          codigoIBGE: string
        },
-       Contato: {
-          Telefone: string,
-          Email: string
+       contato: {
+          telefone: string,
+          email: string
        },
-       Regime: string,
-       CodigoMobiliario: string
+       regime: string,
+       codigoMobiliario: string
     },
-    DadosIntermediario: {
+    dadosIntermediario: {
       //  Cpf: [],
-       Cnpj: string,
-       InscricaoMunicipal: string,
-       InscricaoEstadual: string,
-       Nome: string ,
-       RazaoSocial: string ,
-       NomeFantasia: string ,
-       Endereco: {
-          Endereco:string,
-          Numero: string,
-          Complemento:string ,
-          Bairro: string,
-          Cep: string,
-          Municipio: string,
-          Uf: string,
-          Pais: string,
-          CodigoIBGE: string
+       cnpj: string,
+       inscricaoMunicipal: string,
+       inscricaoEstadual: string,
+       nome: string ,
+       razaoSocial: string ,
+       nomeFantasia: string ,
+       endereco: {
+          logradouro:string,
+          numero: string,
+          complemento:string ,
+          bairro: string,
+          cep: string,
+          municipio: string,
+          uf: string,
+          pais: string,
+          codigoIBGE: string
        },
-       Contato: {
-          Telefone: string,
-          Email:string
+       contato: {
+          telefone: string,
+          email:string
        },
-       Regime: string,
-       CodigoMobiliario: string
+       regime: string,
+       codigoMobiliario: string
     },
-    Itens: string,
-    DiscriminacaoServico: string,
-    OutrasInformacoes: string,
-    ImpostosRetidos: {
-       AlqCsll: string,
-       VlrCsll: string,
-       AlqCofins: string,
-       VlrCofins: string,
-       AlqPisPasep: string,
-       VlrPisPasep: string,
-       AlqIrrf: string,
-       VlrIrrf: string,
-       AlqIssRetido: string,
-       VlrIssRetido: string,
-       AlqInss: string,
-       VlrInss: string
+    itens: string,
+    discriminacaoServico: string,
+    outrasInformacoes: string,
+    impostosRetidos: {
+       alqCsll: string,
+       vlrCsll: string,
+       alqCofins: string,
+       vlrCofins: string,
+       alqPisPasep: string,
+       vlrPisPasep: string,
+       alqIrrf: string,
+       vlrIrrf: string,
+       alqIssRetido: string,
+       vlrIssRetido: string,
+       alqInss: string,
+       vlrInss: string
     },
-    Iss: {
-       BaseCalculo: string,
-       Aliquota: string,
-       Vlr: string,
-       DtVenc: string
+    iss: {
+       baseCalculo: string,
+       aliquota: string,
+       vlr: string,
+       dtVenc: string
     },
-    Rps: {
-       Numero: string,
-       Serie: string,
-       Tipo: string,
-       DtEmissao: string
+    rps: {
+       numero: string,
+       serie: string,
+       tipo: string,
+       dtEmissao: string
     },
-    ConstrucaoCivil: {
-       Art: string,
-       CodigoObra: string
+    construcaoCivil: {
+       art: string,
+       codigoObra: string
     },
-    VlrTotal: string,
-    VlrServicos: string,
-    VlrLiquido: string,
-    VlrDeducoes: string,
-    VlrCredito: string,
-    VlrDesconto: string,
-    VlrRetencoesFederais: string,
-    VlrOutrasRetencoes: string,
-    DescontoCondicionado: string,
-    DescontoIncondicionado: string,
-    MesCompetencia:string,
-    MunicipioIncidencia: string,
-    Recolhimento: string,
-    Tributacao: string,
-    CNAE: string,
-    DescricaoAtividade: string,
-    DescricaoTipoServico: string,
-    LocalPrestacao: string,
-    NaturezaOperacao: string,
-    OptanteSimplesNacional:string,
-    IncentivadorCultural: string,
-    RegimeEspecialTributacao: string,
-    DtPagamento: string,
-    NumeroGuia: string,
-    ItemListaServico: string,
-    CodigoTributacaoMunicipio: string,
-    PedidoCompra: {
-       Numero: string,
-       Itens: string
+    vlrTotal: string,
+    vlrServicos: string,
+    vlrLiquido: string,
+    vlrDeducoes: string,
+    vlrCredito: string,
+    vlrDesconto: string,
+    vlrRetencoesFederais: string,
+    vlrOutrasRetencoes: string,
+    descontoCondicionado: string,
+    descontoIncondicionado: string,
+    mesCompetencia:string,
+    municipioIncidencia: string,
+    recolhimento: string,
+    tributacao: string,
+    cnae: string,
+    descricaoAtividade: string,
+    descricaoTipoServico: string,
+    localPrestacao: string,
+    naturezaOperacao: string,
+    optanteSimplesNacional:string,
+    incentivadorCultural: string,
+    regimeEspecialTributacao: string,
+    dtPagamento: string,
+    numeroGuia: string,
+    itemListaServico: string,
+    codigoTributacaoMunicipio: string,
+    pedidoCompra: {
+       numero: string,
+       itens: string
     },
-    Particularidades: string,
+    particularidades: string,
     emissionDate: string,
     chave_nota: string
     status_prefeitura: string,
-    expiringIssDate: string
+    expiringIssDate: string,
+    serviceDate: string
  }
