@@ -3,16 +3,9 @@ import styled from "styled-components";
 export const TableGrid = styled.div`
       margin: 0;
       box-sizing: border-box;
-       overflow-x: auto;
-       overflow-y: auto;
-       /* scrollbar-gutter: unset; */
-     /* overflow-y: visible;
-     */
-     /* ::-webkit-scrollbar-thumb,::-webkit-scrollbar-track{
-        z-index: -10!important;
-        background-color: orange!important;
-        display: none;
-     } */
+      overflow-x: auto;
+      overflow-y: auto;
+      min-height: 26rem;
 
     table {
       width: 100%;

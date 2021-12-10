@@ -35,6 +35,14 @@ export const TabStyle = styled.div`
         }
     }
 
+    .second-row {
+        gap: 3rem;
+
+        > div:first-child {
+            margin-right: 15px;
+        }
+    }
+
     @media (max-width: 800px) {
         > div {
             > div {

@@ -4,7 +4,6 @@ import { useToasts, Dot, Tooltip } from "@geist-ui/react";
 import { Filter } from "@geist-ui/react-icons";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { NfseTable } from "./style";
 import  {format} from "date-fns";
 import {TableGrid} from "@styles/tableStyle"
 import {  Pages } from "@styles/pages";
@@ -12,8 +11,9 @@ import Pagination from "@material-ui/lab/Pagination";
 import { nfseNotas } from '@utils/mock-data/nfse-pages'
 import { nfseXmlData } from "@utils/mock-data/nfse-xml"
 import { NfseProps } from '@services/nfse/types/NfseProps';
-import NfsePopover from './popover';
+import Popover from "@components/Popover"
 import { FilterBtn } from "@styles/buttons"
+import Danfse from "@components/danfse"
 
 interface GatheredProps {
    id: number,
@@ -42,7 +42,7 @@ export default function Nfse() {
    const [session] = useSession();
    const router = useRouter()
 
-   console.log(`nfseXmlData`, nfseXmlData)
+   // console.log(`nfseXmlData`, nfseXmlData)
 
 
    const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
@@ -73,6 +73,17 @@ export default function Nfse() {
    }, [nfseData, quantityPage, page])
 
 
+   function printData(chave_nota){
+      try {
+         // const response = await request 
+         const data = nfseXmlData
+         Danfse(data, chave_nota)
+      } catch (error) {
+         console.log(error)
+      }
+   }
+
+
    const gatheredData = useMemo(() => {
       const allData: GatheredProps[] = []
       if(nfseData){                            
@@ -86,7 +97,7 @@ export default function Nfse() {
                ),
                emissionDate: format(new Date(item.dt_hr_emi), "dd/MM/yyyy HH:mm:ss"),
                receiveDate: format(new Date(item.dt_hr_receb), "dd/MM/yyyy HH:mm:ss"),
-               option: <NfsePopover num={i}  content={[
+               option: <Popover num={i} quant={4}  content={[
                {
                      optionName: 'Visualizar',
                      onClick: () => {
@@ -114,7 +125,10 @@ export default function Nfse() {
                },
                {
                      optionName: 'Imprimir Nota',
-                     onClick: () => ""
+                     onClick: () => {
+                        const chave_nota = item.chave_nota;
+                        printData(chave_nota)
+                     }
                }
             ]}/>
          })
@@ -129,7 +143,7 @@ export default function Nfse() {
       <Head>
             <title>Orion | NFS-e</title>
       </Head>
-   <h2>NFS-e</h2>
+   <h2>Painel de Controle NFS-e</h2>
          <FilterBtn>
             <button>
                <span><Filter/></span>

@@ -1,156 +1,156 @@
 export const nfseXmlData = [
     {
     "versao": "1.2",
-    "Id": "00001530",
-    "Numero": "00001530",
-    "CodigoVerificacao": "PSTJ-WVWT",
-    "DtEmissao": "2021-01-07T20:21:00",
-    "NumeroNFSeSubstituida": "879888",
-    "Serie": "41",
-    "DtPrestacaoServico": "2021-01-07T20:21:00",
-    "Exigibilidade": "padrão",
-    "DadosTomador": {
+    "id": "00001530",
+    "numero": "00001530",
+    "codigoVerificacao": "PSTJ-WVWT",
+    "dtEmissao": "2021-01-07T20:21:00",
+    "numeroNFSeSubstituida": "879888",
+    "serie": "41",
+    "dtPrestacaoServico": "2021-01-07T20:21:00",
+    "exigibilidade": "padrão",
+    "dadosTomador": {
       //  "Cpf": "",
-       "Cnpj": "04076904000151",
-       "InscricaoMunicipal": "33665299811",
-       "InscricaoEstadual": "336652998110",
-       "Nome": "PHIBRO SAUDE ANIMAL INTERNACIONAL LTDA.",
-       "RazaoSocial": "PHIBRO SAUDE ANIMAL INTERNACIONAL LTDA.",
-       "NomeFantasia": "SAUDE ANIMAL PHIBRO",
-       "Endereco": {
-          "Endereco": "AV PRESIDENTE TANCREDO DE ALMEIDA NEVES",
-          "Numero": "1063",
-          "Complemento": "1063",
-          "Bairro": "VILA SANT ANNA",
-          "Cep": "07112070",
-          "Municipio": "GUARULHOS",
-          "Uf": "SP",
-          "Pais": "Brasil",
-          "CodigoIBGE": "3518800"
+       "cnpj": "04076904000151",
+       "inscricaoMunicipal": "33665299811",
+       "inscricaoEstadual": "336652998110",
+       "nome": "PHIBRO SAUDE ANIMAL INTERNACIONAL LTDA.",
+       "razaoSocial": "PHIBRO SAUDE ANIMAL INTERNACIONAL LTDA.",
+       "nomeFantasia": "SAUDE ANIMAL PHIBRO",
+       "endereco": {
+          "endereco": "AV PRESIDENTE TANCREDO DE ALMEIDA NEVES",
+          "numero": "1063",
+          "complemento": "1063",
+          "bairro": "VILA SANT ANNA",
+          "cep": "07112070",
+          "municipio": "GUARULHOS",
+          "uf": "SP",
+          "pais": "Brasil",
+          "codigoIBGE": "3518800"
        },
-       "Contato": {
-          "Telefone": "1121854426",
-          "Email": "PAH.BRAZII.COMPRAS.MRO@PAHC.COM"
+       "contato": {
+          "telefone": "1121854426",
+          "email": "PAH.BRAZII.COMPRAS.MRO@PAHC.COM"
        },
-       "Regime": "padrão",
-       "CodigoMobiliario": "2399978"
+       "regime": "padrão",
+       "codigoMobiliario": "2399978"
     },
-    "DadosPrestador": {
+    "dadosPrestador": {
       //  "Cpf": [],
-       "Cnpj": "35475699000120",
-       "InscricaoMunicipal": "64508692",
-       "InscricaoEstadual": "1928655554",
-       "Nome": "EXCELLENCE - COMERCIO E MANUTENCAO DE ELEVADORES EIRELI",
-       "RazaoSocial": "EXCELLENCE - COMERCIO E MANUTENCAO DE ELEVADORES EIRELI",
-       "NomeFantasia": "EXCELLENCE EIRELI",
-       "Endereco": {
-          "Endereco": "AV IMIRIM",
-          "Numero": "3732",
-          "Complemento": "SALA01",
-          "Bairro": "IMIRIM",
-          "Cep": "02464600",
-          "Municipio": "SAO PAULO",
-          "Uf": "SP",
-          "Pais": "Brasil",
-          "CodigoIBGE": "3550308"
+       "cnpj": "35475699000120",
+       "inscricaoMunicipal": "64508692",
+       "inscricaoEstadual": "1928655554",
+       "nome": "EXCELLENCE - COMERCIO E MANUTENCAO DE ELEVADORES EIRELI",
+       "razaoSocial": "EXCELLENCE - COMERCIO E MANUTENCAO DE ELEVADORES EIRELI",
+       "nomeFantasia": "EXCELLENCE EIRELI",
+       "endereco": {
+          "logradouro": "AV IMIRIM",
+          "numero": "3732",
+          "complemento": "SALA01",
+          "bairro": "IMIRIM",
+          "cep": "02464600",
+          "municipio": "SAO PAULO",
+          "uf": "SP",
+          "pais": "Brasil",
+          "codigoIBGE": "3550308"
        },
-       "Contato": {
-          "Telefone": "87895551",
-          "Email": "phidro@empresa.com"
+       "contato": {
+          "telefone": "87895551",
+          "email": "phidro@empresa.com"
        },
-       "Regime": "padrão",
-       "CodigoMobiliario": "126776"
+       "regime": "padrão",
+       "codigoMobiliario": "126776"
     },
-    "DadosIntermediario": {
+    "dadosIntermediario": {
       //  "Cpf": [],
-       "Cnpj": "34445888722",
-       "InscricaoMunicipal": "202997776522",
-       "InscricaoEstadual": "3339898987665555",
-       "Nome": "TRANSPORTES OLIVAS ",
-       "RazaoSocial": "TRANSPORTES OLIVAS ",
-       "NomeFantasia": "TRANSPORTES OLIVAS ",
-       "Endereco": {
-          "Endereco": "Rua Groelândia",
-          "Numero": "7787",
-          "Complemento": "",
-          "Bairro": "Pinheiros",
-          "Cep": "05128-989",
-          "Municipio": "São Paulo",
-          "Uf": "SP",
-          "Pais": "Brasil",
-          "CodigoIBGE": "12012"
+       "cnpj": "34445888722",
+       "inscricaoMunicipal": "202997776522",
+       "inscricaoEstadual": "3339898987665555",
+       "nome": "TRANSPORTES OLIVAS ",
+       "razaoSocial": "TRANSPORTES OLIVAS ",
+       "nomeFantasia": "TRANSPORTES OLIVAS ",
+       "endereco": {
+          "logradouro": "Rua Groelândia",
+          "numero": "7787",
+          "complemento": "",
+          "bairro": "Pinheiros",
+          "cep": "05128-989",
+          "municipio": "São Paulo",
+          "uf": "SP",
+          "pais": "Brasil",
+          "codigoIBGE": "12012"
        },
-       "Contato": {
-          "Telefone": "11 34344872",
-          "Email": "olivastransportes@empresa.com"
+       "contato": {
+          "telefone": "11 34344872",
+          "email": "olivastransportes@empresa.com"
        },
-       "Regime": "padrão",
-       "CodigoMobiliario": "1290333"
+       "regime": "padrão",
+       "codigoMobiliario": "1290333"
     },
-    "Itens": "Caixas padronizadas",
-    "DiscriminacaoServico": "PAGAMENTO REFERENTE MANUTENCAO PREVENTIVA NO(S) ELEVADOR (ES) . REFERENTE AO MES : 12/2020 VENCIMENTO : 20/01/2021. VALOR APROXIMADO DOS TRIBUTOS R$70,20 (3 .9%) FONTE : IBPT.",
-    "OutrasInformacoes": "PEDIDO:400339#(1) ESTA NFS-E FOI EMITIDA COM RESPAIDO NA LEI NO 14.097/2005; (2) DOCUMENTO EMITIDO POR ME OU EPP OPTANTE PEIO SIMPIES NACIONAI; (3) ESTA NFS-E SUBSTITUI O RPS NO 407 SERIE 1, EMITIDO EM 07/01/2021;",
-    "ImpostosRetidos": {
-       "AlqCsll": "0",
-       "VlrCsll": "155.00",
-       "AlqCofins": "25,00",
-       "VlrCofins": "33,00",
-       "AlqPisPasep": "21,92",
-       "VlrPisPasep": "0",
-       "AlqIrrf": "42.55",
-       "VlrIrrf": "12.90",
-       "AlqIssRetido": "0",
-       "VlrIssRetido": "0",
-       "AlqInss": "16.22",
-       "VlrInss": "4.24"
+    "itens": "Caixas padronizadas",
+    "discriminacaoServico": "PAGAMENTO REFERENTE MANUTENCAO PREVENTIVA NO(S) ELEVADOR (ES) . REFERENTE AO MES : 12/2020 VENCIMENTO : 20/01/2021. VALOR APROXIMADO DOS TRIBUTOS R$70,20 (3 .9%) FONTE : IBPT.",
+    "outrasInformacoes": "PEDIDO:400339#(1) ESTA NFS-E FOI EMITIDA COM RESPAIDO NA LEI NO 14.097/2005; (2) DOCUMENTO EMITIDO POR ME OU EPP OPTANTE PEIO SIMPIES NACIONAI; (3) ESTA NFS-E SUBSTITUI O RPS NO 407 SERIE 1, EMITIDO EM 07/01/2021;",
+    "impostosRetidos": {
+       "alqCsll": "0",
+       "vlrCsll": "155.00",
+       "alqCofins": "25,00",
+       "vlrCofins": "33,00",
+       "alqPisPasep": "21,92",
+       "vlrPisPasep": "0",
+       "alqIrrf": "42.55",
+       "vlrIrrf": "12.90",
+       "alqIssRetido": "0",
+       "vlrIssRetido": "0",
+       "alqInss": "16.22",
+       "vlrInss": "4.24"
     },
-    "Iss": {
-       "BaseCalculo": "26.15",
-       "Aliquota": "0.6",
-       "Vlr": "26.20",
-       "DtVenc": "2021-01-07T00:00:00"
+    "iss": {
+       "baseCalculo": "26.15",
+       "aliquota": "0.6",
+       "vlr": "26.20",
+       "dtVenc": "2021-01-07T00:00:00"
     },
-    "Rps": {
-       "Numero": "407",
-       "Serie": "1",
-       "Tipo": "Padrão",
-       "DtEmissao": "2021-01-07T00:00:00"
+    "rps": {
+       "numero": "407",
+       "serie": "1",
+       "tipo": "Padrão",
+       "dtEmissao": "2021-01-07T00:00:00"
     },
-    "ConstrucaoCivil": {
-       "Art": "1220011",
-       "CodigoObra": "1406"
+    "construcaoCivil": {
+       "art": "1220011",
+       "codigoObra": "1406"
     },
-    "VlrTotal": "1800.00",
-    "VlrServicos": "1800.00",
-    "VlrLiquido": "0.00",
-    "VlrDeducoes": "0.00",
-    "VlrCredito": "0.00",
-    "VlrDesconto": "0.00",
-    "VlrRetencoesFederais": "0.00",
-    "VlrOutrasRetencoes": "0.00",
-    "DescontoCondicionado": "0",
-    "DescontoIncondicionado": "0",
-    "MesCompetencia": "01/2021",
-    "MunicipioIncidencia": "GUARULHOS",
-    "Recolhimento": "padrão",
-    "Tributacao": "padronizada",
-    "CNAE": "1109099",
-    "DescricaoAtividade": "Transporte e Assistência",
-    "DescricaoTipoServico": "07498 - Conserto, restauração, manutenção e conservação de máquinas, equipamentos, eIevadores e congêneres.",
-    "LocalPrestacao": "GUARULHOS",
-    "NaturezaOperacao": "Padrão",
-    "OptanteSimplesNacional": "S",
-    "IncentivadorCultural": "T",
-    "RegimeEspecialTributacao": "ICMS00",
-    "DtPagamento": "2021-01-07T00:00:00",
-    "NumeroGuia": "3134444",
-    "ItemListaServico": "14.01",
-    "CodigoTributacaoMunicipio": "07498",
-    "PedidoCompra": {
-       "Numero": "090930930390939",
-       "Itens": "Padrão"
+    "vlrTotal": "1800.00",
+    "vlrServicos": "1800.00",
+    "vlrLiquido": "0.00",
+    "vlrDeducoes": "0.00",
+    "vlrCredito": "0.00",
+    "vlrDesconto": "0.00",
+    "vlrRetencoesFederais": "0.00",
+    "vlrOutrasRetencoes": "0.00",
+    "descontoCondicionado": "0",
+    "descontoIncondicionado": "0",
+    "mesCompetencia": "01/2021",
+    "municipioIncidencia": "GUARULHOS",
+    "recolhimento": "padrão",
+    "tributacao": "padronizada",
+    "cnae": "1109099",
+    "descricaoAtividade": "Transporte e Assistência",
+    "descricaoTipoServico": "07498 - Conserto, restauração, manutenção e conservação de máquinas, equipamentos, eIevadores e congêneres.",
+    "localPrestacao": "GUARULHOS",
+    "naturezaOperacao": "Padrão",
+    "optanteSimplesNacional": "S",
+    "incentivadorCultural": "T",
+    "regimeEspecialTributacao": "ICMS00",
+    "dtPagamento": "2021-01-07T00:00:00",
+    "numeroGuia": "3134444",
+    "itemListaServico": "14.01",
+    "codigoTributacaoMunicipio": "07498",
+    "pedidoCompra": {
+       "numero": "090930930390939",
+       "itens": "Padrão"
     },
-    "Particularidades": "NFSE#17/03/2021|ORACULO|APROVAÇÃO AUTOMÁTICA - GERADA A PARTIR DA PRÉ-OCORRENCIA: 11158603#EMAIL#"
+    "particularidades": "NFSE#17/03/2021|ORACULO|APROVAÇÃO AUTOMÁTICA - GERADA A PARTIR DA PRÉ-OCORRENCIA: 11158603#EMAIL#"
  }
 
 ]

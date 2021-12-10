@@ -123,7 +123,6 @@ export default function Planos() {
                         {optionName: "Deletar", 
                         onClick: () => exclude(item.id)}
                     ]}/>,
-                    descricao: `Detalhes do ${item.nome}`
                 })
             })
         }

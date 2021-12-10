@@ -22,7 +22,7 @@ const AbaDadosComplementares = ({data}) => {
                 <h3>Outras Informações</h3>
                 <div>
                     <div>
-                        <h6>{item.OutrasInformacoes}</h6>
+                        <h6>{item.outrasInformacoes}</h6>
                     </div>
                 </div>
             </div>
@@ -32,8 +32,8 @@ const AbaDadosComplementares = ({data}) => {
                 <h3>Informações da Atividade</h3>
                 <div>
                     <div>
-                        <h6>{item.DescricaoAtividade}</h6>
-                        <h6>{item.DescricaoTipoServico}</h6>
+                        <h6>{item.descricaoAtividade}</h6>
+                        <h6>{item.descricaoTipoServico}</h6>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@ const AbaDadosComplementares = ({data}) => {
                 <h3>Particularidades da Nota</h3>
                 <div>
                     <div>
-                        <h6>{item.Particularidades}</h6>
+                        <h6>{item.particularidades}</h6>
                     </div>
                 </div>
             </div>
