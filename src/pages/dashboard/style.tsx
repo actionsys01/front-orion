@@ -58,6 +58,21 @@ export const InfoContainer = styled.div`
   justify-content: space-around;
   padding: 2rem;
 
+
+  > div:nth-child(2) {
+    box-sizing: border-box;
+    width: 32%;
+    white-space: nowrap;
+    height: 100%;
+    
+    > div {
+      p {
+        text-overflow: visible ;
+        /* width: 35%; */
+      }
+    }
+  }
+
   > div {
     display: flex;
     gap: 3rem;
@@ -74,6 +89,7 @@ export const InfoContainer = styled.div`
       white-space: normal;
       margin: 3rem 0;
       padding: 0 2rem;
+      -webkit-user-modify: read-write-plaintext-only;
     }
 
     svg {
@@ -94,4 +110,12 @@ export const InfoContainer = styled.div`
    flex-direction: column;
    height: fit-content;
   }
+
+  @media (min-width: 1890px) {
+    /* flex-direction: column;
+    height: fit-content; */
+    padding: 2rem 3rem;
+    justify-content: space-between;
+    /* align-items: start; */
+    }
 `
