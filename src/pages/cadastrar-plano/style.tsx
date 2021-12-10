@@ -9,7 +9,7 @@ export const InputContainer = styled.div`
    
    > div {
     width: 500px;
-    height: 285px;
+    height: 325px;
     border: 1px solid rgba(151, 151, 151, .45);
     padding: 1rem;
     gap: 10px;
@@ -31,6 +31,14 @@ export const InputContainer = styled.div`
             width: 100%;
             height: 28px;
             border: 1px solid #eaeaea;
+        }
+
+        textarea {
+            min-width: 230px;
+            width: 100%;
+            height: 75px;
+            border: 1px solid #eaeaea;
+            padding-inline-start: .225rem;
         }
 
      

@@ -19,6 +19,7 @@ userPermission: boolean;
 userUpdatePermission: boolean;
 userDeletePermission: boolean;
 entrancePermission: boolean;
+// test: any[]
 };
 
 interface Permissions {
@@ -49,13 +50,18 @@ const SecurityProvider: React.FC = ({ children }: any) => {
   const [userUpdatePermission, setUserUpdatePermission] = useState<boolean>(false)
   const [userDeletePermission, setUserDeletePermission] = useState<boolean>(false)
   const [, setToast] = useToasts();
+
+  // const [newPermissions, setNewPermissions] = useState({
+  //   visualizar: false,
+  //   historico: false,
+  //   ciencia: false,
+  //   confirmar: false,
+  //   desconhecimento: false,
+  //   op_nao_realizada: false
+  // })
+
+  // console.log(`newPermissions`, newPermissions)
  
-  // console.log("contextest:",permissions)
-  // // console.log("context:",permissions)
-  // // console.log("constext session:",session)
-  //  console.log("nfe H perm:",nfeHistoricalPermission)
-  //  console.log("cte H perm:", cteHistoricalPermission)
-  // console.log("portaria perm:",entrancePermission)
 
    const getPermissions = async () => {
      try {
@@ -100,15 +106,32 @@ const SecurityProvider: React.FC = ({ children }: any) => {
       setUserDeletePermission(Boolean(permissions?.find((item) => item.categoria === "USUARIO" && item.acao === "EXCLUIR")))
     }
    },[session, permissions])
-  
 
+
+
+  //  const test: any[] = permissions.filter((item) => item.categoria === "NFE")
+  //  const test2: string[] = test.map((item) => item.acao)
+
+  //  const util = ['VISUALIZAR', 'HISTORICO', 'CIENCIA', 'CONFRIMACAO', 'DESCONHECIMENTO', 'OPERACAO_NAO_REALIZADA']
+
+  //  function getNfePermissions() {
+  //    test.map((item) => {
+  //      for(let i = 0; i < util.length; i++){
+  //         util[i].includes(item.acao)
+  //    }
+  //    })
+     
+  //  }
+  
+  //  console.log(`test`, test2)
 
   return <SecurityContext.Provider value={{ 
     nfePermission, nfeHistoricalPermission, ctePermission, 
     cteHistoricalPermission, nfsePermission, userPermission,
     userUpdatePermission, userDeletePermission,  profilePermission, 
      entrancePermission, profileUpdatePermission, profileDeletePermission,
-     nfeAwarePermission, nfeConfirmPermission, nfeUnawarePermission, nfeUnauthorizedPermission
+     nfeAwarePermission, nfeConfirmPermission, nfeUnawarePermission, nfeUnauthorizedPermission,
+     /* test */
     }}>{children}</SecurityContext.Provider>;
 };
 

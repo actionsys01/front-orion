@@ -61,6 +61,20 @@ export const InfoContainer = styled.div`
   justify-content: space-around;
   padding: 2rem;
 
+  > div:nth-child(2) {
+    box-sizing: border-box;
+    width: 28%;
+    white-space: nowrap;
+    height: 100%;
+    
+    > div {
+      p {
+        text-overflow: visible ;
+        /* width: 35%; */
+      }
+    }
+  }
+
   > div {
     display: flex;
     gap: 3rem;
@@ -70,13 +84,15 @@ export const InfoContainer = styled.div`
       display: flex;
       flex-direction: column;
       align-items: center;
+      box-sizing: border-box;
 
     }
 
     p {
       white-space: normal;
-      margin: 3rem 0;
+      margin: 1.5rem 0;
       padding: 0 2rem;
+      -webkit-user-modify: read-write-plaintext-only;
     }
 
     svg {
