@@ -58,12 +58,13 @@ export const InfoContainer = styled.div`
   gap: 7rem;
   white-space: nowrap;
   align-items: center;
+  /* align-items: start; */
   justify-content: space-around;
   padding: 2rem;
 
   > div:nth-child(2) {
     box-sizing: border-box;
-    width: 28%;
+    width: 32%;
     white-space: nowrap;
     height: 100%;
     
@@ -120,5 +121,6 @@ export const InfoContainer = styled.div`
     height: fit-content; */
     padding: 2rem 3rem;
     justify-content: space-between;
+    /* align-items: start; */
     }
 `
