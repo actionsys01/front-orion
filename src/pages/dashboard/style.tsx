@@ -110,7 +110,15 @@ export const InfoContainer = styled.div`
   }
 
   @media (max-width: 1090px) {
-   flex-direction: column;
-   height: fit-content;
-  }
+    flex-direction: column;
+    height: fit-content;
+    }
+
+
+  @media (min-width: 1890px) {
+    /* flex-direction: column;
+    height: fit-content; */
+    padding: 2rem 3rem;
+    justify-content: space-between;
+    }
 `
