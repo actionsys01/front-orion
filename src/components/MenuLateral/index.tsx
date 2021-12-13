@@ -22,7 +22,6 @@ import {
 } from "react-pro-sidebar";
 import {useSecurityContext} from "@contexts/security"
 import { useCertificateContext } from '@contexts/certificate';
-import * as dashboard from "@services/empresas"
 
 interface IProps {
   setCollapsed(collapsed: boolean): void;

@@ -17,12 +17,14 @@ export const TabStyle = styled.div`
         padding: 10px;
         background-color: #ebebeb;
         width: 100%;
+        box-sizing: border-box;
         /* height: 100%; */
 
 
         > div {
             display: flex;
             gap: 3rem;
+            box-sizing: border-box;
         }
 
 

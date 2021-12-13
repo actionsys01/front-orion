@@ -234,7 +234,17 @@ const AbaNfse = ({data}) => {
         </DadosStyle>
         <TabStyle>
             <div>
-                <h3>Discriminação dos Serviços Prestados</h3>
+                <h3>Discriminação dos serviços prestados</h3>
+                <div>
+                    <div>
+                        <h6>{item.discriminacaoServico}</h6>
+                    </div>
+                </div>
+            </div>
+        </TabStyle>
+        <TabStyle>
+            <div>
+                <h3>Impostos</h3>
                 <div>
                     <div>
                         <h5>Alíquotas:</h5>
