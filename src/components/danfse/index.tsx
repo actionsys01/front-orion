@@ -180,18 +180,67 @@ function Danfse(data, chave_nota) {
 
     // IMPOSTOS 
 
-    const impostosTable = formattedData.map((item: NfseFormattedProps) => {
+    const impostosFirstRow = formattedData.map((item: NfseFormattedProps) => {
         return [
-            {text: '',  fontSize: 7,
-                bold: true,  alignment: "left", border: [true, false, true, true], margin: [0, 0]}, 
-            {text: '',  fontSize: 7,
-                bold: true,  alignment: "left", border: [true, false, true, true], margin: [0, 0]}, 
-            {text: '',  fontSize: 7,
-                bold: true,  alignment: "left", border: [true, false, true, true], margin: [0, 0]}, 
-            {text: '',  fontSize: 7,
-                bold: true,  alignment: "left", border: [true, false, true, true], margin: [0, 0]}, 
+            {text: 'ISS',  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]}, 
+            {text: item.iss.aliquota,  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]}, 
+            {text: item.iss.vlr,  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]},  
         ]
     })
+    const impostosSecondRow = formattedData.map((item: NfseFormattedProps) => {
+        return [
+            {text: 'IRFF',  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]}, 
+            {text: item.impostosRetidos.alqIrrf,  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]}, 
+            {text: item.impostosRetidos.vlrIrrf,  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]},  
+        ]
+    })
+    const impostosThirdRow = formattedData.map((item: NfseFormattedProps) => {
+        return [
+            {text: 'COFINS',  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]}, 
+            {text: item.impostosRetidos.alqCofins,  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]}, 
+            {text: item.impostosRetidos.vlrCofins,  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]},  
+        ]
+    })
+    const impostosFourthRow = formattedData.map((item: NfseFormattedProps) => {
+        return [
+            {text: 'INSS',  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]}, 
+            {text: item.iss.aliquota,  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]}, 
+            {text: item.iss.vlr,  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]},  
+        ]
+    })
+    const impostosFifthhRow = formattedData.map((item: NfseFormattedProps) => {
+        return [
+            {text: 'CSLL',  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]}, 
+            {text: item.iss.aliquota,  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]}, 
+            {text: item.iss.vlr,  fontSize: 6,
+                bold: true,  alignment: "center", border: [true, false, true, false], margin: [0, -2]},  
+        ]
+    })
+    const impostosSixthRow = formattedData.map((item: NfseFormattedProps) => {
+        return [
+        {text: 'PIS-PASEP',  fontSize: 6,
+            bold: true,  alignment: "center", border: [true, false, true, true], margin: [0, -2, 0, 1]}, 
+        {text: item.iss.aliquota,  fontSize: 6,
+            bold: true,  alignment: "center", border: [true, false, true, true], margin: [0, -2, 0, 1]}, 
+        {text: item.iss.vlr,  fontSize: 6,
+            bold: true,  alignment: "center", border: [true, false, true, true], margin: [0, -2, 0, 1]},  
+    ]
+})
+
 
     // VALOR TOTAL
 
@@ -403,16 +452,20 @@ function Danfse(data, chave_nota) {
         { //  IMPOSTOS
             table:{
                 headerRows: 1,
-                widths: ['*', '*', '*', '*'],
-                heights: [1, 20],
+                widths: ['*', '*', '*'],
+                heights: [2],
                 body: [
                     [
-                        {text: 'VALOR TOTAL', alignment: "center", fontSize: 4, border: [true, true, true, false]},
+                        {text: 'TRIBUTO', alignment: "center", fontSize: 4, border: [true, true, true, false]},
                         {text: 'ALÍQUOTA', alignment: "center", fontSize: 4, border: [true, true, true, false]},
-                        {text: 'IMPOSTOS', alignment: "center", fontSize: 4, border: [true, true, true, false]},
-                        {text: 'RETIDO', alignment: "center", fontSize: 4, border: [true, true, true, false]},
+                        {text: 'VALOR', alignment: "center", fontSize: 4, border: [true, true, true, false]},
                     ],
-                    ...impostosTable,
+                    ...impostosFirstRow,
+                    ...impostosSecondRow,
+                    ...impostosThirdRow,
+                    ...impostosFourthRow,
+                    ...impostosFifthhRow,
+                    ...impostosSixthRow,
                 ],
             }
         },
