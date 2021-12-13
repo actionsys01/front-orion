@@ -15,7 +15,7 @@ const AbaNfse = ({data}) => {
     const [ openFirstAccordion , setOpenFirstAccordion] = useState(false)
     const [ openSecondAccordion , setOpenSecondAccordion] = useState(false)
 
-    console.log(`data na aba principal`, data)
+    // console.log(`data na aba principal`, data)
 
     const accordionHandler = useCallback(() => {
             setOpenFirstAccordion(!openFirstAccordion)
@@ -28,11 +28,11 @@ const AbaNfse = ({data}) => {
 
     return <FullPage>
     {data.map((item: NfseFormattedProps, i: number) => (
-        <>
+        <div key={i}>
         <TabStyle>
             <div>
                 <h3>Dados NFS-e</h3>
-                    <div key={i}>
+                    <div >
                         <div>
                             <h5>Série</h5>
                             <h6>{item.serie} </h6>
@@ -322,7 +322,7 @@ const AbaNfse = ({data}) => {
                 </div>
             </div>
         </TabStyle>
-    </>
+    </div>
      ))}
      </FullPage>
 }

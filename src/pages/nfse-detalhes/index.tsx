@@ -45,7 +45,7 @@ useEffect(() => {
     getData()
 }, [xmlData])
 
-console.log(`xmlData`, xmlData)
+// console.log(`xmlData`, xmlData)
     return <>
             <Head>
                 <title>Orion | Detalhes NFS-e</title>
@@ -63,26 +63,25 @@ console.log(`xmlData`, xmlData)
                 <div>
                     <h3>Dados Gerais</h3>
                     {formattedData.map((item, i) => (
-                         <div key={i}>
-                        <div>
-                            <h5>Chave de Acesso</h5>
-                            <h6>{item.chave_nota} </h6>  
+                        <div key={i}>
+                            <div>
+                                <h5>Chave de Acesso</h5>
+                                <h6>{item.chave_nota} </h6>  
+                            </div>
+                            <div>
+                                <h5>Número</h5>
+                                <h6>{item.numero} </h6>
+                            </div>
+                            <div>
+                                <h5>Status</h5>
+                                <h6>{item.status_prefeitura}</h6>
+                            </div>
+                            <div>
+                                <h5>Código de Verificação</h5>
+                                <h6>{item.codigoVerificacao}</h6>
+                            </div>
                         </div>
-                        <div>
-                            <h5>Número</h5>
-                            <h6>{item.numero} </h6>
-                        </div>
-                        <div>
-                            <h5>Status</h5>
-                            <h6>{item.status_prefeitura}</h6>
-                        </div>
-                        <div>
-                            <h5>Código de Verificação</h5>
-                            <h6>{item.codigoVerificacao}</h6>
-                        </div>
-                    </div>
                     ) )}
-                   
                 </div>
             </NfseCardStyle>
             {!selectTab ? <AbaNfse data={formattedData} /> : <AbaDadosComplementares data={xmlData}/>}

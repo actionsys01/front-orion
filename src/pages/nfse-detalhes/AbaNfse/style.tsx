@@ -24,7 +24,11 @@ export const TabStyle = styled.div`
         > div {
             display: flex;
             gap: 3rem;
-            box-sizing: border-box;
+            
+            > div {
+                min-width: 45px;
+                /* margin-right: 11px; */
+            }
         }
 
 
@@ -43,12 +47,20 @@ export const TabStyle = styled.div`
         > div:first-child {
             margin-right: 15px;
         }
+      
     }
 
     @media (max-width: 800px) {
+        .second-row {
+            gap: 1.5rem;
+        }
         > div {
             > div {
                 gap: 1.5rem;
+
+                /* > div {
+                    min-width: 45px;
+                } */
             }
         }
     }

@@ -72,8 +72,12 @@ export const NfseCardStyle = styled.div`
     }
   }
 
-  @media (max-width: 1020px) {
+  @media (max-width: 1115px) {
     > div {
+
+      h5 {
+        white-space: normal;
+      }
       > div {
         /* flex-direction: column; */
         gap: 1rem;
