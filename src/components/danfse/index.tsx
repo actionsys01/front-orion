@@ -178,6 +178,21 @@ function Danfse(data, chave_nota) {
         ]
     })
 
+    // IMPOSTOS 
+
+    const impostosTable = formattedData.map((item: NfseFormattedProps) => {
+        return [
+            {text: '',  fontSize: 7,
+                bold: true,  alignment: "left", border: [true, false, true, true], margin: [0, 0]}, 
+            {text: '',  fontSize: 7,
+                bold: true,  alignment: "left", border: [true, false, true, true], margin: [0, 0]}, 
+            {text: '',  fontSize: 7,
+                bold: true,  alignment: "left", border: [true, false, true, true], margin: [0, 0]}, 
+            {text: '',  fontSize: 7,
+                bold: true,  alignment: "left", border: [true, false, true, true], margin: [0, 0]}, 
+        ]
+    })
+
     // VALOR TOTAL
 
     const totalValueFirstRow = formattedData.map((item: NfseFormattedProps) => {
@@ -381,6 +396,23 @@ function Danfse(data, chave_nota) {
                         {text: 'DESCRIÇÃO DO SERVIÇO', alignment: "left", fontSize: 4, border: [true, true, true, false]},
                     ],
                     ...servicesTable,
+                ],
+            }
+        },
+        {text: "IMPOSTOS",fontSize: 7, alignment: "center", bold: true, margin: [0, 5, 0, 5]},
+        { //  IMPOSTOS
+            table:{
+                headerRows: 1,
+                widths: ['*', '*', '*', '*'],
+                heights: [1, 20],
+                body: [
+                    [
+                        {text: 'VALOR TOTAL', alignment: "center", fontSize: 4, border: [true, true, true, false]},
+                        {text: 'ALÍQUOTA', alignment: "center", fontSize: 4, border: [true, true, true, false]},
+                        {text: 'IMPOSTOS', alignment: "center", fontSize: 4, border: [true, true, true, false]},
+                        {text: 'RETIDO', alignment: "center", fontSize: 4, border: [true, true, true, false]},
+                    ],
+                    ...impostosTable,
                 ],
             }
         },
