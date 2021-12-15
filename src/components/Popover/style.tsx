@@ -22,11 +22,18 @@ export const PopStyle = styled.div`
     padding: 8pt 12pt;
     text-align: center;
     
-        p { 
+        .able { 
             cursor: pointer;
             margin: 0;
             font-size: 0.875rem;
             line-height: 2rem;
+        }
+        .disabled {
+            cursor: not-allowed;
+            margin: 0;
+            font-size: 0.875rem;
+            line-height: 2rem;
+            color: #eaeaea;
         }
 }
 
@@ -145,11 +152,18 @@ export const PopStyleFourLines = styled.div`
     padding: 8pt 12pt;
     text-align: center;
     
-        p { 
+        .able { 
             cursor: pointer;
             margin: 0;
             font-size: 0.875rem;
             line-height: 2rem;
+        }
+        .disabled {
+            cursor: not-allowed;
+            margin: 0;
+            font-size: 0.875rem;
+            line-height: 2rem;
+            color: #eaeaea;
         }
 }
 

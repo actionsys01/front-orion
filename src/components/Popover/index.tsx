@@ -14,7 +14,7 @@ const Popover = (props: any) => {
 
     if(props.quant === 2) {
         return <>
-            <PopStyleDouble >
+            <PopStyleDouble>
                 <BsThreeDots onClick={visibleHandler} /> 
                 {visible && 
                 <div onMouseLeave={() => setVisible(false)} 
@@ -36,7 +36,7 @@ const Popover = (props: any) => {
                 <div onMouseLeave={() => setVisible(false)} 
                 className={props.num === 7 ? "last-prop" : props.num === 6 ? "beforeLast-prop" : ""}>
                     {props?.content?.map((item: any, i: any) => (
-                        <p key={i} onClick={item.onClick}>{item.optionName}</p>
+                        <p className={item.className} key={i} onClick={item.onClick}>{item.optionName}</p>
                     ))}
                     
                 </div>}
@@ -50,7 +50,7 @@ const Popover = (props: any) => {
                 <div onMouseLeave={() => setVisible(false)} 
                 className={props.num === 7 ? "last-prop" : props.num === 6 ? "beforeLast-prop" : ""}>
                     {props?.content?.map((item: any, i: any) => (
-                        <p key={i} onClick={item.onClick}>{item.optionName}</p>
+                        <p className={item.className} key={i} onClick={item.onClick}>{item.optionName}</p>
                     ))}
                     
                 </div>}

@@ -39,7 +39,14 @@ export default function MenuLateral({
   const [session] = useSession();
   const router = useRouter();
   const { limpar } = useFiltro();
-  const {nfePermission,ctePermission, nfsePermission, profilePermission, userPermission} = useSecurityContext()
+  const {nfePermission, 
+    ctePermission, 
+    nfsePermissions, 
+    userPermissions, 
+    profilePermission,
+    certificatePermissions, 
+    entrancePermissions,
+    cnpjPermissions} = useSecurityContext()
   const {isCertificated} = useCertificateContext()
 
 
@@ -49,7 +56,6 @@ export default function MenuLateral({
     await limpar();
     signOut();
   }
-
 
 
   return (
@@ -70,37 +76,40 @@ export default function MenuLateral({
               />
             )}
             <MenuItem icon={<img src="images/actionsys.jpg" style={{objectFit: "contain", borderRadius: "50%"}} />}
-             onClick={() => router.push("/dashboard")}>
-              Actionsys
+              onClick={() => router.push("/dashboard")}>
+                Actionsys
             </MenuItem>
               <SubMenu title="Painéis" icon={<FileText />}>
                 {nfePermission && <MenuItem onClick={() => router.push("/nfe")}>NF-e</MenuItem>}
                 {ctePermission && <MenuItem onClick={() => router.push("/cte")}>CT-e</MenuItem>}
-               {/*  {nfsePermission && */} <MenuItem onClick={() => router.push("/nfse")}>NFS-e</MenuItem>
+                {nfsePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/nfse")}>NFS-e</MenuItem>}
               </SubMenu>
               <SubMenu title="Aplicações" icon={<Grid />}>
-                <MenuItem onClick={() => router.push("/controle-entrada")}>Controle de Entrada</MenuItem>
-                {/* <MenuItem>Contagem Física</MenuItem>
-                <MenuItem>Controle Divergência</MenuItem> */}
+                {entrancePermissions.VISUALIZAR &&
+                <MenuItem onClick={() => router.push("/controle-entrada")}>
+                  Controle de Entrada
+                </MenuItem>}
               </SubMenu>
               <SubMenu title="Configurações" icon={<Settings />}>
-                {profilePermission && <MenuItem onClick={() => router.push("/perfil-acesso")}>
+                {profilePermission.ADICIONAR && <MenuItem onClick={() => router.push("/perfil-acesso")}>
                   Perfil de Acesso
                 </MenuItem>}
-                {userPermission && <MenuItem onClick={() => router.push("/usuarios")}>
+                {userPermissions.ADICIONAR && <MenuItem onClick={() => router.push("/usuarios")}>
                   Usuários
                 </MenuItem>}
-                <MenuItem onClick={() => router.push({
+              {certificatePermissions.ADICIONAR &&
+              <MenuItem onClick={() => router.push({
                   pathname: "/certificado-digital",
                   query: {isCertificated: "true"}
                 })}>
                     Certificado Digital
-                </MenuItem>
-                <MenuItem
+                </MenuItem>}
+                {cnpjPermissions.ADICIONAR &&
+                  <MenuItem
                 onClick={() => router.push("/cnpjs-empresa")}
                 >
                   CNPJs da Empresa
-                </MenuItem>
+                </MenuItem>}
                 {/* <MenuItem onClick={() => router.push("/empresas")}>
                   Cadastro de Empresa
                 </MenuItem>
