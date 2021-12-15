@@ -11,7 +11,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import  { Pages } from "@styles/pages";
 import { useToasts } from "@geist-ui/react";
 import ModalCnpjs from  "./modal"
-import { BsChevronCompactLeft } from 'react-icons/bs';
+import {useSecurityContext} from "@contexts/security"
 
 interface CnpjProps {
     id: number;
@@ -39,6 +39,7 @@ export default function CnpjsEmpresa() {
     const [ cnpj, setCnpj] = useState<CnpjProps[]>([])
     const [, setToast] = useToasts();
     const [ selectId, setSelectId] = useState(0)
+    const { cnpjPermissions } = useSecurityContext()
     // modal
     const[ visibleModal, setVisibleModal] = useState(false)
 
@@ -86,7 +87,7 @@ export default function CnpjsEmpresa() {
         },[],)
 
     async function deleteCnpj ()  {
-       console.log("id", selectId)
+    //    console.log("id", selectId)
         try {
             await companyRequest.deleteCnpj(selectId)
             getCompanyCnpj()
@@ -113,11 +114,11 @@ export default function CnpjsEmpresa() {
                     option: <Popover num={i} quant={2} content={[
                         {
                             optionName: "Editar",
-                            onClick: () => handleEdit(item)
+                            onClick: cnpjPermissions.EDITAR ? () => handleEdit(item) : () => ""
                         },
                         {
                             optionName: "Deletar",
-                            onClick: ()  => handleDelete(item.id)
+                            onClick: cnpjPermissions.EXCLUIR ? ()  => handleDelete(item.id) : () => ""
                         }
                     ]} />
                 })
@@ -133,7 +134,7 @@ export default function CnpjsEmpresa() {
             </Head>
             <h2>CNPJs da Empresa</h2>
             <AddBtn>
-                <button
+                <button disabled={cnpjPermissions.ADICIONAR}
                 onClick={() => router.push("/cadastrar-cnpj")} >
                     <span><Plus /></span>
                     Adicionar

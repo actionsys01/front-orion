@@ -33,7 +33,7 @@ acao: string
 const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) => {
     const [visible, setVisible] = useState(false)
     const { setVisible: setVisibleModal, bindings } = useModal();
-    const {profileUpdatePermission, profileDeletePermission} = useSecurityContext();
+    const { profilePermission } = useSecurityContext();
     const [name, setName] = useState<string>("");
     const [session] = useSession()
     const [descricao, setDescricao] = useState<string>("");
@@ -141,7 +141,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
               {...bindings}
               content={
                 <>
-                  {profileUpdatePermission && <Popover.Item>
+                  {profilePermission.EDITAR && <Popover.Item>
                     <Text
                       style={{ cursor: "pointer" }}
                       onClick={() => {
@@ -152,7 +152,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
                       Editar
                     </Text>
                   </Popover.Item>}
-                  {profileDeletePermission && <Popover.Item>
+                  {profilePermission.EXCLUIR && <Popover.Item>
                     <Text
                       style={{ cursor: "pointer" }}
                       onClick={() => {

@@ -7,7 +7,8 @@ import Modal from "./modal"
 import  {format} from "date-fns";
 import * as companyRequest from "@services/empresas";
 import { useSession } from "next-auth/client";
-import  {useCertificateContext} from "@contexts/certificate"
+import  { useCertificateContext } from "@contexts/certificate"
+import { useSecurityContext } from "@contexts/security"
 import CnpjsModal from "./cnpjs-modal"
 import { useToasts } from "@geist-ui/react";
 import DeletarModal from "./delete-modal"
@@ -39,6 +40,7 @@ export default function CertificadoDigital() {
     const [session] = useSession();
     const company_id = Number(session?.usuario.empresa.id)
     const { isCertificated } = useCertificateContext()
+    const { certificatePermissions } = useSecurityContext()
     const [, setToast] = useToasts();
     
 
@@ -72,27 +74,31 @@ export default function CertificadoDigital() {
         try {
             const response = await companyRequest.getCertificate(company_id)
             const data = response.data.certificate
-            console.log("certi",data)
+            // console.log("certi",data)
             setCnpj(data.cnpj)
             return data
         } catch (error) {
-            console.log(error)
-            setToast({
-                text: "Certificado excluído com sucesso",
-                type: "success"
-            })
+            // console.log(error)
+            // setToast({
+            //         text: "Houve um problema, por favor tente novamente",
+            //         type: "warning"
+            //     })
         }
     }
 
     async function deleteCertificate() {
         try {
             await companyRequest.deleteCertificate(Number(session.usuario.empresa.id))
+            setToast({
+                text: "Certificado excluído com sucesso",
+                type: "success"
+            })
         } catch (error) {
             console.log(error)
             setToast({
-                text: "Houve um problema, por favor tente novamente",
-                type: "warning"
-            })
+                    text: "Houve um problema, por favor tente novamente",
+                    type: "warning"
+                })
         }
         deleteModalHandler()
     }
@@ -141,11 +147,13 @@ export default function CertificadoDigital() {
                 </div>
             </Section>
             <BtnRow>
-                <button onClick={() => setDeleteModal(true)}>
+                <button disabled={!certificatePermissions.EXCLUIR}
+                    onClick={() => setDeleteModal(true)}>
                     <span><Trash2 /></span>
                         deletar
                 </button>
-                <button onClick={() => setVisibleModal(true)}>
+                <button disabled={!certificatePermissions.ADICIONAR}
+                    onClick={() => setVisibleModal(true)}>
                     <span><Plus /></span>
                         adicionar
                 </button>

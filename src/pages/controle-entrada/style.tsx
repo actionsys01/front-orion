@@ -124,10 +124,10 @@ export const BtnRow = styled.div`
             }
         }
     }
-
-
-    .filter {
-      box-sizing: border-box;
+    .disabled {
+        background-color: #eaeaea;
+        border: 1px solid #eaeaea;
+        box-sizing: border-box;
         display: inline-block;
         padding: 0 1.25rem;
         height: 2rem;
@@ -136,33 +136,22 @@ export const BtnRow = styled.div`
         border-radius: 5px;
         font-weight: 400;
         font-size: 0.875rem;
-        user-select: none;
-        outline: none;
-        text-transform: capitalize;
         justify-content: center;
         text-align: center;
         white-space: nowrap;
-        transition: background-color 200ms ease 0ms,box-shadow 200ms ease 0ms, border 200ms ease 0ms,color 200ms ease 0ms;
         position: relative;
-        overflow: hidden;
-        color: #fff;
-        background-color: #1C496A;
-        border: 1px solid #1C496A;
-        cursor: pointer;
-        pointer-events: auto;
-        box-shadow: none;
-
-        span {
-            display: flex;
-            position: absolute;
-            top: 8px;
-            
-            svg {
-                display: flex;
-                align-items: center;
-                height: 15px;
-                width: 15px;
-            }
-        }
+        cursor: not-allowed;
+          span {
+              display: flex;
+              position: absolute;
+              top: 8px;
+              
+              svg {
+                  display: flex;
+                  align-items: center;
+                  height: 15px;
+                  width: 15px;
+              }
+          }
     }
 `

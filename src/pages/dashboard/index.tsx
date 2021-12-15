@@ -17,7 +17,7 @@ export default function Dashboard() {
       nfePermission,
       ctePermission, 
       nfsePermission, 
-      userPermission, 
+      userPermissions, 
       profilePermission, 
       entrancePermission} 
       = useSecurityContext()

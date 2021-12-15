@@ -19,7 +19,7 @@ import {IUsuario} from "../index"
   }
 
 const UserPopover:  React.FC<PopoverProps> = ({data, setUsuarios, usuarios}) => {
-    const {userDeletePermission, userUpdatePermission, userPermission} = useSecurityContext()
+    const { userPermissions } = useSecurityContext()
     const router = useRouter();
     const [visible, setVisible] = useState(false)
     const { setVisible: setVisibleModal, bindings } = useModal();
@@ -65,7 +65,7 @@ const UserPopover:  React.FC<PopoverProps> = ({data, setUsuarios, usuarios}) => 
       placement="right"
       content={
         <>
-          {/* {userUpdatePermission && */}
+          {userPermissions.EDITAR &&
             <Popover.Item>
             <Text
               style={{
@@ -84,8 +84,8 @@ const UserPopover:  React.FC<PopoverProps> = ({data, setUsuarios, usuarios}) => 
             >
               Editar
             </Text>
-          </Popover.Item>
-        { userDeletePermission && 
+          </Popover.Item>}
+        { userPermissions.EXCLUIR && 
           <Popover.Item> 
             <Text
               style={{

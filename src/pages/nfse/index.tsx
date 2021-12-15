@@ -14,6 +14,7 @@ import { NfseProps } from '@services/nfse/types/NfseProps';
 import Popover from "@components/Popover"
 import { FilterBtn } from "@styles/buttons"
 import Danfse from "@components/danfse"
+import { useSecurityContext } from "@contexts/security"
 
 interface GatheredProps {
    id: number,
@@ -36,11 +37,12 @@ interface GatheredProps {
 
 export default function Nfse() {
    const [ nfseData, setNfseData] = useState<NfseProps[]>([])
-   // const  { nfes  } = useFiltro();
+   // const  { nfses  } = useFiltro();
    const [page, setPage] = useState(1);
    const [quantityPage, setQuantityPage] = useState(1)
    const [session] = useSession();
    const router = useRouter()
+   const { nfsePermissions } = useSecurityContext()
 
    // console.log(`nfseXmlData`, nfseXmlData)
 
@@ -100,35 +102,39 @@ export default function Nfse() {
                option: <Popover num={i} quant={4}  content={[
                {
                      optionName: 'Visualizar',
-                     onClick: () => {
+                     onClick: nfsePermissions.VISUALIZAR ? () => {
                         const nfse_id = item.chave_nota;
                         const status = item.prefeitura_status;
                         router.push({
                            pathname: "/nfse-detalhes",
                            query: {nfse_id, status}
                         })
-                     }
+                     } : () => '',
+                     className: nfsePermissions.VISUALIZAR ? 'able' : 'disabled'
                },
                {
                      optionName: 'Histórico de Nota',
-                     onClick: () => {
+                     onClick: nfsePermissions.HISTORICO ? () => {
                         const chave_nota = item.chave_nota;
                         router.push({
                            pathname: "/historico-notas",
                            query: chave_nota
                         })
-                     }
+                     } : () => '',
+                     className: nfsePermissions.HISTORICO ? 'able' : 'disabled'
                },
                   {
                      optionName: 'Download',
-                     onClick: () => ""
+                     onClick: () => "",
+                     className: 'able'
                },
                {
                      optionName: 'Imprimir Nota',
-                     onClick: () => {
+                     onClick: nfsePermissions.IMPRIMIR ? () => {
                         const chave_nota = item.chave_nota;
                         printData(chave_nota)
-                     }
+                     } : () => '',
+                     className: nfsePermissions.IMPRIMIR ? 'able' : 'disabled'
                }
             ]}/>
          })
@@ -167,6 +173,7 @@ export default function Nfse() {
                         <th>Data/Hora Recebimento</th>
                      </tr>
                   </thead>
+                  {nfsePermissions.VISUALIZAR &&
                   <tbody>
                      {gatheredData.map((item , i) => (
                         <tr key={i}>
@@ -183,7 +190,7 @@ export default function Nfse() {
                         <td>{item.receiveDate}</td>
                      </tr>
                      ))}
-                  </tbody>
+                  </tbody>}
                </table>
          </TableGrid>
    

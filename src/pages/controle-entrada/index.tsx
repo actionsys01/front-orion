@@ -14,6 +14,7 @@ import FilterModal from "@components/FilterModal"
 import { useControlFilter } from "@contexts/ControlFilter"
 import RadioFilter from "@components/FilterRadio"
 import EntranceModal from "./modal"
+import { useSecurityContext } from "@contexts/security"
 
 
 interface Entrance {
@@ -65,6 +66,7 @@ export default function ControleEntrada() {
     const [session] = useSession();
     const company_id = Number(session?.usuario.empresa.id)
     const [ reload, setReload] = useState(true)
+    const { entrancePermissions } = useSecurityContext()
     //
     const [driverId, setDriverId] = useState("");
     const [vehicleLicense, setVehicleLicense] = useState("");
@@ -86,8 +88,6 @@ export default function ControleEntrada() {
     // Modal
     const [visibleModal, setVisibleModal] = useState(false)
     const [ modalStatus, setModalStatus ] = useState("")
-    const [ filterModal, setFilterModal ] = useState(false)
-    const [ uFilterModal, setUFilterModal] = useState(false)
     // filtros
     const [ filtersObject, setFiltersObject] = useState({})
 
@@ -236,16 +236,19 @@ export default function ControleEntrada() {
                     option: <Popover num={i} content={[
                         {
                             optionName: 'Autorizar',
-                            onClick: item.controle_entrada?.status === 2 ? () => handleFinished() 
-                            : () => handleApproval(item.controle_entrada.id)
+                            onClick:  !entrancePermissions.AUTORIZAR ? () => '' : item.controle_entrada?.status === 2 ? () => handleFinished() 
+                            : () => handleApproval(item.controle_entrada.id),
+                            className: entrancePermissions.AUTORIZAR ? 'able' : 'disabled'
                         },
                         {
                             optionName: 'Editar',
-                            onClick: () => handleEdit(item.controle_entrada.id)
+                            onClick: !entrancePermissions.EDITAR ? () => '' : () => handleEdit(item.controle_entrada.id),
+                            className: entrancePermissions.EDITAR ? 'able' : 'disabled'
                         },
                         {
                             optionName: 'Cancelar',
-                            onClick: () => handleCancel(item.controle_entrada.id)
+                            onClick: entrancePermissions.CANCELAR ? () => '' : () => handleCancel(item.controle_entrada.id),
+                            className: entrancePermissions.CANCELAR ? 'able' : 'disabled'
                         }
                     ]}/>,
                     status: (item.controle_entrada?.status === 0 ? "Na Portaria" : 
@@ -275,15 +278,17 @@ export default function ControleEntrada() {
                 <h2>Controle de Entrada</h2>
                 <BtnRow>
                     <div>
-                <RadioFilter />
+                        <RadioFilter />
                     </div>
-                <div>
-                <FilterModal data={filters} /> 
-                    <button type="button" className="add" onClick={() => router.push({pathname: "/cadastrar-entrada"})}>
-                        <span><Plus /></span>
-                            Adicionar
-                    </button>
-                </div>
+                    <div>
+                        <FilterModal data={filters} /> 
+                            <button type="button" disabled={!entrancePermissions.ADICIONAR}
+                            className={entrancePermissions.ADICIONAR ? "add" : "disabled"}
+                             onClick={() => router.push({pathname: "/cadastrar-entrada"})}>
+                                <span><Plus /></span>
+                                    Adicionar
+                            </button>
+                    </div>
                 </BtnRow>
             <EntranceGrid>
                 <table>
@@ -304,6 +309,7 @@ export default function ControleEntrada() {
                             <th>Placa Reboque 3</th>
                         </tr>
                     </thead>
+                   {entrancePermissions.VISUALIZAR &&
                     <tbody>
                         {gatheredData.map((item: EntranceDataProps, i: any) => (
                             <tr key={i}>
@@ -322,8 +328,7 @@ export default function ControleEntrada() {
                             <td>{item.controle_entrada?.placa_reboque3}</td>
                         </tr>
                         ))}
-                        
-                    </tbody>
+                    </tbody>}
                 </table>
             </EntranceGrid>
             <Pages>
