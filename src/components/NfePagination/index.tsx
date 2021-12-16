@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import  {format} from "date-fns"
 import PopoverComponent from "./Popover";
 import {useSecurityContext} from "@contexts/security"
+import { useToasts } from "@geist-ui/react";
 
 
 
@@ -34,6 +35,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
   const [page, setPage] = useState(1);
   const [quantityPage, setQuantityPage] = useState(1)
   const {nfePermission} = useSecurityContext()
+  const [, setToast] = useToasts();
  
 
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
@@ -41,15 +43,18 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
   }
 
   const getNfesAndTotalPages = useCallback(async () => {
+    try {
+      const responseNfes = await getNfePagesByCompanyId(company_id, token, page, nfes)
+      const { data } = responseNfes;
+      setNfes(data.nfes)
+      setQuantityPage(Math.ceil(data.total / 8));
+    } catch (error) {
+      setToast({
+        text: 'Houve um problema. pro favor tente novamente',
+        type: 'warning'
+      })
+    }
     
-    const responseNfes = await getNfePagesByCompanyId(company_id, token, page, nfes)
-
-    const { data } = responseNfes;
-
-
-    setNfes(data.nfes)
-  
-    setQuantityPage(Math.ceil(data.total / 8));
     }, [nfes, page])
       
 

@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import  {format} from "date-fns"
 import PopoverCte from "./Popover"
 import {useSecurityContext} from "@contexts/security"
+import { useToasts } from "@geist-ui/react";
 
 interface Props {
   company_id: number | undefined;
@@ -33,6 +34,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
   const { ctes } = useFiltro()
   const [quantityPage, setQuantityPage] = useState(1)
   const {ctePermission} = useSecurityContext()
+  const [, setToast] = useToasts();
   
 
 
@@ -41,13 +43,17 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
   }
 
   const getCtesAndTotalPages = useCallback(async () => {
-    const responseCtes = await getCteByCompanyId(company_id, token, page, ctes )
-
-    const { data } = responseCtes;
-
-    setCtes(data.ctes)
-
-    setQuantityPage(Math.ceil(data.total / 8));
+    try {
+      const responseCtes = await getCteByCompanyId(company_id, token, page, ctes )
+      const { data } = responseCtes;
+      setCtes(data.ctes)
+      setQuantityPage(Math.ceil(data.total / 8));
+    } catch (error) {
+      setToast({
+        text: 'Houve um problema. pro favor tente novamente',
+        type: 'warning'
+      })
+    }
      
   }, [ctes, page])
       

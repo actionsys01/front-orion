@@ -57,11 +57,11 @@ export default function PerfilCadastro() {
 
 
 const gatherData = (e: any)  => {
-const findProfileApp = profileApp.find(value => value === Number(e))
+  const findProfileApp = profileApp.find(value => value === Number(e))
 
-if (!findProfileApp) {
-  setProfileApp(state => [...state, Number(e)])
-  return
+    if (!findProfileApp) {
+      setProfileApp(state => [...state, Number(e)])
+      return
 }
   setProfileApp(state => state.filter(value => value !== e))
 }
@@ -143,23 +143,23 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                           Visualizar</span>
                         {/* {nfeHistoricalPermission &&   */}
                           <span>  
-                            <span><Checkbox value={27} onChange={() => gatherData(27)}/></span>
+                            <span><Checkbox value={2} onChange={() => gatherData(2)}/></span>
                           Histórico de Notas</span>
                           {/* {nfeAwarePermission &&  */}
                           <span> 
-                            <span><Checkbox onChange={() => gatherData(28)}/></span>
+                            <span><Checkbox value={3} onChange={() => gatherData(3)}/></span>
                           Registrar Evento - Ciência da Operação</span>
                           {/* {nfeConfirmPermission &&  */}
                           <span> 
-                            <span><Checkbox onChange={() => gatherData(29)}/></span>
+                            <span><Checkbox value={4} onChange={() => gatherData(4)}/></span>
                           Registrar Evento - Confirmação da Operação</span>
                         {/* {nfeUnauthorizedPermission && */}
                           <span> 
-                            <span><Checkbox onChange={() => gatherData(31)}/></span>
+                            <span><Checkbox value={6} onChange={() => gatherData(6)}/></span>
                           Registrar Evento - Operação Não Realizada</span>
                           {/* {nfeUnawarePermission &&  */}
                           <span> 
-                            <span><Checkbox onChange={() => gatherData(30)}/></span>
+                            <span><Checkbox value={5} onChange={() => gatherData(5)}/></span>
                           Registrar Evento - Desconhecimento da Operação</span>
                           
                       </div>
@@ -170,36 +170,34 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                       {/* {isCte && ctePermission && */}
                     <div className="body-row">
                       <div onClick={handleCteModal} style={{cursor: "pointer"}}>  
-                      <span className="line">
-                      <h5>
-                        Ct-e
-                      </h5>
-                      </span>
-                      <span className="line">
-                      <h5>
-                        Painel e Visualização de Ct-e
-                      </h5>
-                      </span>
-                      <span>
-                        {!cteModal ? <ChevronDown   className="icon"/> : <ChevronUp   className="icon"/>}
-                      </span>
+                        <span className="line">
+                          <h5>
+                            Ct-e
+                          </h5>
+                        </span>
+                        <span className="line">
+                          <h5>
+                            Painel e Visualização de Ct-e
+                          </h5>
+                        </span>
+                        <span>
+                          {!cteModal ? <ChevronDown   className="icon"/> : <ChevronUp   className="icon"/>}
+                        </span>
                     </div>
                     {cteModal &&
                     <div className="modal">
                       <div >
                         <span>
-                          <span><Checkbox  onChange={() => gatherData(5)}/></span>
+                          <span><Checkbox  onChange={() => gatherData(13)}/></span>
                           Visualizar</span>
                         {/* {cteHistoricalPermission &&  */}
                         <span> 
-                          <span><Checkbox  onChange={() => gatherData(21)}/></span>
+                          <span><Checkbox  onChange={() => gatherData(14)}/></span>
                           Histórico de Notas</span>
                       </div>
                     </div>
                     }
                     </div> 
-                    {/* }
-                    {isNfse && */}
                     <div className="body-row">
                       <div onClick={handleNfseModal} style={{cursor: "pointer"}}>
                       <span className="line">
@@ -220,13 +218,13 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                     <div className="modal">
                       <div >
                         <span>
-                          <span><Checkbox value={10} onChange={() => gatherData(10)} /></span>
+                          <span><Checkbox value={16} onChange={() => gatherData(16)} /></span>
                           Visualizar</span>
                         <span> 
-                          <span><Checkbox value={11} onChange={() => gatherData(11)} /></span>
+                          <span><Checkbox value={17} onChange={() => gatherData(17)} /></span>
                           Histórico de Notas</span>
                         <span> 
-                          <span><Checkbox value={12} onChange={() => gatherData(12)} /></span>
+                          <span><Checkbox value={18} onChange={() => gatherData(18)} /></span>
                           Imprimir Notas</span>
                       </div>
                     </div>
@@ -253,19 +251,19 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                     <div className="modal">
                       <div >
                         <span>
-                          <span><Checkbox value={16} onChange={() => gatherData(16)}/></span>
+                          <span><Checkbox value={19} onChange={() => gatherData(19)}/></span>
                           Visualizar</span>
                         <span> 
-                          <span><Checkbox value={17} onChange={() => gatherData(17)}/></span>
+                          <span><Checkbox value={20} onChange={() => gatherData(20)}/></span>
                           Autorizar</span>
                         <span> 
-                          <span><Checkbox value={18} onChange={() => gatherData(18)}/></span>
+                          <span><Checkbox value={21} onChange={() => gatherData(21)}/></span>
                           Editar</span>
                         <span> 
-                          <span><Checkbox value={19} onChange={() => gatherData(19)}/></span>
+                          <span><Checkbox value={22} onChange={() => gatherData(22)}/></span>
                           Cancelar</span>
                         <span> 
-                          <span><Checkbox value={20} onChange={() => gatherData(20)}/></span>
+                          <span><Checkbox value={23} onChange={() => gatherData(23)}/></span>
                           Adicionar</span>
                       </div>
                     </div>
@@ -274,33 +272,33 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                   {/* {profilePermission && */}
                     <div className="body-row">
                       <div onClick={handleProfileModal} style={{cursor: "pointer"}}>
-                      <span className="line">
-                      <h5>
-                        Perfis
-                      </h5>
-                      </span>
-                      <span className="line">
-                      <h5>
-                        Cadastro de Perfis
-                      </h5>
-                      </span>
-                      <span>
-                        {!profileModal ? <ChevronDown   className="icon"/> : <ChevronUp className="icon"/>}
-                      </span>
+                        <span className="line">
+                          <h5>
+                            Perfis
+                          </h5>
+                        </span>
+                        <span className="line">
+                          <h5>
+                            Cadastro de Perfis
+                          </h5>
+                        </span>
+                        <span>
+                          {!profileModal ? <ChevronDown   className="icon"/> : <ChevronUp className="icon"/>}
+                        </span>
                     </div>
                     {profileModal &&
                     <div className="modal">
                       <div >
                         <span> 
-                          <span><Checkbox  onChange={() => gatherData(24)}/></span>
+                          <span><Checkbox  onChange={() => gatherData(11)}/></span>
                           Cadastrar Perfil</span>
                           {/* {profileDeletePermission && */}
                         <span> 
-                          <span><Checkbox onChange={() => gatherData(25)}/></span>
+                          <span><Checkbox onChange={() => gatherData(10)}/></span>
                           Excluir Perfil</span>
                           {/* {profileUpdatePermission && */}
                         <span>  
-                          <span><Checkbox onChange={() => gatherData(26)} /></span>
+                          <span><Checkbox onChange={() => gatherData(12)} /></span>
                           Editar Perfil</span>
                           
                       </div>
@@ -329,15 +327,15 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                       <div className="modal">
                         <div >
                           <span> 
-                            <span><Checkbox value={23} onChange={() => gatherData(23)}/></span>
+                            <span><Checkbox value={8} onChange={() => gatherData(8)}/></span>
                             Adicionar Usuário</span>
                             {/* {userDeletePermission && */}
                           <span> 
-                            <span><Checkbox value={22}  onChange={() => gatherData(22)}/></span>
+                            <span><Checkbox value={7}  onChange={() => gatherData(7)}/></span>
                             Excluir Usuário</span>
                             {/* {userUpdatePermission && */}
                           <span> 
-                            <span><Checkbox value={2} onChange={() => gatherData(2)}/></span>
+                            <span><Checkbox value={9} onChange={() => gatherData(9)}/></span>
                             Editar Usuário</span>
                         </div>
                       </div>
@@ -364,15 +362,15 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                           <div className="modal">
                             <div>
                               <span>
-                                <span><Checkbox value={40} onChange={() => gatherData(40)}/></span>
+                                <span><Checkbox value={25} onChange={() => gatherData(25)}/></span>
                                   Adicionar CNPJ
                               </span>
                               <span>
-                                <span><Checkbox value={41} onChange={() => gatherData(41)}/></span>
+                                <span><Checkbox value={24} onChange={() => gatherData(24)}/></span>
                                   Excluir CNPJ
                               </span>
                               <span>
-                                <span><Checkbox value={42} onChange={() => gatherData(42)}/></span>
+                                <span><Checkbox value={26} onChange={() => gatherData(26)}/></span>
                                   Editar CNPJ
                               </span>
                             </div>
@@ -399,11 +397,11 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                         <div className="modal">
                           <div>
                               <span>
-                                <span><Checkbox value={43} onChange={() => gatherData(43)}/></span>
+                                <span><Checkbox value={28} onChange={() => gatherData(28)}/></span>
                                   Adicionar Certificado
                               </span>
                               <span>
-                                <span><Checkbox value={44} onChange={() => gatherData(44)}/></span>
+                                <span><Checkbox value={27} onChange={() => gatherData(27)}/></span>
                                   Excluir Certificado
                               </span>
                           </div>
