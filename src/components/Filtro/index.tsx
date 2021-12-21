@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { HiPlusCircle } from "react-icons/hi";
 import { useFiltro } from "@contexts/filtro";
 import colunas from "@utils/painel-controle-filtro";
+import nfse_colunas from "@utils/controle-nfse-filtros"
 import {
   BotaoIncluir,
   BotaoRemover,
@@ -24,14 +25,19 @@ interface IFiltro {
   campo: { label: string; value: string } | undefined;
   valor: string;
 }
+
+interface IFilter {
+  campo : string
+  valor: string
+}
 interface IProps {
   abaAtual: "nfe" | "cte" | "nfse";
-  data: IFiltro[];
+  data: IFiltro[] | IFilter[];
 }
 
 export default function Filtro({ abaAtual, data }: IProps) {
   const formRef = useRef<FormHandles>(null);
-  const { cadastrarCte, cadastrarNfe, inicializarScope } = useFiltro();
+  const { cadastrarCte, cadastrarNfe, cadastrarNfse, inicializarScope, scopeIgnition } = useFiltro();
   const [erro, setErro] = useState(false);
   const [filtros, setFiltros] = useState<string[]>([]);
   const [modalVisivel, setModalVisivel] = useState(false);
@@ -51,7 +57,8 @@ export default function Filtro({ abaAtual, data }: IProps) {
     setFiltros([...filtros, ""]);
   }
 
-  function remover(index: number) {
+  function remover(index: number) { //VERIFICAR
+    console.log("verificando remover filtro")
     const data = formRef.current?.getData() as FormData;
 
     let filtrosForm = data.filtros.slice();
@@ -60,9 +67,13 @@ export default function Filtro({ abaAtual, data }: IProps) {
 
     filtrosForm.splice(index, 1);
 
-    const filtro = inicializarScope(filtrosForm);
-
-    formRef.current?.setData({ filtros: filtro });
+    if(abaAtual != "nfse") {
+      const filtro = inicializarScope(filtrosForm);
+      formRef.current?.setData({ filtros: filtro });
+    } else {
+      const filtro = scopeIgnition(filtrosForm);
+      formRef.current?.setData({ filtros: filtro });
+    }
 
     totalFiltros.splice(index, 1);
     setFiltros(totalFiltros);
@@ -70,7 +81,7 @@ export default function Filtro({ abaAtual, data }: IProps) {
 
   const handleSubmit: SubmitHandler = (data: FormData) => {
     if (data.filtros === undefined) {
-      abaAtual == "nfe" ? cadastrarNfe([]) : cadastrarCte([]);
+      abaAtual == "nfe" ? cadastrarNfe([]) : abaAtual == "cte" ? cadastrarCte([]) : cadastrarNfse([]);
       setErro(false);
       setModalVisivel(false);
       return;
@@ -82,8 +93,14 @@ export default function Filtro({ abaAtual, data }: IProps) {
       setErro(true);
       return;
     } else {
-      const filtro = inicializarScope(data.filtros);
-      abaAtual == "nfe" ? cadastrarNfe(filtro) : cadastrarCte(filtro);
+      if(abaAtual != "nfse") {
+        const filtro = inicializarScope(data.filtros);
+        abaAtual == "nfe" ? cadastrarNfe(filtro) :  cadastrarCte(filtro);
+      } else {
+        const filtro = scopeIgnition(data.filtros);
+        cadastrarNfse(filtro) 
+      }
+      
     }
 
     setErro(false);
@@ -99,7 +116,7 @@ export default function Filtro({ abaAtual, data }: IProps) {
         return;
       }
     }
-    abaAtual == "nfe" ? cadastrarNfe([]) : cadastrarCte([]);
+    abaAtual == "nfe" ? cadastrarNfe([]) : abaAtual == "cte" ? cadastrarCte([]) : cadastrarNfse([]);
     setErro(false);
     setModalVisivel(false);
   }
@@ -126,7 +143,7 @@ export default function Filtro({ abaAtual, data }: IProps) {
           <ContainerFiltro>
             {filtros.map((item, index) => (
               <Scope path={`filtros[${index}]`} key={index}>
-                <SelectCustomizado name="campo" options={colunas} />
+                <SelectCustomizado name="campo" options={abaAtual != "nfse" ? colunas : nfse_colunas} />
                 <InputCustomizado name="valor" placeholder="valor" />
                 <BotaoRemover size={15} onClick={() => remover(index)} />
               </Scope>

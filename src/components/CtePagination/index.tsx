@@ -63,7 +63,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
     getCtesAndTotalPages();
 
 
-  }, [page])
+  }, [ctes, page])
 
   useEffect(() => {
     if(page > quantityPage){

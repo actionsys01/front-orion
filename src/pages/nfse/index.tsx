@@ -4,6 +4,8 @@ import { useToasts, Dot, Tooltip } from "@geist-ui/react";
 import { Filter } from "@geist-ui/react-icons";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useFiltro } from "@contexts/filtro";
+import Filtro from "@components/Filtro";
 import  {format} from "date-fns";
 import {TableGrid} from "@styles/tableStyle"
 import {  Pages } from "@styles/pages";
@@ -12,7 +14,7 @@ import { nfseNotas } from '@utils/mock-data/nfse-pages'
 import { nfseXmlData } from "@utils/mock-data/nfse-xml"
 import { NfseProps } from '@services/nfse/types/NfseProps';
 import Popover from "@components/Popover"
-import { FilterBtn } from "@styles/buttons"
+import { RowBtn } from "./style"
 import Danfse from "@components/danfse"
 import { useSecurityContext } from "@contexts/security"
 import * as nfseRequest from "@services/nfse"
@@ -38,7 +40,7 @@ interface GatheredProps {
 
 export default function Nfse() {
    const [ nfseData, setNfseData] = useState<NfseProps[]>([])
-   // const  { nfses  } = useFiltro();
+   const  { nfses  } = useFiltro();
    const [page, setPage] = useState(1);
    const [quantityPage, setQuantityPage] = useState(1)
    const [session] = useSession();
@@ -53,25 +55,25 @@ export default function Nfse() {
 
    const getNfsesAndTotalPages = useCallback(async () => {
 
-      const responseNfse = await nfseRequest.getNfse(page, company_id)
+      const responseNfse = await nfseRequest.getNfse(page, company_id, nfses)
       const { data } = responseNfse
       setNfseData(data.nfses)
    
       setQuantityPage(Math.ceil(data.total / 8));
-   }, [page])
+   }, [page, nfses])
       
 
    useEffect(() => {
  
       getNfsesAndTotalPages();
 
-   }, [page])
+   }, [page, nfses])
 
    useEffect(() => {
       if(page > quantityPage){
       setPage(1)
       }
-   }, [ quantityPage, page])
+   }, [ quantityPage, page, nfses])
 
 
    function printData(chave_nota){
@@ -149,12 +151,9 @@ export default function Nfse() {
             <title>Orion | NFS-e</title>
       </Head>
    <h2>Painel de Controle NFS-e</h2>
-         <FilterBtn>
-            <button>
-               <span><Filter/></span>
-                  Filtrar
-            </button>
-         </FilterBtn>
+         <RowBtn>
+            <Filtro abaAtual={"nfse"} data={nfses} />
+         </RowBtn>
          <TableGrid>
                <table>
                   <thead>
