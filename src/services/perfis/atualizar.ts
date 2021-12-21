@@ -1,12 +1,13 @@
 import api from "@services/api";
 
 interface IUpdateProfile{
-  id_profile : number;
+  companyId : number;
   nome : string;
   descricao : string;
-  permissions : Number[];
+  permissoes : Number[];
+  profileId: number
 }
 
 export default async function atualizar(data: IUpdateProfile) {
-  return await api.put(`/perfil/`, data);
+  return await api.put(`/perfil/${data.profileId}`, data);
 }

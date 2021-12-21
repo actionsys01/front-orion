@@ -139,27 +139,33 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                     <div className="modal">
                       <div >
                         <span>
-                          <span><Checkbox value={1} onChange={() => gatherData(1)}/></span>
+                          <span><Checkbox value={2} 
+                          onChange={() => gatherData(2)}/></span>
                           Visualizar</span>
                         {/* {nfeHistoricalPermission &&   */}
                           <span>  
-                            <span><Checkbox value={2} onChange={() => gatherData(2)}/></span>
+                            <span><Checkbox value={1} 
+                            onChange={() => gatherData(1)}/></span>
                           Histórico de Notas</span>
                           {/* {nfeAwarePermission &&  */}
                           <span> 
-                            <span><Checkbox value={3} onChange={() => gatherData(3)}/></span>
+                            <span><Checkbox value={3} 
+                            onChange={() => gatherData(3)}/></span>
                           Registrar Evento - Ciência da Operação</span>
                           {/* {nfeConfirmPermission &&  */}
                           <span> 
-                            <span><Checkbox value={4} onChange={() => gatherData(4)}/></span>
+                            <span><Checkbox value={4} 
+                            onChange={() => gatherData(4)}/></span>
                           Registrar Evento - Confirmação da Operação</span>
                         {/* {nfeUnauthorizedPermission && */}
                           <span> 
-                            <span><Checkbox value={6} onChange={() => gatherData(6)}/></span>
+                            <span><Checkbox value={6} 
+                            onChange={() => gatherData(6)}/></span>
                           Registrar Evento - Operação Não Realizada</span>
                           {/* {nfeUnawarePermission &&  */}
                           <span> 
-                            <span><Checkbox value={5} onChange={() => gatherData(5)}/></span>
+                            <span><Checkbox value={5} 
+                            onChange={() => gatherData(5)}/></span>
                           Registrar Evento - Desconhecimento da Operação</span>
                           
                       </div>
@@ -188,11 +194,11 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                     <div className="modal">
                       <div >
                         <span>
-                          <span><Checkbox  onChange={() => gatherData(13)}/></span>
+                          <span><Checkbox  onChange={() => gatherData(14)}/></span>
                           Visualizar</span>
                         {/* {cteHistoricalPermission &&  */}
                         <span> 
-                          <span><Checkbox  onChange={() => gatherData(14)}/></span>
+                          <span><Checkbox  onChange={() => gatherData(13)}/></span>
                           Histórico de Notas</span>
                       </div>
                     </div>
@@ -218,10 +224,10 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                     <div className="modal">
                       <div >
                         <span>
-                          <span><Checkbox value={16} onChange={() => gatherData(16)} /></span>
+                          <span><Checkbox value={17} onChange={() => gatherData(17)} /></span>
                           Visualizar</span>
                         <span> 
-                          <span><Checkbox value={17} onChange={() => gatherData(17)} /></span>
+                          <span><Checkbox value={16} onChange={() => gatherData(16)} /></span>
                           Histórico de Notas</span>
                         <span> 
                           <span><Checkbox value={18} onChange={() => gatherData(18)} /></span>

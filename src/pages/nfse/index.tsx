@@ -15,6 +15,7 @@ import Popover from "@components/Popover"
 import { FilterBtn } from "@styles/buttons"
 import Danfse from "@components/danfse"
 import { useSecurityContext } from "@contexts/security"
+import * as nfseRequest from "@services/nfse"
 
 interface GatheredProps {
    id: number,
@@ -43,8 +44,7 @@ export default function Nfse() {
    const [session] = useSession();
    const router = useRouter()
    const { nfsePermissions } = useSecurityContext()
-
-   // console.log(`nfseXmlData`, nfseXmlData)
+   const company_id = Number(session?.usuario.empresa.id)
 
 
    const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
@@ -53,26 +53,25 @@ export default function Nfse() {
 
    const getNfsesAndTotalPages = useCallback(async () => {
 
-      
-      const total = nfseNotas.length
-
-      setNfseData(nfseNotas)
+      const responseNfse = await nfseRequest.getNfse(page, company_id)
+      const { data } = responseNfse
+      setNfseData(data.nfses)
    
-      setQuantityPage(Math.ceil(total / 8));
-   }, [nfseData, page])
+      setQuantityPage(Math.ceil(data.total / 8));
+   }, [page])
       
 
    useEffect(() => {
-
+ 
       getNfsesAndTotalPages();
 
-   }, [page, nfseData])
+   }, [page])
 
    useEffect(() => {
       if(page > quantityPage){
       setPage(1)
       }
-   }, [nfseData, quantityPage, page])
+   }, [ quantityPage, page])
 
 
    function printData(chave_nota){
@@ -87,24 +86,24 @@ export default function Nfse() {
 
 
    const gatheredData = useMemo(() => {
-      const allData: GatheredProps[] = []
+      const allData: any = []
       if(nfseData){                            
          nfseData.forEach((item, i) => {
             allData.push({
                ...item,
                status_nota: (
-                  <Tooltip text={item.prefeitura_status === 100 ? "Autorizado" : "Cancelada"}>
-                     <Dot type={item.prefeitura_status === 100 ? "success" : "warning"} />
+                  <Tooltip text={item.status_prefeitura === 100 ? "Autorizado" : "Cancelada"}>
+                     <Dot type={item.status_prefeitura === 100 ? "success" : "warning"} />
                   </Tooltip>
                ),
-               emissionDate: format(new Date(item.dt_hr_emi), "dd/MM/yyyy HH:mm:ss"),
-               receiveDate: format(new Date(item.dt_hr_receb), "dd/MM/yyyy HH:mm:ss"),
+               emissionDate: format(new Date(item.dt_hr_emit), "dd/MM/yyyy HH:mm:ss"),
+               receiveDate: format(new Date(item.dt_hr_recebimento), "dd/MM/yyyy HH:mm:ss"),
                option: <Popover num={i} quant={4}  content={[
                {
                      optionName: 'Visualizar',
                      onClick: nfsePermissions.VISUALIZAR ? () => {
                         const nfse_id = item.chave_nota;
-                        const status = item.prefeitura_status;
+                        const status = item.status_prefeitura;
                         router.push({
                            pathname: "/nfse-detalhes",
                            query: {nfse_id, status}
@@ -140,7 +139,7 @@ export default function Nfse() {
          })
       })
       }
-      // console.log(`allData`, allData)
+      console.log(`allData`, allData)
       return allData
    }, [nfseData])
 
@@ -181,12 +180,12 @@ export default function Nfse() {
                         <td>{item.emissionDate}</td>
                         <td>{item.nota}</td>
                         <td>{item.serie}</td>
-                        <td>{item.emit_cnpj}</td>
-                        <td>{item.emit_nome}</td>
+                        <td>{item.cnpj_emit}</td>
+                        <td>{item.nome_emit}</td>
                         <td>{item.status_nota}</td>
                         <td>{item.chave_nota}</td>
-                        <td>{item.dest_cnpj}</td>
-                        <td>{item.dest_nome}</td>
+                        <td>{item.cnpj_tomador}</td>
+                        <td>{item.nome_tomador}</td>
                         <td>{item.receiveDate}</td>
                      </tr>
                      ))}

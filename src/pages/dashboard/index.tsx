@@ -16,10 +16,10 @@ export default function Dashboard() {
     const {
       nfePermission,
       ctePermission, 
-      nfsePermission, 
+      nfsePermissions, 
       userPermissions, 
       profilePermission, 
-      entrancePermission} 
+      entrancePermissions} 
       = useSecurityContext()
     const { isCertificated } = useCertificateContext()
     const [nfeAmount, setNfeAmount] = useState(0)

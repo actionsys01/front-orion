@@ -3,14 +3,15 @@ export interface NfseProps {
     chave_nota: string,
     empresa_id: number,
     nota: string,
-    emit_cnpj: string,
-    emit_nome: string,
-    dest_cnpj: string,
+    cnpj_emit: string,
+    nome_emit: string,
+    nome_tomador: string,
+    cnpj_tomador: string,
     dest_nome: string,
     serie: number,
-    prefeitura_status: number,
-    dt_hr_emi: string,
-    dt_hr_receb: string
+    status_prefeitura: number,
+    dt_hr_emit: string,
+    dt_hr_recebimento: string
 }
 
 export interface NfseFormattedProps {
