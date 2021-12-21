@@ -56,6 +56,7 @@ export default function AtualizarCadastro() {
   const [session] = useSession();
   const [permissions, setPermissions ] = useState<CompanyPermissions[]>([])
   const [profilePermissions, setProfilePermissions] = useState<ProfilePermissions[]>([])
+  const companyId = Number(session?.usuario.empresa.id)
   const [, setToast] = useToasts();
   const {nfePermission, nfeHistoricalPermission, ctePermission,
     cteHistoricalPermission, userPermissions, profilePermission,
@@ -98,15 +99,27 @@ export default function AtualizarCadastro() {
   const [cteHistorico, setCteHistorico] = useState<boolean>(false)
 
 const getAllPermissions = async () => {
-  const response = await api.get(`/perfil/search/?profile_id=${id_profile}`);
-  const data = await response.data.permissoes;
+  const response = await api.get(`/perfil/search/${id_profile}`);
+  const data = await response.data.permissoes
+  console.log(`data no atualizar perfil`, data)
   
   const currentPermissions: any = [];
-  data.map((item: any) => currentPermissions.push(item.id))
 
-  setProfilePermissions(data)
-  setProfileApp(currentPermissions)
-  return currentPermissions
+    if(Array.isArray(data)){
+      data.map((item: any) => currentPermissions.push(item.id))
+      setProfilePermissions(data)
+      setProfileApp(currentPermissions)
+      return currentPermissions
+    } else {
+      const createArray: any = []
+      createArray.push(data)
+      console.log(`createArray`, createArray)
+      createArray.map((item: any) => currentPermissions.push(item.id))
+      setProfilePermissions(createArray)
+      setProfileApp(currentPermissions)
+    }
+  
+  
   }
 
 const getPermissions = useMemo(() => {
@@ -241,10 +254,11 @@ if (!findProfileApp) {
 
 async function updateProfile() {
   try {
-    await perfil.atualizar({id_profile: Number(router.query.perfilId), 
+    await perfil.atualizar({profileId: Number(router.query.perfilId), 
       nome: String(router.query.name), 
       descricao: String(router.query.descricao), 
-      permissions: profileApp})
+      permissoes: profileApp,
+       companyId: companyId})
       setToast({
         text: "Perfil atualizado com sucesso",
         type: "success"
@@ -276,7 +290,7 @@ const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
         <title>Orion | Perfil de Cadastro</title>
       </Head>
       <BotaoVoltar/>
-      <h2>Perfil de Cadastro{profileApp} </h2>
+      <h2>Perfil de Cadastro</h2>
       <ButtonStyle>
         <button
             className="btn"
@@ -316,16 +330,16 @@ const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
               <div className='modal'>
                 <div >
                   <span>
-                    <span><Checkbox  value={1} 
+                    <span><Checkbox  value={2} 
                     checked={nfeVisualizar}  
-                    onChange={() => gatherData(1)} 
+                    onChange={() => gatherData(2)} 
                     onClick={nfeVisualizar ? ()=> setNfeVizualizar(false) : ()=> setNfeVizualizar(true)}/></span>
                       Visualizar</span>
                     {/* {nfeHistoricalPermission &&  */}
                     <span> 
-                      <span><Checkbox value={2} 
+                      <span><Checkbox value={1} 
                       checked={nfeHistorico} 
-                      onChange={() => gatherData(2)} 
+                      onChange={() => gatherData(1)} 
                       onClick={nfeHistorico ? ()=> setNfeHistorico(false) : ()=> setNfeHistorico(true)}/></span>
                         Histórico de Notas</span>
                     {/* {nfeAwarePermission &&  */}
@@ -384,13 +398,13 @@ const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
                       <span>
                         <span><Checkbox 
                         checked={cteVisualizar} 
-                        onChange={() => gatherData(13)} 
+                        onChange={() => gatherData(14)} 
                         onClick={cteVisualizar ? ()=> setCteVizualizar(false) : ()=> setCteVizualizar(true)}/></span>
                         Visualizar</span>
                       <span> 
                         <span><Checkbox 
                         checked={cteHistorico}  
-                        onChange={() => gatherData(14)} onClick={cteHistorico ? ()=> setCteHistorico(false) : ()=> setCteHistorico(true)}/></span>
+                        onChange={() => gatherData(13)} onClick={cteHistorico ? ()=> setCteHistorico(false) : ()=> setCteHistorico(true)}/></span>
                         Histórico de Notas</span>
                     </div>
                   </div>
@@ -418,19 +432,19 @@ const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
                 <div className='modal'>
                   <div >
                     <span>
-                      <span><Checkbox value={10}
+                      <span><Checkbox value={17}
                       checked={isNfse.VISUALIZAR}
                       onClick={() => setIsNfse({...isNfse, VISUALIZAR : !isNfse.VISUALIZAR})}
                       onChange={() => gatherData(16)} /></span>
                       Visualizar</span>
                     <span> 
-                      <span><Checkbox value={11} 
+                      <span><Checkbox value={16} 
                       checked={isNfse.HISTORICO}
                       onClick={() => setIsNfse({...isNfse, HISTORICO : !isNfse.HISTORICO})}
                       onChange={() => gatherData(17)} /></span>
                       Histórico de Notas</span>
                     <span> 
-                      <span><Checkbox value={12} 
+                      <span><Checkbox value={18} 
                       checked={isNfse.IMPRIMIR}
                       onClick={() => setIsNfse({...isNfse, IMPRIMIR : !isNfse.IMPRIMIR})}
                       onChange={() => gatherData(18)} /></span>

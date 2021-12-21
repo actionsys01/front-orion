@@ -31,30 +31,43 @@ const AtualiarUsuario = () => {
     const [profileData, setProfileData] = useState<Perfil[]>([])
     const [, setToast] = useToasts();
     const [newProfileId, setNewProfileId] = useState<string>("")
-    // console.log(newProfileId);
+    
+    useEffect(() => {
+     if(newProfileId.length) {
+         console.log("foi")
+     } else {
+         console.log("num foi")
+     }
+    }, [])
+
+    console.log(`router.query`, router.query)
     
         const getProfileData = async () => {
             const response = await api.get(`/perfil/all/${session?.usuario.empresa.id}`)
             const {data} = response;
+            setProfileData(data)
             return data
         }
 
         useEffect(() => {
-            getProfileData().then(response => setProfileData(response))
+            getProfileData()
         }, [])
 
         // console.log(profileData);
         
         async function updateUser () {
             try {
-            if(!newProfileId) {
-                setToast({
-                    text: "Insira um perfil válido.",
-                    type: "warning",
-                  });
-                  return;
-            } 
-                await usuarios.atualizar({nome: String(router.query.nome), perfil: String(newProfileId), id: Number(router.query.id)})
+            // if(!newProfileId) {
+            //     setToast({
+            //         text: "Insira um perfil válido.",
+            //         type: "warning",
+            //       });
+            //       return;
+            // } 
+                await usuarios.atualizar({
+                    nome: String(router.query.nome), 
+                    perfil: !newProfileId.length ? String(session?.usuario.perfil.id) : String(newProfileId), 
+                    id: Number(router.query.id)})
                 setToast({
                     text: "Usuário atualizado com sucesso",
                     type: "success",
@@ -79,9 +92,9 @@ const AtualiarUsuario = () => {
             <h1 >Atualizar <br/> Usuário</h1>
         <div style={{width: 400}}>
             <Select>
-            <select   onChange={(e: any) => setNewProfileId(e.target.value)} >
-            <option value='' selected disabled>{session?.usuario.perfil.nome}</option>
-            {profileData.map((item, i) => 
+            <select defaultValue={session?.usuario.perfil.id}  onChange={(e: any) => setNewProfileId(e.target.value)} >
+            <option defaultValue={session?.usuario.perfil.id} selected disabled>{session?.usuario.perfil.nome}</option>
+            {profileData.map((item, i) =>
             <option key={i} value={item.id}  >
                 {item.nome} 
             </option>
