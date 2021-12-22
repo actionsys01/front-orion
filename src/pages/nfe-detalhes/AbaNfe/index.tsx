@@ -63,15 +63,16 @@ export interface IProps {
 export default function AbaNfe({ data }) {
   const router = useRouter();
 
-console.log(`data`, data)
+
   const dataEmissao = useMemo(() => {
-    if(data) {
-      const dataEmissaoFormatted = format(new Date(data?.informacoes_nfe?.dEmi ?? data?.informacoes_nfe?.dhEmi), "dd-MM-yyyy")
-  
-      return dataEmissaoFormatted
-
-    }
-
+    let dataEmissao 
+    if(data){
+      if(data?.informacoes_nfe?.dEmi) {
+      dataEmissao =  format(new Date(data?.informacoes_nfe?.dEmi), "dd-MM-yyyy") 
+    } if(data?.informacoes_nfe?.dhEmi) {
+      dataEmissao =  format(new Date(data?.informacoes_nfe?.dhEmi), "dd-MM-yyyy")
+    }}
+    return dataEmissao
   }, [data])
 
 
