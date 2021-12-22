@@ -7,6 +7,10 @@ interface IFiltro {
 
 export default async function getNfse(page: number, company_id: number, nfses : IFiltro[] | undefined) {
     const filters = nfses.reduce((acc, {campo, valor}) => {
+        if(campo === "dt_hr_emit" || campo === "dt_hr_recebimento"){
+            const [dia, mes, ano] = valor.toString().split("/")
+            valor = `${ano}-${mes}-${dia}T`
+        }
         return {...acc, [campo] : valor}
     }, {})
 

@@ -31,11 +31,11 @@ export default function NfeDetalhes() {
     // console.log(`nfeRes`, nfeRes)
     setData(nfeRes)
     return nfeRes
-    },[data])
+    },[])
 
     useEffect(() => {
       getData()
-    }, [data])
+    }, [])
 
   // if (!data) return <Loading />;
   return (

@@ -134,7 +134,7 @@ function getUserPermissions() {
     const entranceCheck: any[] = permissions?.filter((item) => item.categoria === "ENTRADA").map((permit) => permit.acao)
       entranceCheck && verifyFurtherPermissions(entranceCheck, 'entrada')
     const nfseCheck: string [] = permissions?.filter((item) => item.categoria === "NFSE").map((permit) => permit.acao)
-      console.log(`nfseCheck`, nfseCheck)
+      // console.log(`nfseCheck`, nfseCheck)
       nfseCheck && verifyFurtherPermissions(nfseCheck, 'nfse')
   }
 } 
@@ -196,7 +196,7 @@ function getUserPermissions() {
 useEffect(() => {
   getUserPermissions()
 }, [permissions])
-console.log(`nfsePermissions`, nfsePermissions)
+// console.log(`nfsePermissions`, nfsePermissions)
 
 
 

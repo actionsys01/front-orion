@@ -1,22 +1,14 @@
-import React, { useState, useMemo, useEffect, useCallback, useRef} from 'react';
-import { useSession } from "next-auth/client";
-import { useToasts } from "@geist-ui/react";
-import { useRouter } from "next/router";
 import { ExtraDataStyle } from './style';
 import { NfseFormattedProps } from "@services/nfse/types/NfseProps"
 
-
-interface AbaProps {
-    data: string[]
-}
 
 
 const AbaDadosComplementares = ({data}) => {
     console.log(`data nos dados`, data)
 
     return <> 
-    {data.map((item: NfseFormattedProps, i: number) => (
-        <>
+    {data?.map((item: NfseFormattedProps, i: number) => (
+        <div key={i}>
         <ExtraDataStyle>
             <div>
                 <h3>Outras Informações</h3>
@@ -48,7 +40,7 @@ const AbaDadosComplementares = ({data}) => {
                 </div>
             </div>
         </ExtraDataStyle>
-        </>
+        </div>
     ))}
         
 

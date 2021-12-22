@@ -1,14 +1,7 @@
 import React, { useState, useMemo, useEffect, useCallback, useRef} from 'react';
-import { useSession } from "next-auth/client";
-import { useToasts } from "@geist-ui/react";
-import { useRouter } from "next/router";
 import { TabStyle, DadosStyle, LineStyle, FullPage } from "./style"
 import { ChevronDown, ChevronUp } from '@geist-ui/react-icons'
 import { NfseFormattedProps } from "@services/nfse/types/NfseProps"
-
-interface AbaProps {
-    data: string[]
-}
 
  
 const AbaNfse = ({data}) => {
@@ -27,7 +20,7 @@ const AbaNfse = ({data}) => {
 
 
     return <FullPage>
-    {data.map((item: NfseFormattedProps, i: number) => (
+    {data?.map((item: NfseFormattedProps, i: number) => (
         <div key={i}>
         <TabStyle>
             <div>

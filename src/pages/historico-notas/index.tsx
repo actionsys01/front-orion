@@ -43,7 +43,7 @@ export default function Historico () {
         try {
             const response = await api.get(`/historico/?empresa_id=${empresa_id}&chave_nota=${key}`)
             const data  = await response.data
-           
+            setHistoricalData(data.historico)
             return data
         } catch (error) {
             setToast({
@@ -54,7 +54,7 @@ export default function Historico () {
     }
 
     useEffect(() => {
-        getHistoricalNotes().then(response => setHistoricalData(response.historico))
+        getHistoricalNotes()
     }, [])
 
     const gatheredData = useMemo(() => {

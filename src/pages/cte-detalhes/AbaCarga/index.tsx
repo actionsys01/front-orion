@@ -62,36 +62,31 @@ interface IProps {
     versao: string;
   };
 }
-export default function AbaCarga({ data }: IProps) {
+export default function AbaCarga({ data }) {
+  console.log(`data na aba`, data)
   const [loading, setLoading] = useState(false);
   const [, setToast] = useToasts();
 
   const router = useRouter();
 
-  const cargas = useMemo(() => {
-    const cargas = [];
+  const cargas: any = () => {
+    let cargas = []
     const infQ = data?.informacoes_normal_substituto?.infCarga.infQ;
-    if (Array.isArray(infQ)) {
-      infQ.map((carga) => {
-        const { tpMed, cUnid, qCarga } = carga;
-
-        cargas.push({
-          cUnid,
-          qCarga,
-          tpMed,
-        });
-      });
+    if(Array.isArray(infQ)){
+      cargas = infQ
     } else {
       const { cUnid, qCarga, tpMed } = infQ;
       cargas.push({ cUnid, qCarga, tpMed });
     }
-    return cargas;
-  }, [data]);
+    console.log(`cargas`, cargas)
+    return cargas
+  }
 
   const nfes = useMemo(() => {
     const nfes = [];
     const infNFe = data?.informacoes_normal_substituto?.infDoc.infNFe;
-    const opcoes = (actions: any, item: any) => (
+    if(infNFe){
+          const opcoes = (actions: any, item: any) => (
       <Popover
         placement="right"
         content={
@@ -140,6 +135,8 @@ export default function AbaCarga({ data }: IProps) {
         opcoes,
       });
     }
+    }
+
 
     return nfes;
   }, [data]);

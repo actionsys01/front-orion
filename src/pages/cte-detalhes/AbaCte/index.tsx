@@ -99,17 +99,17 @@ interface IProps {
     };
   };
 }
-export default function AbaCte({ data }: IProps) {
+export default function AbaCte({ data }) {
   const router = useRouter();
   
   
 
-  const dataEmissao = useMemo(() => {
-    if(data) {
-      const dataEmissaoFormatted = format(new Date(data?.informacoes_cte?.dEmi ?? data?.informacoes_cte?.dhEmi), "dd-MM-yyyy")
-      return dataEmissaoFormatted
-    }
-  }, [data])
+  // const dataEmissao = useMemo(() => {
+  //   if(data) {
+  //     const dataEmissaoFormatted = format(new Date(data?.informacoes_cte?.dEmi ?? data?.informacoes_cte?.dhEmi), "dd-MM-yyyy")
+  //     return dataEmissaoFormatted
+  //   }
+  // }, [data])
 
   return (
     <>
@@ -131,7 +131,7 @@ export default function AbaCte({ data }: IProps) {
           </GridAlinhaTextoCentro>
           <Grid>
             <Titulo>Data de emissão</Titulo>
-            <Text small>{dataEmissao}</Text>
+            <Text small>{/* dataEmissao */}</Text>
           </Grid>
         </Grid.Container>
       </BackgroundCinza>

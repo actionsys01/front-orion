@@ -50,12 +50,12 @@ export default function Empresas() {
     
     const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {setPage(value)}
 
-const getCompanyData = useCallback(async () => {
+    const getCompanyData = useCallback(async () => {
     const response = await companies.getAllCompaniesByPage(page);
     const data = response.data
     setQuantityPage(Math.ceil(data.total / 8))
         return data.empresas;
-}, [page])
+    }, [page])
 
     useEffect(() => {
         getCompanyData().then(response => setCompany(response))

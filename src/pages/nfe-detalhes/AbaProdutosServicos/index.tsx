@@ -80,7 +80,9 @@ export default function AbaProdutosServicos({ data }) {
 
   const produtos = useMemo(() => {
     let products: any[] = [];
-    if (Array.isArray(data?.produtos_servicos)) {
+    const produtos_servicos = data?.produtos_servicos
+    if(produtos_servicos) {
+      if (Array.isArray(data?.produtos_servicos)) {
       data.produtos_servicos.map((item) => products.push({...item,
       ICMS: item.imposto.ICMS.ICMS00 || 
       item.imposto.ICMS.ICMS10 || 
@@ -95,7 +97,7 @@ export default function AbaProdutosServicos({ data }) {
       IPI: item.imposto.IPI?.IPIINT || item.imposto.IPI?.IPITrib
       }));
     } else {
-      products.push({...data.produtos_servicos,
+      products.push({...data?.produtos_servicos,
         ICMS: data.produtos_servicos.imposto.ICMS.ICMS00 || 
         data.produtos_servicos.imposto.ICMS.ICMS10 || 
         data.produtos_servicos.imposto.ICMS.ICMS20 || 
@@ -108,10 +110,10 @@ export default function AbaProdutosServicos({ data }) {
         data.produtos_servicos.imposto.ICMS.ICMSST,
         IPI: data.produtos_servicos.imposto.IPI?.IPIINT || data.produtos_servicos.imposto.IPI?.IPITrib
         });
-    }
+    }}
     //  console.log("func:", products)
     return products;
-  }, [data]);
+  }, []);
   
 
   
@@ -263,7 +265,6 @@ export default function AbaProdutosServicos({ data }) {
               </Text>
             </BackgroundCinza>
             <Spacer />
-            {/* row 1 */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
                 <Titulo>CST do ICMS</Titulo>
@@ -279,7 +280,6 @@ export default function AbaProdutosServicos({ data }) {
               </GridAlinhaTextoCentro>
             </Grid.Container>
             <Spacer />
-             {/* row 2 */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
                 <Titulo>BC do ICMS</Titulo>
@@ -295,7 +295,6 @@ export default function AbaProdutosServicos({ data }) {
               </GridAlinhaTextoCentro>
             </Grid.Container>
             <Spacer />
-             {/* row 3 */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
                 <Titulo>BC do ICMS-ST</Titulo>
@@ -311,7 +310,6 @@ export default function AbaProdutosServicos({ data }) {
               </GridAlinhaTextoCentro>
             </Grid.Container>
             <Spacer />
-            {/*  row 4 */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
                 <Titulo>BC do IPI</Titulo>
@@ -327,18 +325,15 @@ export default function AbaProdutosServicos({ data }) {
               </GridAlinhaTextoCentro>
             </Grid.Container>
             <Spacer />
-            {/* mal feito */}
             <BackgroundCinza>
               <Text h3 style={{ textAlign: "left", margin: 0 }}>
                 PIS/COFINS
               </Text>
             </BackgroundCinza>
             <Spacer />
-             {/* row */}
             <Grid.Container gap={2} direction="row">
               <GridAlinhaTextoCentro>
                 <Titulo>CST do CONFINS</Titulo>
-                {/* {console.log("dentro",produto?.COFINS?.COFINSAliq?.CST)} */}
                 <Text small>{produto?.imposto.COFINS?.COFINSAliq?.CST}</Text>
               </GridAlinhaTextoCentro>
               <GridAlinhaTextoCentro>

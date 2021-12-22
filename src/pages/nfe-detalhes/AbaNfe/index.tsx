@@ -64,15 +64,15 @@ export default function AbaNfe({ data }) {
   const router = useRouter();
 
 console.log(`data`, data)
-  // const dataEmissao = useMemo(() => {
-  //   if(data) {
-  //     const dataEmissaoFormatted = format(new Date(data?.informacoes_nfe?.dEmi ?? data?.informacoes_nfe?.dhEmi), "dd-MM-yyyy")
+  const dataEmissao = useMemo(() => {
+    if(data) {
+      const dataEmissaoFormatted = format(new Date(data?.informacoes_nfe?.dEmi ?? data?.informacoes_nfe?.dhEmi), "dd-MM-yyyy")
   
-  //     return dataEmissaoFormatted
+      return dataEmissaoFormatted
 
-  //   }
+    }
 
-  // }, [data])
+  }, [data])
 
 
   return (
@@ -95,7 +95,7 @@ console.log(`data`, data)
           </GridAlinhaTextoCentro>
           <Grid>
             <Titulo>Data de emissão</Titulo>
-            <Text small>{/* dataEmissao */}</Text>
+            <Text small>{dataEmissao}</Text>
           </Grid>
           <Grid>
             <Titulo>Data de saída/entrada</Titulo>
