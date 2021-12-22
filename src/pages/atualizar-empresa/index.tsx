@@ -25,11 +25,11 @@ export default function AtualizarEmpresa() {
     const getAccounts = useCallback(async () => {
         const response = await accounts.getAllAccounts();
         const data = response.data
-        return data
+         setAccountData(data)
     }, [])
 
     useEffect(() => {
-        getAccounts().then(response => setAccountData(response))
+        getAccounts()
     }, [])
 
     
@@ -53,10 +53,10 @@ export default function AtualizarEmpresa() {
     return (
         <>
         <Head>
-            <title>Orion | Cadastrar Empresas</title>
+            <title>Orion | Editar Empresas</title>
         </Head>
         <BotaoVoltar />
-        <h2>Cadastrar Empresa</h2>
+        <h2>Editar Empresa</h2>
         <CompanyRegister>
             <div>
                 <div className="container">

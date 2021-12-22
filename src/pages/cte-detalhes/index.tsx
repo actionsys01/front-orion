@@ -10,10 +10,12 @@ import AbaCte from "./AbaCte";
 import AbaInformacoesAdicionais from "./AbaInformacoesAdicionais";
 import AbaTotais from "./AbaTotais";
 import getCteXml from "@services/cte/getCteXml";
+import { useToasts } from "@geist-ui/react";
 
 export default function NfeDetalhes() {
   const router = useRouter();
   const [ data, setData ] = useState([])
+  const [, setToast] = useToasts();
   // const { data } = useRequest<{
   //   informacoes_cte: {
   //     mod: string;
@@ -44,12 +46,18 @@ export default function NfeDetalhes() {
   // });
 
   const getXml = useCallback(async() => {
-      const response = await getCteXml(String(router.query?.chave_nota))
-
-      const data = response.data
-
-      console.log(`my data`, data)
-      setData([data])
+      try {
+        const response = await getCteXml(String(router.query?.chave_nota))
+        const data = response.data
+        // console.log(`my data`, data)
+        setData([data])
+      } catch (error) {
+        console.log(error)
+        setToast({
+          text: "Houve um problema tente novamente",
+          type: "warning"
+      })
+      }
     },[],)
 
     useEffect(() => {

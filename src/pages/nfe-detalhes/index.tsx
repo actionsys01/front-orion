@@ -16,21 +16,30 @@ import AbaRastro from "./AbaRastro";
 import getNfeData from "@services/nfe/getNfeData"
 import { useSession } from "next-auth/client";
 import { nfeXmlProps } from "@services/nfe/dtos/nfeXml"
+import { useToasts } from "@geist-ui/react";
 
 export default function NfeDetalhes() {
   const router = useRouter();
   const [ session ] = useSession()
+  const [, setToast] = useToasts();
   const company_id = Number(session?.usuario.empresa.id)
   const chave_nota = router.query?.chave_nota.toString()
   const [ data, setData] = useState<nfeXmlProps[]>([])
 
 
   const getData = useCallback(async () => {
-    const response = await getNfeData(chave_nota, company_id)
-    const nfeRes = response.data
-    // console.log(`nfeRes`, nfeRes)
-    setData(nfeRes)
-    return nfeRes
+      try {
+        const response = await getNfeData(chave_nota, company_id)
+        const nfeRes = response.data
+      // console.log(`nfeRes`, nfeRes)
+        setData(nfeRes)
+        return nfeRes
+      } catch (error) {
+        setToast({
+          text: "Houve um problema tente novamente",
+          type: "warning"
+      })
+    }
     },[])
 
     useEffect(() => {
