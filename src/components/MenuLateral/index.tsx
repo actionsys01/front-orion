@@ -116,6 +116,9 @@ export default function MenuLateral({
                 <MenuItem onClick={() => router.push("/planos")}>
                   Cadastro de Plano
                 </MenuItem> */}
+                <MenuItem onClick={() => router.push("/perfil-conta")}>
+                  Conta
+                </MenuItem>
                 </SubMenu>
                 {!isCertificated && <MenuItem style={{textShadow: "1px 0 red"}}
                 onClick={() => router.push({

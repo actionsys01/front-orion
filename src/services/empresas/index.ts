@@ -10,6 +10,7 @@ import createCnpj from "./cnpj-api/createCnpj";
 import deleteCnpj from "./cnpj-api/deleteCnpj";
 import updateCnpj from "./cnpj-api/updateCnpj";
 import deleteCertificate from "./certificado-api/deleteCertificate";
+import uploadLogo from "./logo/upload";
 
 export { // empresas requests
         getAllCompaniesByPage, create, update, deletar,
@@ -18,4 +19,7 @@ export { // empresas requests
         // certificados requests
         getCertificate, sendCertificate, deleteCertificate,
         // CNPJ requests
-        getCnpj, createCnpj, deleteCnpj, updateCnpj }
+        getCnpj, createCnpj, deleteCnpj, updateCnpj,
+        // LOGO
+        uploadLogo
+}
