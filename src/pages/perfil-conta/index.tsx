@@ -20,18 +20,31 @@ export default function PerfilConta() {
     const getLogo = useCallback(async() => {
         const response = await companyRequest.getCompanyById(company_id)
         const data = response.data
-        console.log(`data no getlogo`, data.logo)
-        // const test = URL.createObjectURL(data.logo)
-        setCompanyLogo(data.logo)
+        const logoUrl = data.logo 
+        if(logoUrl.includes('.jpeg')) {
+           const jpegIndex =  logoUrl.indexOf('.jpeg', 0)
+           const jpeg = logoUrl.substring(0, jpegIndex + 5)
+           console.log(logoUrl.length)
+           console.log(`jpeg`, jpeg)
+           setCompanyLogo((jpeg))
+        } if(logoUrl.includes('.jpg')) {
+            const jpgIndex = logoUrl.indexOf('.jpg', 0)
+            const jpg = logoUrl.substring(0, jpgIndex + 4 )
+            console.log(`jpg`, jpg)
+            setCompanyLogo(jpg)
+        } if (logoUrl.includes('.png')) {
+            const pngIndex = logoUrl.indexOf('.png', 0)
+            const png = logoUrl.substring(0, pngIndex + 4)
+            console.log(`png`, png)
+            setCompanyLogo(png)
+        }
         },[],)
 
         useEffect(() => {
             getLogo()
-            console.log(`companyLogo`, companyLogo)
         }, [])
 
     const registerFile = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
-        // console.log(`event.target.files`, event.target.files[0])
         if(event.target.files) {
             setLogo(event.target.files[0])
             try {
@@ -61,7 +74,7 @@ export default function PerfilConta() {
         <ProfileBody>
             <div>
                 <LogoContainer>
-                    {hasLogo ? <img src='https://grawebstorage.blob.core.windows.net/teste/1640207357926-875a1bf1-5567-42bb-8a90-e9ef4931880b.jpg'/> : 
+                    {hasLogo ? <img src={companyLogo}/> : 
                         <div className='no-logo'>
                             <label id="logo">
                                 <p>Sem logo... <br/> Clique para enviar

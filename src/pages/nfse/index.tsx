@@ -126,7 +126,7 @@ export default function Nfse() {
                      className: nfsePermissions.HISTORICO ? 'able' : 'disabled'
                },
                   {
-                     optionName: <a style={{textDecoration: 'none'}} href={item.xml}>Download</a>,
+                     optionName: <a href={item.xml}>Download</a>,
                      onClick: () => {<a href={item.xml}></a>},
                      className: 'able'
                },
