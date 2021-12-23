@@ -143,7 +143,6 @@ export default function AbaNfe({ data }) {
               </Grid>
             </Grid.Container>
             <Spacer />
-
             <Grid.Container gap={2} direction="row">
               <Grid>
                 <Titulo>Telefone</Titulo>

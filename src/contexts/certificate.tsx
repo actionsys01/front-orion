@@ -28,6 +28,7 @@ const CertificateProvider:  React.FC = ({ children }: any) => {
                 setIsCertificated(data && cnpjData > 0 ? true : false)
                 return data
             } catch (error) {
+                
                 setIsCertificated(false)
             }}
         },[session] )   

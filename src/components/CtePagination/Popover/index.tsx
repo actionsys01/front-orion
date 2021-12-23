@@ -89,31 +89,6 @@ interface PopoverProps {
                       Visualizar
                     </Text>
                   </Popover.Item>
-                  {/* <Popover.Item>
-                    <Popover
-                    visible={secondPopoverVisible}
-                    onVisibleChange={changeHandlerSecondPopover}
-                      placement="right"
-                      content={
-                        <>
-                          <Popover.Item>
-                            <Link href="#">Ciência</Link>
-                          </Popover.Item>
-                          <Popover.Item>
-                            <Link href="#">Confirmação</Link>
-                          </Popover.Item>
-                          <Popover.Item>
-                            <Link href="#">Operação não realizada</Link>
-                          </Popover.Item>
-                          <Popover.Item>
-                            <Link href="#">Desconhecimento</Link>
-                          </Popover.Item>
-                        </>
-                      }
-                    >
-                      Registrar evento
-                    </Popover>
-                  </Popover.Item> */}
                   <Popover.Item>
                     <a href={item?.rowValue.xml} download>
                     <Text
