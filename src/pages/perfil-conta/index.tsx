@@ -47,7 +47,6 @@ export default function PerfilConta() {
         if(event.target.files) {
             try {
                 await companyRequest.uploadLogo(company_id, event.target.files[0])
-                // console.log(`logo`, logo)
                 setToast({
                     text: "Logo enviado com sucesso",
                     type: "success"
