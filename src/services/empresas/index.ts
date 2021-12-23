@@ -11,9 +11,10 @@ import deleteCnpj from "./cnpj-api/deleteCnpj";
 import updateCnpj from "./cnpj-api/updateCnpj";
 import deleteCertificate from "./certificado-api/deleteCertificate";
 import uploadLogo from "./logo/upload";
+import getCompanyById from "./empresa-api/getCompanyById";
 
 export { // empresas requests
-        getAllCompaniesByPage, create, update, deletar,
+        getAllCompaniesByPage, create, update, deletar, getCompanyById,
         // dashboard request
         dashboardRequest, 
         // certificados requests

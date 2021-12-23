@@ -12,15 +12,31 @@ export default function PerfilConta() {
     const [, setToast] = useToasts();
     const [session] = useSession();
     const router = useRouter();
-    const [ hasLogo, setHasLogo] = useState(false)
+    const [ hasLogo, setHasLogo] = useState(true)
     const [ logo, setLogo ] = useState<File | null>(null);
     const company_id = Number(session?.usuario.empresa.id)
+    const [ companyLogo, setCompanyLogo ] = useState("")
+
+    const getLogo = useCallback(async() => {
+        const response = await companyRequest.getCompanyById(company_id)
+        const data = response.data
+        console.log(`data no getlogo`, data.logo)
+        // const test = URL.createObjectURL(data.logo)
+        setCompanyLogo(data.logo)
+        },[],)
+
+        useEffect(() => {
+            getLogo()
+            console.log(`companyLogo`, companyLogo)
+        }, [])
 
     const registerFile = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
+        // console.log(`event.target.files`, event.target.files[0])
         if(event.target.files) {
             setLogo(event.target.files[0])
             try {
-                await companyRequest.uploadLogo(company_id, logo)
+                await companyRequest.uploadLogo(company_id, event.target.files[0])
+                // console.log(`logo`, logo)
                 setToast({
                     text: "Logo enviado com sucesso",
                     type: "success"
@@ -33,7 +49,7 @@ export default function PerfilConta() {
                 })
             }
         }
-    },[logo])
+    },[])
 
 
     return <>
@@ -45,11 +61,11 @@ export default function PerfilConta() {
         <ProfileBody>
             <div>
                 <LogoContainer>
-                    {hasLogo ? <img src="images/actionsys.jpg" /> : 
+                    {hasLogo ? <img src='https://grawebstorage.blob.core.windows.net/teste/1640207357926-875a1bf1-5567-42bb-8a90-e9ef4931880b.jpg'/> : 
                         <div className='no-logo'>
-                            <label id="upload">
+                            <label id="logo">
                                 <p>Sem logo... <br/> Clique para enviar
-                                    <input type="file"  id="upload"  onChange={registerFile}/>
+                                    <input type="file"  id="logo"  onChange={registerFile}/>
                                 </p>
                             </label>
                         </div>}
