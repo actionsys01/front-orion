@@ -13,7 +13,6 @@ export default function PerfilConta() {
     const [session] = useSession();
     const router = useRouter();
     const [ hasLogo, setHasLogo] = useState(true)
-    const [ logo, setLogo ] = useState<File | null>(null);
     const company_id = Number(session?.usuario.empresa.id)
     const [ companyLogo, setCompanyLogo ] = useState("")
 
@@ -46,7 +45,6 @@ export default function PerfilConta() {
 
     const registerFile = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
         if(event.target.files) {
-            setLogo(event.target.files[0])
             try {
                 await companyRequest.uploadLogo(company_id, event.target.files[0])
                 // console.log(`logo`, logo)
