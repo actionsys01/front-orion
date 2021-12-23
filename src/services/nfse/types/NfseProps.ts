@@ -11,7 +11,8 @@ export interface NfseProps {
     serie: number,
     status_prefeitura: number,
     dt_hr_emit: string,
-    dt_hr_recebimento: string
+    dt_hr_recebimento: string,
+    xml: string
 }
 
 export interface NfseFormattedProps {

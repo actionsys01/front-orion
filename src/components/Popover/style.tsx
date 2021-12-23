@@ -165,6 +165,11 @@ export const PopStyleFourLines = styled.div`
             line-height: 2rem;
             color: #eaeaea;
         }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
 }
 
     div:before {

@@ -54,7 +54,7 @@ useEffect(() => {
             <NfseDetailStyle>
                 <ul>
                     <li onClick={() => setSelectTab(false)} 
-                    className={!selectTab ? "active" : ""}>Nfs-e</li>
+                    className={!selectTab ? "active" : ""}>NFS-e</li>
                     <li onClick={() => setSelectTab(true)} 
                     className={selectTab ? "active" : ""}>Dados Complementares</li>
                 </ul>

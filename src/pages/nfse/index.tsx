@@ -35,7 +35,8 @@ interface GatheredProps {
    option: any,
    status_nota: any,
    emissionDate: string,
-   receiveDate: string
+   receiveDate: string,
+   xml: string
 }
 
 export default function Nfse() {
@@ -125,8 +126,8 @@ export default function Nfse() {
                      className: nfsePermissions.HISTORICO ? 'able' : 'disabled'
                },
                   {
-                     optionName: 'Download',
-                     onClick: () => "",
+                     optionName: <a style={{textDecoration: 'none'}} href={item.xml}>Download</a>,
+                     onClick: () => {<a href={item.xml}></a>},
                      className: 'able'
                },
                {
