@@ -142,7 +142,6 @@ export default function Nfse() {
          })
       })
       }
-      console.log(`allData`, allData)
       return allData
    }, [nfseData])
 
