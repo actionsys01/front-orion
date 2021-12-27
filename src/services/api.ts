@@ -4,7 +4,7 @@ import { fromUnixTime, isBefore } from "date-fns";
 import jwtDecode from "jwt-decode";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_APP_BACKEND_URL,
+  baseURL: "https://actionsys-graweb.herokuapp.com/",
 });
 
 interface IJwtDecode {
