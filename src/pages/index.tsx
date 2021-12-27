@@ -123,7 +123,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (session) {
     return {
       redirect: {
-        destination: `${process.env.APP_WEB_URL}/dashboard`,
+        destination: `https://actionsys-graweb.herokuapp.com//dashboard`,
         permanent: false,
       },
     };
