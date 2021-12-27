@@ -53,12 +53,12 @@ const Modal = ({data}) => {
                 <div className="input-container">
                     <div>
                         <label htmlFor="nome">Nome</label>
-                        <input type="text" id='nome' defaultValue={data.nome_fantasia}
+                        <input type="text" id='nome' defaultValue={data?.nome_fantasia}
                             onChange={(e) => setDataUpdate({...dataUpdate, nome_fantasia: e.target.value})}/>
                     </div>
                     <div>
                     <label htmlFor="social">Razão Social</label>
-                        <input type="text" id='social' defaultValue={data.razao_social}
+                        <input type="text" id='social' defaultValue={data?.razao_social}
                             onChange={(e) => setDataUpdate({...dataUpdate, razao_social: e.target.value})} />
                     </div>
                 </div>
