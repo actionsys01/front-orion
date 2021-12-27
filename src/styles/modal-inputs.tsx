@@ -1,8 +1,12 @@
 import styled from "styled-components";
 
-export const ModalInputContainer = styled.div`
+interface ModalProps {
+    visible: boolean
+}
+
+export const ModalInputContainer = styled.div<ModalProps>`
     z-index: auto;
-    display: block;
+    display: ${({ visible }) => (visible ? 'block' : 'none')};
     position: fixed;
     top: 0;
     left: 0;

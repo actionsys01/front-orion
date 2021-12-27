@@ -4,26 +4,45 @@ import { useToasts } from "@geist-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import BotaoVoltar from "@components/BotaoVoltar";
-import { ProfileBody, LogoContainer, BodyRow, ButtonStyle } from "./style"
-import { BottomConfirmBtn } from '@styles/buttons';
+import { ProfileBody, BodyRow } from "./style"
+import Modal from './modal';
+import LogoModal from './logo-modal';
 import * as companyRequest from "@services/empresas";
-import { ModalInputContainer } from "@styles/modal-inputs"
+
+interface CompanyProps {
+    empresa_id: number;
+    razao_social: string;
+    nome_fantasia: string;
+    cnpj: string;
+    email: string;
+    status: number;
+    plano_id: number;
+}
+
 
 export default function PerfilConta() {
     const [, setToast] = useToasts();
     const [session] = useSession();
     const router = useRouter();
-    const [ hasLogo, setHasLogo] = useState(true)
+    const [ hasLogo, setHasLogo] = useState(false)
     const company_id = Number(session?.usuario.empresa.id)
     const [ companyLogo, setCompanyLogo ] = useState("")
+    const [ companyData, setCompanyData ] = useState({} as CompanyProps)
     const [ visibleModal, setVisibleModal ] = useState(false)
+    // console.log(`companyData`, companyData)
+
+    const modalHandler = useCallback(() => {
+        setVisibleModal(!visibleModal)
+    }, [visibleModal])
 
 
 
     const getLogo = useCallback(async() => {
         const response = await companyRequest.getCompanyById(company_id)
         const data = response.data
+        setCompanyData(data)
         const logoUrl = data.logo 
+        logoUrl && setHasLogo(true)
         if(logoUrl.includes('.jpeg')) {
            const jpegIndex =  logoUrl.indexOf('.jpeg', 0)
            const jpeg = logoUrl.substring(0, jpegIndex + 5)
@@ -35,7 +54,6 @@ export default function PerfilConta() {
         } if (logoUrl.includes('.png')) {
             const pngIndex = logoUrl.indexOf('.png', 0)
             const png = logoUrl.substring(0, pngIndex + 4)
-            console.log(`png`, png)
             setCompanyLogo(png)
         }
         },[],)
@@ -53,6 +71,7 @@ export default function PerfilConta() {
                     text: "Logo enviado com sucesso",
                     type: "success"
                 })
+                getLogo()
             } catch (error) {
                 console.log(error)
                 setToast({
@@ -60,6 +79,8 @@ export default function PerfilConta() {
                     type: "warning"
                 })
             }
+            setVisibleModal(false)
+
         }
     },[])
 
@@ -72,55 +93,28 @@ export default function PerfilConta() {
         <h2>Configurações de Conta</h2>
         <ProfileBody>
             <div>
-                <LogoContainer>
-                    {hasLogo ? <img src={companyLogo}/> : 
-                        <div className='no-logo'>
-                            <label id="logo">
-                                <p>Sem logo... <br/> Clique para enviar
-                                    <input type="file"  id="logo"  onChange={registerFile}/>
-                                </p>
-                            </label>
-                        </div>}
-                </LogoContainer>   
+                <LogoModal 
+                    registerFile={registerFile} 
+                    hasLogo={hasLogo} 
+                    companyLogo={companyLogo} 
+                    modalHandler={modalHandler}
+                    visibleModal={visibleModal}/>
                 <BodyRow>
                     <h6>Razão Social:</h6>
-                    <h5>Actionsys</h5>
+                    <h5>{companyData?.razao_social}</h5>
                 </BodyRow>
                 <BodyRow>
                     <h6>CNPJ:</h6>
-                    <h5>35.00.805/0001-13</h5>
+                    <h5>{companyData?.cnpj}</h5>
                 </BodyRow>
                 <BodyRow>
                     <h6>E-mail:</h6>
-                    <h5>duque.tauribeiro@gmail.com</h5>
+                    <h5>{companyData.email}</h5>
                 </BodyRow>
-                <BottomConfirmBtn>
-                    <ButtonStyle>
-                        Editar
-                    </ButtonStyle>
-                </BottomConfirmBtn>
+                <Modal data={companyData} />
             </div>
         </ProfileBody>
-        <ModalInputContainer>
-            <div>
-                <h4>Editar</h4>
-                <h6>Perfil da Empresa</h6>
-                <div className="input-container">
-                    <div>
-                        <label htmlFor="nome">Nome</label>
-                        <input type="text" id='nome'/>
-                    </div>
-                    <div>
-                    <label htmlFor="social">Razão Social</label>
-                        <input type="text" id='social' />
-                    </div>
-                </div>
-                <div className="btn-container">
-                    <button>CANCELAR</button>
-                    <button>CONFIRMAR</button>
-                </div>
-            </div>
-        </ModalInputContainer>
+       
 
     </>
 }
