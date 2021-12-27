@@ -55,7 +55,7 @@ export default function MenuLateral({
   async function sair() {
     await limpar();
     signOut({
-      callbackUrl: "https://actionsys-graweb.herokuapp.com/"
+      callbackUrl: "https://gra-web.netlify.app"
     });
   }
 

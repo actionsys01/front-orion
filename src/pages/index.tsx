@@ -123,7 +123,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (session) {
     return {
       redirect: {
-        destination: `https://actionsys-graweb.herokuapp.com//dashboard`,
+        destination: `https://gra-web.netlify.app/dashboard`,
         permanent: false,
       },
     };
