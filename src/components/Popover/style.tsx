@@ -29,11 +29,12 @@ export const PopStyle = styled.div`
             line-height: 2rem;
         }
         .disabled {
-            cursor: not-allowed;
+            opacity: 0;
             margin: 0;
             font-size: 0.875rem;
             line-height: 2rem;
             color: #eaeaea;
+            cursor: default;
         }
 }
 
@@ -159,11 +160,12 @@ export const PopStyleFourLines = styled.div`
             line-height: 2rem;
         }
         .disabled {
-            cursor: not-allowed;
+            opacity: 0;
             margin: 0;
             font-size: 0.875rem;
             line-height: 2rem;
             color: #eaeaea;
+            cursor:  default;
         }
 
         a {

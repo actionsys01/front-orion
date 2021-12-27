@@ -78,7 +78,7 @@ const Modal = ({modalHandler, responsible, setResponsible, cnpj, setCnpj, setUpl
                     <form action="">
                         <FirstLine>
                             <label id="upload" ><span>{fileName.replace(/^.*\\/, "")}</span>
-                            <input type="file" id="upload" onChange={registerFile}/>
+                                <input type="file" id="upload" onChange={registerFile}/>
                             </label>
                             <Search />
                         </FirstLine>
