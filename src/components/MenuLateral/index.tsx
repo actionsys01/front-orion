@@ -54,7 +54,9 @@ export default function MenuLateral({
 
   async function sair() {
     await limpar();
-    signOut();
+    signOut({
+      callbackUrl: "https://actionsys-graweb.herokuapp.com/"
+    });
   }
 
 
