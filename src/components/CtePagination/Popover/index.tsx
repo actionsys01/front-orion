@@ -14,7 +14,7 @@ interface PopoverProps {
   const PopoverCte: React.FC<PopoverProps> = ({ item }) => {
     const [visible, setVisible] = useState(false)
     // const [secondPopoverVisible, setSecondPopoverVisible] = useState(false)
-    const {cteHistoricalPermission} = useSecurityContext()
+    const {ctePermissions} = useSecurityContext()
     const [, setToast] = useToasts()
 
     const changeHandler = useCallback((next) => {
@@ -99,7 +99,8 @@ interface PopoverProps {
                     </Text>
                     </a>
                   </Popover.Item>
-               { cteHistoricalPermission &&  <Popover.Item>
+               { ctePermissions.HISTORICO &&  
+                <Popover.Item>
                     <Text 
                     style={{ cursor: "pointer" }}
                     onClick={() => {

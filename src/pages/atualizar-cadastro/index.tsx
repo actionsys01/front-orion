@@ -9,52 +9,19 @@ import Head from "next/head";
 import { ChevronDown, ChevronUp  } from '@geist-ui/react-icons'
 import {  useRouter } from "next/router";
 import api from "@services/api"
-import {useSecurityContext} from "@contexts/security"
 import { useToasts} from "@geist-ui/react";
-import { tripleLabels, middlePermissions, entranceLabels} from "@utils/permissions-labels"
+import { tripleLabels, middlePermissions, entranceLabels, severalPermissions} from "@utils/permissions-labels"
+import { initialState, initial, initialStateEntrada, initialStateB } from "@utils/initial-states"
 
-
-type ICreateProfile = {
-  name: string;
-  descricao: string;
-  permissions: []
-};
 type ProfilePermissions = {
     id: number;
     acao: string;
     categoria: string
 };
-
-interface CompanyPermissions {
-  categoria: string
-}
-
-const initialStateA = {
-  "ADICIONAR": false,
-  "EXCLUIR": false,
-  "EDITAR": false
-}
-
-const initialStateE = {
-  "ADICIONAR": false,
-  "CANCELAR": false,
-  "AUTORIZAR": false,
-  "VISUALIZAR": false,
-  "EDITAR": false
-}
-
-const initialStateB = {
-  'VISUALIZAR': false,
-  'HISTORICO': false,
-  'IMPRIMIR': false
-}
-
-
 export default function AtualizarCadastro() {
   const router = useRouter();
   const id_profile = Number(router.query.perfilId);
   const [session] = useSession();
-  const [permissions, setPermissions ] = useState<CompanyPermissions[]>([])
   const [profilePermissions, setProfilePermissions] = useState<ProfilePermissions[]>([])
   const companyId = Number(session?.usuario.empresa.id)
   const [, setToast] = useToasts();
@@ -69,95 +36,65 @@ export default function AtualizarCadastro() {
   const [ certificadoVisible, setCertificadoVisible ] = useState(false)
   const [ companyModal, setCompanyModal ] = useState(false)
 
-  const [isNfe, setIsNfe] = useState<boolean>(false)
-  const [isCte, setIsCte] = useState<boolean>(false)
   const [profileApp, setProfileApp] = useState<number[]>([])
-
-  const [ isCnpj, setIsCnpj ] = useState({...initialStateA})
-  const [ isCertificate, setIsCertificate ] = useState({...initialStateA})
-  const [ isUser, setIsUser ] = useState({...initialStateA})
-  const [ isProfile, setIsProfile ] = useState({...initialStateA})
-  const [ isEntrance, setIsEntrance ] = useState({...initialStateE})
+  
+  const [ isNfe, setIsNfe ] = useState({...initialState})
+  const [ isCte, setIsCte ] = useState({...initialStateB})
+  const [ isCnpj, setIsCnpj ] = useState({...initial})
+  const [ isCertificate, setIsCertificate ] = useState({...initial})
+  const [ isUser, setIsUser ] = useState({...initial})
+  const [ isProfile, setIsProfile ] = useState({...initial})
+  const [ isEntrance, setIsEntrance ] = useState({...initialStateEntrada})
   const [ isNfse, setIsNfse ] = useState({...initialStateB})
   const [ isCompanyConfig, setIsCompanyConfig ] = useState(false)
 
-  // console.log(id_profile);
- 
-  //checkbox states
-  // nfe
-  const [nfeVisualizar, setNfeVizualizar] = useState<boolean>(false)
-  const [nfeHistorico, setNfeHistorico] = useState<boolean>(false)
-  const [nfeEventoCiencia, setNfeEventoCiencia] = useState<boolean>(false)
-  const [nfeEventoConfirmar, setNfeEventoConfirmar] = useState<boolean>(false)
-  const [nfeEventoDesconhecimento, setNfeEventoDesconhecimento] = useState<boolean>(false)
-  const [nfeEventoNaoRealizado, setNfeEventoNaoRealizado] = useState<boolean>(false)
-  // cte
-  const [cteVisualizar, setCteVizualizar] = useState<boolean>(false)
-  const [cteHistorico, setCteHistorico] = useState<boolean>(false)
 
 const getAllPermissions = async () => {
-  const response = await api.get(`/perfil/search/${id_profile}`);
-  const data = await response.data.permissoes
-  
-  const currentPermissions: any = [];
-    if(Array.isArray(data)){
-      data.map((item: any) => currentPermissions.push(item.id))
-      setProfilePermissions(data)
-      setProfileApp(currentPermissions)
-      return currentPermissions
-    } else {
-      const createArray: any = []
-      createArray.push(data)
-      // console.log(`createArray`, createArray)
-      createArray.map((item: any) => currentPermissions.push(item.id))
-      setProfilePermissions(createArray)
-      setProfileApp(currentPermissions)
-    }
-  
-  
+  try {
+    const response = await api.get(`/perfil/search/${id_profile}`);
+    const data = await response.data.permissoes
+    const currentPermissions: any = [];
+      if(Array.isArray(data)){
+        data.map((item: any) => currentPermissions.push(item.id))
+        setProfilePermissions(data)
+        setProfileApp(currentPermissions)
+        return currentPermissions
+      } else {
+        const createArray: any = []
+        createArray.push(data)
+        // console.log(`createArray`, createArray)
+        createArray.map((item: any) => currentPermissions.push(item.id))
+        setProfilePermissions(createArray)
+        setProfileApp(currentPermissions)
+      }
+  } catch (error) {
+    console.log(error)
+    setToast({
+      text: "Houve um problema, por favor tente novamente",
+      type: "warning"
+    })
+  }
   }
 
-const getPermissions = useMemo(() => {
-const permissions: ProfilePermissions[] = [];
- if(profilePermissions) {
-   // nfe 
-    const visualizarNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "VISUALIZAR");
-    const historicoNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "HISTORICO")
-    const eventoCienciaNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "CIENCIA")
-    const eventoConfirmarNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "CONFIRMACAO")
-    const eventoDesconhecimentoNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "DESCONHECIMENTO")
-    const eventoNaoRealizadoNfe = profilePermissions.find((item) => item.categoria === "NFE" && item.acao === "OPERACAO_NAO_REALIZADA")
-    // cte
-    const visualizarCte = profilePermissions.find((item) => item.categoria === "CTE" && item.acao === "VISUALIZAR");
-    const historicoCte = profilePermissions.find((item) => item.categoria === "CTE" && item.acao === "HISTORICO")
-    // nfe check
-    if(visualizarNfe){setNfeVizualizar(true)}
-    if(historicoNfe){setNfeHistorico(true)}
-    if(eventoCienciaNfe) {setNfeEventoCiencia(true)}
-    if(eventoConfirmarNfe){setNfeEventoConfirmar(true)}
-    if(eventoDesconhecimentoNfe) {setNfeEventoDesconhecimento(true)}
-    if(eventoNaoRealizadoNfe) {setNfeEventoNaoRealizado(true)}
-    // cte check
-    if(visualizarCte){setCteVizualizar(true)}
-    if(historicoCte){setCteHistorico(true)}
-    }
-    return permissions
-}, [profilePermissions])
 
 function getUserPermissions() {
   if(profilePermissions) {
-    const cnpjPermissionCheck: any[] = profilePermissions?.filter((item) => item.categoria === "CNPJS").map((permit) => permit.acao)
+    const nfeCheck: string [] = profilePermissions?.filter((item) => item.categoria === "NFE").map((permit) => permit.acao)
+      nfeCheck && verifyFurtherPermissions(nfeCheck, 'nfe')
+    const cnpjPermissionCheck: string[] = profilePermissions?.filter((item) => item.categoria === "CNPJS").map((permit) => permit.acao)
       cnpjPermissionCheck && verifyPermissions(cnpjPermissionCheck, 'cnpj')
-    const userPermissionCheck: any[] = profilePermissions?.filter((item) => item.categoria === "USUARIO").map((permit) => permit.acao)
+    const userPermissionCheck: string[] = profilePermissions?.filter((item) => item.categoria === "USUARIO").map((permit) => permit.acao)
       userPermissionCheck && verifyPermissions(userPermissionCheck, "usuario")
-    const profileCheck: any[] = profilePermissions?.filter((item) => item.categoria === "PERFIS").map((permit) => permit.acao)
+    const profileCheck: string[] = profilePermissions?.filter((item) => item.categoria === "PERFIS").map((permit) => permit.acao)
       profileCheck && verifyPermissions(profileCheck, 'perfis')
-    const certificateCheck: any[] = profilePermissions?.filter((item) => item.categoria === "CERTIFICADO").map((permit) => permit.acao)
+    const certificateCheck: string[] = profilePermissions?.filter((item) => item.categoria === "CERTIFICADO").map((permit) => permit.acao)
       certificateCheck && verifyPermissions(certificateCheck, 'certificado')
-    const entranceCheck: any[] = profilePermissions?.filter((item) => item.categoria === "ENTRADA").map((permit) => permit.acao)
+    const entranceCheck: string[] = profilePermissions?.filter((item) => item.categoria === "ENTRADA").map((permit) => permit.acao)
       entranceCheck && verifyFurtherPermissions(entranceCheck,'entrada')
     const nfseCheck: string [] = profilePermissions?.filter((item) => item.categoria === "NFSE").map((permit) => permit.acao)
       nfseCheck && verifyFurtherPermissions(nfseCheck, 'nfse')
+    const cteCheck: string[] = profilePermissions?.filter((item) => item.categoria === "CTE").map((permit) => permit.acao)
+      cteCheck && verifyFurtherPermissions(cteCheck, 'cte')
     setIsCompanyConfig(Boolean(profilePermissions?.find((item) => item.categoria === "EMPRESA")))
   }
 } 
@@ -201,19 +138,33 @@ function getUserPermissions() {
                 setIsEntrance(permissionsFormatted)
           }
       }
-    }
-    if(type === 'nfse') {
+    } if(type === 'nfe') {
       let current
       for(let i = 0; i < param.length; i++){
-        current = middlePermissions.find((item) => item === param[i])
+        current = severalPermissions.find((item) => item === param[i])
           if(current) {
-            const permissionsFormatted = isNfse
-                permissionsFormatted[current] = true
-                setIsNfse(permissionsFormatted)
+            const permissionsFormatted = isNfe
+              permissionsFormatted[current] = true
+              setIsNfe(permissionsFormatted)
           }
       }
     }
+    else {
+        let current
+        for(let i = 0; i < param.length; i++){
+          current = middlePermissions.find((item) => item === param[i])
+            if(current && type === 'nfse') {
+              const permissionsFormatted = isNfse
+                permissionsFormatted[current] = true
+                setIsNfse(permissionsFormatted)
+            } if(current && type === 'cte') { 
+                const permissionsFormatted = isCte
+                  permissionsFormatted[current] = true
+                  setIsCte(permissionsFormatted)
+            }
+    }
   }
+}
 
   useEffect(() => {
     getUserPermissions() 
@@ -226,13 +177,11 @@ function getUserPermissions() {
   
 
 const gatherData = (e: any)  => {
-
-const findProfileApp = profileApp.find(value => value === Number(e))
-
-if (!findProfileApp) {
-  setProfileApp(state => [...state, Number(e)])
-  return
-}
+  const findProfileApp = profileApp.find(value => value === Number(e))
+    if (!findProfileApp) {
+    setProfileApp(state => [...state, Number(e)])
+    return
+    }
   setProfileApp(state => state.filter(value => value !== e))
 }
 
@@ -316,40 +265,53 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                 <div >
                   <span>
                     <span><Checkbox  value={2} 
-                      checked={nfeVisualizar}  
+                      checked={isNfe.VISUALIZAR}  
                       onChange={() => gatherData(2)} 
-                      onClick={nfeVisualizar ? ()=> setNfeVizualizar(false) : ()=> setNfeVizualizar(true)}/></span>
-                    Visualizar</span>
+                      onClick={() => setIsNfe({...isNfe, VISUALIZAR : !isNfe.VISUALIZAR})}
+                      />
+                    </span>
+                    Visualizar
+                  </span>
                     <span> 
                       <span><Checkbox value={1} 
-                        checked={nfeHistorico} 
+                        checked={isNfe.HISTORICO} 
                         onChange={() => gatherData(1)} 
-                        onClick={nfeHistorico ? ()=> setNfeHistorico(false) : ()=> setNfeHistorico(true)}/></span>
-                      Histórico de Notas</span>
+                        onClick={() => setIsNfe({...isNfe, HISTORICO : !isNfe.HISTORICO})}/>
+                      </span>
+                      Histórico de Notas
+                    </span>
                     <span> 
                       <span><Checkbox  
-                        checked={nfeEventoCiencia}
+                        checked={isNfe.CIENCIA}
                         onChange={() => gatherData(3)} 
-                        onClick={nfeEventoCiencia ? ()=> setNfeEventoCiencia(false) : ()=> setNfeEventoCiencia(true)}/></span>
-                      Registrar Evento - Ciência da Operação</span>
+                        onClick={() => setIsNfe({...isNfe, CIENCIA : !isNfe.CIENCIA})}/>
+                      </span>
+                      Registrar Evento - Ciência da Operação
+                    </span>
                     <span> 
                       <span><Checkbox 
-                        checked={nfeEventoConfirmar} 
+                        checked={isNfe.CONFIRMACAO} 
                         onChange={() => gatherData(4)} 
-                        onClick={nfeEventoConfirmar ? ()=> setNfeEventoConfirmar(false) : ()=> setNfeEventoConfirmar(true)}/></span>
-                      Registrar Evento - Confirmação da Operação</span>
+                        onClick={() => setIsNfe({...isNfe, CONFIRMACAO : !isNfe.CONFIRMACAO})}/>
+                      </span>
+                      Registrar Evento - Confirmação da Operação
+                    </span>
                     <span> 
                       <span><Checkbox  
-                        checked={nfeEventoNaoRealizado} 
+                        checked={isNfe.OPERACAO_NAO_REALIZADA} 
                         onChange={() => gatherData(6)} 
-                        onClick={nfeEventoNaoRealizado ? ()=> setNfeEventoNaoRealizado(false) : ()=> setNfeEventoNaoRealizado(true)}/></span>
-                      Registrar Evento - Operação Não Realizada</span>
+                        onClick={() => setIsNfe({...isNfe, OPERACAO_NAO_REALIZADA : !isNfe.OPERACAO_NAO_REALIZADA})}/>
+                      </span>
+                      Registrar Evento - Operação Não Realizada
+                    </span>
                     <span> 
                       <span><Checkbox  
-                        checked={nfeEventoDesconhecimento} 
+                        checked={isNfe.DESCONHECIMENTO} 
                         onChange={() => gatherData(5)} 
-                        onClick={nfeEventoDesconhecimento ? ()=> setNfeEventoDesconhecimento(false) : ()=> setNfeEventoDesconhecimento(true)}/></span>
-                      Registrar Evento - Desconhecimento da Operação</span>
+                        onClick={() => setIsNfe({...isNfe, DESCONHECIMENTO : !isNfe.DESCONHECIMENTO})}/>
+                      </span>
+                      Registrar Evento - Desconhecimento da Operação
+                    </span>
                 </div>
               </div>
           }
@@ -375,15 +337,20 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                     <div >
                       <span>
                         <span><Checkbox 
-                          checked={cteVisualizar} 
+                          checked={isCte.VISUALIZAR} 
                           onChange={() => gatherData(14)} 
-                          onClick={cteVisualizar ? ()=> setCteVizualizar(false) : ()=> setCteVizualizar(true)}/></span>
-                        Visualizar</span>
+                          onClick={() => setIsCte({...isCte, VISUALIZAR : !isCte.VISUALIZAR})}/>
+                        </span>
+                        Visualizar
+                      </span>
                       <span> 
                         <span><Checkbox 
-                          checked={cteHistorico}  
-                          onChange={() => gatherData(13)} onClick={cteHistorico ? ()=> setCteHistorico(false) : ()=> setCteHistorico(true)}/></span>
-                        Histórico de Notas</span>
+                          checked={isCte.HISTORICO}   
+                          onChange={() => gatherData(13)} 
+                          onClick={() => setIsCte({...isCte, HISTORICO : !isCte.HISTORICO})}/>
+                        </span>
+                        Histórico de Notas
+                      </span>
                     </div>
                   </div>
                 }

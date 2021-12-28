@@ -28,9 +28,7 @@ interface Event {
     const router = useRouter()
     const { setVisible: setVisiblePop, bindings } = useModal();
     const [secondPopoverVisible, setSecondPopoverVisible] = useState(false)
-    const {nfeHistoricalPermission, 
-      nfeAwarePermission, nfeConfirmPermission, 
-      nfeUnawarePermission, nfeUnauthorizedPermission} = useSecurityContext()
+    const { nfePermissions } = useSecurityContext()
     const [ reason, setReason] = useState<string>("")
     const [eventType, setEventType] = useState< string>("")
     const [stateCode, setStateCode] = useState<string>("") 
@@ -154,7 +152,7 @@ interface Event {
                   Visualizar
                 </Text>
               </Popover.Item>
-              {(nfeAwarePermission || nfeConfirmPermission || nfeUnauthorizedPermission || nfeUnawarePermission) && (
+              {(nfePermissions.CIENCIA || nfePermissions.CONFIRMACAO || nfePermissions.OPERACAO_NAO_REALIZADA || nfePermissions.DESCONHECIMENTO) && (
                 <>
                   <Popover.Item>
                     <Popover
@@ -164,7 +162,7 @@ interface Event {
                       placement="right"
                       content={
                         <>
-                        {nfeAwarePermission &&
+                        {nfePermissions.CIENCIA &&
                           <Popover.Item>
                             <Text 
                               style={{ cursor: "pointer" }}
@@ -181,7 +179,7 @@ interface Event {
                             }}>Ciência</Text>
                           </Popover.Item>}
 
-                          {nfeConfirmPermission && (
+                          {nfePermissions.CONFIRMACAO && (
                           <Popover.Item>
                             <Text
                               style={{ cursor: "pointer" }}
@@ -198,7 +196,7 @@ interface Event {
                             >Confirmação</Text>
                           </Popover.Item>
                           )}
-                        {nfeUnauthorizedPermission &&
+                        {nfePermissions.OPERACAO_NAO_REALIZADA &&
                           <Popover.Item>
                             <Text
                               style={{ cursor: "pointer" }}
@@ -213,7 +211,7 @@ interface Event {
                             }}
                             >Operação não realizada</Text>
                           </Popover.Item>}
-                        {nfeUnawarePermission &&
+                        {nfePermissions.DESCONHECIMENTO &&
                           <Popover.Item >
                             <Text
                             style={{ cursor: "pointer" }}
@@ -237,7 +235,7 @@ interface Event {
                 </>
               )}
 
-              {nfeHistoricalPermission && <Popover.Item>
+              {nfePermissions.HISTORICO && <Popover.Item>
                 <Text 
                 style={{ cursor: "pointer" }}
                 onClick={()=> {

@@ -1,21 +1,16 @@
 import React, { useEffect, useContext, useCallback, useState, useMemo } from "react";
 import { useSession } from "next-auth/client";
 import { useToasts} from "@geist-ui/react";
-import { tripleLabels, entranceLabels, middlePermissions} from "@utils/permissions-labels"
+import { tripleLabels, entranceLabels, middlePermissions, severalPermissions} from "@utils/permissions-labels"
+import { initialState, initial, initialStateEntrada, initialStateB } from "@utils/initial-states"
 interface ContextProps  {
-nfePermission: boolean;
-nfeHistoricalPermission: boolean;
-nfeAwarePermission: boolean;
-nfeConfirmPermission: boolean;
-nfeUnawarePermission: boolean;
-nfeUnauthorizedPermission: boolean;
-ctePermission: boolean;
-cteHistoricalPermission: boolean;
+nfePermissions: NewPermissions;
 nfsePermissions: NewPermissions;
 entrancePermissions: NewPermissions;
 cnpjPermissions: NewPermissions;
 userPermissions: NewPermissions;
 profilePermission: NewPermissions;
+ctePermissions: NewPermissions;
 certificatePermissions: NewPermissions;
 isCompanyConfig: boolean
 };
@@ -29,62 +24,27 @@ interface NewPermissions {
 [key: string] : boolean
 }
 
-const initialState = {
-'VISUALIZAR': false,
-'HISTORICO': false,
-'CIENCIA': false,
-'CONFIRMACAO': false,
-'DESCONHECIMENTO': false,
-'OPERACAO_NAO_REALIZADA': false
-}
-
-const initial = {
-  "ADICIONAR": false,
-  "EXCLUIR": false,
-  "EDITAR": false
-}
-
-const initialStateEntrada = {
-  "ADICIONAR": false,
-  "CANCELAR": false,
-  "AUTORIZAR": false,
-  "VISUALIZAR": false,
-  "EDITAR": false
-}
-
-const initialStateB = {
-  'VISUALIZAR': false,
-  'HISTORICO': false,
-  'IMPRIMIR': false
-}
-
 const SecurityContext = React.createContext({} as ContextProps);
 
 const SecurityProvider: React.FC = ({ children }: any) => {
 const [session] = useSession();
 const [permissions, setPermissions] = useState<Permissions[]>([])
-const [nfePermission, setNfePermission] = useState<boolean>(false)
-const [nfeHistoricalPermission, setNfeHistoricalPermission] = useState<boolean>(false)
-const [nfeAwarePermission, setNfeAwarePermission] = useState<boolean>(false)
-const [nfeConfirmPermission, setNfeConfirmPermission] = useState<boolean>(false)
-const [nfeUnawarePermission, setNfeUnawarePermission] = useState<boolean>(false)
-const [nfeUnauthorizedPermission, setNfeUnauthorizedPermission] = useState<boolean>(false)
-const [ctePermission, setCtePermission] = useState<boolean>(false)
-const [cteHistoricalPermission, setCteHistoricalPermission] = useState<boolean>(false)
 const [, setToast] = useToasts();
 
+const [ nfePermissions, setNfePermissions ] = useState({...initialState})
 const [ profilePermission, setProfilePermission ] = useState({...initial})
 const [ cnpjPermissions, setCnpjPermissions ] = useState({...initial})
 const [ userPermissions, setUserPermissions ] = useState({...initial})
 const [ certificatePermissions, setCertificatePermissions ] = useState({...initial})
-const [ nfsePermissions, setNfseePermissions ] = useState({...initialStateB})
+const [ nfsePermissions, setNfsePermissions ] = useState({...initialStateB})
+const [ ctePermissions, setCtePermissions ] = useState({...initialStateB})
 const [ entrancePermissions, setEntrancePermissions ] = useState({...initialStateEntrada})
 const [ isCompanyConfig, setIsCompanyConfig ] = useState(false)
 
 const getPermissions = async () => {
   try {
     const data = session?.usuario.perfil.permissoes;
-     console.log("inside permission", data)
+    //  console.log("inside permission", data)
     setPermissions(data)
     return data || []
   } catch (error) {
@@ -101,34 +61,24 @@ const getPermissions = async () => {
 }, [session])
 
 
-
-useEffect(() => {
-  if(permissions) {
-    setNfePermission(Boolean(permissions?.find((item) => item.categoria === "NFE" && item.acao === "VISUALIZAR")))
-    setNfeHistoricalPermission(Boolean(permissions?.find((item) => item.categoria === "NFE" && item.acao === "HISTORICO")))
-    setNfeAwarePermission(Boolean(permissions?.find((item) => item.categoria === "NFE" && item.acao === "CIENCIA")))
-    setNfeConfirmPermission(Boolean(permissions?.find((item) => item.categoria === "NFE" && item.acao === "CONFIRMACAO")))
-    setNfeUnawarePermission(Boolean(permissions?.find((item) => item.categoria === "NFE" && item.acao === "DESCONHECIMENTO")))
-    setNfeUnauthorizedPermission(Boolean(permissions?.find((item) => item.categoria === "NFE" && item.acao === "OPERACAO_NAO_REALIZADA")))
-    setCtePermission(Boolean(permissions?.find((item) => item.categoria === "CTE" && item.acao === "VISUALIZAR")))
-    setCteHistoricalPermission(Boolean(permissions?.find((item) => item.categoria === "CTE" && item.acao === "HISTORICO")))
-  }
-},[session, permissions])
-
 function getUserPermissions() {
   if(permissions) {
-    const cnpjPermissionCheck: any[] = permissions?.filter((item) => item.categoria === "CNPJS").map((permit) => permit.acao)
+    const nfeCheck: string [] = permissions?.filter((item) => item.categoria === "NFE").map((permit) => permit.acao)
+      nfeCheck && verifyFurtherPermissions(nfeCheck, 'nfe')
+    const cnpjPermissionCheck: string[] = permissions?.filter((item) => item.categoria === "CNPJS").map((permit) => permit.acao)
       cnpjPermissionCheck && verifyPermissions(cnpjPermissionCheck, 'cnpj')
-    const userPermissionCheck: any[] = permissions?.filter((item) => item.categoria === "USUARIO").map((permit) => permit.acao)
+    const userPermissionCheck: string[] = permissions?.filter((item) => item.categoria === "USUARIO").map((permit) => permit.acao)
       userPermissionCheck && verifyPermissions(userPermissionCheck, "usuario")
-    const profileCheck: any[] = permissions?.filter((item) => item.categoria === "PERFIS").map((permit) => permit.acao)
+    const profileCheck: string[] = permissions?.filter((item) => item.categoria === "PERFIS").map((permit) => permit.acao)
       profileCheck && verifyPermissions(profileCheck, 'perfis')
-    const certificateCheck: any[] = permissions?.filter((item) => item.categoria === "CERTIFICADO").map((permit) => permit.acao)
+    const certificateCheck: string[] = permissions?.filter((item) => item.categoria === "CERTIFICADO").map((permit) => permit.acao)
       certificateCheck && verifyPermissions(certificateCheck, 'certificado')
-    const entranceCheck: any[] = permissions?.filter((item) => item.categoria === "ENTRADA").map((permit) => permit.acao)
+    const entranceCheck: string[] = permissions?.filter((item) => item.categoria === "ENTRADA").map((permit) => permit.acao)
       entranceCheck && verifyFurtherPermissions(entranceCheck, 'entrada')
     const nfseCheck: string [] = permissions?.filter((item) => item.categoria === "NFSE").map((permit) => permit.acao)
       nfseCheck && verifyFurtherPermissions(nfseCheck, 'nfse')
+    const cteCheck: string[] = permissions?.filter((item) => item.categoria === "CTE").map((permit) => permit.acao)
+      cteCheck && verifyFurtherPermissions(cteCheck, 'cte')
     setIsCompanyConfig(Boolean(permissions?.find((item) => item.categoria === "EMPRESA"))) 
   }
 } 
@@ -174,33 +124,47 @@ function getUserPermissions() {
                 setEntrancePermissions(permissionsFormatted)
           }
       }
-    }
-    if(type === 'nfse') {
+    } if(type === 'nfe') {
       let current
       for(let i = 0; i < param.length; i++){
-        current = middlePermissions.find((item) => item === param[i])
+        current = severalPermissions.find((item) => item === param[i])
           if(current) {
-            const permissionsFormatted = nfsePermissions
-                permissionsFormatted[current] = true
-                setNfseePermissions(permissionsFormatted)
+            const permissionsFormatted = nfePermissions
+              permissionsFormatted[current] = true
+              setNfePermissions(permissionsFormatted)
           }
       }
     }
+    else {
+        let current
+        for(let i = 0; i < param.length; i++){
+          current = middlePermissions.find((item) => item === param[i])
+            if(current && type === 'nfse') {
+              const permissionsFormatted = nfsePermissions
+                permissionsFormatted[current] = true
+                setNfsePermissions(permissionsFormatted)
+            } if(current && type === 'cte') { 
+                const permissionsFormatted = ctePermissions
+                  permissionsFormatted[current] = true
+                  setCtePermissions(permissionsFormatted)
+            }
+    }
   }
+}
+
 
 useEffect(() => {
   getUserPermissions()
 }, [permissions])
-// console.log(`nfsePermissions`, nfsePermissions)
+// console.log(`ctePermissions`, nfePermissions)
 
 
 
 return <SecurityContext.Provider value={{ 
-  nfePermission, nfeHistoricalPermission, ctePermission, 
-  cteHistoricalPermission, entrancePermissions, 
-  userPermissions, profilePermission, nfsePermissions,
-  nfeAwarePermission, nfeConfirmPermission, nfeUnawarePermission, nfeUnauthorizedPermission,
-  cnpjPermissions, certificatePermissions, isCompanyConfig
+  nfePermissions, entrancePermissions, 
+  userPermissions, profilePermission, 
+  nfsePermissions, isCompanyConfig, ctePermissions,
+  cnpjPermissions, certificatePermissions 
 }}>{children}</SecurityContext.Provider>;
 };
 

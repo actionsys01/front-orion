@@ -34,9 +34,8 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
   const  { nfes  } = useFiltro();
   const [page, setPage] = useState(1);
   const [quantityPage, setQuantityPage] = useState(1)
-  const {nfePermission} = useSecurityContext()
+  const { nfePermissions } = useSecurityContext()
   const [, setToast] = useToasts();
- 
 
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
     setPage(value)
@@ -87,11 +86,11 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
           ),
           portaria_status: (
             <Tooltip text={item?.portaria_status === 0 ? "Na Portaria" : item?.portaria_status === 1 ? "Autorizada" : null} type={portaria?.cor}
-             >
-               
-               <Dot type={item?.portaria_status === 0 ? "warning" : item?.portaria_status === 1 ? "success" : "default"} />
-               
-             </Tooltip>
+            >
+              
+              <Dot type={item?.portaria_status === 0 ? "warning" : item?.portaria_status === 1 ? "success" : "default"} />
+              
+            </Tooltip>
           ),
           emissionDate: format(new Date(item.dt_hr_emi), "dd/MM/yyyy HH:mm:ss"),
           receiveDate: format(new Date(item.criado_em), "dd/MM/yyyy HH:mm:ss"),
@@ -111,7 +110,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
   return (
     <>
       <Grid>
-   {nfePermission &&
+    {nfePermissions.VISUALIZAR &&
       <Table data={dataFormatted}>
             <Table.Column prop="option" />
             <Table.Column prop="emissionDate" label="Data/hora Emissão" />

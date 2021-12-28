@@ -31,23 +31,16 @@ interface Class {
 
 export default function PerfilCadastro() {
   const router = useRouter();
-  // checar permissões
-  const {nfePermission, nfeHistoricalPermission, ctePermission,
-        cteHistoricalPermission, userPermissions,  profilePermission,
-        nfeAwarePermission, nfeConfirmPermission, 
-        nfeUnawarePermission, nfeUnauthorizedPermission
-      } = useSecurityContext()
   const id_profile = Number(router.query.perfilId);
   const [session] = useSession();
-  const [permissions, setPermissions ] = useState<Permissions[]>([])
 
   // modais
-  const [nfeModal, setNfeModal] = useState(false)
-  const [cteModal, setCteModal] = useState(false)
-  const [nfseModal, setNfseModal] = useState(false)
-  const [entranceModal, setEntranceModal] = useState(false)
-  const [usersModal, setUsersModal] = useState(false)
-  const [profileModal, setProfileModal] = useState(false)
+  const [ nfeModal, setNfeModal ] = useState(false)
+  const [ cteModal, setCteModal ] = useState(false)
+  const [ nfseModal, setNfseModal ] = useState(false)
+  const [ entranceModal, setEntranceModal ] = useState(false)
+  const [ usersModal, setUsersModal ] = useState(false)
+  const [ profileModal, setProfileModal ] = useState(false)
   const [ certificadoVisible, setCertificadoVisible ] = useState(false)
   const [ visible, setVisible] = useState(false)
   const [ companyModal, setCompanyModal ] = useState(false)
@@ -197,11 +190,12 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                       <div >
                         <span>
                           <span><Checkbox  onChange={() => gatherData(14)}/></span>
-                          Visualizar</span>
-                        {/* {cteHistoricalPermission &&  */}
+                          Visualizar
+                        </span>
                         <span> 
                           <span><Checkbox  onChange={() => gatherData(13)}/></span>
-                          Histórico de Notas</span>
+                          Histórico de Notas
+                        </span>
                       </div>
                     </div>
                     }

@@ -39,8 +39,8 @@ export default function MenuLateral({
   const [session] = useSession();
   const router = useRouter();
   const { limpar } = useFiltro();
-  const {nfePermission, 
-    ctePermission, 
+  const {nfePermissions, 
+    ctePermissions, 
     nfsePermissions, 
     userPermissions, 
     profilePermission,
@@ -82,8 +82,8 @@ export default function MenuLateral({
                 Actionsys
             </MenuItem>
               <SubMenu title="Painéis" icon={<FileText />}>
-                {nfePermission && <MenuItem onClick={() => router.push("/nfe")}>NF-e</MenuItem>}
-                {ctePermission && <MenuItem onClick={() => router.push("/cte")}>CT-e</MenuItem>}
+                {nfePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/nfe")}>NF-e</MenuItem>}
+                {ctePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/cte")}>CT-e</MenuItem>}
                 {nfsePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/nfse")}>NFS-e</MenuItem>}
               </SubMenu>
               <SubMenu title="Aplicações" icon={<Grid />}>
