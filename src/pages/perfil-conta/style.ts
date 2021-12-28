@@ -79,6 +79,7 @@ export const LogoModalStyle = styled.div<ModalProps>`
 
     >  div {
     width: 33%;
+    min-width: 300px;
     height: 30%;
     border: none;
     position: absolute;
@@ -153,4 +154,14 @@ export const LogoModalStyle = styled.div<ModalProps>`
     }
     }
     }
+    @media (max-width: 560px) {
+        > div {
+            left: 25%;
+        }
+}
+    @media (max-width: 445px) {
+        > div {
+            left: 18%;
+        }
+}
 `

@@ -108,4 +108,39 @@ export const ModalInputContainer = styled.div<ModalProps>`
 
             }
         }
+        @media (max-width: 710px) {
+            > div {
+                left: 35%;
+            }
+        }
+        @media (max-width: 615px) {
+            > div {
+                width: 60%;
+                left: 38%;
+                .input-container {
+                    input {
+                        max-width: 550px;
+                        width: 65%;
+                    }
+                }
+            }
+        }
+        @media (max-width: 575px) {
+            > div {
+                width: 60%;
+                left: 25%;
+                min-width: 300px;
+                .input-container {
+                    input {
+                        max-width: 550px;
+                        width: 65%;
+                    }
+                }
+            }
+        }
+        @media (max-width: 575px) {
+            > div {
+                left: 15%;
+            }
+        }
 `
