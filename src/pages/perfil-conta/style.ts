@@ -68,7 +68,7 @@ export const ButtonStyle = styled.button`
 `
 
 export const LogoModalStyle = styled.div<ModalProps>` 
-    z-index: auto;
+    z-index: 1000;
     display: ${({ visible }) => (visible ? 'block' : 'none')};
     position: fixed;
     top: 0;
@@ -83,7 +83,7 @@ export const LogoModalStyle = styled.div<ModalProps>`
     border: none;
     position: absolute;
     left: 40%;
-    top: 30%;
+    top: 25%;
     background-color: #fff;
 
 
@@ -151,8 +151,6 @@ export const LogoModalStyle = styled.div<ModalProps>`
         }
             }
     }
-
-
     }
     }
 `

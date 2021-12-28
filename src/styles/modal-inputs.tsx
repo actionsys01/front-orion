@@ -5,7 +5,7 @@ interface ModalProps {
 }
 
 export const ModalInputContainer = styled.div<ModalProps>`
-    z-index: auto;
+    z-index: 1000;
     display: ${({ visible }) => (visible ? 'block' : 'none')};
     position: fixed;
     top: 0;
@@ -20,7 +20,7 @@ export const ModalInputContainer = styled.div<ModalProps>`
         border: none;
         position: absolute;
         left: 40%;
-        top: 30%;
+        top: 25%;
         background-color: #fff;
         border-radius: 5px;
         box-sizing: border-box;
