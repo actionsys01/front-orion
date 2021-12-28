@@ -54,7 +54,7 @@ export default function MenuLateral({
 
   async function sair() {
     await limpar();
-    signOut({
+    await signOut({
       callbackUrl: "https://gra-web.netlify.app"
     });
   }
