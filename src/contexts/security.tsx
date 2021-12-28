@@ -2,7 +2,6 @@ import React, { useEffect, useContext, useCallback, useState, useMemo } from "re
 import { useSession } from "next-auth/client";
 import { useToasts} from "@geist-ui/react";
 import { tripleLabels, entranceLabels, middlePermissions} from "@utils/permissions-labels"
-
 interface ContextProps  {
 nfePermission: boolean;
 nfeHistoricalPermission: boolean;
@@ -18,6 +17,7 @@ cnpjPermissions: NewPermissions;
 userPermissions: NewPermissions;
 profilePermission: NewPermissions;
 certificatePermissions: NewPermissions;
+isCompanyConfig: boolean
 };
 
 interface Permissions {
@@ -25,7 +25,6 @@ categoria: string;
 acao: string
 
 }
-
 interface NewPermissions {
 [key: string] : boolean
 }
@@ -59,9 +58,6 @@ const initialStateB = {
   'IMPRIMIR': false
 }
 
-
-
-
 const SecurityContext = React.createContext({} as ContextProps);
 
 const SecurityProvider: React.FC = ({ children }: any) => {
@@ -83,14 +79,12 @@ const [ userPermissions, setUserPermissions ] = useState({...initial})
 const [ certificatePermissions, setCertificatePermissions ] = useState({...initial})
 const [ nfsePermissions, setNfseePermissions ] = useState({...initialStateB})
 const [ entrancePermissions, setEntrancePermissions ] = useState({...initialStateEntrada})
-
-// console.log(`newPermissions pt I`, newPermissions)
-
+const [ isCompanyConfig, setIsCompanyConfig ] = useState(false)
 
 const getPermissions = async () => {
   try {
     const data = session?.usuario.perfil.permissoes;
-    //  console.log("inside permission", data)
+     console.log("inside permission", data)
     setPermissions(data)
     return data || []
   } catch (error) {
@@ -103,7 +97,7 @@ const getPermissions = async () => {
 }
 
   useEffect(() => {
-    getPermissions()/* .then(response => setPermissions(response)) */
+    getPermissions()
 }, [session])
 
 
@@ -124,9 +118,9 @@ useEffect(() => {
 function getUserPermissions() {
   if(permissions) {
     const cnpjPermissionCheck: any[] = permissions?.filter((item) => item.categoria === "CNPJS").map((permit) => permit.acao)
-    verifyPermissions(cnpjPermissionCheck, 'cnpj')
+      cnpjPermissionCheck && verifyPermissions(cnpjPermissionCheck, 'cnpj')
     const userPermissionCheck: any[] = permissions?.filter((item) => item.categoria === "USUARIO").map((permit) => permit.acao)
-    verifyPermissions(userPermissionCheck, "usuario")
+      userPermissionCheck && verifyPermissions(userPermissionCheck, "usuario")
     const profileCheck: any[] = permissions?.filter((item) => item.categoria === "PERFIS").map((permit) => permit.acao)
       profileCheck && verifyPermissions(profileCheck, 'perfis')
     const certificateCheck: any[] = permissions?.filter((item) => item.categoria === "CERTIFICADO").map((permit) => permit.acao)
@@ -134,10 +128,11 @@ function getUserPermissions() {
     const entranceCheck: any[] = permissions?.filter((item) => item.categoria === "ENTRADA").map((permit) => permit.acao)
       entranceCheck && verifyFurtherPermissions(entranceCheck, 'entrada')
     const nfseCheck: string [] = permissions?.filter((item) => item.categoria === "NFSE").map((permit) => permit.acao)
-      // console.log(`nfseCheck`, nfseCheck)
       nfseCheck && verifyFurtherPermissions(nfseCheck, 'nfse')
+    setIsCompanyConfig(Boolean(permissions?.find((item) => item.categoria === "EMPRESA"))) 
   }
 } 
+
 
   function verifyPermissions(param, type) {
     let currentPermissions
@@ -205,7 +200,7 @@ return <SecurityContext.Provider value={{
   cteHistoricalPermission, entrancePermissions, 
   userPermissions, profilePermission, nfsePermissions,
   nfeAwarePermission, nfeConfirmPermission, nfeUnawarePermission, nfeUnauthorizedPermission,
-  cnpjPermissions, certificatePermissions
+  cnpjPermissions, certificatePermissions, isCompanyConfig
 }}>{children}</SecurityContext.Provider>;
 };
 

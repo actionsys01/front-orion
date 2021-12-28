@@ -79,12 +79,14 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
         setVisibleModal(true);
       }
     
-     async function deletar({
+    function deletar({
         id,
       }: Omit<IPerfilAplicacao, "nome" | "descricao" | "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp">) {
         setAcao("deletar");
         setPerfiId(id)
         setVisibleModal(true)
+
+        console.log(`perfilId`, perfilId)
       }  
 
       async function deleteProfile() {

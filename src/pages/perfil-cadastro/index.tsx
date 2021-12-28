@@ -50,6 +50,7 @@ export default function PerfilCadastro() {
   const [profileModal, setProfileModal] = useState(false)
   const [ certificadoVisible, setCertificadoVisible ] = useState(false)
   const [ visible, setVisible] = useState(false)
+  const [ companyModal, setCompanyModal ] = useState(false)
 
 
   const [profileApp, setProfileApp] = useState<number[]>([])
@@ -92,6 +93,7 @@ const handleUsersModal = useCallback(() => {setUsersModal(!usersModal)}, [usersM
 const handleProfileModal = useCallback(() => {setProfileModal(!profileModal)}, [profileModal])
 const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
 const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certificadoVisible)}, [certificadoVisible])
+const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, [companyModal])
 
   return (
             <>
@@ -410,6 +412,33 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                                 <span><Checkbox value={27} onChange={() => gatherData(27)}/></span>
                                   Excluir Certificado
                               </span>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                    <div className="body-row">
+                      <div onClick={companyModalHandler} style={{cursor: "pointer"}}>
+                        <span className="line">
+                            <h5>
+                              Perfil da Empresa
+                            </h5>
+                          </span>
+                          <span className="line">
+                            <h5>
+                              Confirgurações de Perfil da Empresa
+                            </h5>
+                          </span>
+                          <span> 
+                            {!companyModal ? <ChevronDown  className="icon"/> : <ChevronUp className="icon"/>}
+                          </span>
+                      </div>
+                      {companyModal &&
+                        <div className="modal">
+                          <div>
+                            <span>
+                              <span><Checkbox value={29} onChange={() => gatherData(29)}/></span>
+                                Confirgurações de Perfil
+                            </span>
                           </div>
                         </div>
                       }

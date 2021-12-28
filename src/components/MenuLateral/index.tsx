@@ -46,7 +46,9 @@ export default function MenuLateral({
     profilePermission,
     certificatePermissions, 
     entrancePermissions,
-    cnpjPermissions} = useSecurityContext()
+    cnpjPermissions,
+    isCompanyConfig
+  } = useSecurityContext()
   const {isCertificated} = useCertificateContext()
 
 
@@ -91,23 +93,23 @@ export default function MenuLateral({
                 </MenuItem>}
               </SubMenu>
               <SubMenu title="Configurações" icon={<Settings />}>
-                {profilePermission.ADICIONAR && <MenuItem onClick={() => router.push("/perfil-acesso")}>
-                  Perfil de Acesso
-                </MenuItem>}
-                {userPermissions.ADICIONAR && <MenuItem onClick={() => router.push("/usuarios")}>
-                  Usuários
-                </MenuItem>}
-              {certificatePermissions.ADICIONAR &&
-              <MenuItem onClick={() => router.push({
-                  pathname: "/certificado-digital",
-                  query: {isCertificated: "true"}
-                })}>
-                    Certificado Digital
-                </MenuItem>}
+                {profilePermission.ADICIONAR && 
+                  <MenuItem onClick={() => router.push("/perfil-acesso")}>
+                    Perfil de Acesso
+                  </MenuItem>}
+                {userPermissions.ADICIONAR && 
+                  <MenuItem onClick={() => router.push("/usuarios")}>
+                    Usuários
+                  </MenuItem>}
+                {certificatePermissions.ADICIONAR &&
+                  <MenuItem onClick={() => router.push({
+                      pathname: "/certificado-digital",
+                      query: {isCertificated: "true"}})}>
+                        Certificado Digital
+                  </MenuItem>}
                 {cnpjPermissions.ADICIONAR &&
                   <MenuItem
-                onClick={() => router.push("/cnpjs-empresa")}
-                >
+                    onClick={() => router.push("/cnpjs-empresa")}>
                   CNPJs da Empresa
                 </MenuItem>}
                 {/* <MenuItem onClick={() => router.push("/empresas")}>
@@ -116,16 +118,18 @@ export default function MenuLateral({
                 <MenuItem onClick={() => router.push("/planos")}>
                   Cadastro de Plano
                 </MenuItem> */}
-                <MenuItem onClick={() => router.push("/perfil-conta")}>
-                  Perfil da Empresa
-                </MenuItem>
+                {isCompanyConfig && 
+                  <MenuItem onClick={() => router.push("/perfil-conta")}>
+                    Perfil da Empresa
+                  </MenuItem>}
                 </SubMenu>
-                {!isCertificated && <MenuItem style={{textShadow: "1px 0 red"}}
-                onClick={() => router.push({
-                  pathname: "/dashboard",
-                  query: {certificate: "open"}
-                })}
-                >Cadastro Pendente</MenuItem>}
+                {!isCertificated && 
+                  <MenuItem style={{textShadow: "1px 0 red"}}
+                    onClick={() => router.push({
+                      pathname: "/dashboard",
+                      query: {certificate: "open"}})}>
+                      Cadastro Pendente
+                  </MenuItem>}
           </Menu>
         </SidebarContent>
         <SidebarFooter>

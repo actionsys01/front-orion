@@ -58,11 +58,6 @@ export default function AtualizarCadastro() {
   const [profilePermissions, setProfilePermissions] = useState<ProfilePermissions[]>([])
   const companyId = Number(session?.usuario.empresa.id)
   const [, setToast] = useToasts();
-  const {nfePermission, nfeHistoricalPermission, ctePermission,
-    cteHistoricalPermission, userPermissions, profilePermission,
-    nfeAwarePermission, nfeConfirmPermission, 
-    nfeUnawarePermission, nfeUnauthorizedPermission
-  } = useSecurityContext()
   // modais
   const [nfeModal, setNfeModal] = useState<boolean>(false)
   const [cteModal, setCteModal] = useState<boolean>(false)
@@ -72,6 +67,7 @@ export default function AtualizarCadastro() {
   const [profileModal, setProfileModal] = useState<boolean>(false)
   const [ visible, setVisible] = useState(false)
   const [ certificadoVisible, setCertificadoVisible ] = useState(false)
+  const [ companyModal, setCompanyModal ] = useState(false)
 
   const [isNfe, setIsNfe] = useState<boolean>(false)
   const [isCte, setIsCte] = useState<boolean>(false)
@@ -83,6 +79,7 @@ export default function AtualizarCadastro() {
   const [ isProfile, setIsProfile ] = useState({...initialStateA})
   const [ isEntrance, setIsEntrance ] = useState({...initialStateE})
   const [ isNfse, setIsNfse ] = useState({...initialStateB})
+  const [ isCompanyConfig, setIsCompanyConfig ] = useState(false)
 
   // console.log(id_profile);
  
@@ -101,10 +98,8 @@ export default function AtualizarCadastro() {
 const getAllPermissions = async () => {
   const response = await api.get(`/perfil/search/${id_profile}`);
   const data = await response.data.permissoes
-  console.log(`data no atualizar perfil`, data)
   
   const currentPermissions: any = [];
-
     if(Array.isArray(data)){
       data.map((item: any) => currentPermissions.push(item.id))
       setProfilePermissions(data)
@@ -113,7 +108,7 @@ const getAllPermissions = async () => {
     } else {
       const createArray: any = []
       createArray.push(data)
-      console.log(`createArray`, createArray)
+      // console.log(`createArray`, createArray)
       createArray.map((item: any) => currentPermissions.push(item.id))
       setProfilePermissions(createArray)
       setProfileApp(currentPermissions)
@@ -162,11 +157,10 @@ function getUserPermissions() {
     const entranceCheck: any[] = profilePermissions?.filter((item) => item.categoria === "ENTRADA").map((permit) => permit.acao)
       entranceCheck && verifyFurtherPermissions(entranceCheck,'entrada')
     const nfseCheck: string [] = profilePermissions?.filter((item) => item.categoria === "NFSE").map((permit) => permit.acao)
-      console.log(`nfseCheck`, nfseCheck)
       nfseCheck && verifyFurtherPermissions(nfseCheck, 'nfse')
+    setIsCompanyConfig(Boolean(profilePermissions?.find((item) => item.categoria === "EMPRESA")))
   }
 } 
-
 
   function verifyPermissions(param, type) {
     let currentPermissions
@@ -226,17 +220,8 @@ function getUserPermissions() {
   }, [profilePermissions])
 
   useEffect(() => {
-    const dataApp: any =  session?.usuario.empresa.plano.aplicacoes
-    setPermissions(dataApp)
-    permissions.map((item) => {
-      if(item.categoria === "NFE"){
-        setIsNfe(true)
-      } if (item.categoria === "CTE") {
-        setIsCte(true)
-      } 
-    })
     getAllPermissions();
-  }, [permissions])
+  }, [])
 
   
 
@@ -272,6 +257,7 @@ async function updateProfile() {
   }
   router.push({pathname: "/perfil-acesso"})
 }
+
 const handleNfeModal = useCallback(() => {setNfeModal(!nfeModal)}, [nfeModal])
 const handleCteModal = useCallback(() => {setCteModal(!cteModal)}, [cteModal])
 const handleNfseModal = useCallback(() => {setNfseModal(!nfseModal)}, [nfseModal])
@@ -280,7 +266,7 @@ const handleUsersModal = useCallback(() => {setUsersModal(!usersModal)}, [usersM
 const handleProfileModal = useCallback(() => {setProfileModal(!profileModal)}, [profileModal])
 const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certificadoVisible)}, [certificadoVisible])
 const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
-
+const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, [companyModal])
 
 
 
@@ -309,7 +295,6 @@ const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
                 <h5></h5>
               </span>
             </header>
-            {/* {isNfe  && nfePermission && */}
             <div className="body-row">
                 <div onClick={handleNfeModal} style={{cursor: "pointer"}}>
                   <span className="line">
@@ -331,51 +316,44 @@ const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
                 <div >
                   <span>
                     <span><Checkbox  value={2} 
-                    checked={nfeVisualizar}  
-                    onChange={() => gatherData(2)} 
-                    onClick={nfeVisualizar ? ()=> setNfeVizualizar(false) : ()=> setNfeVizualizar(true)}/></span>
-                      Visualizar</span>
-                    {/* {nfeHistoricalPermission &&  */}
+                      checked={nfeVisualizar}  
+                      onChange={() => gatherData(2)} 
+                      onClick={nfeVisualizar ? ()=> setNfeVizualizar(false) : ()=> setNfeVizualizar(true)}/></span>
+                    Visualizar</span>
                     <span> 
                       <span><Checkbox value={1} 
-                      checked={nfeHistorico} 
-                      onChange={() => gatherData(1)} 
-                      onClick={nfeHistorico ? ()=> setNfeHistorico(false) : ()=> setNfeHistorico(true)}/></span>
-                        Histórico de Notas</span>
-                    {/* {nfeAwarePermission &&  */}
+                        checked={nfeHistorico} 
+                        onChange={() => gatherData(1)} 
+                        onClick={nfeHistorico ? ()=> setNfeHistorico(false) : ()=> setNfeHistorico(true)}/></span>
+                      Histórico de Notas</span>
                     <span> 
                       <span><Checkbox  
-                      checked={nfeEventoCiencia}
-                      onChange={() => gatherData(3)} 
-                      onClick={nfeEventoCiencia ? ()=> setNfeEventoCiencia(false) : ()=> setNfeEventoCiencia(true)}/></span>
-                        Registrar Evento - Ciência da Operação</span>
-                    {/* {nfeConfirmPermission &&  */}
+                        checked={nfeEventoCiencia}
+                        onChange={() => gatherData(3)} 
+                        onClick={nfeEventoCiencia ? ()=> setNfeEventoCiencia(false) : ()=> setNfeEventoCiencia(true)}/></span>
+                      Registrar Evento - Ciência da Operação</span>
                     <span> 
                       <span><Checkbox 
-                      checked={nfeEventoConfirmar} 
-                      onChange={() => gatherData(4)} 
-                      onClick={nfeEventoConfirmar ? ()=> setNfeEventoConfirmar(false) : ()=> setNfeEventoConfirmar(true)}/></span>
-                        Registrar Evento - Confirmação da Operação</span>
-                    {/* {nfeUnauthorizedPermission &&  */}
+                        checked={nfeEventoConfirmar} 
+                        onChange={() => gatherData(4)} 
+                        onClick={nfeEventoConfirmar ? ()=> setNfeEventoConfirmar(false) : ()=> setNfeEventoConfirmar(true)}/></span>
+                      Registrar Evento - Confirmação da Operação</span>
                     <span> 
                       <span><Checkbox  
-                      checked={nfeEventoNaoRealizado} 
-                      onChange={() => gatherData(6)} 
-                      onClick={nfeEventoNaoRealizado ? ()=> setNfeEventoNaoRealizado(false) : ()=> setNfeEventoNaoRealizado(true)}/></span>
-                        Registrar Evento - Operação Não Realizada</span>
-                    {/* {nfeUnawarePermission &&  */}
+                        checked={nfeEventoNaoRealizado} 
+                        onChange={() => gatherData(6)} 
+                        onClick={nfeEventoNaoRealizado ? ()=> setNfeEventoNaoRealizado(false) : ()=> setNfeEventoNaoRealizado(true)}/></span>
+                      Registrar Evento - Operação Não Realizada</span>
                     <span> 
                       <span><Checkbox  
-                      checked={nfeEventoDesconhecimento} 
-                      onChange={() => gatherData(5)} 
-                      onClick={nfeEventoDesconhecimento ? ()=> setNfeEventoDesconhecimento(false) : ()=> setNfeEventoDesconhecimento(true)}/></span>
-                        Registrar Evento - Desconhecimento da Operação</span>
+                        checked={nfeEventoDesconhecimento} 
+                        onChange={() => gatherData(5)} 
+                        onClick={nfeEventoDesconhecimento ? ()=> setNfeEventoDesconhecimento(false) : ()=> setNfeEventoDesconhecimento(true)}/></span>
+                      Registrar Evento - Desconhecimento da Operação</span>
                 </div>
               </div>
           }
             </div>
-              {/* } */}
-              {isCte &&
                 <div className="body-row">
                   <div onClick={handleCteModal}  style={{cursor: "pointer"}}>
                     <span className="line">
@@ -397,21 +375,19 @@ const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
                     <div >
                       <span>
                         <span><Checkbox 
-                        checked={cteVisualizar} 
-                        onChange={() => gatherData(14)} 
-                        onClick={cteVisualizar ? ()=> setCteVizualizar(false) : ()=> setCteVizualizar(true)}/></span>
+                          checked={cteVisualizar} 
+                          onChange={() => gatherData(14)} 
+                          onClick={cteVisualizar ? ()=> setCteVizualizar(false) : ()=> setCteVizualizar(true)}/></span>
                         Visualizar</span>
                       <span> 
                         <span><Checkbox 
-                        checked={cteHistorico}  
-                        onChange={() => gatherData(13)} onClick={cteHistorico ? ()=> setCteHistorico(false) : ()=> setCteHistorico(true)}/></span>
+                          checked={cteHistorico}  
+                          onChange={() => gatherData(13)} onClick={cteHistorico ? ()=> setCteHistorico(false) : ()=> setCteHistorico(true)}/></span>
                         Histórico de Notas</span>
                     </div>
                   </div>
                 }
                 </div>
-                }
-                {isNfse &&
                 <div className="body-row">
                   <div onClick={handleNfseModal} style={{cursor: "pointer"}}>
                     <span className="line">
@@ -433,27 +409,26 @@ const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
                   <div >
                     <span>
                       <span><Checkbox value={17}
-                      checked={isNfse.VISUALIZAR}
-                      onClick={() => setIsNfse({...isNfse, VISUALIZAR : !isNfse.VISUALIZAR})}
-                      onChange={() => gatherData(16)} /></span>
+                        checked={isNfse.VISUALIZAR}
+                        onClick={() => setIsNfse({...isNfse, VISUALIZAR : !isNfse.VISUALIZAR})}
+                        onChange={() => gatherData(16)} /></span>
                       Visualizar</span>
                     <span> 
                       <span><Checkbox value={16} 
-                      checked={isNfse.HISTORICO}
-                      onClick={() => setIsNfse({...isNfse, HISTORICO : !isNfse.HISTORICO})}
-                      onChange={() => gatherData(17)} /></span>
+                        checked={isNfse.HISTORICO}
+                        onClick={() => setIsNfse({...isNfse, HISTORICO : !isNfse.HISTORICO})}
+                        onChange={() => gatherData(17)} /></span>
                       Histórico de Notas</span>
                     <span> 
                       <span><Checkbox value={18} 
-                      checked={isNfse.IMPRIMIR}
-                      onClick={() => setIsNfse({...isNfse, IMPRIMIR : !isNfse.IMPRIMIR})}
-                      onChange={() => gatherData(18)} /></span>
+                        checked={isNfse.IMPRIMIR}
+                        onClick={() => setIsNfse({...isNfse, IMPRIMIR : !isNfse.IMPRIMIR})}
+                        onChange={() => gatherData(18)} /></span>
                       Imprimir Notas</span>
                   </div>
                 </div>
                 } 
                 </div>
-                }
                 <div className="body-row">
                   <div onClick={handleEntranceModal} style={{cursor: "pointer"}}>
                     <span className="line">
@@ -475,34 +450,39 @@ const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
                     <div >
                       <span>
                         <span><Checkbox value={19} 
-                        checked={isEntrance.VISUALIZAR}
-                        onChange={() => gatherData(19)} 
-                        onClick={() => setIsEntrance({...isEntrance, VISUALIZAR : !isEntrance.VISUALIZAR})} /></span>
-                          Visualizar</span>
+                            checked={isEntrance.VISUALIZAR}
+                            onChange={() => gatherData(19)} 
+                            onClick={() => setIsEntrance({...isEntrance, VISUALIZAR : !isEntrance.VISUALIZAR})} /></span>
+                          Visualizar
+                        </span>
                       <span> 
                         <span><Checkbox value={20} 
-                        checked={isEntrance.AUTORIZAR}
-                        onChange={() => gatherData(20)} 
-                        onClick={() => setIsEntrance({...isEntrance, AUTORIZAR : !isEntrance.AUTORIZAR})}  /></span>
-                          Autorizar</span>
+                            checked={isEntrance.AUTORIZAR}
+                            onChange={() => gatherData(20)} 
+                            onClick={() => setIsEntrance({...isEntrance, AUTORIZAR : !isEntrance.AUTORIZAR})}  /></span>
+                          Autorizar
+                        </span>
                         <span> 
                         <span><Checkbox value={21} 
-                        checked={isEntrance.EDITAR}
-                        onChange={() => gatherData(21)} 
-                        onClick={() => setIsEntrance({...isEntrance, EDITAR : !isEntrance.EDITAR})}  /></span>
-                          Editar</span>
+                            checked={isEntrance.EDITAR}
+                            onChange={() => gatherData(21)} 
+                            onClick={() => setIsEntrance({...isEntrance, EDITAR : !isEntrance.EDITAR})}  /></span>
+                          Editar
+                        </span>
                         <span> 
                         <span><Checkbox value={22} 
-                        checked={isEntrance.CANCELAR}
-                        onChange={() => gatherData(22)} 
-                        onClick={() => setIsEntrance({...isEntrance, CANCELAR : !isEntrance.CANCELAR})}  /></span>
-                          Cancelar</span>
+                            checked={isEntrance.CANCELAR}
+                            onChange={() => gatherData(22)} 
+                            onClick={() => setIsEntrance({...isEntrance, CANCELAR : !isEntrance.CANCELAR})}  /></span>
+                          Cancelar
+                        </span>
                         <span> 
                         <span><Checkbox value={23} 
-                        checked={isEntrance.ADICIONAR}
-                        onChange={() => gatherData(23)} 
-                        onClick={() => setIsEntrance({...isEntrance, ADICIONAR : !isEntrance.ADICIONAR})}  /></span>
-                          Adicionar</span>
+                            checked={isEntrance.ADICIONAR}
+                            onChange={() => gatherData(23)} 
+                            onClick={() => setIsEntrance({...isEntrance, ADICIONAR : !isEntrance.ADICIONAR})}  /></span>
+                          Adicionar
+                        </span>
                     </div>
                   </div>}
                 </div>
@@ -527,25 +507,27 @@ const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
                 <div className='modal'>
                   <div >
                     <span> 
-                      <span><Checkbox checked={isProfile.ADICIONAR}  onChange={() => gatherData(11)} 
-                      onClick={() => setIsProfile({...isProfile, ADICIONAR : !isProfile.ADICIONAR})}/></span>
-                        Cadastrar Perfil</span>
-                      {/* {profileDeletePermission &&  */}
+                      <span><Checkbox checked={isProfile.ADICIONAR}  
+                          onChange={() => gatherData(11)} 
+                          onClick={() => setIsProfile({...isProfile, ADICIONAR : !isProfile.ADICIONAR})}/></span>
+                        Cadastrar Perfil
+                      </span>
                     <span> 
-                      <span><Checkbox checked={isProfile.EXCLUIR}  onChange={() => gatherData(10)}  
-                      onClick={() => setIsProfile({...isProfile, EXCLUIR : !isProfile.EXCLUIR})}/></span>
-                        Excluir Perfil</span>
-                      {/* {profileUpdatePermission &&  */}
+                      <span><Checkbox checked={isProfile.EXCLUIR}  
+                          onChange={() => gatherData(10)}  
+                          onClick={() => setIsProfile({...isProfile, EXCLUIR : !isProfile.EXCLUIR})}/></span>
+                        Excluir Perfil
+                      </span>
                     <span> 
-                      <span><Checkbox checked={isProfile.EDITAR}  onChange={() => gatherData(12)}  
-                      onClick={() => setIsProfile({...isProfile, EDITAR : !isProfile.EDITAR})} /></span>
-                        Editar Perfil</span>
+                      <span><Checkbox checked={isProfile.EDITAR}  
+                          onChange={() => gatherData(12)}  
+                          onClick={() => setIsProfile({...isProfile, EDITAR : !isProfile.EDITAR})} /></span>
+                        Editar Perfil
+                      </span>
                   </div>
                 </div>
                 }
                 </div>
-                {/* } */}
-                {/* {userPermission &&  */}
                 <div className="body-row">
                   <div onClick={handleUsersModal} style={{cursor: "pointer"}}>
                     <span className="line">
@@ -566,24 +548,26 @@ const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
                 <div className='modal'>
                   <div >
                     <span> 
-                      <span><Checkbox checked={isUser.ADICIONAR}  value={8} onChange={() => gatherData(8)} 
-                      onClick={() => setIsUser({...isUser, ADICIONAR : !isUser.ADICIONAR})} /></span>
-                        Adicionar Usuário</span>
-                      {/* {userDeletePermission &&  */}
+                      <span><Checkbox checked={isUser.ADICIONAR}  
+                          value={8} onChange={() => gatherData(8)} 
+                          onClick={() => setIsUser({...isUser, ADICIONAR : !isUser.ADICIONAR})} /></span>
+                        Adicionar Usuário
+                      </span>
                     <span> 
-                      <span><Checkbox checked={isUser.EXCLUIR} value={7}  onChange={() => gatherData(7)} 
-                      onClick={() => setIsUser({...isUser, EXCLUIR : !isUser.EXCLUIR})} /></span>
-                        Excluir Usuário</span>
-                      {/* {userUpdatePermission &&  */}
+                      <span><Checkbox checked={isUser.EXCLUIR} 
+                        value={7}  onChange={() => gatherData(7)} 
+                        onClick={() => setIsUser({...isUser, EXCLUIR : !isUser.EXCLUIR})} /></span>
+                      Excluir Usuário
+                    </span>
                     <span> 
                       <span><Checkbox checked={isUser.EDITAR} value={9} onChange={() => gatherData(9)} 
                       onClick={() => setIsUser({...isUser, EDITAR : !isUser.EDITAR})} /></span>
-                        Editar Usuário</span>
+                        Editar Usuário
+                    </span>
                   </div>
                 </div>
             }
             </div>
-            {/* } */}
             <div className="body-row">
                         <div onClick={modalHandler} style={{cursor: "pointer"}} >
                             <span className="line">
@@ -605,20 +589,20 @@ const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
                             <div>
                               <span>
                                 <span><Checkbox value={25} checked={isCnpj.ADICIONAR} 
-                                onChange={() => gatherData(25)} 
-                                onClick={() => setIsCnpj({...isCnpj, ADICIONAR : !isCnpj.ADICIONAR})}/></span>
+                                    onChange={() => gatherData(25)} 
+                                    onClick={() => setIsCnpj({...isCnpj, ADICIONAR : !isCnpj.ADICIONAR})}/></span>
                                   Adicionar CNPJ
                               </span>
                               <span>
                                 <span><Checkbox value={24} checked={isCnpj.EXCLUIR} 
-                                onChange={() => gatherData(24)} 
-                                onClick={() => setIsCnpj({...isCnpj, EXCLUIR : !isCnpj.EXCLUIR})}/></span>
+                                    onChange={() => gatherData(24)} 
+                                    onClick={() => setIsCnpj({...isCnpj, EXCLUIR : !isCnpj.EXCLUIR})}/></span>
                                   Excluir CNPJ
                               </span>
                               <span>
                                 <span><Checkbox value={26} checked={isCnpj.EDITAR} 
-                                onChange={() => gatherData(26)} 
-                                onClick={() => setIsCnpj({...isCnpj, EDITAR : !isCnpj.EDITAR})}/></span>
+                                    onChange={() => gatherData(26)} 
+                                    onClick={() => setIsCnpj({...isCnpj, EDITAR : !isCnpj.EDITAR})}/></span>
                                   Editar CNPJ
                               </span>
                             </div>
@@ -655,6 +639,36 @@ const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
                                   onClick={() => setIsCertificate({...isCertificate, EXCLUIR : !isCertificate.EXCLUIR})}/></span>
                                     Excluir Certificado
                               </span>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                    <div className="body-row">
+                      <div onClick={companyModalHandler} style={{cursor: "pointer"}}>
+                        <span className="line">
+                            <h5>
+                              Perfil da Empresa
+                            </h5>
+                          </span>
+                          <span className="line">
+                            <h5>
+                              Confirgurações de Perfil da Empresa
+                            </h5>
+                          </span>
+                          <span> 
+                            {!companyModal ? <ChevronDown  className="icon"/> : <ChevronUp className="icon"/>}
+                          </span>
+                      </div>
+                      {companyModal &&
+                        <div className="modal">
+                          <div>
+                            <span>
+                              <span><Checkbox value={29} 
+                                  checked={isCompanyConfig}
+                                  onClick={() => setIsCompanyConfig(!isCompanyConfig)}
+                                  onChange={() => gatherData(29)}/></span>
+                                Confirgurações de Perfil
+                            </span>
                           </div>
                         </div>
                       }
