@@ -53,9 +53,10 @@ export default function MenuLateral({
   const isMD = useMediaQuery("lg");
 
   async function sair() {
-    await limpar();
+    limpar();
     await signOut({
-      callbackUrl: "https://gra-web.netlify.app"
+      callbackUrl: "https://gra-web.netlify.app",
+      redirect: true,
     });
   }
 
@@ -119,7 +120,7 @@ export default function MenuLateral({
                   Cadastro de Plano
                 </MenuItem> */}
                 <MenuItem onClick={() => router.push("/perfil-conta")}>
-                  Conta
+                  Perfil da Empresa
                 </MenuItem>
                 </SubMenu>
                 {!isCertificated && <MenuItem style={{textShadow: "1px 0 red"}}
