@@ -117,7 +117,7 @@ export default function MenuLateral({
                   Cadastro de Plano
                 </MenuItem> */}
                 <MenuItem onClick={() => router.push("/perfil-conta")}>
-                  Conta
+                  Perfil da Empresa
                 </MenuItem>
                 </SubMenu>
                 {!isCertificated && <MenuItem style={{textShadow: "1px 0 red"}}
