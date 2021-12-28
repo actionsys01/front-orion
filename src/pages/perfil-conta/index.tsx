@@ -38,7 +38,8 @@ export default function PerfilConta() {
 
 
     const getLogo = useCallback(async() => {
-        const response = await companyRequest.getCompanyById(company_id)
+        try {
+            const response = await companyRequest.getCompanyById(company_id)
         const data = response.data
         setCompanyData(data)
         const logoUrl = data.logo 
@@ -56,6 +57,14 @@ export default function PerfilConta() {
             const png = logoUrl.substring(0, pngIndex + 4)
             setCompanyLogo(png)
         }
+        } catch (error) {
+            console.log(error)
+                setToast({
+                    text: "Houve um problema, por favor tente novamente",
+                    type: "warning"
+                })
+        }
+        
         },[],)
 
         useEffect(() => {
