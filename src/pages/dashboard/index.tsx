@@ -13,14 +13,6 @@ import CertificateConfirm from './modal';
 import { useToasts } from "@geist-ui/react";
 import { setDate } from 'date-fns';
 export default function Dashboard() {
-    const {
-      nfePermission,
-      ctePermission, 
-      nfsePermissions, 
-      userPermissions, 
-      profilePermission, 
-      entrancePermissions} 
-      = useSecurityContext()
     const { isCertificated } = useCertificateContext()
     const [nfeAmount, setNfeAmount] = useState(0)
     const [cteAmount, setCteAmount] = useState(0)
