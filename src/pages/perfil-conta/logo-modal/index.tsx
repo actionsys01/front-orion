@@ -22,7 +22,7 @@ const LogoModal = ({hasLogo, companyLogo, registerFile, modalHandler, visibleMod
      <LogoContainer>
         {hasLogo ? 
             <img src={companyLogo} onClick={() => modalHandler()}/> : 
-            <div className='no-logo'>
+            <div className='no-logo' onClick={() => modalHandler()}>
                 <label id="logo">
                     <p>Sem logo... <br/> Clique para enviar
                     </p>
