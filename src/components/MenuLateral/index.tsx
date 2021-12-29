@@ -58,7 +58,6 @@ export default function MenuLateral({
     limpar();
     await signOut({
       callbackUrl: "https://gra-web.netlify.app",
-      redirect: true,
     });
   }
 
