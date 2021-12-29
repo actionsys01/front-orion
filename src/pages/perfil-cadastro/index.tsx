@@ -31,25 +31,19 @@ interface Class {
 
 export default function PerfilCadastro() {
   const router = useRouter();
-  // checar permissões
-  const {nfePermission, nfeHistoricalPermission, ctePermission,
-        cteHistoricalPermission, userPermissions,  profilePermission,
-        nfeAwarePermission, nfeConfirmPermission, 
-        nfeUnawarePermission, nfeUnauthorizedPermission
-      } = useSecurityContext()
   const id_profile = Number(router.query.perfilId);
   const [session] = useSession();
-  const [permissions, setPermissions ] = useState<Permissions[]>([])
 
   // modais
-  const [nfeModal, setNfeModal] = useState(false)
-  const [cteModal, setCteModal] = useState(false)
-  const [nfseModal, setNfseModal] = useState(false)
-  const [entranceModal, setEntranceModal] = useState(false)
-  const [usersModal, setUsersModal] = useState(false)
-  const [profileModal, setProfileModal] = useState(false)
+  const [ nfeModal, setNfeModal ] = useState(false)
+  const [ cteModal, setCteModal ] = useState(false)
+  const [ nfseModal, setNfseModal ] = useState(false)
+  const [ entranceModal, setEntranceModal ] = useState(false)
+  const [ usersModal, setUsersModal ] = useState(false)
+  const [ profileModal, setProfileModal ] = useState(false)
   const [ certificadoVisible, setCertificadoVisible ] = useState(false)
   const [ visible, setVisible] = useState(false)
+  const [ companyModal, setCompanyModal ] = useState(false)
 
 
   const [profileApp, setProfileApp] = useState<number[]>([])
@@ -92,6 +86,7 @@ const handleUsersModal = useCallback(() => {setUsersModal(!usersModal)}, [usersM
 const handleProfileModal = useCallback(() => {setProfileModal(!profileModal)}, [profileModal])
 const modalHandler = useCallback(() => {setVisible(!visible)}, [visible])
 const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certificadoVisible)}, [certificadoVisible])
+const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, [companyModal])
 
   return (
             <>
@@ -195,11 +190,12 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                       <div >
                         <span>
                           <span><Checkbox  onChange={() => gatherData(14)}/></span>
-                          Visualizar</span>
-                        {/* {cteHistoricalPermission &&  */}
+                          Visualizar
+                        </span>
                         <span> 
                           <span><Checkbox  onChange={() => gatherData(13)}/></span>
-                          Histórico de Notas</span>
+                          Histórico de Notas
+                        </span>
                       </div>
                     </div>
                     }
@@ -410,6 +406,33 @@ const certificadoModalHandler = useCallback(() => {setCertificadoVisible(!certif
                                 <span><Checkbox value={27} onChange={() => gatherData(27)}/></span>
                                   Excluir Certificado
                               </span>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                    <div className="body-row">
+                      <div onClick={companyModalHandler} style={{cursor: "pointer"}}>
+                        <span className="line">
+                            <h5>
+                              Perfil da Empresa
+                            </h5>
+                          </span>
+                          <span className="line">
+                            <h5>
+                              Confirgurações de Perfil da Empresa
+                            </h5>
+                          </span>
+                          <span> 
+                            {!companyModal ? <ChevronDown  className="icon"/> : <ChevronUp className="icon"/>}
+                          </span>
+                      </div>
+                      {companyModal &&
+                        <div className="modal">
+                          <div>
+                            <span>
+                              <span><Checkbox value={29} onChange={() => gatherData(29)}/></span>
+                                Confirgurações de Perfil
+                            </span>
                           </div>
                         </div>
                       }

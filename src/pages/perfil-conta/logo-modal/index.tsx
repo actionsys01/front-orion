@@ -37,7 +37,7 @@ const LogoModal = ({hasLogo, companyLogo, registerFile, modalHandler, visibleMod
                 <button onClick={modalHandler}>CANCELAR</button>
                 <label id="logo">
                     <div id="logo">
-                    <input type="file"  id="logo"  onChange={registerFile}/>
+                    <input type="file"  id="logo" accept="image/png, image/gif, image/jpeg"  onChange={registerFile}/>
                         CONFIRMAR</div>
                 </label>
             </div>

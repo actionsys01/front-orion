@@ -263,7 +263,7 @@ function Danfse(data, chave_nota) {
 
     const totalValueSecondRow = formattedData.map((item: NfseFormattedProps) => {
         return [
-            {text: "CÓDIGO",  fontSize: 7, colSpan: 5,
+            {text: item.itemListaServico,  fontSize: 7, colSpan: 5,
                 bold: true,  alignment: "center", border: [true, false, true, true], margin: [0, 0]}, 
             {text: '', fontSize: 7, 
                 bold: true,  alignment: "center", border: [true, false, true, true], margin: [0, 0]}, 

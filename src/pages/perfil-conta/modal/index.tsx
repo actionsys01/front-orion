@@ -37,6 +37,7 @@ const Modal = ({data}) => {
                 type: 'warning'
               })
         }
+        setVisibleModal(false)
     }
 
 

@@ -8,7 +8,7 @@ import { ProfileBody, BodyRow } from "./style"
 import Modal from './modal';
 import LogoModal from './logo-modal';
 import * as companyRequest from "@services/empresas";
-
+import { useSecurityContext } from "@contexts/security"
 interface CompanyProps {
     empresa_id: number;
     razao_social: string;
@@ -26,6 +26,7 @@ export default function PerfilConta() {
     const router = useRouter();
     const [ hasLogo, setHasLogo] = useState(false)
     const company_id = Number(session?.usuario.empresa.id)
+    const { isCompanyConfig } = useSecurityContext()
     const [ companyLogo, setCompanyLogo ] = useState("")
     const [ companyData, setCompanyData ] = useState({} as CompanyProps)
     const [ visibleModal, setVisibleModal ] = useState(false)
@@ -38,7 +39,8 @@ export default function PerfilConta() {
 
 
     const getLogo = useCallback(async() => {
-        const response = await companyRequest.getCompanyById(company_id)
+        try {
+            const response = await companyRequest.getCompanyById(company_id)
         const data = response.data
         setCompanyData(data)
         const logoUrl = data.logo 
@@ -56,6 +58,14 @@ export default function PerfilConta() {
             const png = logoUrl.substring(0, pngIndex + 4)
             setCompanyLogo(png)
         }
+        } catch (error) {
+            console.log(error)
+                setToast({
+                    text: "Houve um problema, por favor tente novamente",
+                    type: "warning"
+                })
+        }
+        
         },[],)
 
         useEffect(() => {
@@ -90,31 +100,30 @@ export default function PerfilConta() {
         </Head> 
         <BotaoVoltar/>
         <h2>Configurações de Conta</h2>
-        <ProfileBody>
-            <div>
-                <LogoModal 
-                    registerFile={registerFile} 
-                    hasLogo={hasLogo} 
-                    companyLogo={companyLogo} 
-                    modalHandler={modalHandler}
-                    visibleModal={visibleModal}/>
-                <BodyRow>
-                    <h6>Razão Social:</h6>
-                    <h5>{companyData?.razao_social}</h5>
-                </BodyRow>
-                <BodyRow>
-                    <h6>CNPJ:</h6>
-                    <h5>{companyData?.cnpj}</h5>
-                </BodyRow>
-                <BodyRow>
-                    <h6>E-mail:</h6>
-                    <h5>{companyData.email}</h5>
-                </BodyRow>
-                <Modal data={companyData} />
-            </div>
-        </ProfileBody>
-       
-
+        {isCompanyConfig && 
+            <ProfileBody>
+                <div>
+                    <LogoModal 
+                        registerFile={registerFile} 
+                        hasLogo={hasLogo} 
+                        companyLogo={companyLogo} 
+                        modalHandler={modalHandler}
+                        visibleModal={visibleModal}/>
+                    <BodyRow>
+                        <h6>Razão Social:</h6>
+                        <h5>{companyData?.razao_social}</h5>
+                    </BodyRow>
+                    <BodyRow>
+                        <h6>CNPJ:</h6>
+                        <h5>{companyData?.cnpj}</h5>
+                    </BodyRow>
+                    <BodyRow>
+                        <h6>E-mail:</h6>
+                        <h5>{companyData.email}</h5>
+                    </BodyRow>
+                    <Modal data={companyData} />
+                </div>
+            </ProfileBody>}
     </>
 }
 

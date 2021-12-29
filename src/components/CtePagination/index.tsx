@@ -33,7 +33,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
   const [page, setPage] = useState(1);
   const { ctes } = useFiltro()
   const [quantityPage, setQuantityPage] = useState(1)
-  const {ctePermission} = useSecurityContext()
+  const {ctePermissions} = useSecurityContext()
   const [, setToast] = useToasts();
   
 
@@ -106,7 +106,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
     <>
       <Grid>
 
-      {ctePermission && <Table data={dataFormatted}>
+      {ctePermissions.VISUALIZAR && <Table data={dataFormatted}>
             <Table.Column prop="option" />
             <Table.Column prop="emissionDate" label="Data/hora Emissão" />
             <Table.Column prop="nota" label="Número" />
