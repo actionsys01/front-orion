@@ -55,7 +55,7 @@ export default function MenuLateral({
   const isMD = useMediaQuery("lg");
 
   async function sair() {
-    await limpar();
+    limpar();
     await signOut({
       callbackUrl: "https://gra-web.netlify.app",
     });
