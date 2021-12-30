@@ -13,8 +13,9 @@ import { GridAlinhaTextoCentro } from "@components/GridAlinhaTextoCentro";
 import { Titulo } from "@components/Titulo";
 import { useMemo } from "react";
 import { MoreHorizontal } from "@geist-ui/react-icons";
-import * as cte from "@services/cte-mongo";
+import getNfeData from "@services/nfe/getNfeData"
 import { useState } from "react";
+import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 
 interface IProps {
@@ -63,9 +64,10 @@ interface IProps {
   };
 }
 export default function AbaCarga({ data }) {
-  console.log(`data na aba`, data)
+  
   const [loading, setLoading] = useState(false);
   const [, setToast] = useToasts();
+  const [session] = useSession();
 
   const router = useRouter();
 
@@ -78,7 +80,7 @@ export default function AbaCarga({ data }) {
       const { cUnid, qCarga, tpMed } = infQ;
       cargas.push({ cUnid, qCarga, tpMed });
     }
-    console.log(`cargas`, cargas)
+    // console.log(`cargas`, cargas)
     return cargas
   }
 
@@ -98,7 +100,14 @@ export default function AbaCarga({ data }) {
                 }}
                 onClick={() => {
                   const chave_nota = item.rowValue.chave;
-                  handleBuscar(chave_nota);
+                  console.log(`chave_nota`, chave_nota)
+                  console.log(`item.rowValue`, item.rowValue)
+                  // router.push({
+                  //   pathname: "/nfe-detalhes",
+                  //   query: {
+                  //     chave_nota,
+                  //   },
+                  // });
                 }}
               >
                 Visualizar
@@ -144,7 +153,7 @@ export default function AbaCarga({ data }) {
   async function handleBuscar(chave_nota: string) {
     setLoading(true);
     try {
-      await cte.buscar(chave_nota);
+      await getNfeData(chave_nota, Number(session?.usuario.empresa.id))
       router.push({
         pathname: "/nfe-detalhes",
         query: {
