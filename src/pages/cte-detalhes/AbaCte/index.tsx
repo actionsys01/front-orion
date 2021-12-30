@@ -104,12 +104,15 @@ export default function AbaCte({ data }) {
   
   
 
-  // const dataEmissao = useMemo(() => {
-  //   if(data) {
-  //     const dataEmissaoFormatted = format(new Date(data?.informacoes_cte?.dEmi ?? data?.informacoes_cte?.dhEmi), "dd-MM-yyyy")
-  //     return dataEmissaoFormatted
-  //   }
-  // }, [data])
+  const dataEmissao = useMemo(() => {
+    let dataEmissao
+    if(data?.informacoes_cte?.dEmi) {
+      dataEmissao = format(new Date(data?.informacoes_cte?.dEmi ), "dd-MM-yyyy")
+    } if (data?.informacoes_cte?.dhEmi) {
+      dataEmissao = format(new Date(data?.informacoes_cte?.dhEmi ), "dd-MM-yyyy")
+    }
+    return dataEmissao
+  }, [data])
 
   return (
     <>
@@ -131,7 +134,7 @@ export default function AbaCte({ data }) {
           </GridAlinhaTextoCentro>
           <Grid>
             <Titulo>Data de emissão</Titulo>
-            <Text small>{/* dataEmissao */}</Text>
+            <Text small>{dataEmissao}</Text>
           </Grid>
         </Grid.Container>
       </BackgroundCinza>
