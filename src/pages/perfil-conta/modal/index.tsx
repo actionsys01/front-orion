@@ -4,6 +4,7 @@ import { ModalInputContainer } from "@styles/modal-inputs";
 import { BottomConfirmBtn } from '@styles/buttons';
 import { ButtonStyle } from '../style';
 import * as companyRequest from "@services/empresas";
+import { useCompanyContext } from '@contexts/company';
 
 const initialState = {
     razao_social: '',
@@ -18,6 +19,7 @@ const Modal = ({data, getLogo} ) => {
     const [ visibleModal, setVisibleModal ] = useState(false)
     const [ dataUpdate, setDataUpdate ] = useState({...initialState})
     const [, setToast] = useToasts();
+    const { getCompanyFeatures } = useCompanyContext()
 
     async function updateCompany() {
         try {
@@ -30,6 +32,7 @@ const Modal = ({data, getLogo} ) => {
             nome_fantasia: dataUpdate.nome_fantasia.length ? dataUpdate.nome_fantasia : data.nome_fantasia,
             razao_social: dataUpdate.razao_social.length ? dataUpdate.razao_social : data.razao_social
         })
+        getCompanyFeatures()
         setToast({
             text: 'Atualização realizada com sucesso',
             type: 'success'

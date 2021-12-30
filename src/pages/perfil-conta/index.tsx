@@ -9,6 +9,7 @@ import Modal from './modal';
 import LogoModal from './logo-modal';
 import * as companyRequest from "@services/empresas";
 import { useSecurityContext } from "@contexts/security"
+import { useCompanyContext } from '@contexts/company';
 export interface CompanyProps {
     empresa_id: number;
     razao_social: string;
@@ -30,6 +31,7 @@ export default function PerfilConta() {
     const [ companyLogo, setCompanyLogo ] = useState("")
     const [ companyData, setCompanyData ] = useState({} as CompanyProps)
     const [ visibleModal, setVisibleModal ] = useState(false)
+    const { getCompanyFeatures } = useCompanyContext()
     // console.log(`companyData`, companyData)
 
     const modalHandler = useCallback(() => {
@@ -82,6 +84,7 @@ export default function PerfilConta() {
                     type: "success"
                 })
                 getLogo()
+                getCompanyFeatures()
             } catch (error) {
                 console.log(error)
                 setToast({

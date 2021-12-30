@@ -7,6 +7,7 @@ interface ContextProps {
     isCertificated: boolean;
     setIsCertificated: Dispatch<SetStateAction<boolean>>
     companyFeatures: CompanyProps
+    getCompanyFeatures: () => Promise<void>
 }
 
 interface CompanyProps {
@@ -47,26 +48,28 @@ const CompanyProvider:  React.FC = ({ children }: any) => {
         }, [session])
 
     async function getCompanyFeatures() {
-        try {
-            const companyResponse = await companyRequest.getCompanyById(Number(session?.usuario.empresa.id))
-
-            const companyData = companyResponse.data
-            setCompanyFeatures({logo: companyData.logo, nome: companyData.nome_fantasia})
-            console.log(`companyData`, companyData)
-        } catch (error) {
-            console.log(error)
+        if(session){
+            try {
+                const companyResponse = await companyRequest.getCompanyById(Number(session?.usuario.empresa.id))
+    
+                const companyData = companyResponse.data
+                setCompanyFeatures({logo: companyData.logo, nome: companyData.nome_fantasia})
+                // console.log(`companyData`, companyData)
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 
     useEffect(() => {
         getCompanyFeatures()
-    }, [])
+    }, [session])
 
 
 
 
 
-    return <CompanyContext.Provider value={{isCertificated, setIsCertificated, companyFeatures}}>
+    return <CompanyContext.Provider value={{isCertificated, setIsCertificated, companyFeatures, getCompanyFeatures}}>
         {children}
     </CompanyContext.Provider>
 }
