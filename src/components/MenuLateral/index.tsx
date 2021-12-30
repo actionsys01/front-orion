@@ -21,7 +21,7 @@ import {
   SubMenu,
 } from "react-pro-sidebar";
 import {useSecurityContext} from "@contexts/security"
-import { useCertificateContext } from '@contexts/certificate';
+import { useCompanyContext } from '@contexts/company';
 
 interface IProps {
   setCollapsed(collapsed: boolean): void;
@@ -49,7 +49,7 @@ export default function MenuLateral({
     cnpjPermissions,
     isCompanyConfig
   } = useSecurityContext()
-  const {isCertificated} = useCertificateContext()
+  const { isCertificated, companyFeatures } = useCompanyContext()
 
 
   const isMD = useMediaQuery("lg");
@@ -77,9 +77,9 @@ export default function MenuLateral({
                 onClick={() => setCollapsed(!collapsed)}
               />
             )}
-            <MenuItem icon={<img src="images/actionsys.jpg" style={{objectFit: "contain", borderRadius: "50%"}} />}
+            <MenuItem icon={<img src={companyFeatures.logo} style={{objectFit: "contain", borderRadius: "50%"}} />}
               onClick={() => router.push("/dashboard")}>
-                Actionsys
+                {companyFeatures.nome}
             </MenuItem>
               <SubMenu title="Painéis" icon={<FileText />}>
                 {nfePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/nfe")}>NF-e</MenuItem>}

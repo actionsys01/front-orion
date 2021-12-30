@@ -3,7 +3,7 @@ import { Speedometer, InfoContainer, SelectStyle } from './style';
 import { useSession } from "next-auth/client";
 import Head from "next/head";
 import {useSecurityContext} from "@contexts/security";
-import  {useCertificateContext} from "@contexts/certificate"
+import  { useCompanyContext } from "@contexts/company"
 import GaugeChart from "react-gauge-chart";
 import { BsChevronCompactUp } from "react-icons/bs";
 import { useRouter } from "next/router";
@@ -13,15 +13,7 @@ import CertificateConfirm from './modal';
 import { useToasts } from "@geist-ui/react";
 import { setDate } from 'date-fns';
 export default function Dashboard() {
-    const {
-      nfePermission,
-      ctePermission, 
-      nfsePermissions, 
-      userPermissions, 
-      profilePermission, 
-      entrancePermissions} 
-      = useSecurityContext()
-    const { isCertificated } = useCertificateContext()
+    const { isCertificated } = useCompanyContext()
     const [nfeAmount, setNfeAmount] = useState(0)
     const [cteAmount, setCteAmount] = useState(0)
     const [nfseAmount, setNfseAmount] = useState(0)

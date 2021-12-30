@@ -5,13 +5,16 @@ import { BottomConfirmBtn } from '@styles/buttons';
 import { ButtonStyle } from '../style';
 import * as companyRequest from "@services/empresas";
 
-
 const initialState = {
     razao_social: '',
     nome_fantasia: ''
 }
 
-const Modal = ({data}) => {
+interface ModalProps {
+    getLogo: () => Promise<void>
+}
+
+const Modal = ({data, getLogo} ) => {
     const [ visibleModal, setVisibleModal ] = useState(false)
     const [ dataUpdate, setDataUpdate ] = useState({...initialState})
     const [, setToast] = useToasts();
@@ -38,6 +41,7 @@ const Modal = ({data}) => {
               })
         }
         setVisibleModal(false)
+        getLogo()
     }
 
 
@@ -53,14 +57,14 @@ const Modal = ({data}) => {
                 <h6>Perfil da Empresa</h6>
                 <div className="input-container">
                     <div>
-                        <label htmlFor="nome">Nome</label>
-                        <input type="text" id='nome' defaultValue={data?.nome_fantasia}
-                            onChange={(e) => setDataUpdate({...dataUpdate, nome_fantasia: e.target.value})}/>
-                    </div>
-                    <div>
                     <label htmlFor="social">Razão Social</label>
                         <input type="text" id='social' defaultValue={data?.razao_social}
                             onChange={(e) => setDataUpdate({...dataUpdate, razao_social: e.target.value})} />
+                    </div>
+                    <div>
+                        <label htmlFor="nome">Nome Fantasia</label>
+                        <input type="text" id='nome' defaultValue={data?.nome_fantasia}
+                            onChange={(e) => setDataUpdate({...dataUpdate, nome_fantasia: e.target.value})}/>
                     </div>
                 </div>
                 <div className="btn-container">

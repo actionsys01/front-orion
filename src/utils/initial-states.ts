@@ -26,3 +26,8 @@ export const initialStateB = {
     'HISTORICO': false,
     'IMPRIMIR': false
     }
+
+export const companyProfile = {
+    logo: "",
+    nome: ""
+}

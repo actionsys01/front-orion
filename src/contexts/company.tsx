@@ -1,18 +1,26 @@
 import React, { useEffect, useContext, useCallback, useReducer, useState, useMemo, Dispatch, SetStateAction } from "react";
 import * as companyRequest from "@services/empresas"
 import { useSession } from "next-auth/client";
+import { companyProfile } from "@utils/initial-states"
 
 interface ContextProps {
     isCertificated: boolean;
     setIsCertificated: Dispatch<SetStateAction<boolean>>
+    companyFeatures: CompanyProps
 }
 
-const CertificateContext = React.createContext({} as ContextProps);
+interface CompanyProps {
+    logo: string;
+    nome: string
+}
 
-const CertificateProvider:  React.FC = ({ children }: any) => {
+const CompanyContext = React.createContext({} as ContextProps);
+
+const CompanyProvider:  React.FC = ({ children }: any) => {
     const [isCertificated, setIsCertificated] = useState(false)
     const [session] = useSession();
-    const company_id = Number(session?.usuario.empresa.id)
+    // const company_id = Number(session?.usuario.empresa.id)
+    const [ companyFeatures, setCompanyFeatures ] = useState({...companyProfile})
     // console.log(company_id)
    
     const confirmCertificate = useCallback(async () => {
@@ -21,10 +29,10 @@ const CertificateProvider:  React.FC = ({ children }: any) => {
             try {
                 const response = await companyRequest.getCertificate(Number(session?.usuario.empresa.id))
                 const cnpjResponse = await companyRequest.getCnpj(Number(session?.usuario.empresa.id), Number(page))
-                // console.log("cnpj",cnpjResponse)
+                
                 const data = response.data.certificate.certificado
                 const cnpjData = cnpjResponse.data.total
-                // console.log(`cnpjData`, cnpjData)
+                
                 setIsCertificated(data && cnpjData > 0 ? true : false)
                 return data
             } catch (error) {
@@ -38,16 +46,33 @@ const CertificateProvider:  React.FC = ({ children }: any) => {
             
         }, [session])
 
+    async function getCompanyFeatures() {
+        try {
+            const companyResponse = await companyRequest.getCompanyById(Number(session?.usuario.empresa.id))
+
+            const companyData = companyResponse.data
+            setCompanyFeatures({logo: companyData.logo, nome: companyData.nome_fantasia})
+            console.log(`companyData`, companyData)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getCompanyFeatures()
+    }, [])
 
 
 
-    return <CertificateContext.Provider value={{isCertificated, setIsCertificated}}>
+
+
+    return <CompanyContext.Provider value={{isCertificated, setIsCertificated, companyFeatures}}>
         {children}
-    </CertificateContext.Provider>
+    </CompanyContext.Provider>
 }
 
-export const useCertificateContext = () => {
-    return useContext(CertificateContext)
+export const useCompanyContext = () => {
+    return useContext(CompanyContext)
 }
 
-export {CertificateContext, CertificateProvider}
+export {CompanyContext, CompanyProvider}

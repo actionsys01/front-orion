@@ -3,7 +3,7 @@ import MenuLateral from "@components/MenuLateral";
 import PaginaCarregamento from "@components/PaginaCarregamento";
 import FiltroProvider from "@contexts/filtro";
 import {SecurityProvider} from "@contexts/security";
-import { CertificateProvider } from "@contexts/certificate";
+import { CompanyProvider } from "@contexts/company";
 import ControlFilterProvider from "@contexts/ControlFilter";
 import {
   CssBaseline,
@@ -79,7 +79,7 @@ export default function App({ Component, pageProps }: any) {
         <FiltroProvider>
         <ControlFilterProvider>
           <SecurityProvider>
-            <CertificateProvider>
+            <CompanyProvider>
           <ThemeProvider theme={orionTheme}>
             <Head>
               <link
@@ -107,7 +107,7 @@ export default function App({ Component, pageProps }: any) {
                <Component {...pageProps} />
            )}
                 </ThemeProvider>
-              </CertificateProvider>
+              </CompanyProvider>
             </SecurityProvider>
           </ControlFilterProvider>
         </FiltroProvider>

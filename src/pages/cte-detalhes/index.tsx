@@ -16,41 +16,12 @@ export default function NfeDetalhes() {
   const router = useRouter();
   const [ data, setData ] = useState([])
   const [, setToast] = useToasts();
-  // const { data } = useRequest<{
-  //   informacoes_cte: {
-  //     mod: string;
-  //     serie: string;
-  //     nNF: string;
-  //     verProc: string;
-  //     dhEmi: string;
-  //     dhSaiEnt: string;
-  //   };
-  //   total: {
-  //     ICMSTot: { vNF: string };
-  //   };
-  //   emitente: {
-  //     xNome: string;
-  //     CNPJ: string;
-  //     enderEmit: {
-  //       UF: string;
-  //       nro: string;
-  //       CEP: string;
-  //       xBairro: string;
-  //       xPais: string;
-  //       xMun: string;
-  //     };
-  //     IE: string;
-  //   };
-  // } | any>({
-  //   url: `/ctes/informations/${router.query?.chave_nota}`,
-  // });
 
   const getXml = useCallback(async() => {
       try {
         const response = await getCteXml(String(router.query?.chave_nota))
         const data = response.data
-        // console.log(`my data`, data)
-        setData([data])
+        setData(data)
       } catch (error) {
         console.log(error)
         setToast({

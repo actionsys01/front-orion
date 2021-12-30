@@ -7,7 +7,7 @@ import Modal from "./modal"
 import  {format} from "date-fns";
 import * as companyRequest from "@services/empresas";
 import { useSession } from "next-auth/client";
-import  { useCertificateContext } from "@contexts/certificate"
+import  { useCompanyContext } from "@contexts/company"
 import { useSecurityContext } from "@contexts/security"
 import CnpjsModal from "./cnpjs-modal"
 import { useToasts } from "@geist-ui/react";
@@ -39,7 +39,7 @@ export default function CertificadoDigital() {
     const router = useRouter()
     const [session] = useSession();
     const company_id = Number(session?.usuario.empresa.id)
-    const { isCertificated } = useCertificateContext()
+    const { isCertificated } = useCompanyContext()
     const { certificatePermissions } = useSecurityContext()
     const [, setToast] = useToasts();
     
