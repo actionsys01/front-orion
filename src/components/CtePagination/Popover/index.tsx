@@ -3,7 +3,7 @@ import { MoreHorizontal } from "@geist-ui/react-icons";
 import { useCallback, useState } from "react";
 import router from "next/router";
 import {useSecurityContext} from "@contexts/security";
-import buscar from "@services/cte-mongo/buscar";
+import getCteXml from "@services/cte/getCteXml";
 import Dacte from "@components/dacte"
 
 
@@ -30,7 +30,7 @@ interface PopoverProps {
           const medidasArray: any = []
           const produtosArray: any = []
           try {
-            const response = await buscar(chave_nota);
+            const response = await getCteXml(chave_nota);
             const cteResponse = response.data;
             if(Array.isArray(cteResponse)){
               const medidas = cteResponse.map((item) => item.informacoes_normal_substituto.infCarga.infQ)
