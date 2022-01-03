@@ -89,7 +89,7 @@ export const InfoContainer = styled.div`
 
     }
 
-    p {
+    h6 {
       white-space: normal;
       margin: 1.5rem 0;
       padding: 0 2rem;
