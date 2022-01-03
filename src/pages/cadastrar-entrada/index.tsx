@@ -95,7 +95,7 @@ export default function CadastrarEntrada() {
         // console.log(`key.current.value.length`, key.current.value.length)
         // nova func
         if(key.current.value.startsWith("NFe") || key.current.value.startsWith("CTe") && key.current.value.length === 47){
-            console.log("com tag")
+            // console.log("com tag")
                 const notaPura =  key.current.value.slice(3, 47)
                 // console.log(`notaPura`, notaPura)
                 // console.log(notaPura.substring(20, 22) )
@@ -111,7 +111,7 @@ export default function CadastrarEntrada() {
                     } catch (error) {
                         console.log(error)
                         setToast({
-                            text: "Houve um problema, por favor tente novamente CTE",
+                            text: "Houve um problema, CT-e não localizado",
                             type: "warning"
                         });
                     }
@@ -128,7 +128,7 @@ export default function CadastrarEntrada() {
                     } catch (error) {
                         console.log(error)
                         setToast({
-                            text: "Houve um problema, por favor tente novamente",
+                            text: "Houve um problema, NF-e não localizado",
                             type: "warning"
                         });
                     }
@@ -174,6 +174,11 @@ export default function CadastrarEntrada() {
                     type: "warning"
                 });
             }
+        } else if(key.current.value.startsWith("NFe") || key.current.value.startsWith("CTe") && key.current.value.length != 47){
+            setToast({
+                text: "Chave inválida, a chave deve conter 47 caracteres",
+                type: "warning"
+            });
         } else {
             setToast({
                 text: "Chave inválida, por favor tente novamente",
