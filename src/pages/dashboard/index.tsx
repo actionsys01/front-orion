@@ -128,7 +128,7 @@ export default function Dashboard() {
           <div>
             <div>
               <h2>{accountName}</h2>
-              <p>{accountDescription}</p>
+              <h6>{accountDescription}</h6>
             </div>
           </div>
         </InfoContainer>
