@@ -34,7 +34,6 @@ const DriverModal = ({setDriverId, setDriver, driverId, driver, modalHandler}: M
                 await entranceRequest.createDriver({
                     rg: driverId,
                     nome: driver,
-                    data_entrada: new Date(),
                     empresa: company_id
                 })
                 setToast({
