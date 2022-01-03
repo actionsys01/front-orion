@@ -101,8 +101,6 @@ interface IProps {
 }
 export default function AbaCte({ data }) {
   const router = useRouter();
-  
-  
 
   const dataEmissao = useMemo(() => {
     let dataEmissao

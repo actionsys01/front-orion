@@ -5,7 +5,7 @@ import {UploadModal, FirstLine, InsideModal, ProgressBarStyle} from "../style"
 import {sendCertificate} from "@services/empresas"
 import { useToasts } from "@geist-ui/react";
 import { useSession } from 'next-auth/client';
-import {useCertificateContext} from "@contexts/certificate"
+import { useCompanyContext } from "@contexts/company"
 
 interface ModalProps {
     modalHandler: () => void;
@@ -31,7 +31,7 @@ const Modal = ({modalHandler, responsible, setResponsible, cnpj, setCnpj, setUpl
     const [ password, setPassword] = useState("")
     const company_id = Number(session?.usuario.empresa.id)
 
-    const { setIsCertificated} = useCertificateContext()
+    const { setIsCertificated } = useCompanyContext()
 
     const registerFile = useCallback((event: ChangeEvent<HTMLInputElement>) => {
         if(event.target.files) {

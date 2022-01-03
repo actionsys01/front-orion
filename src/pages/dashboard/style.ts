@@ -69,9 +69,9 @@ export const InfoContainer = styled.div`
     height: 100%;
     
     > div {
-      p {
+      h6 {
         text-overflow: visible ;
-        /* width: 35%; */
+        font-weight: 400;
       }
     }
   }

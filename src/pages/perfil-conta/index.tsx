@@ -9,7 +9,8 @@ import Modal from './modal';
 import LogoModal from './logo-modal';
 import * as companyRequest from "@services/empresas";
 import { useSecurityContext } from "@contexts/security"
-interface CompanyProps {
+import { useCompanyContext } from '@contexts/company';
+export interface CompanyProps {
     empresa_id: number;
     razao_social: string;
     nome_fantasia: string;
@@ -30,6 +31,7 @@ export default function PerfilConta() {
     const [ companyLogo, setCompanyLogo ] = useState("")
     const [ companyData, setCompanyData ] = useState({} as CompanyProps)
     const [ visibleModal, setVisibleModal ] = useState(false)
+    const { getCompanyFeatures } = useCompanyContext()
     // console.log(`companyData`, companyData)
 
     const modalHandler = useCallback(() => {
@@ -66,7 +68,7 @@ export default function PerfilConta() {
                 })
         }
         
-        },[],)
+        },[companyData],)
 
         useEffect(() => {
             getLogo()
@@ -81,6 +83,7 @@ export default function PerfilConta() {
                     type: "success"
                 })
                 getLogo()
+                getCompanyFeatures()
             } catch (error) {
                 console.log(error)
                 setToast({
@@ -114,6 +117,10 @@ export default function PerfilConta() {
                         <h5>{companyData?.razao_social}</h5>
                     </BodyRow>
                     <BodyRow>
+                        <h6>Nome Fantasia:</h6>
+                        <h5>{companyData?.nome_fantasia}</h5>
+                    </BodyRow>
+                    <BodyRow>
                         <h6>CNPJ:</h6>
                         <h5>{companyData?.cnpj}</h5>
                     </BodyRow>
@@ -121,7 +128,7 @@ export default function PerfilConta() {
                         <h6>E-mail:</h6>
                         <h5>{companyData.email}</h5>
                     </BodyRow>
-                    <Modal data={companyData} />
+                    <Modal data={companyData} getLogo={getLogo}/>
                 </div>
             </ProfileBody>}
     </>

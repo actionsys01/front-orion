@@ -41,13 +41,13 @@ interface PopoverProps {
               cteData.push(cteResponse)
               const medidas = cteResponse.informacoes_normal_substituto.infCarga.infQ
               const produtos = cteResponse.valores_servicos.Comp
-              console.log("etapa 1", medidas)
+              // console.log("etapa 1", medidas)
               if(Array.isArray(medidas) && Array.isArray(produtos)){
                 Dacte(cteData, medidas, produtos)
               } else{
                 medidasArray.push(medidas)
                 produtosArray.push(produtos)
-                console.log("etapa 2",medidas)
+                // console.log("etapa 2",medidas)
                 Dacte(cteData, medidasArray, produtosArray)
               }
             }
@@ -75,7 +75,7 @@ interface PopoverProps {
                         const status_sefaz = Number(item.rowValue.sefaz_status);
                         const desc_status_sefaz =
                           item.rowValue.sefaz_status_desc;
-                        console.log(item);
+                        // console.log(item);
                         router.push({
                           pathname: "/cte-detalhes",
                           query: {

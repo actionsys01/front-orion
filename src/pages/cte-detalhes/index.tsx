@@ -21,7 +21,6 @@ export default function NfeDetalhes() {
       try {
         const response = await getCteXml(String(router.query?.chave_nota))
         const data = response.data
-        // console.log(`my data`, data)
         setData(data)
       } catch (error) {
         console.log(error)
