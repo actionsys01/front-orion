@@ -376,13 +376,13 @@ export default function CadastrarEntrada() {
                         </div>
                         <div>
                             <span className="second">Reboque 2</span>
-                            <input type="text" className="description"/>
+                            <input type="text" className="description" onChange={(e) => setSecondHaulage(e.target.value)}/>
                         </div>
                     </div>
                     <div>
                         <div>
                             <span>Reboque 3</span>
-                            <input type="text" onChange={(e) => setSecondHaulage(e.target.value)}/>
+                            <input type="text" onChange={(e) => setThirdHaulage(e.target.value)}/>
                         </div>
                         <div>
                             {/* <span>Descrição</span>
