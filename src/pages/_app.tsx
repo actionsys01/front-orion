@@ -82,10 +82,6 @@ export default function App({ Component, pageProps }: any) {
             <CompanyProvider>
           <ThemeProvider theme={orionTheme}>
             <Head>
-              <link
-                rel="icon"
-                href="https://actionsys.com.br/wp-content/themes/actionsys/_assets/images/logo-desktop.png"
-              />
             </Head>
             {Component.auth ? (
               <Auth>
