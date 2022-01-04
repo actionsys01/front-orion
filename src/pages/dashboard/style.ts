@@ -50,6 +50,10 @@ export const Speedometer = styled.div`
     flex-direction: column;
     gap: 10rem;
   }
+
+  @media (max-width: 1065px) {
+    justify-content: center;
+  }
 `
 
 export const InfoContainer = styled.div`
@@ -69,7 +73,7 @@ export const InfoContainer = styled.div`
     height: 100%;
     
     > div {
-      h6 {
+      textarea {
         text-overflow: visible ;
         font-weight: 400;
       }
@@ -86,14 +90,18 @@ export const InfoContainer = styled.div`
       flex-direction: column;
       align-items: center;
       box-sizing: border-box;
-
     }
 
-    h6 {
+    textarea {
       white-space: normal;
-      margin: 1.5rem 0;
-      padding: 0 2rem;
+      /* margin: 1.5rem 0; */
+      padding: .5rem 1rem;
       -webkit-user-modify: read-write-plaintext-only;
+      min-height: -webkit-fill-available;
+      border: none;
+      background-color: transparent;
+      resize: none;
+      min-width: 280px;
     }
 
     svg {
@@ -108,12 +116,22 @@ export const InfoContainer = styled.div`
   @media (max-width: 860px) {
     gap: 2rem;
     width: 100%;
+    > div:nth-child(2) {
+      width: 60%;
+    }
   }
 
   @media (max-width: 1090px) {
     flex-direction: column;
     height: fit-content;
+    div {
+      > div {
+        textarea {
+          min-height: 10rem;
+        }
+      }
     }
+  }
 
 
   @media (min-width: 1890px) {

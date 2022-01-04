@@ -128,7 +128,7 @@ export default function Dashboard() {
           <div>
             <div>
               <h2>{accountName}</h2>
-              <h6>{accountDescription}</h6>
+              <textarea disabled readOnly value={accountDescription}></textarea>
             </div>
           </div>
         </InfoContainer>
