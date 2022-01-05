@@ -3,7 +3,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts'
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import  {format} from "date-fns"
 import { NfseFormattedProps } from "@services/nfse/types/NfseProps"
-// import img from "../../../public/images/"
+import JsBarcode from 'jsbarcode';
 import { img64 } from '@utils/image64';
 
 function Danfse(data, chave_nota) {
@@ -26,6 +26,18 @@ function Danfse(data, chave_nota) {
         return formattedData
     })
     // console.log(`formattedData`, formattedData)
+
+    function textToBase64Barcode(text){
+        if(text.startsWith("NFSe")) {
+            const chave = text.slice(4, 47)
+            var canvas = document.createElement("canvas");
+            JsBarcode(canvas, chave, {format: "CODE128"});
+            return canvas.toDataURL("image/png");
+        }
+      }
+  
+       const test = textToBase64Barcode("NFSe5555")
+      console.log(`test`, test)
 
 // HEADER
     const headerFirstRow = formattedData.map((item: NfseFormattedProps) => {

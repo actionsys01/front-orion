@@ -2,6 +2,7 @@ import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import  {format} from "date-fns"
+import JsBarcode from 'jsbarcode';
 
 interface MedidasProps {
     cUnid: string;
@@ -14,10 +15,10 @@ interface ProdutosProps {
     vComp: string
 }
 
-function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]) {
+function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[], chave_nota : string) {
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-    console.log("cte", cteData)
+    
 
 
     const cteGatheredData: any = []
@@ -74,7 +75,23 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
     })
 
 
-    console.log("cte 2", cteGatheredData)
+    function textToBase64Barcode(text){
+        if(text) {
+            if(text?.startsWith("CTe")) {
+                const chave = text.slice(3)
+                console.log(`chave`, chave)
+                var canvas = document.createElement("canvas");
+                JsBarcode(canvas, chave, {format: "CODE128"});
+                return canvas.toDataURL("image/png");
+            } else {
+                var canvas = document.createElement("canvas");
+                JsBarcode(canvas, text, {format: "CODE128"});
+                return canvas.toDataURL("image/png");
+            }
+        } 
+    }
+
+    const chaveBarcode = textToBase64Barcode(chave_nota)
 
     // HEADER
 
@@ -112,8 +129,8 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
     const headerLastRow = cteData.map((item: any) => {
         return [
             {}, 
-            {text: "CÓDIGO DE BARRAS AQUI", colSpan: 5, 
-            fontSize: 10, alignment: "center", border: [true, false, true, true], margin: [0, 0]}, 
+            {image: chaveBarcode, width: 275, colSpan: 5, 
+            fontSize: 10, alignment: "center", border: [true, false, true, true], margin: [-28, 0, -7, 0]}, 
             {text: "", fontSize: 4, alignment: "center", border: [true, false, false, false]},
             {text: "", fontSize: 4, alignment: "center", border: [true, false, false, false]}, //middle
             {text: "", fontSize: 4, alignment: "center", border: [true, false, false, false]},
@@ -129,7 +146,7 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
                 alignment: "center", border: [true, false, false, true]}, //middle
             {text: item.informacoes_cte.tpServ, bold: true,  fontSize: 7, 
                 alignment: "center", border: [true, false, false, true]},
-            {text: item.informacoes_normal_substituto?.infDoc.infNFe.chave, bold: true,  fontSize: 7, 
+            {text: chave_nota, bold: true,  fontSize: 7, 
                 alignment: "center", border: [true, false, true, true]}
         ]
     })
@@ -276,7 +293,7 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
     // MEDIDAS
 
     const measuresRows = medidas.map((item: any, index: number) => {
-        console.log({ item, cteGatheredData })
+        // console.log({ item, cteGatheredData })
         return [
             {text: item.tpMed,
                 bold: true, fontSize: 6, alignment: "center", border: [true, false, false, false], margin: [0, -2, 0, 0]}, 

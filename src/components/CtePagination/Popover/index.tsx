@@ -35,7 +35,7 @@ interface PopoverProps {
             if(Array.isArray(cteResponse)){
               const medidas = cteResponse.map((item) => item.informacoes_normal_substituto.infCarga.infQ)
               const produtos = cteResponse.map((item) => item.valores_servicos.Comp)
-              Dacte(cteResponse, medidas, produtos)
+              Dacte(cteResponse, medidas, produtos, chave_nota)
               
             } else {
               cteData.push(cteResponse)
@@ -43,12 +43,12 @@ interface PopoverProps {
               const produtos = cteResponse.valores_servicos.Comp
               // console.log("etapa 1", medidas)
               if(Array.isArray(medidas) && Array.isArray(produtos)){
-                Dacte(cteData, medidas, produtos)
+                Dacte(cteData, medidas, produtos, chave_nota)
               } else{
                 medidasArray.push(medidas)
                 produtosArray.push(produtos)
                 // console.log("etapa 2",medidas)
-                Dacte(cteData, medidasArray, produtosArray)
+                Dacte(cteData, medidasArray, produtosArray, chave_nota)
               }
             }
           } catch (error) {
