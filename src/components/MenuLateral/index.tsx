@@ -61,6 +61,8 @@ export default function MenuLateral({
     });
   }
 
+  
+
 
   return (
     <aside>
@@ -83,7 +85,7 @@ export default function MenuLateral({
               onClick={() => router.push("/dashboard")}>
                 {companyFeatures.nome}
             </MenuItem>
-              <SubMenu title="Painéis" icon={<FileText />}>
+              <SubMenu title="Notas Fiscais" icon={<FileText />}>
                 {nfePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/nfe")}>NF-e</MenuItem>}
                 {ctePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/cte")}>CT-e</MenuItem>}
                 {nfsePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/nfse")}>NFS-e</MenuItem>}
@@ -126,11 +128,11 @@ export default function MenuLateral({
                   </MenuItem>}
                 </SubMenu>
                 {!isCertificated && 
-                  <MenuItem style={{textShadow: "1px 0 red"}}
+                  <MenuItem style={{textShadow: ".7px 0 red", fontFamily: "sans-serif", display: 'flex', justifyContent: 'center'}}
                     onClick={() => router.push({
                       pathname: "/dashboard",
                       query: {certificate: "open"}})}>
-                      Cadastro Pendente
+                      {!collapsed ? "Cadastro Pendente" : "!"}
                   </MenuItem>}
           </Menu>
         </SidebarContent>

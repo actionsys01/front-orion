@@ -63,10 +63,10 @@ export default function PerfilConta() {
         }
         } catch (error) {
             console.log(error)
-                setToast({
-                    text: "Houve um problema, por favor tente novamente",
-                    type: "warning"
-                })
+                // setToast({
+                //     text: "Houve um problema, por favor tente novamenteeeeeeee",
+                //     type: "warning"
+                // })
         }
         
         },[companyData],)

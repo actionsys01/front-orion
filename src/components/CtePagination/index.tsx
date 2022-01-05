@@ -50,7 +50,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
       setQuantityPage(Math.ceil(data.total / 8));
     } catch (error) {
       setToast({
-        text: 'Houve um problema. pro favor tente novamente',
+        text: 'Notas não localizadas',
         type: 'warning'
       })
     }

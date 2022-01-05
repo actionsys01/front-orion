@@ -43,7 +43,7 @@ export default function CertificadoDigital() {
     const { certificatePermissions } = useSecurityContext()
     const [, setToast] = useToasts();
     
-
+    console.log(`isCertificated`, isCertificated)
     useEffect(() => {
         if (router.query.isCertificated === "false" ) {
             setVisibleModal(true)
@@ -105,7 +105,7 @@ export default function CertificadoDigital() {
 
     useEffect(() => {
         getCerficateData()
-    }, [deleteModal])
+    }, [])
 
 
     return <>

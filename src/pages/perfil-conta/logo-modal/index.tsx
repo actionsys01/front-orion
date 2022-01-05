@@ -1,9 +1,5 @@
 import React, { useState, ChangeEvent, useEffect, useCallback, useRef} from 'react';
-import { useSession } from "next-auth/client";
 import { Spinner } from "@geist-ui/react";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import BotaoVoltar from "@components/BotaoVoltar";
 import { LogoModalStyle, LogoContainer } from "../style"
 
 interface ModalProps {
