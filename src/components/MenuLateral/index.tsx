@@ -22,6 +22,7 @@ import {
 } from "react-pro-sidebar";
 import {useSecurityContext} from "@contexts/security"
 import { useCompanyContext } from '@contexts/company';
+import { NoBefore } from "./style"
 
 interface IProps {
   setCollapsed(collapsed: boolean): void;
@@ -127,13 +128,17 @@ export default function MenuLateral({
                     Perfil da Empresa
                   </MenuItem>}
                 </SubMenu>
+                <NoBefore>
                 {!isCertificated && 
-                  <MenuItem style={{textShadow: ".7px 0 red", fontFamily: "sans-serif", display: 'flex', justifyContent: 'center'}}
+                  <MenuItem icon="" 
+                  style={collapsed ? {textShadow: "1px 0 red", fontSize: "25px"} 
+                  : {textShadow: ".4px 0 red", textAlign: 'center'}}
                     onClick={() => router.push({
                       pathname: "/dashboard",
                       query: {certificate: "open"}})}>
                       {!collapsed ? "Cadastro Pendente" : "!"}
                   </MenuItem>}
+                  </NoBefore>
           </Menu>
         </SidebarContent>
         <SidebarFooter>
