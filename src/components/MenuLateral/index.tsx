@@ -129,7 +129,7 @@ export default function MenuLateral({
                 <NoBefore>
                 {!isCertificated && 
                   <MenuItem icon="" 
-                  style={collapsed ? {textShadow: "1px 0 red", fontSize: "25px"} 
+                  style={collapsed ? {textShadow: "1px 0 red", fontSize: "25px", textAlign: 'center', paddingLeft: '.5rem' } 
                   : {textShadow: ".4px 0 red", textAlign: 'center'}}
                     onClick={() => router.push({
                       pathname: "/dashboard",
