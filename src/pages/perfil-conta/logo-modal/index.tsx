@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, useEffect, useCallback, useRef} from 'react';
 import { useSession } from "next-auth/client";
-import { useToasts } from "@geist-ui/react";
+import { Spinner } from "@geist-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import BotaoVoltar from "@components/BotaoVoltar";
@@ -11,10 +11,11 @@ interface ModalProps {
     companyLogo: string;
     registerFile: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
     modalHandler: () => void;
-    visibleModal: boolean
+    visibleModal: boolean;
+    spinning: boolean
 }
 
-const LogoModal = ({hasLogo, companyLogo, registerFile, modalHandler, visibleModal} : ModalProps) => {
+const LogoModal = ({hasLogo, companyLogo, registerFile, modalHandler, visibleModal, spinning} : ModalProps) => {
     
 
 
@@ -31,8 +32,10 @@ const LogoModal = ({hasLogo, companyLogo, registerFile, modalHandler, visibleMod
         </LogoContainer>   
      <LogoModalStyle visible={visibleModal}>
         <div>
+            {spinning ? <Spinner className='spinner' /> : 
+            <>
             <h4>Logo Upload</h4>
-            <h6>Deseja {!hasLogo ? 'enviar um novo' : 'substituir o atual'}  logo da empresa?</h6>
+            <h6>Deseja {!hasLogo ? 'enviar o' : 'substituir o atual'}  logo da empresa?</h6>
             <div>
                 <button onClick={modalHandler}>CANCELAR</button>
                 <label id="logo">
@@ -41,6 +44,9 @@ const LogoModal = ({hasLogo, companyLogo, registerFile, modalHandler, visibleMod
                         CONFIRMAR</div>
                 </label>
             </div>
+            </>
+            }
+            
         </div>
     </LogoModalStyle>
     </>

@@ -32,7 +32,8 @@ export default function PerfilConta() {
     const [ companyData, setCompanyData ] = useState({} as CompanyProps)
     const [ visibleModal, setVisibleModal ] = useState(false)
     const { getCompanyFeatures } = useCompanyContext()
-    // console.log(`companyData`, companyData)
+    const [ spinning, setSpinning ] = useState(false)
+    
 
     const modalHandler = useCallback(() => {
         setVisibleModal(!visibleModal)
@@ -75,6 +76,7 @@ export default function PerfilConta() {
         }, [])
 
     const registerFile = useCallback(async (event: ChangeEvent<HTMLInputElement>) => {
+        setSpinning(true)
         if(event.target.files) {
             try {
                 await companyRequest.uploadLogo(company_id, event.target.files[0])
@@ -93,7 +95,7 @@ export default function PerfilConta() {
                 })
             }
             setVisibleModal(false)
-
+            setSpinning(false)
         }
     },[])
 
@@ -112,7 +114,8 @@ export default function PerfilConta() {
                         hasLogo={hasLogo} 
                         companyLogo={companyLogo} 
                         modalHandler={modalHandler}
-                        visibleModal={visibleModal}/>
+                        visibleModal={visibleModal}
+                        spinning={spinning}/>
                     <BodyRow>
                         <h6>Razão Social:</h6>
                         <h5>{companyData?.razao_social}</h5>

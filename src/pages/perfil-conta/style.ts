@@ -87,6 +87,15 @@ export const LogoModalStyle = styled.div<ModalProps>`
     top: 25%;
     background-color: #fff;
 
+    .spinner {
+        position: absolute;
+        left: 44%;
+        top: 40%;
+        border: none;
+        width: 3rem;
+        height: 3rem;
+    }
+
 
     h4, h6 {
     letter-spacing: 0.11rem;
