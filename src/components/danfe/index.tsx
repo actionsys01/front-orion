@@ -2,6 +2,7 @@ import pdfMake from 'pdfmake/build/pdfmake'
 import pdfFonts from 'pdfmake/build/vfs_fonts'
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import  {format} from "date-fns"
+import JsBarcode from 'jsbarcode';
 
 function Danfe(nfeData: any, nfeFrontData: any, products: any){
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -22,15 +23,30 @@ function Danfe(nfeData: any, nfeFrontData: any, products: any){
      })
 
 
-    //   console.log("teste 2",gatheredNfeData)
+    const getNota = nfeFrontData?.map((item) => item.chave_nota)
+    const chave_nota = getNota.toString()
 
-    console.log("danfe 1:",nfeData)
-    console.log("danfe 2:",nfeFrontData)
+    function textToBase64Barcode(text){
+        if(text) {
+            if(text?.startsWith("NFe")) {
+                const chave = text.slice(3)
+                var canvas = document.createElement("canvas");
+                JsBarcode(canvas, chave, {format: "CODE128"});
+                return canvas.toDataURL("image/png");
+            } else {
+                var canvas = document.createElement("canvas");
+                JsBarcode(canvas, text, {format: "CODE128"});
+                return canvas.toDataURL("image/png");
+            }
+        } 
+    }
+
+    const chaveBarcode = textToBase64Barcode(chave_nota)
 
     //Header
     const headerFirstRow = nfeFrontData.map((item: any) => {
         return [
-            {text: "", fontSize: 4, colSpan: 2, border: [true, false, true, true]},
+            {image: chaveBarcode, fontSize: 4, width: 295, colSpan: 2, alignment: "center", border: [true, false, true, true]},
             {},
             {text: `NF-e\n Nº${item.nota}`, lineHeight: 1.5, fontSize: 10, bold: true, alignment: "center", border: [true, false, true, false]},
             

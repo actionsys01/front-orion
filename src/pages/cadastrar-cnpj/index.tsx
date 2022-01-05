@@ -45,23 +45,13 @@ export default function CadastrarCnpj() {
                 type: "success"
             })
         } catch (error) {
-            console.log(error)
-            
             setToast({
-                text: "Houve um problema, por favor tente novamente",
+                text: error.response.data.mensagem,
                 type: "warning"
             })
         }
         router.push("/cnpjs-empresa")
     }
-
-    // function formatCnpj(string : string) {
-        
-    // }
-
-    // useEffect(() => {
-    //     console.log("ua",uf)
-    // }, [uf])
 
 
     return <>
@@ -90,13 +80,12 @@ export default function CadastrarCnpj() {
                         <div className="uf">
                             <span>UF</span>
                             <select onChange={(e) => setUf(e.target.value)}>
-                                <option value='' selected></option>
+                                <option defaultValue=''></option>
                                 {estados.map((item, i ) => 
                                 <option value={item} key={i}>{item}</option>
                                 )}
                                 
                             </select>
-                            {/* <input type="text" onChange={(e) => setUf(e.target.value)}/> */}
                         </div>
                         
                         <CheckboxContainer>
@@ -109,8 +98,6 @@ export default function CadastrarCnpj() {
                             CT-e
                         </span>
                         </CheckboxContainer>
-                            {/* <span>NSU</span>
-                            <input type="text" onChange={(e) => setNsu(e.target.value)}/> */}
                         </Column>
                     </SmallInputs>
                     </div>

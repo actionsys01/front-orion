@@ -126,7 +126,6 @@ export default function CnpjsEmpresa() {
         }
         return allData
     }, [cnpj])
-    // console.log(cnpj)
 
     return <>
             <Head>
@@ -134,7 +133,7 @@ export default function CnpjsEmpresa() {
             </Head>
             <h2>CNPJs da Empresa</h2>
             <AddBtn>
-                <button disabled={cnpjPermissions.ADICIONAR}
+                <button disabled={!cnpjPermissions.ADICIONAR}
                 onClick={() => router.push("/cadastrar-cnpj")} >
                     <span><Plus /></span>
                     Adicionar
@@ -149,13 +148,6 @@ export default function CnpjsEmpresa() {
                             <th>Nome</th>
                             <th>Código UF</th>
                             <th>Status Sefaz</th>
-                            {/* <th>Motivo</th>
-                            <th>Data Resposta</th>
-                            <th>Hora Resposta</th>
-                            <th>Indicador de Continuação</th>
-                            <th>Minutos</th>
-                            <th>Tipo Ambiente</th>
-                            <th>Tipo Nota</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -166,13 +158,6 @@ export default function CnpjsEmpresa() {
                             <td>{item.nome}</td>
                             <td>{item.uf}</td>
                             <td>{item.status_sefaz}</td>
-                            {/* <td>{}</td>
-                            <td>{}</td>
-                            <td>{}</td>
-                            <td>{}</td>
-                            <td>{}</td>
-                            <td>{}</td>
-                            <td>{}</td> */}
                         </tr>
                         ))}
                        
