@@ -97,7 +97,7 @@ export const InfoContainer = styled.div`
       /* margin: 1.5rem 0; */
       padding: .5rem 1rem;
       -webkit-user-modify: read-write-plaintext-only;
-      min-height: -webkit-fill-available;
+      min-height: 380px;
       border: none;
       background-color: transparent;
       resize: none;

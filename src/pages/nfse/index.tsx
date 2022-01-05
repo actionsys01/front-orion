@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useEffect, useCallback, useRef} from 'react';
 import { useSession } from "next-auth/client";
 import { useToasts, Dot, Tooltip } from "@geist-ui/react";
-import { Filter } from "@geist-ui/react-icons";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useFiltro } from "@contexts/filtro";
@@ -10,7 +9,6 @@ import  {format} from "date-fns";
 import {TableGrid} from "@styles/tableStyle"
 import {  Pages } from "@styles/pages";
 import Pagination from "@material-ui/lab/Pagination";
-import { nfseNotas } from '@utils/mock-data/nfse-pages'
 import { nfseXmlData } from "@utils/mock-data/nfse-xml"
 import { NfseProps } from '@services/nfse/types/NfseProps';
 import Popover from "@components/Popover"
@@ -48,19 +46,26 @@ export default function Nfse() {
    const router = useRouter()
    const { nfsePermissions } = useSecurityContext()
    const company_id = Number(session?.usuario.empresa.id)
-
+   const [, setToast] = useToasts();
 
    const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
       setPage(value)
    }
 
    const getNfsesAndTotalPages = useCallback(async () => {
-
-      const responseNfse = await nfseRequest.getNfse(page, company_id, nfses)
-      const { data } = responseNfse
-      setNfseData(data.nfses)
-   
-      setQuantityPage(Math.ceil(data.total / 8));
+      try {
+         const responseNfse = await nfseRequest.getNfse(page, company_id, nfses)
+         const { data } = responseNfse
+         setNfseData(data.nfses)
+      
+         setQuantityPage(Math.ceil(data.total / 8));
+      } catch (error) {
+         setToast({
+            text: 'Notas não localizadas',
+            type: 'warning'
+          })
+      }
+     
    }, [page, nfses])
       
 
