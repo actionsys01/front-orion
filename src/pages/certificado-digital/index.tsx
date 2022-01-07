@@ -12,18 +12,7 @@ import { useSecurityContext } from "@contexts/security"
 import CnpjsModal from "./cnpjs-modal"
 import { useToasts } from "@geist-ui/react";
 import DeletarModal from "./delete-modal"
-
-
-interface CertificadoProps {
-    id: number;
-    cnpj: string;
-    certificado: string;
-    data_inicio: Date;
-    data_vencimento: Date;
-}
-
-
-
+import { certificateState } from "@utils/initial-states"
 
 export default function CertificadoDigital() {
     // modais
@@ -31,15 +20,12 @@ export default function CertificadoDigital() {
     const [ secondModal, setSecondModal ] = useState(false)
     const [ deleteModal, setDeleteModal ] = useState(false)
     //
+    const [ pageData, setPageData ] = useState({...certificateState})
     const [ upload, setUpload ] = useState(false)
-    const [ responsible, setResponsible ] = useState("")
-    const [ cnpj, setCnpj ] = useState("")
-    const [ initialDate, setInitialDate ] = useState(new Date)
-    const [ expiringDate, setExpiringDate ] = useState(new Date)
     const router = useRouter()
     const [session] = useSession();
     const company_id = Number(session?.usuario.empresa.id)
-    const { isCertificated } = useCompanyContext()
+    const { isCertificated, setIsCertificated } = useCompanyContext()
     const { certificatePermissions } = useSecurityContext()
     const [, setToast] = useToasts();
     
@@ -74,8 +60,8 @@ export default function CertificadoDigital() {
         try {
             const response = await companyRequest.getCertificate(company_id)
             const data = response.data.certificate
-            // console.log("certi",data)
-            setCnpj(data.cnpj)
+            console.log("certi",data)
+            setPageData({...pageData, cnpj: data.cnpj, initialDate: data.data_inicio, expiringDate: data.data_vencimento})
             return data
         } catch (error) {
             // console.log(error)
@@ -93,6 +79,8 @@ export default function CertificadoDigital() {
                 text: "Certificado excluído com sucesso",
                 type: "success"
             })
+            setIsCertificated(false)
+            getCerficateData()
         } catch (error) {
             console.log(error)
             setToast({
@@ -106,6 +94,10 @@ export default function CertificadoDigital() {
     useEffect(() => {
         getCerficateData()
     }, [])
+
+    useEffect(() => {
+        console.log(`pageData`, pageData)
+    }, [pageData])
 
 
     return <>
@@ -125,15 +117,15 @@ export default function CertificadoDigital() {
                         </InputStyle>
                         <InputStyle>
                             <span>CNPJ:</span>
-                            <input type="text" readOnly value={isCertificated ? cnpj: ""} />
+                            <input type="text" readOnly value={isCertificated ? pageData.cnpj : ""} />
                         </InputStyle>
                             <InlineInputs>
                                 <span>Validade</span>
                                 <div>
                                     <span>De:</span>
-                                    <input type="text" readOnly value={isCertificated ? format(new Date(initialDate), "dd/MM/yyyy"): ""} />
+                                    <input type="text" readOnly value={isCertificated ? format(new Date(pageData.initialDate), "dd/MM/yyyy"): ""} />
                                     <span>Até:</span>
-                                    <input type="text" readOnly value={isCertificated ? format(new Date(expiringDate), "dd/MM/yyyy"): ""} />
+                                    <input type="text" readOnly value={isCertificated ? format(new Date(pageData.expiringDate), "dd/MM/yyyy"): ""} />
                                 </div>
                             </InlineInputs>
                     </div>
@@ -161,10 +153,7 @@ export default function CertificadoDigital() {
             </div>
         {visibleModal && 
                 <Modal modalHandler={modalHandler} setUpload={setUpload}
-                    responsible={responsible} setResponsible={setResponsible} 
-                    cnpj={cnpj} setCnpj={setCnpj}
-                    initialDate={initialDate} setInitialDate={setInitialDate}
-                    expiringDate={expiringDate} setExpiringDate={setExpiringDate} />}
+                    pageData={pageData} setPageData={setPageData}/>}
         {secondModal &&
                 <CnpjsModal secondModalHandler={secondModalHandler} />
                 }   

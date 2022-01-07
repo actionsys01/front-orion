@@ -7,21 +7,29 @@ import { useToasts } from "@geist-ui/react";
 import { useSession } from 'next-auth/client';
 import { useCompanyContext } from "@contexts/company"
 
-interface ModalProps {
-    modalHandler: () => void;
-    setUpload: Dispatch<SetStateAction<boolean>>;
-    setResponsible: Dispatch<SetStateAction<string>>;
-    setCnpj: Dispatch<SetStateAction<string>>;
-    setInitialDate: Dispatch<SetStateAction<Date>>;
-    setExpiringDate: Dispatch<SetStateAction<Date>>
-    responsible: string;
+interface CertificadoProps {
     cnpj: string;
+    responsible: string;
     initialDate: Date;
     expiringDate: Date;
 }
 
-const Modal = ({modalHandler, responsible, setResponsible, cnpj, setCnpj, setUpload, 
-    initialDate, setInitialDate, expiringDate, setExpiringDate}: ModalProps) => {
+interface ModalProps {
+    modalHandler: () => void;
+    setUpload: Dispatch<SetStateAction<boolean>>;
+    pageData: CertificadoProps;
+    setPageData: Dispatch<SetStateAction<CertificadoProps>>
+    // setResponsible: Dispatch<SetStateAction<string>>;
+    // setCnpj: Dispatch<SetStateAction<string>>;
+    // setInitialDate: Dispatch<SetStateAction<Date>>;
+    // setExpiringDate: Dispatch<SetStateAction<Date>>
+    // responsible: string;
+    // cnpj: string;
+    // initialDate: Date;
+    // expiringDate: Date;
+}
+
+const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) => {
 
     const [ fileName, setFileName ] = useState("");
     const [ progress, setProgress ] = useState(0);
@@ -46,9 +54,9 @@ const Modal = ({modalHandler, responsible, setResponsible, cnpj, setCnpj, setUpl
             await sendCertificate(certificate, {
                 company_id,
                 certificado: '',
-                cnpj: cnpj,
-                data_inicio: initialDate,
-                data_vencimento: expiringDate,
+                cnpj: pageData.cnpj,
+                data_inicio: pageData.initialDate,
+                data_vencimento: pageData.expiringDate,
                 senha: password,
             });
             setProgress(100)
@@ -85,21 +93,21 @@ const Modal = ({modalHandler, responsible, setResponsible, cnpj, setCnpj, setUpl
                         <InsideModal>
                             <div>
                                 <span>Responsável</span>
-                                <input type="text" onChange={(e) => setResponsible(e.target.value)}/>
+                                <input type="text" onChange={(e) => setPageData({...pageData, responsible: e.target.value})}/>
                                 <span>Senha</span>
                                 <input type="password" onChange={(e) => setPassword(e.target.value)} />
                             </div>
                             <div>
                                 <span>CNPJ</span>
-                                <input type="text" onChange={(e) => setCnpj(e.target.value)} />
+                                <input type="text" onChange={(e) => setPageData({...pageData, cnpj: e.target.value})} />
                                 <span>Descrição</span>
                                 <input type="text" />
                             </div>
                             <div>
                                 <span>Válido de:</span>
-                                <input type="date" onChange={(e) => setInitialDate(new Date(e.target.value))}/>
+                                <input type="date" onChange={(e) => setPageData({...pageData, initialDate: new Date(e.target.value)})}/>
                                 <span>Válido até:</span>
-                                <input type="date" onChange={(e) => setExpiringDate(new Date(e.target.value))} />
+                                <input type="date" onChange={(e) => setPageData({...pageData, expiringDate: new Date(e.target.value)})} />
                             </div>
                         </InsideModal>
                         <ProgressBarStyle>

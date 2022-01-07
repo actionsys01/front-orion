@@ -94,11 +94,6 @@ export default function Dashboard() {
     }, [totalValue, totalAmount, totalUsers, totalUsersAmount, dateDash])
 
 
-    // useEffect(() => {
-    //   console.log("date dash", typeof(dateDash), dateDash)
-    // }, [dateDash])
-
-
     return  <>
         <Head>
             <title>Orion | Dashboard</title>

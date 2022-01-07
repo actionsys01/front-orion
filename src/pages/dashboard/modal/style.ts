@@ -35,7 +35,7 @@ export const ModalStyle = styled.div`
 
         h5 {
             letter-spacing: 0.11rem;
-            font-weight: 600;
+            font-weight: 400;
             margin: 2rem auto;
             padding: 1rem;
             vertical-align: middle;
@@ -73,8 +73,8 @@ export const ModalStyle = styled.div`
 
         button:last-child{
         border-left: 1px solid #eaeaea;
-        background-color: #1C496A;
-        color: #fff;
+        /* background-color: #1C496A;
+        color: #fff; */
             }
         }
         

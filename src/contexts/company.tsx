@@ -25,16 +25,14 @@ const CompanyProvider:  React.FC = ({ children }: any) => {
     // console.log(company_id)
    
     const confirmCertificate = useCallback(async () => {
-        const page = ""
         if(session) {
             try {
                 const response = await companyRequest.getCertificate(Number(session?.usuario.empresa.id))
                 const data = response.data.certificate.certificado
                 console.log(`data`, data)
-                const cnpjResponse = await companyRequest.getCnpj(Number(session?.usuario.empresa.id), Number(page))
-                
+                const cnpjResponse = await companyRequest.getCnpj(Number(session?.usuario.empresa.id))
                 const cnpjData = cnpjResponse.data.total
-                
+                console.log(`cnpjData`, cnpjData)
                 setIsCertificated(data && cnpjData > 0 ? true : false)
                 return data
             } catch (error) {
