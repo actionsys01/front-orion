@@ -58,10 +58,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
       
 
   useEffect(() => {
-
     getNfesAndTotalPages();
-
-
   }, [page, nfes])
 
 
