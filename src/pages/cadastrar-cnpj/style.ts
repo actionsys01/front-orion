@@ -1,24 +1,21 @@
 import styled from "styled-components";
 
 export const Section = styled.form`
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid rgba(151, 151, 151, .45); */
+    /* width: 100%; */
 
     section {
-    width: 85%;
     margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    border: 1px solid rgba(151, 151, 151, .45);
     padding: 1rem;
     gap: .5rem;
     margin-bottom: 1rem;
 
     > div {
         display: flex;
-        width: 100%;
-        
-       
+        align-items: center;
+        justify-content: center;
     }
 }
 
@@ -30,33 +27,21 @@ export const Section = styled.form`
 `
 
 export const InputStyle = styled.div`
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        align-items: center;
-        margin-top: 12px;
-
-    > div {
-        width: 49%;
-        display: flex;
-        position: relative;
         
-        span {
-                position: absolute;
-                margin: 0 0.5rem;
-                font-size: 0.8rem;
-                white-space: nowrap;
-                bottom: 5%;
-                left: 4%;
+        label {
+            padding: 0 .5rem;
         }
-    }
+        /* width: 100%; */
+        input, label {
+            display: block;
+        }
 
         input {
-            max-width: 420px;
+            min-width: 420px;
             width: 100%;
             height: 28px;
             border: 1px solid #eaeaea;
-            letter-spacing: .04rem;;
+            letter-spacing: .04rem;
         }
 
         @media (max-width: 1075px) {

@@ -2,6 +2,7 @@ import React, {Dispatch, SetStateAction, useState, useMemo, useEffect, useCallba
 import { useSession } from "next-auth/client";
 import router, { useRouter } from "next/router";
 import{ Modal } from "@styles/modal";
+import { SecondBtn } from "../style"
 
 
 interface ModalProps {
@@ -13,15 +14,15 @@ const CnpjsModal = ({secondModalHandler} : ModalProps) => {
 
     return <Modal> 
         <div>
-            <h4 style={{fontSize: ".8rem"}}>
+            <h5 style={{fontSize: ".8rem"}}>
                 Seu cadastro está quase completo, prossiga para cadastrar os CNPJs da empresa:
-            </h4>
+            </h5>
             <div>
                 <button onClick={() => secondModalHandler()}>Prosseguir sem <br/>terminar cadastro</button>
-                <button onClick={() => router.push({
+                <SecondBtn onClick={() => router.push({
                     pathname: "/cadastrar-cnpj"
                     // query:{ isCompleted: "false"}   
-                })}>Cadastrar  <br/>CNPJs</button>
+                })}>Cadastrar  <br/>CNPJs</SecondBtn>
             </div>
         </div>
 

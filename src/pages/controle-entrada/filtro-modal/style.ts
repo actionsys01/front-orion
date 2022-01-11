@@ -87,6 +87,7 @@ export const ModalLines = styled.div`
             border: 1px solid #eaeaea;
             max-width: 200px;
             width: 100%;
+            padding-inline-start: .5rem;
         }
     }
 

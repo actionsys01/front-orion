@@ -14,34 +14,34 @@ export default function Select({ name, options, ...rest }: Props) {
   const { fieldName, defaultValue, registerField, error } = useField(name);
 
 
-  useEffect(() => {
-    console.log(`selectRef`, selectRef.current?.state?.value?.value)
-    console.log(`fieldName`, fieldName.toString())
+  // useEffect(() => {
+  //   console.log(`selectRef`, selectRef.current?.state?.value?.value)
+  //   console.log(`fieldName`, fieldName.toString())
   
-  }, [fieldName, registerField])
+  // }, [fieldName, registerField])
 
   useEffect(() => {
     registerField({
       name: fieldName,
       ref: selectRef.current,
       getValue: (ref: any) => {
-        console.log("aqui pt I")
+        // console.log("aqui pt I")
         if (rest.isMulti) {
-          console.log("aqui pt II")
+          // console.log("aqui pt II")
           if (!ref.state.value) {
-            console.log("aqui pt III")
+            // console.log("aqui pt III")
             return [];
           }
           return ref.state.value.map((option: OptionTypeBase) => option.value);
         }
         if (!ref.state.value) {
-          console.log("aqui pt IV")
+          // console.log("aqui pt IV")
           return "";
         }
         return ref.state.value.value;
       },
       setValue: (ref, value) => {
-        console.log("aqui pt V")
+        // console.log("aqui pt V")
         ref.select.setValue(value || null);
       },
       clearValue: (ref) => {

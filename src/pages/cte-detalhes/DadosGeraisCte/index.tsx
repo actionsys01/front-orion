@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 interface IProps {
   data: {
     informacoes_cte: {
-      cCT: string;
+      nCT: string;
     };
     versao: string;
   };
@@ -27,7 +27,7 @@ export default function DadosGeraisCte({ data }: IProps) {
           </Grid>
           <GridAlinhaTextoCentro>
             <Titulo>Número </Titulo>
-            <Text small>{data?.informacoes_cte?.cCT}</Text>
+            <Text small>{data?.informacoes_cte?.nCT}</Text>
           </GridAlinhaTextoCentro>
           <GridAlinhaTextoCentro>
             <Titulo>Versão XML</Titulo>

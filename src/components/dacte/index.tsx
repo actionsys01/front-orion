@@ -79,7 +79,6 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
         if(text) {
             if(text?.startsWith("CTe")) {
                 const chave = text.slice(3)
-                console.log(`chave`, chave)
                 var canvas = document.createElement("canvas");
                 JsBarcode(canvas, chave, {format: "CODE128"});
                 return canvas.toDataURL("image/png");
@@ -142,9 +141,9 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
 
     const generalFirstRow = cteGatheredData.map((item: any) => {
         return [
-            {text: item.informacoes_cte.tpCTe, bold: true,  fontSize: 7, 
+            {text: item.informacoes_cte?.tpCTe, bold: true,  fontSize: 7, 
                 alignment: "center", border: [true, false, false, true]}, //middle
-            {text: item.informacoes_cte.tpServ, bold: true,  fontSize: 7, 
+            {text: item.informacoes_cte?.tpServ, bold: true,  fontSize: 7, 
                 alignment: "center", border: [true, false, false, true]},
             {text: chave_nota, bold: true,  fontSize: 7, 
                 alignment: "center", border: [true, false, true, true]}
@@ -153,7 +152,7 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
 
     const generalSecondRow = cteData.map((item: any) => {
         return [
-            {text: item.informacoes_cte.natOp, fontSize: 6, 
+            {text: item.informacoes_cte?.natOp, fontSize: 6, 
                 bold: true,  alignment: "center", border: [true, false, false, true]}, 
             {text: item.emitente?.enderEmit.xMun, fontSize: 7, 
                 bold: true,  alignment: "center", border: [true, false, false, true]},
@@ -174,7 +173,7 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
     })
     const serviceSecondRow = cteData.map((item: any) => {
         return [
-        {text: `${item.remetente?.enderReme.xLgr}   /   ${item.remetente.enderReme.UF}`, 
+        {text: `${item.remetente?.enderReme?.xLgr}   /   ${item.remetente.enderReme.UF}`, 
         fontSize: 7, bold: true, alignment: "center", border: [true, false, true, false], margin: [0, -8, 0, 0]}, 
         {text: `${item.destinatario?.enderDest.xLgr}   /   ${item.destinatario.enderDest.UF}`, 
         fontSize: 7, bold: true, alignment: "center", border: [true, false, true, false], margin: [0, -8, 0, 0]}
@@ -240,7 +239,7 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
 
     const receptorFirstRow = cteGatheredData.map((item: any) => {
         return [
-            {text: item.tomador.xNome, bold: true, colSpan: 5, 
+            {text: item.tomador?.xNome, bold: true, colSpan: 5, 
                 fontSize: 7, alignment: "center", border: [true, false, true, true], margin: [0, -5, 0, 0]}, 
             {text: '', fontSize: 7, alignment: "left", border: [true, false, true, true], margin: [0, -5, 0, 0]}, 
             {text: "", fontSize: 7, alignment: "left", border: [true, false, true, true], margin: [0, -5, 0, 0]}, 
@@ -310,18 +309,18 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
 
     const componentsRows = produtos.map((item: any, index: number) => {
         return [
-            {text: item.xNome,
+            {text: item?.xNome,
                 bold: true, fontSize: 6, alignment: "center", border: [true, false, false, false], margin: [0, -2, 0, 0]}, 
-            {text: item.vComp, 
+            {text: item?.vComp, 
                 bold: true, fontSize: 6, alignment: "center", border: [false, false, true, false], margin: [0, -2, 0, 0]},
         ]
     })
 
     const componentsSecondRow = cteData.map((item: any, index: number) => {
         return [
-            {text: item.valores_servicos.vTPrest,
+            {text: item.valores_servicos?.vTPrest,
                 bold: true, fontSize: 6, alignment: "center", border: [true, false, false, true], margin: [0, -2, 0, 0]}, 
-            {text: item.valores_servicos.vRec, 
+            {text: item.valores_servicos?.vRec, 
                 bold: true, fontSize: 6, alignment: "center", border: [false, false, true, true], margin: [0, -2, 0, 0]},
         ]
     })

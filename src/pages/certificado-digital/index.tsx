@@ -21,15 +21,17 @@ export default function CertificadoDigital() {
     const [ deleteModal, setDeleteModal ] = useState(false)
     //
     const [ pageData, setPageData ] = useState({...certificateState})
-    const [ upload, setUpload ] = useState(false)
+    const [ upload, setUpload ] = useState(false)       
     const router = useRouter()
     const [session] = useSession();
     const company_id = Number(session?.usuario.empresa.id)
     const { isCertificated, setIsCertificated } = useCompanyContext()
     const { certificatePermissions } = useSecurityContext()
     const [, setToast] = useToasts();
-    
+
+    console.log(`router.query`, router.query)
     console.log(`isCertificated`, isCertificated)
+
     useEffect(() => {
         if (router.query.isCertificated === "false" ) {
             setVisibleModal(true)

@@ -1,7 +1,11 @@
 import React, {Dispatch, SetStateAction, useState, ChangeEvent, useCallback} from 'react';
-import { X, Search  } from '@geist-ui/react-icons'
+import { X, Search, Upload, FilePlus  } from '@geist-ui/react-icons'
 import ProgressBar from '@components/ProgressBar';
-import {UploadModal, FirstLine, InsideModal, ProgressBarStyle} from "../style"
+import {UploadModal,
+    IconContainer, 
+    InputsContainer,
+    ModalContent, 
+    ProgressBarStyle} from "../style"
 import {sendCertificate} from "@services/empresas"
 import { useToasts } from "@geist-ui/react";
 import { useSession } from 'next-auth/client';
@@ -19,14 +23,6 @@ interface ModalProps {
     setUpload: Dispatch<SetStateAction<boolean>>;
     pageData: CertificadoProps;
     setPageData: Dispatch<SetStateAction<CertificadoProps>>
-    // setResponsible: Dispatch<SetStateAction<string>>;
-    // setCnpj: Dispatch<SetStateAction<string>>;
-    // setInitialDate: Dispatch<SetStateAction<Date>>;
-    // setExpiringDate: Dispatch<SetStateAction<Date>>
-    // responsible: string;
-    // cnpj: string;
-    // initialDate: Date;
-    // expiringDate: Date;
 }
 
 const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) => {
@@ -37,6 +33,7 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
     const [, setToast] = useToasts();
     const [session] = useSession();
     const [ password, setPassword] = useState("")
+    const [ confirmPassword, setConfirmPassword ] = useState('')
     const company_id = Number(session?.usuario.empresa.id)
 
     const { setIsCertificated } = useCompanyContext()
@@ -50,15 +47,16 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
 
     async function sendData() {
         try {
-            setProgress(60)
-            await sendCertificate(certificate, {
-                company_id,
-                certificado: '',
-                cnpj: pageData.cnpj,
-                data_inicio: pageData.initialDate,
-                data_vencimento: pageData.expiringDate,
-                senha: password,
-            });
+                if(password === confirmPassword) {
+                setProgress(60)
+                await sendCertificate(certificate, {
+                    company_id,
+                    certificado: '',
+                    cnpj: pageData.cnpj,
+                    data_inicio: pageData.initialDate,
+                    data_vencimento: pageData.expiringDate,
+                    senha: password,
+                });
             setProgress(100)
             setToast({
                 text: "Documento enviado com sucesso",
@@ -66,6 +64,12 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
             })
             setUpload(true)
             setIsCertificated(true)
+                } else {
+                    setToast({
+                        text: "As senhas digitadas contém diferenças",
+                        type: "warning"
+                    })
+                }
         } catch (error) {
             console.log(error)
             setToast({
@@ -81,38 +85,29 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
     <UploadModal>
             <div>
                 <span><X  onClick={() => modalHandler()}/></span>
-                <h4>Localize seu Certificado</h4>
+                <h4>Localize seu certificado</h4>
                 <div>
                     <form action="">
-                        <FirstLine>
-                            <label id="upload" ><span>{fileName.replace(/^.*\\/, "")}</span>
-                                <input type="file" id="upload" onChange={registerFile}/>
-                            </label>
-                            <Search />
-                        </FirstLine>
-                        <InsideModal>
-                            <div>
-                                <span>Responsável</span>
-                                <input type="text" onChange={(e) => setPageData({...pageData, responsible: e.target.value})}/>
-                                <span>Senha</span>
-                                <input type="password" onChange={(e) => setPassword(e.target.value)} />
-                            </div>
-                            <div>
-                                <span>CNPJ</span>
-                                <input type="text" onChange={(e) => setPageData({...pageData, cnpj: e.target.value})} />
-                                <span>Descrição</span>
-                                <input type="text" />
-                            </div>
-                            <div>
+                        <ModalContent>
+                            <IconContainer>
+                                <label id="upload" >
+                                    <FilePlus />
+                                    <span>{fileName ? fileName.replace(/^.*\\/, "") : "Clique para selecionar"}</span>
+                                    <input type="file" id="upload" onChange={registerFile}/>
+                                </label>
+                            </IconContainer>
+                            <InputsContainer>
                                 <span>Válido de:</span>
                                 <input type="date" onChange={(e) => setPageData({...pageData, initialDate: new Date(e.target.value)})}/>
                                 <span>Válido até:</span>
                                 <input type="date" onChange={(e) => setPageData({...pageData, expiringDate: new Date(e.target.value)})} />
-                            </div>
-                        </InsideModal>
+                                <span>Senha:</span>
+                                <input type="password" onChange={(e) => setPassword(e.target.value)}/> 
+                            </InputsContainer>
+                        </ModalContent>
                         <ProgressBarStyle>
                             <ProgressBar done={progress}/>
-                                <button type="button" onClick={sendData}>
+                                <button type="button" onClick={sendData} style={{borderRadius: "5px", border: "1px solid grey"}}>
                                     enviar
                                 </button>
                         </ProgressBarStyle>

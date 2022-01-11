@@ -34,7 +34,7 @@ export const ModalStyle = styled.div`
         }
 
         h5 {
-            letter-spacing: 0.11rem;
+            /* letter-spacing: 0.1rem; */
             font-weight: 400;
             margin: 2rem auto;
             padding: 1rem;
@@ -73,8 +73,8 @@ export const ModalStyle = styled.div`
 
         button:last-child{
         border-left: 1px solid #eaeaea;
-        /* background-color: #1C496A;
-        color: #fff; */
+        background-color: #1C496A;
+        color: #fff;
             }
         }
         
