@@ -8,18 +8,12 @@ import { useSession } from "next-auth/client";
 import * as companyRequest from "@services/empresas";
 import { useToasts } from "@geist-ui/react";
 import router from 'next/router';
+import MaskedInput from '@components/Masked-Input';
 
-const cnpjPattern = {
-    parteA: "XX",
-    parteB: "XXX",
-    parteC: "XXX",
-    digito: "1",
-    final: "XX"
-}
 
 export default function CadastrarCnpj() {
     const [name, setName] = useState("")
-    const [cnpj, setCnpj] = useState({...cnpjPattern})
+    const [cnpj, setCnpj] = useState("")
     const [uf, setUf] = useState("")
     const [nsu, setNsu] = useState("")
     const [ session ] = useSession()
@@ -43,7 +37,7 @@ export default function CadastrarCnpj() {
                 return 
             } 
             await companyRequest.createCnpj(company_id, {
-                cnpj: "",
+                cnpj: cnpj,
                 nome: name,
                 uf: uf,
                 status_sefaz: 100
@@ -61,9 +55,6 @@ export default function CadastrarCnpj() {
         router.push("/cnpjs-empresa")
     }
 
-    useEffect(() => {
-       console.log(`cnpj`, cnpj)
-    }, [cnpj]) /* parteA: e.target.value, parteB: e.target.value, parteC: e.target.value, digito: e.target.value, final: e.target.value */
 
 
     return <>
@@ -77,9 +68,10 @@ export default function CadastrarCnpj() {
                     <div>
                         <InputStyle>
                             <label htmlFor="cnpj">CNPJ</label>
-                            <input type="text" id='cnpj' 
-                            value={`${cnpj.parteA}.${cnpj.parteB}.${cnpj.parteC}/000${cnpj.digito}-${cnpj.final}`} 
-                            onChange={(e) => setCnpj({...cnpj, parteA:`${e.target.value.slice(0,3)}`})} />
+                            <MaskedInput 
+                                value={cnpj} 
+                                onChange={(event) => setCnpj(event.target.value)}
+                            />
                             <label htmlFor="nome">Nome</label>
                             <input type="text" id='nome' onChange={(e) => setName(e.target.value)}/>
                         </InputStyle>

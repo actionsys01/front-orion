@@ -22,7 +22,7 @@ import {
 } from "react-pro-sidebar";
 import {useSecurityContext} from "@contexts/security"
 import { useCompanyContext } from '@contexts/company';
-import { NoBefore } from "./style"
+import { NoBefore, AlignSubmenu } from "./style"
 
 interface IProps {
   setCollapsed(collapsed: boolean): void;
@@ -60,9 +60,6 @@ export default function MenuLateral({
     signOut();
   }
 
-  
-
-
   return (
     <aside>
       <ProSidebar
@@ -84,18 +81,23 @@ export default function MenuLateral({
               onClick={() => router.push("/dashboard")}>
                 {companyFeatures.nome}
             </MenuItem>
-              <SubMenu title="Notas Fiscais" icon={<FileText />}>
+              <SubMenu title="Notas Fiscais" icon={<FileText />} >
+              <AlignSubmenu>
                 {nfePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/nfe")}>NF-e</MenuItem>}
                 {ctePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/cte")}>CT-e</MenuItem>}
                 {nfsePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/nfse")}>NFS-e</MenuItem>}
+              </AlignSubmenu>
               </SubMenu>
               <SubMenu title="Aplicações" icon={<Grid />}>
-                {entrancePermissions.VISUALIZAR &&
-                <MenuItem onClick={() => router.push("/controle-entrada")}>
-                  Controle de Entrada
-                </MenuItem>}
+                <AlignSubmenu>
+                  {entrancePermissions.VISUALIZAR &&
+                  <MenuItem onClick={() => router.push("/controle-entrada")}>
+                    Controle de Entrada
+                  </MenuItem>}
+                </AlignSubmenu>
               </SubMenu>
               <SubMenu title="Configurações" icon={<Settings />}>
+              <AlignSubmenu>
                 {profilePermission.ADICIONAR && 
                   <MenuItem onClick={() => router.push("/perfil-acesso")}>
                     Perfil de Acesso
@@ -125,6 +127,7 @@ export default function MenuLateral({
                   <MenuItem onClick={() => router.push("/perfil-conta")}>
                     Perfil da Empresa
                   </MenuItem>}
+              </AlignSubmenu>
                 </SubMenu>
                 <NoBefore>
                 {!isCertificated && 
