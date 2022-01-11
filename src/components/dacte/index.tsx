@@ -18,7 +18,7 @@ interface ProdutosProps {
 function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[], chave_nota : string) {
     pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-    
+    console.log(`produtos`, produtos)
 
 
     const cteGatheredData: any = []
@@ -104,7 +104,7 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
             {}, 
             {text: "", fontSize: 7, 
             bold: true, border: [true, false, false, true], margin: [0, 0]},
-            {text: item.informacoes_cte.modal, fontSize: 10, 
+            {text: item.informacoes_cte?.modal, fontSize: 10, 
                 bold: true, alignment: "center", border: [false, false, true, true], margin: [12, 0, 0, 0]}
         ]
     })
@@ -112,13 +112,13 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
     const headerSecondRow = cteGatheredData.map((item: any) => {
         return [
             {text: `${item.emitente?.enderEmit.xLgr}\n${item.emitente.enderEmit.fone}\n
-            CNPJ${item.emitente.CNPJ} - IE${item.emitente.IE}`, 
+            CNPJ${item.emitente?.CNPJ} - IE${item.emitente.IE}`, 
             fontSize: 7, rowSpan: 2, alignment: "center", border: [true, false, false, true], margin: [0, 0]}, 
-            {text: item.informacoes_cte.mod, fontSize: 7, bold: true, 
+            {text: item.informacoes_cte?.mod, fontSize: 7, bold: true, 
                 alignment: "center", border: [true, false, false, true], margin: [0, 0]}, 
-            {text: item.informacoes_cte.serie, alignment: "center", 
+            {text: item.informacoes_cte?.serie, alignment: "center", 
             fontSize: 7, bold: true, border: [true, false, false, true], margin: [0, 0]},
-            {text: item.informacoes_cte.nCT, alignment: "center", 
+            {text: item.informacoes_cte?.nCT, alignment: "center", 
             fontSize: 7, bold: true, border: [true, false, false, true], margin: [0, 0]}, 
             {text: item.emissionDate, alignment: "center", 
             fontSize: 6,  bold: true, border: [true, false, false, true], margin: [0, 0]},
@@ -142,9 +142,9 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
 
     const generalFirstRow = cteGatheredData.map((item: any) => {
         return [
-            {text: item.informacoes_cte.tpCTe, bold: true,  fontSize: 7, 
+            {text: item.informacoes_cte?.tpCTe, bold: true,  fontSize: 7, 
                 alignment: "center", border: [true, false, false, true]}, //middle
-            {text: item.informacoes_cte.tpServ, bold: true,  fontSize: 7, 
+            {text: item.informacoes_cte?.tpServ, bold: true,  fontSize: 7, 
                 alignment: "center", border: [true, false, false, true]},
             {text: chave_nota, bold: true,  fontSize: 7, 
                 alignment: "center", border: [true, false, true, true]}
@@ -153,11 +153,11 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
 
     const generalSecondRow = cteData.map((item: any) => {
         return [
-            {text: item.informacoes_cte.natOp, fontSize: 6, 
+            {text: item.informacoes_cte?.natOp, fontSize: 6, 
                 bold: true,  alignment: "center", border: [true, false, false, true]}, 
             {text: item.emitente?.enderEmit.xMun, fontSize: 7, 
                 bold: true,  alignment: "center", border: [true, false, false, true]},
-            {text: item.destinatario?.enderDest.xMun, fontSize: 7, 
+            {text: item.destinatario?.enderDest?.xMun, fontSize: 7, 
                 bold: true, alignment: "center", border: [true, false, true, true]}
         ]
     })
@@ -240,7 +240,7 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
 
     const receptorFirstRow = cteGatheredData.map((item: any) => {
         return [
-            {text: item.tomador.xNome, bold: true, colSpan: 5, 
+            {text: item.tomador?.xNome, bold: true, colSpan: 5, 
                 fontSize: 7, alignment: "center", border: [true, false, true, true], margin: [0, -5, 0, 0]}, 
             {text: '', fontSize: 7, alignment: "left", border: [true, false, true, true], margin: [0, -5, 0, 0]}, 
             {text: "", fontSize: 7, alignment: "left", border: [true, false, true, true], margin: [0, -5, 0, 0]}, 
@@ -251,28 +251,28 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
 
     const receptorSecondRow = cteGatheredData.map((item: any) => {
         return [
-            {text: item.tomadorEnder.xLgr, fontSize: 7, bold: true, 
+            {text: item.tomadorEnder?.xLgr, fontSize: 7, bold: true, 
                 alignment: "center", border: [true, false, true, true]}, 
-            {text: item.tomadorEnder.xMun, fontSize: 7, bold: true, 
+            {text: item.tomadorEnder?.xMun, fontSize: 7, bold: true, 
                 alignment: "center", border: [true, false, true, true]}, 
-            {text: item.tomadorEnder.UF, fontSize: 7, bold: true, 
+            {text: item.tomadorEnder?.UF, fontSize: 7, bold: true, 
                 alignment: "center", border: [true, false, true, true]}, 
-            {text: item.tomadorEnder.CEP, fontSize: 7, bold: true, 
+            {text: item.tomadorEnder?.CEP, fontSize: 7, bold: true, 
                 alignment: "center", border: [true, false, true, true]}, 
-            {text: item.tomadorEnder.xPais, fontSize: 7, bold: true, 
+            {text: item.tomadorEnder?.xPais, fontSize: 7, bold: true, 
                 alignment: "center", border: [true, false, true, true]}, 
         ]
     })
 
     const receptorThirdRow = cteGatheredData.map((item: any) => {
         return [
-            {text: item.tomador.CNPJ, colSpan: 3, bold: true, 
+            {text: item.tomador?.CNPJ, colSpan: 3, bold: true, 
                 fontSize: 7, alignment: "center", border: [true, false, true, true]}, 
             {text: "", fontSize: 7, border: [true, false, true, true]}, 
             {text: "", fontSize: 7, border: [true, false, true, true]}, 
-            {text: item.tomador.IE, fontSize: 7, bold: true, 
+            {text: item.tomador?.IE, fontSize: 7, bold: true, 
                 alignment: "center", border: [true, false, true, true]}, 
-            {text: item.tomador.fone, fontSize: 7, bold: true, 
+            {text: item.tomador?.fone, fontSize: 7, bold: true, 
                 alignment: "center", border: [true, false, true, true]}, 
         ]
     })
@@ -319,9 +319,9 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
 
     const componentsSecondRow = cteData.map((item: any, index: number) => {
         return [
-            {text: item.valores_servicos.vTPrest,
+            {text: item.valores_servicos?.vTPrest,
                 bold: true, fontSize: 6, alignment: "center", border: [true, false, false, true], margin: [0, -2, 0, 0]}, 
-            {text: item.valores_servicos.vRec, 
+            {text: item.valores_servicos?.vRec, 
                 bold: true, fontSize: 6, alignment: "center", border: [false, false, true, true], margin: [0, -2, 0, 0]},
         ]
     })
@@ -347,9 +347,9 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
 
     const documentsFirstRow = cteData.map((item: any) => {
         return [
-            {text: item.informacoes_normal_substituto.infDoc.infNF?.mod, fontSize: 7, alignment: "center", border: [true, false, true, true]}, 
+            {text: item.informacoes_normal_substituto?.infDoc.infNF?.mod, fontSize: 7, alignment: "center", border: [true, false, true, true]}, 
             {text: item.emitente.CNPJ, fontSize: 7, alignment: "center", border: [true, false, true, true]}, 
-            {text: item.informacoes_normal_substituto.infDoc.infNF?.serie, fontSize: 7, alignment: "center", border: [true, false, true, true]}
+            {text: item.informacoes_normal_substituto?.infDoc.infNF?.serie, fontSize: 7, alignment: "center", border: [true, false, true, true]}
         ]
     })
 
@@ -370,7 +370,7 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
 
     const lastTable = cteData.map((item: any) => {
         return [
-            {text: item.complemento.xObs, fontSize: 7, lineHeight: 1.5, alignment: "center", bold: true, border: [true, false, true, true]},
+            {text: item.complemento?.xObs, fontSize: 7, lineHeight: 1.5, alignment: "center", bold: true, border: [true, false, true, true]},
         ]
     })
 
