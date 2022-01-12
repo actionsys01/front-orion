@@ -114,10 +114,6 @@ export default function CertificadoDigital() {
                 <div>
                     <div>
                         <InputStyle>
-                            <span>Responsável:</span>
-                            <input type="text" readOnly value={isCertificated ? "Jorge Lubrinni": ""}/>
-                        </InputStyle>
-                        <InputStyle>
                             <span>CNPJ:</span>
                             <input type="text" readOnly value={isCertificated ? pageData.cnpj : ""} />
                         </InputStyle>

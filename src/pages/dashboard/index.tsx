@@ -58,26 +58,6 @@ export default function Dashboard() {
           })
         }
         },[])
-  
-        // request de dashboard data
-      // const getDashboardData = useCallback(async() => {
-      //   let date = dateDash
-      //   // console.log(`date na função`, date)
-      //   try {
-      //     const response = await empresas.dashboardRequest(Number(session?.usuario.empresa.id), date)
-      //   const data = response.data
-      //   setTotalValue(data.notas)
-      //   setTotalUsers(data.usuarios)
-      //   setAccountName(data.nome)
-      //   setAccountDescription(data.descricao)
-      //   return data
-      // } catch (error) {
-      //   setToast({
-      //     text: "Houve um problema, por favor tente novamente",
-      //     type: "warning"
-      //   })
-      // }
-      // },[])
 
       // request de dashboard data
     const getDashboardData = useCallback(async() => {
