@@ -9,10 +9,14 @@ const CertificateConfirm = () => {
 
     return <ModalStyle>
         <div>
-            <h5>Para concluir seu cadastro é necessário realizar
-                upload do seu certificado digital e, caso possua,
-                cadastrar os demais CNPJs de sua empresa 
+            <h5>
+                Seja bem-vindo(a) à família Action Systems!
             </h5>
+            <h6>
+                Faltam apenas alguns passos para ter acesso total a todas as facilidades do nosso sistema. <br/>
+                Para concluir seu cadastro será necessário realizar o upload do seu certificado digital, <br/> e caso possua, realizar o cadastro dos demais CNPJs de sua empresa.<br/>
+                Gostaria de completar seu cadastro agora?
+            </h6>
             <div>
                 <button  onClick={() => router.push({
                 pathname: "/dashboard",

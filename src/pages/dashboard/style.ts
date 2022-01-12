@@ -133,7 +133,6 @@ export const InfoContainer = styled.div`
     }
   }
 
-
   @media (min-width: 1890px) {
     /* flex-direction: column;
     height: fit-content; */

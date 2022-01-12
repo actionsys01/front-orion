@@ -35,12 +35,21 @@ export const ModalStyle = styled.div`
 
         h5 {
             /* letter-spacing: 0.1rem; */
-            font-weight: 400;
-            margin: 2rem auto;
-            padding: 1rem;
+            font-weight: 600;
+            margin: 1rem;
+            padding: .5rem;
             vertical-align: middle;
             text-align: center ;
             color: #444;
+        }
+
+        h6 {
+            font-weight: 400;
+            margin: .5rem auto;
+            padding: .5rem;
+            vertical-align: middle;
+            text-align: center;
+            line-height: 1.3rem;
         }
 
         div {

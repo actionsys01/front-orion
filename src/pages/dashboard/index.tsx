@@ -42,22 +42,22 @@ export default function Dashboard() {
     }
 
       // request de plano
-    const getAccountData = useCallback(async () => {
-      try {
-        const response = await planos.getAccountById(Number(session?.usuario.empresa.plano.id))
-        const data = response.data
-        setTotalValue(data.notas)
-        setTotalUsers(data.usuarios)
-        setAccountName(data.nome)
-        setAccountDescription(data.descricao)
-        return data
-      } catch (error) {
-        setToast({
-          text: "Houve um problema, por favor tente novamente",
-          type: "warning"
-        })
-      }
-      },[])
+      const getAccountData = useCallback(async () => {
+        try {
+          const response = await planos.getAccountById(Number(session?.usuario.empresa.plano.id))
+          const data = response.data
+          setTotalValue(data.notas)
+          setTotalUsers(data.usuarios)
+          setAccountName(data.nome)
+          setAccountDescription(data.descricao)
+          return data
+        } catch (error) {
+          setToast({
+            text: "Houve um problema, por favor tente novamente",
+            type: "warning"
+          })
+        }
+        },[])
 
       // request de dashboard data
     const getDashboardData = useCallback(async() => {
