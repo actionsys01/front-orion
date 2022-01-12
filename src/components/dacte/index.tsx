@@ -79,7 +79,6 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
         if(text) {
             if(text?.startsWith("CTe")) {
                 const chave = text.slice(3)
-                console.log(`chave`, chave)
                 var canvas = document.createElement("canvas");
                 JsBarcode(canvas, chave, {format: "CODE128"});
                 return canvas.toDataURL("image/png");
@@ -174,7 +173,7 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
     })
     const serviceSecondRow = cteData.map((item: any) => {
         return [
-        {text: `${item.remetente?.enderReme.xLgr}   /   ${item.remetente.enderReme.UF}`, 
+        {text: `${item.remetente?.enderReme?.xLgr}   /   ${item.remetente.enderReme.UF}`, 
         fontSize: 7, bold: true, alignment: "center", border: [true, false, true, false], margin: [0, -8, 0, 0]}, 
         {text: `${item.destinatario?.enderDest.xLgr}   /   ${item.destinatario.enderDest.UF}`, 
         fontSize: 7, bold: true, alignment: "center", border: [true, false, true, false], margin: [0, -8, 0, 0]}
@@ -310,9 +309,9 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
 
     const componentsRows = produtos.map((item: any, index: number) => {
         return [
-            {text: item.xNome,
+            {text: item?.xNome,
                 bold: true, fontSize: 6, alignment: "center", border: [true, false, false, false], margin: [0, -2, 0, 0]}, 
-            {text: item.vComp, 
+            {text: item?.vComp, 
                 bold: true, fontSize: 6, alignment: "center", border: [false, false, true, false], margin: [0, -2, 0, 0]},
         ]
     })

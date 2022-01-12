@@ -1,8 +1,15 @@
 import styled from "styled-components";
 
+
 export const NoBefore = styled.div` 
     li:before {
     display: none;
 }
-color: red;
+`
+
+export const AlignSubmenu = styled.div` 
+    
+    li:before {
+    display: none;
+}
 `

@@ -125,7 +125,7 @@ export const UploadModal = styled.div`
 
     >  div {
         width: 53%;
-        height: 40%;
+        height: 45%;
         min-height: 250px;
         border: none;
         position: absolute;
@@ -148,7 +148,7 @@ export const UploadModal = styled.div`
 
         h4 {
             font-size: 1.25rem; 
-            letter-spacing: 0.11rem;
+            /* letter-spacing: 0.11rem; */
             font-weight: 600;
             margin: 14px auto;
             vertical-align: middle;
@@ -157,7 +157,7 @@ export const UploadModal = styled.div`
         }
 
         form {
-            padding: 0.5rem 3rem;
+            padding: 0 3rem;
             box-sizing: border-box;
             display: flex;
             justify-content: center;
@@ -178,26 +178,106 @@ export const UploadModal = styled.div`
    
 `
 
-export const FirstLine = styled.div`
+
+export const ModalContent = styled.div`
     display: flex;
     justify-content: center;
-     
-    label {
-                    border-radius: 5px;
-                    border: 1px solid #eaeaea;
-                    height: 25px;
-                    width: 100%;
-                    display: flex;
-                    justify-content: center;
-                    color: #444;
-                    cursor: pointer;
-                }
+    /* margin: 0 2rem;  */
+    box-sizing: border-box;
+    gap: 100px;
+`
+
+export const IconContainer = styled.div`
+    box-sizing: border-box;
+    label {             
+            display: flex;
+            flex-direction: column;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            span {
+                white-space: pre!IMPORTANT;
+                /*color: red; */
+                max-width: 130px;
                 
+            }
+
+            svg {
+            padding: 5px 2px;
+            width: 125px;
+            height: 125px;
+            stroke-width: .7px;
+            }
+    }
             input {
                 display: none;
                 cursor: pointer;
             }
+`
+export const InputsContainer = styled.div` 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    align-items: center;
 
+    span {
+        margin: 0 0.5rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+
+    input {
+            max-width: 250px;
+            width: 85%;
+            height: 32px;
+            border: 1px solid #eaeaea;
+        }
+
+         input[type= "date" ] {
+            min-width: 160px;
+            text-align: center;
+            font-size: 14px;
+            width: 80%;
+            height: 32px;
+            border: 1px solid #eaeaea;
+            padding-inline-start: .225rem;
+        }
+        @media (max-width: 1060px) {
+        > div { 
+            input {
+            max-width: 150px;
+            }
+            input[type= "date" ] {
+                min-width: 120px;
+                width: 55%;
+                padding-inline: 0;
+                font-size: 10px;
+                
+            }
+            }
+    }
+        @media (max-width: 820px) {
+        
+        flex-direction: column;
+        > div { 
+            input {
+            max-width: 150px;
+            }
+            input[type= "date" ] {
+                min-width: 120px;
+                width: 55%;
+                padding-inline: 0;
+                font-size: 10px;
+
+            }
+            }
+    }
 `
 
 export const InsideModal = styled.div`
@@ -292,8 +372,6 @@ export const ProgressBarStyle = styled.div`
                     height: 20px;
                     transition: ease-in 0.8s;
                 }
-
-               
             }
             button {
                     cursor: pointer;
@@ -359,4 +437,9 @@ export const BtnRow = styled.div`
             }
         }
     
+`
+
+export const SecondBtn = styled.button` 
+        background-color: #1C496A!IMPORTANT;
+        color: #fff!IMPORTANT;
 `

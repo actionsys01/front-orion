@@ -31,3 +31,10 @@ export const companyProfile = {
     logo: "",
     nome: ""
 }
+
+export const certificateState = {
+    responsible: "",
+    cnpj: "",
+    initialDate: new Date,
+    expiringDate: new Date,
+}

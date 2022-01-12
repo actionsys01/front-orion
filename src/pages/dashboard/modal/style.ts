@@ -34,8 +34,8 @@ export const ModalStyle = styled.div`
         }
 
         h5 {
-            letter-spacing: 0.11rem;
-            font-weight: 600;
+            /* letter-spacing: 0.1rem; */
+            font-weight: 400;
             margin: 2rem auto;
             padding: 1rem;
             vertical-align: middle;

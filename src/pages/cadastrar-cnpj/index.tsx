@@ -8,6 +8,8 @@ import { useSession } from "next-auth/client";
 import * as companyRequest from "@services/empresas";
 import { useToasts } from "@geist-ui/react";
 import router from 'next/router';
+import MaskedInput from '@components/Masked-Input';
+
 
 export default function CadastrarCnpj() {
     const [name, setName] = useState("")
@@ -54,6 +56,7 @@ export default function CadastrarCnpj() {
     }
 
 
+
     return <>
             <Head>
                 <title>Orion | Cadastrar CNPJs</title>
@@ -64,14 +67,13 @@ export default function CadastrarCnpj() {
                 <section>
                     <div>
                         <InputStyle>
-                            <div><span>CNPJ</span></div>
-                            <input type="text" onChange={(e) => setCnpj(e.target.value)} />
-                        </InputStyle>
-                    </div>
-                    <div>
-                        <InputStyle>
-                            <div><span>Nome</span></div>
-                            <input type="text" onChange={(e) => setName(e.target.value)}/>
+                            <label htmlFor="cnpj">CNPJ</label>
+                            <MaskedInput 
+                                value={cnpj} 
+                                onChange={(event) => setCnpj(event.target.value)}
+                            />
+                            <label htmlFor="nome">Nome</label>
+                            <input type="text" id='nome' onChange={(e) => setName(e.target.value)}/>
                         </InputStyle>
                     </div>
                     <div>

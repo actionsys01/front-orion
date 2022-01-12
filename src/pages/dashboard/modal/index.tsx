@@ -9,7 +9,6 @@ const CertificateConfirm = () => {
 
     return <ModalStyle>
         <div>
-            <span><X /></span>
             <h5>Para concluir seu cadastro é necessário realizar
                 upload do seu certificado digital e, caso possua,
                 cadastrar os demais CNPJs de sua empresa 
@@ -18,7 +17,7 @@ const CertificateConfirm = () => {
                 <button  onClick={() => router.push({
                 pathname: "/dashboard",
                 query: {certificate: "close"}
-              })}>Cadastrar depois</button>
+                    })}>Cadastrar depois</button>   
                 <button 
                 onClick={() => router.push({
                     pathname: "/certificado-digital",
