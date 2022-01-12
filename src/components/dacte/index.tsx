@@ -346,8 +346,8 @@ function Dacte (cteData: any, medidas: MedidasProps[], produtos: ProdutosProps[]
 
     const documentsFirstRow = cteData.map((item: any) => {
         return [
-            {text: item.informacoes_normal_substituto?.infDoc.infNF?.mod, fontSize: 7, alignment: "center", border: [true, false, true, true]}, 
-            {text: item.emitente.CNPJ, fontSize: 7, alignment: "center", border: [true, false, true, true]}, 
+            {text: item.informacoes_normal_substituto?.infDoc?.infNF?.mod, fontSize: 7, alignment: "center", border: [true, false, true, true]}, 
+            {text: item.emitente?.CNPJ, fontSize: 7, alignment: "center", border: [true, false, true, true]}, 
             {text: item.informacoes_normal_substituto?.infDoc.infNF?.serie, fontSize: 7, alignment: "center", border: [true, false, true, true]}
         ]
     })
