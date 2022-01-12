@@ -34,7 +34,7 @@ interface IProps {
     versao: string;
   };
 }
-export default function AbaInformacoesAdicionais({ data }: IProps) {
+export default function AbaInformacoesAdicionais({ data }) {
   return (
     <>
       <DadosGeraisNfe data={data} />

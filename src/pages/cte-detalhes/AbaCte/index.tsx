@@ -99,16 +99,17 @@ interface IProps {
     };
   };
 }
-export default function AbaCte({ data }: IProps) {
+export default function AbaCte({ data }) {
   const router = useRouter();
-  
-  
 
   const dataEmissao = useMemo(() => {
-    if(data) {
-      const dataEmissaoFormatted = format(new Date(data?.informacoes_cte?.dEmi ?? data?.informacoes_cte?.dhEmi), "dd-MM-yyyy")
-      return dataEmissaoFormatted
+    let dataEmissao
+    if(data?.informacoes_cte?.dEmi) {
+      dataEmissao = format(new Date(data?.informacoes_cte?.dEmi ), "dd-MM-yyyy")
+    } if (data?.informacoes_cte?.dhEmi) {
+      dataEmissao = format(new Date(data?.informacoes_cte?.dhEmi ), "dd-MM-yyyy")
     }
+    return dataEmissao
   }, [data])
 
   return (

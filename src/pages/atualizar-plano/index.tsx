@@ -72,7 +72,7 @@ if(Array.isArray(appNumbers)) {
 
     async function updateAccount () {
         try {
-            await accounts.atualizar({id: Number(router.query.id),  nome: name, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: value, dias: duration, aplicacoes: applications })
+            await accounts.atualizar({id: Number(router.query.id), descricao: description, nome: name, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: value, dias: duration, aplicacoes: applications })
             setToast({
                 text: "Plano cadastrado com sucesso.",
                 type: "success"
@@ -100,7 +100,8 @@ if(Array.isArray(appNumbers)) {
                     </div>
                 <div>
                     <span>Descrição</span>
-                    <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/>
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                    {/* <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/> */}
                 </div>
                 <SmallInputs>
                     <Column>

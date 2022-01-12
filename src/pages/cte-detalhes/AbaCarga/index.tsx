@@ -13,8 +13,9 @@ import { GridAlinhaTextoCentro } from "@components/GridAlinhaTextoCentro";
 import { Titulo } from "@components/Titulo";
 import { useMemo } from "react";
 import { MoreHorizontal } from "@geist-ui/react-icons";
-import * as cte from "@services/cte-mongo";
+import getNfeData from "@services/nfe/getNfeData"
 import { useState } from "react";
+import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
 
 interface IProps {
@@ -62,36 +63,32 @@ interface IProps {
     versao: string;
   };
 }
-export default function AbaCarga({ data }: IProps) {
+export default function AbaCarga({ data }) {
+  
   const [loading, setLoading] = useState(false);
   const [, setToast] = useToasts();
+  const [session] = useSession();
 
   const router = useRouter();
 
-  const cargas = useMemo(() => {
-    const cargas = [];
+  const cargas: any = () => {
+    let cargas = []
     const infQ = data?.informacoes_normal_substituto?.infCarga.infQ;
-    if (Array.isArray(infQ)) {
-      infQ.map((carga) => {
-        const { tpMed, cUnid, qCarga } = carga;
-
-        cargas.push({
-          cUnid,
-          qCarga,
-          tpMed,
-        });
-      });
+    if(Array.isArray(infQ)){
+      cargas = infQ
     } else {
       const { cUnid, qCarga, tpMed } = infQ;
       cargas.push({ cUnid, qCarga, tpMed });
     }
-    return cargas;
-  }, [data]);
+    // console.log(`cargas`, cargas)
+    return cargas
+  }
 
   const nfes = useMemo(() => {
     const nfes = [];
     const infNFe = data?.informacoes_normal_substituto?.infDoc.infNFe;
-    const opcoes = (actions: any, item: any) => (
+    if(infNFe){
+          const opcoes = (actions: any, item: any) => (
       <Popover
         placement="right"
         content={
@@ -103,7 +100,14 @@ export default function AbaCarga({ data }: IProps) {
                 }}
                 onClick={() => {
                   const chave_nota = item.rowValue.chave;
-                  handleBuscar(chave_nota);
+                  console.log(`chave_nota`, chave_nota)
+                  console.log(`item.rowValue`, item.rowValue)
+                  // router.push({
+                  //   pathname: "/nfe-detalhes",
+                  //   query: {
+                  //     chave_nota,
+                  //   },
+                  // });
                 }}
               >
                 Visualizar
@@ -140,6 +144,8 @@ export default function AbaCarga({ data }: IProps) {
         opcoes,
       });
     }
+    }
+
 
     return nfes;
   }, [data]);
@@ -147,7 +153,7 @@ export default function AbaCarga({ data }: IProps) {
   async function handleBuscar(chave_nota: string) {
     setLoading(true);
     try {
-      await cte.buscar(chave_nota);
+      await getNfeData(chave_nota, Number(session?.usuario.empresa.id))
       router.push({
         pathname: "/nfe-detalhes",
         query: {

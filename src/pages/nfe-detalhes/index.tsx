@@ -1,3 +1,4 @@
+import React , {useCallback, useEffect, useState} from "react"
 import BotaoVoltar from "@components/BotaoVoltar";
 import { Loading, Tabs } from "@geist-ui/react";
 import useRequest from "@hooks/useRequest";
@@ -12,45 +13,40 @@ import AbaCobranca from "./AbaCobranca";
 import AbaInformacoesAdicionais from "./AbaInformacoesAdicionais";
 import AbaNotaReferenciada from "./AbaNotaReferenciada";
 import AbaRastro from "./AbaRastro";
+import getNfeData from "@services/nfe/getNfeData"
+import { useSession } from "next-auth/client";
+import { nfeXmlProps } from "@services/nfe/dtos/nfeXml"
+import { useToasts } from "@geist-ui/react";
 
 export default function NfeDetalhes() {
   const router = useRouter();
-  const { data } = useRequest<{
-    informacoes_nfe: {
-      mod: string;
-      serie: string;
-      nNF: string;
-      verProc: string;
-      dEmi: string;
-      dhEmi: string;
-      dhSaiEnt: string;
-      
-    };
-    versao: string;
-    total: {
-      ICMSTot: { vNF: string };
-    };
-    emitente: {
-      xNome: string;
-      CNPJ: string;
-      enderEmit: {
-        UF: string;
-        nro: string;
-        CEP: string;
-        xBairro: string;
-        xPais: string;
-        xMun: string;
-      };
-      IE: string;
-    };
-    destinatario: string;
-  }>({
-    url: `/nfe/controle/${router.query?.chave_nota}`,
-  });
+  const [ session ] = useSession()
+  const [, setToast] = useToasts();
+  const company_id = Number(session?.usuario.empresa.id)
+  const chave_nota = router.query?.chave_nota.toString()
+  const [ data, setData] = useState<nfeXmlProps[]>([])
 
-  
 
-  if (!data) return <Loading />;
+  const getData = useCallback(async () => {
+      try {
+        const response = await getNfeData(chave_nota, company_id)
+        const nfeRes = response.data
+      // console.log(`nfeRes`, nfeRes)
+        setData(nfeRes)
+        return nfeRes
+      } catch (error) {
+        setToast({
+          text: "Houve um problema tente novamente",
+          type: "warning"
+      })
+    }
+    },[])
+
+    useEffect(() => {
+      getData()
+    }, [])
+
+  // if (!data) return <Loading />;
   return (
     <>
       <Head>

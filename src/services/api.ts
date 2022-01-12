@@ -15,7 +15,7 @@ api.interceptors.request.use(async (config) => {
   const session = await getSession();
 
   if (session) {
-    //verifica se o toke esta valido
+    //verifica se o token esta valido
     const { exp } = jwtDecode(session?.token) as IJwtDecode;
     const dataToken = fromUnixTime(Number(exp));
 

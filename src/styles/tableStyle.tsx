@@ -3,15 +3,15 @@ import styled from "styled-components";
 export const TableGrid = styled.div`
       margin: 0;
       box-sizing: border-box;
-      overflow: visible;
-      white-space: nowrap;
-    
-    
+      overflow-x: auto;
+      overflow-y: auto;
+      min-height: 26rem;
+
     table {
       width: 100%;
       border-spacing: 0;
       border-radius: 5px;
-     
+      
       
       thead {
         display: table-header-group;
@@ -36,19 +36,23 @@ export const TableGrid = styled.div`
             /* width: 0%; */
             font-size: 0.75rem;
             font-weight: normal;
-            text-align: left;
+            text-align: center;
             letter-spacing: 0;
             padding: 0 15px;
+            white-space: nowrap;
               }
             }
       }
 
 
       tbody {
-           
+        position: relative;
         tr {
+
           td:first-child {
-            padding-left: 10px;
+            /* padding-left: 10px; */
+            z-index: 100;
+          
           }
           td {
             border-bottom: 1px solid #eaeaea;

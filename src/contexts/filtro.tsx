@@ -2,6 +2,7 @@ import { useEffect,  Dispatch, SetStateAction } from "react";
 import { useContext, useState } from "react";
 import { createContext } from "react";
 import colunas from "@utils/painel-controle-filtro";
+import nfse_colunas from "@utils/controle-nfse-filtros"
 import { ReactNode } from "hoist-non-react-statics/node_modules/@types/react";
 
 interface IUnform {
@@ -16,18 +17,13 @@ interface IFiltro {
 interface FiltroContextType {
   nfes: IFiltro[];
   ctes: IFiltro[];
+  nfses: IUnform[];
   cadastrarNfe(nfes: IFiltro[]): void;
   cadastrarCte(ctes: IFiltro[]): void;
+  cadastrarNfse(nfses: IUnform[]): void;
   inicializarScope(filtro: IUnform[]): IFiltro[];
+  scopeIgnition(filtro: IUnform[]): IUnform[]; 
   limpar(): void;
-  statusQuery: string;
-  entranceQuery: string;
-  exitQuery: string;
-  keyQuery: string;
-  setStatusQuery: Dispatch<SetStateAction<string>>
-  setEntranceQuery: Dispatch<SetStateAction<string>>
-  setExitQuery: Dispatch<SetStateAction<string>>
-  setKeyQuery: Dispatch<SetStateAction<string>> 
 }
 
 interface IFiltroProps{
@@ -43,17 +39,16 @@ export function useFiltro() {
 export default function FiltroProvider({ children } : IFiltroProps) {
   const [nfes, setNfes] = useState<IFiltro[]>([]);
   const [ctes, setCtes] = useState<IFiltro[]>([]);
-  const [ statusQuery, setStatusQuery] = useState("")
-  const [ entranceQuery, setEntranceQuery] = useState("")
-  const [ exitQuery, setExitQuery ] = useState("")
-  const [ keyQuery, setKeyQuery] = useState("")
+  const [nfses, setNfses] = useState<IUnform[]>([])
 
   useEffect(() => {
     async function carregarStorage() {
       const nfesStorage = localStorage.getItem("@orions:nfes");
       const ctesStorage = localStorage.getItem("@orion:ctes");
+      const nfsesStorage = localStorage.getItem("@orions:nfses");
       if (nfesStorage) setNfes(JSON.parse(nfesStorage));
       if (ctesStorage) setCtes(JSON.parse(ctesStorage));
+      if (nfsesStorage) setNfses(JSON.parse(nfsesStorage));
     }
 
     carregarStorage();
@@ -71,9 +66,15 @@ export default function FiltroProvider({ children } : IFiltroProps) {
     setNfes(nfes);
     localStorage.setItem("@orions:nfes", JSON.stringify(nfes));
   }
+
   function cadastrarCte(ctes: IFiltro[]) {
     setCtes(ctes);
     localStorage.setItem("@orion:ctes", JSON.stringify(ctes));
+  }
+
+  function cadastrarNfse(nfses: IUnform[]){
+    setNfses(nfses)
+    localStorage.setItem("@orions:nfses", JSON.stringify(nfses));
   }
 
   function inicializarScope(array: IUnform[]): IFiltro[] {
@@ -88,9 +89,21 @@ export default function FiltroProvider({ children } : IFiltroProps) {
     return filtro;
   }
 
+  function scopeIgnition(array: IUnform[]): IUnform[] {
+    let filtro = array.map(({campo, valor}) => {
+      const coluna =  nfse_colunas.find((option) => option.value === campo)
+      if(coluna) {
+        return { campo ,valor}
+      }
+    });
+
+    return filtro;
+  }
+
   async function limpar() {
     localStorage.setItem("@orion:ctes", JSON.stringify([]));
     localStorage.setItem("@orions:nfes", JSON.stringify([]));
+    localStorage.setItem("@orions:nfses", JSON.stringify([]));
   }
 
   return (
@@ -98,18 +111,13 @@ export default function FiltroProvider({ children } : IFiltroProps) {
       value={{
         nfes,
         ctes,
+        nfses,
         cadastrarCte,
         cadastrarNfe,
+        cadastrarNfse,
         inicializarScope,
+        scopeIgnition,
         limpar,
-        statusQuery,
-        entranceQuery,
-        exitQuery,
-        keyQuery,
-        setStatusQuery,
-        setEntranceQuery,
-        setExitQuery,
-        setKeyQuery
       }}
     >
       {children}

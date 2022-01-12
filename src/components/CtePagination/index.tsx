@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import  {format} from "date-fns"
 import PopoverCte from "./Popover"
 import {useSecurityContext} from "@contexts/security"
+import { useToasts } from "@geist-ui/react";
 
 interface Props {
   company_id: number | undefined;
@@ -32,7 +33,8 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
   const [page, setPage] = useState(1);
   const { ctes } = useFiltro()
   const [quantityPage, setQuantityPage] = useState(1)
-  const {ctePermission} = useSecurityContext()
+  const {ctePermissions} = useSecurityContext()
+  const [, setToast] = useToasts();
   
 
 
@@ -41,13 +43,17 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
   }
 
   const getCtesAndTotalPages = useCallback(async () => {
-    const responseCtes = await getCteByCompanyId(company_id, token, page, ctes )
-
-    const { data } = responseCtes;
-
-    setCtes(data.ctes)
-
-    setQuantityPage(Math.ceil(data.total / 8));
+    try {
+      const responseCtes = await getCteByCompanyId(company_id, token, page, ctes )
+      const { data } = responseCtes;
+      setCtes(data.ctes)
+      setQuantityPage(Math.ceil(data.total / 8));
+    } catch (error) {
+      setToast({
+        text: 'Notas não localizadas',
+        type: 'warning'
+      })
+    }
      
   }, [ctes, page])
       
@@ -57,11 +63,11 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
     getCtesAndTotalPages();
 
 
-  }, [page])
+  }, [ctes, page])
 
   useEffect(() => {
     if(page > quantityPage){
-      setPage(0)
+      setPage(1)
     }
   }, [ctes, quantityPage, page])
 
@@ -100,7 +106,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
     <>
       <Grid>
 
-      {ctePermission && <Table data={dataFormatted}>
+      {ctePermissions.VISUALIZAR && <Table data={dataFormatted}>
             <Table.Column prop="option" />
             <Table.Column prop="emissionDate" label="Data/hora Emissão" />
             <Table.Column prop="nota" label="Número" />

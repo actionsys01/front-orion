@@ -48,7 +48,7 @@ export const ContainerFiltro = styled.div`
 
 export const InputCustomizado = styled(Input)`
   font-size: 12px;
-  padding: 10px;
+  /* padding: 10px; */
   border-radius: 5px;
   border: ${(props) => `1px solid  ${props.theme.palette.foreground}`};
   background-color: ${(props) => props.theme.palette.foreground};

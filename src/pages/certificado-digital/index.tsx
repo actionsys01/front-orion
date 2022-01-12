@@ -7,22 +7,12 @@ import Modal from "./modal"
 import  {format} from "date-fns";
 import * as companyRequest from "@services/empresas";
 import { useSession } from "next-auth/client";
-import  {useCertificateContext} from "@contexts/certificate"
+import  { useCompanyContext } from "@contexts/company"
+import { useSecurityContext } from "@contexts/security"
 import CnpjsModal from "./cnpjs-modal"
 import { useToasts } from "@geist-ui/react";
 import DeletarModal from "./delete-modal"
-
-
-interface CertificadoProps {
-    id: number;
-    cnpj: string;
-    certificado: string;
-    data_inicio: Date;
-    data_vencimento: Date;
-}
-
-
-
+import { certificateState } from "@utils/initial-states"
 
 export default function CertificadoDigital() {
     // modais
@@ -30,17 +20,17 @@ export default function CertificadoDigital() {
     const [ secondModal, setSecondModal ] = useState(false)
     const [ deleteModal, setDeleteModal ] = useState(false)
     //
-    const [ upload, setUpload ] = useState(false)
-    const [ responsible, setResponsible ] = useState("")
-    const [ cnpj, setCnpj ] = useState("")
-    const [ initialDate, setInitialDate ] = useState(new Date)
-    const [ expiringDate, setExpiringDate ] = useState(new Date)
+    const [ pageData, setPageData ] = useState({...certificateState})
+    const [ upload, setUpload ] = useState(false)       
     const router = useRouter()
     const [session] = useSession();
     const company_id = Number(session?.usuario.empresa.id)
-    const { isCertificated } = useCertificateContext()
+    const { isCertificated, setIsCertificated } = useCompanyContext()
+    const { certificatePermissions } = useSecurityContext()
     const [, setToast] = useToasts();
-    
+
+    console.log(`router.query`, router.query)
+    console.log(`isCertificated`, isCertificated)
 
     useEffect(() => {
         if (router.query.isCertificated === "false" ) {
@@ -73,33 +63,43 @@ export default function CertificadoDigital() {
             const response = await companyRequest.getCertificate(company_id)
             const data = response.data.certificate
             console.log("certi",data)
-            setCnpj(data.cnpj)
+            setPageData({...pageData, cnpj: data.cnpj, initialDate: data.data_inicio, expiringDate: data.data_vencimento})
             return data
         } catch (error) {
-            console.log(error)
-            setToast({
-                text: "Certificado excluído com sucesso",
-                type: "success"
-            })
+            // console.log(error)
+            // setToast({
+            //         text: "Houve um problema, por favor tente novamente",
+            //         type: "warning"
+            //     })
         }
     }
 
     async function deleteCertificate() {
         try {
             await companyRequest.deleteCertificate(Number(session.usuario.empresa.id))
+            setToast({
+                text: "Certificado excluído com sucesso",
+                type: "success"
+            })
+            setIsCertificated(false)
+            getCerficateData()
         } catch (error) {
             console.log(error)
             setToast({
-                text: "Houve um problema, por favor tente novamente",
-                type: "warning"
-            })
+                    text: "Houve um problema, por favor tente novamente",
+                    type: "warning"
+                })
         }
         deleteModalHandler()
     }
 
     useEffect(() => {
         getCerficateData()
-    }, [deleteModal])
+    }, [])
+
+    useEffect(() => {
+        console.log(`pageData`, pageData)
+    }, [pageData])
 
 
     return <>
@@ -119,15 +119,15 @@ export default function CertificadoDigital() {
                         </InputStyle>
                         <InputStyle>
                             <span>CNPJ:</span>
-                            <input type="text" readOnly value={isCertificated ? cnpj: ""} />
+                            <input type="text" readOnly value={isCertificated ? pageData.cnpj : ""} />
                         </InputStyle>
                             <InlineInputs>
                                 <span>Validade</span>
                                 <div>
                                     <span>De:</span>
-                                    <input type="text" readOnly value={isCertificated ? format(new Date(initialDate), "dd/MM/yyyy"): ""} />
+                                    <input type="text" readOnly value={isCertificated ? format(new Date(pageData.initialDate), "dd/MM/yyyy"): ""} />
                                     <span>Até:</span>
-                                    <input type="text" readOnly value={isCertificated ? format(new Date(expiringDate), "dd/MM/yyyy"): ""} />
+                                    <input type="text" readOnly value={isCertificated ? format(new Date(pageData.expiringDate), "dd/MM/yyyy"): ""} />
                                 </div>
                             </InlineInputs>
                     </div>
@@ -141,11 +141,13 @@ export default function CertificadoDigital() {
                 </div>
             </Section>
             <BtnRow>
-                <button onClick={() => setDeleteModal(true)}>
+                <button disabled={!certificatePermissions.EXCLUIR}
+                    onClick={() => setDeleteModal(true)}>
                     <span><Trash2 /></span>
                         deletar
                 </button>
-                <button onClick={() => setVisibleModal(true)}>
+                <button disabled={!certificatePermissions.ADICIONAR}
+                    onClick={() => setVisibleModal(true)}>
                     <span><Plus /></span>
                         adicionar
                 </button>
@@ -153,10 +155,7 @@ export default function CertificadoDigital() {
             </div>
         {visibleModal && 
                 <Modal modalHandler={modalHandler} setUpload={setUpload}
-                    responsible={responsible} setResponsible={setResponsible} 
-                    cnpj={cnpj} setCnpj={setCnpj}
-                    initialDate={initialDate} setInitialDate={setInitialDate}
-                    expiringDate={expiringDate} setExpiringDate={setExpiringDate} />}
+                    pageData={pageData} setPageData={setPageData}/>}
         {secondModal &&
                 <CnpjsModal secondModalHandler={secondModalHandler} />
                 }   

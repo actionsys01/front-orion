@@ -50,12 +50,12 @@ export default function Empresas() {
     
     const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {setPage(value)}
 
-const getCompanyData = useCallback(async () => {
+    const getCompanyData = useCallback(async () => {
     const response = await companies.getAllCompaniesByPage(page);
     const data = response.data
     setQuantityPage(Math.ceil(data.total / 8))
         return data.empresas;
-}, [page])
+    }, [page])
 
     useEffect(() => {
         getCompanyData().then(response => setCompany(response))
@@ -107,7 +107,7 @@ const getCompanyData = useCallback(async () => {
             company.forEach((item) => {
                 allData.push({
                     ...item,
-                    option:  <Popover content={[{optionName: "Editar", 
+                    option:  <Popover quant={2} content={[{optionName: "Editar", 
                     onClick: () => {const accountData = item.plano; 
                     edit(item, accountData)} }, {optionName: "Deletar", 
                     onClick: () => exclude(item.id)}]}/>,

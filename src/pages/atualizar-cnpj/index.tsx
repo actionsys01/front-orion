@@ -8,6 +8,7 @@ import { useSession } from "next-auth/client";
 import * as companyRequest from "@services/empresas";
 import { useToasts } from "@geist-ui/react";
 import router from 'next/router';
+import MaskedInput from '@components/Masked-Input';
 
 export default function AtualizarCnpj() {
     const [name, setName] = useState(router.query.nome.toString());
@@ -16,7 +17,7 @@ export default function AtualizarCnpj() {
     const [ session ] = useSession();
     const [, setToast] = useToasts();
     const id = Number(router.query.id);
-    console.log("curry",router.query);
+    // console.log("curry",router.query);
 
     const estados = [ "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO",
     "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI" , "RJ", "RN",
@@ -64,14 +65,13 @@ export default function AtualizarCnpj() {
                 <section>
                     <div>
                         <InputStyle>
-                            <div><span>CNPJ</span></div>
-                            <input type="text" value={cnpj} onChange={(e) => setCnpj(e.target.value)} />
-                        </InputStyle>
-                    </div>
-                    <div>
-                        <InputStyle>
-                            <div><span>Nome</span></div>
-                            <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
+                            <label htmlFor="cnpj">CNPJ</label>
+                            <MaskedInput 
+                                value={cnpj} 
+                                onChange={(event) => setCnpj(event.target.value)}
+                            />
+                            <label htmlFor="nome">Nome</label>
+                            <input type="text" id='nome' value={name} onChange={(e) => setName(e.target.value)}/>
                         </InputStyle>
                     </div>
                     <div>
@@ -98,8 +98,6 @@ export default function AtualizarCnpj() {
                             CT-e
                         </span>
                         </CheckboxContainer>
-                            {/* <span>NSU</span>
-                            <input type="text" onChange={(e) => setNsu(e.target.value)}/> */}
                         </Column>
                     </SmallInputs>
                     </div>

@@ -60,18 +60,19 @@ export interface IProps {
     };
   };
 }
-export default function AbaNfe({ data }: IProps) {
+export default function AbaNfe({ data }) {
   const router = useRouter();
 
 
   const dataEmissao = useMemo(() => {
-    if(data) {
-      const dataEmissaoFormatted = format(new Date(data?.informacoes_nfe?.dEmi ?? data?.informacoes_nfe?.dhEmi), "dd-MM-yyyy")
-  
-      return dataEmissaoFormatted
-
-    }
-
+    let dataEmissao 
+    if(data){
+      if(data?.informacoes_nfe?.dEmi) {
+      dataEmissao =  format(new Date(data?.informacoes_nfe?.dEmi), "dd-MM-yyyy") 
+    } if(data?.informacoes_nfe?.dhEmi) {
+      dataEmissao =  format(new Date(data?.informacoes_nfe?.dhEmi), "dd-MM-yyyy")
+    }}
+    return dataEmissao
   }, [data])
 
 
@@ -142,7 +143,6 @@ export default function AbaNfe({ data }: IProps) {
               </Grid>
             </Grid.Container>
             <Spacer />
-
             <Grid.Container gap={2} direction="row">
               <Grid>
                 <Titulo>Telefone</Titulo>

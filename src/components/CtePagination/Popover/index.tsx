@@ -3,7 +3,7 @@ import { MoreHorizontal } from "@geist-ui/react-icons";
 import { useCallback, useState } from "react";
 import router from "next/router";
 import {useSecurityContext} from "@contexts/security";
-import buscar from "@services/cte-mongo/buscar";
+import getCteXml from "@services/cte/getCteXml";
 import Dacte from "@components/dacte"
 
 
@@ -14,7 +14,7 @@ interface PopoverProps {
   const PopoverCte: React.FC<PopoverProps> = ({ item }) => {
     const [visible, setVisible] = useState(false)
     // const [secondPopoverVisible, setSecondPopoverVisible] = useState(false)
-    const {cteHistoricalPermission} = useSecurityContext()
+    const {ctePermissions} = useSecurityContext()
     const [, setToast] = useToasts()
 
     const changeHandler = useCallback((next) => {
@@ -30,25 +30,25 @@ interface PopoverProps {
           const medidasArray: any = []
           const produtosArray: any = []
           try {
-            const response = await buscar(chave_nota);
+            const response = await getCteXml(chave_nota);
             const cteResponse = response.data;
             if(Array.isArray(cteResponse)){
               const medidas = cteResponse.map((item) => item.informacoes_normal_substituto.infCarga.infQ)
               const produtos = cteResponse.map((item) => item.valores_servicos.Comp)
-              Dacte(cteResponse, medidas, produtos)
+              Dacte(cteResponse, medidas, produtos, chave_nota)
               
             } else {
               cteData.push(cteResponse)
               const medidas = cteResponse.informacoes_normal_substituto.infCarga.infQ
               const produtos = cteResponse.valores_servicos.Comp
-              console.log("etapa 1", medidas)
+              // console.log("etapa 1", medidas)
               if(Array.isArray(medidas) && Array.isArray(produtos)){
-                Dacte(cteData, medidas, produtos)
+                Dacte(cteData, medidas, produtos, chave_nota)
               } else{
                 medidasArray.push(medidas)
                 produtosArray.push(produtos)
-                console.log("etapa 2",medidas)
-                Dacte(cteData, medidasArray, produtosArray)
+                // console.log("etapa 2",medidas)
+                Dacte(cteData, medidasArray, produtosArray, chave_nota)
               }
             }
           } catch (error) {
@@ -75,7 +75,7 @@ interface PopoverProps {
                         const status_sefaz = Number(item.rowValue.sefaz_status);
                         const desc_status_sefaz =
                           item.rowValue.sefaz_status_desc;
-                        console.log(item);
+                        // console.log(item);
                         router.push({
                           pathname: "/cte-detalhes",
                           query: {
@@ -89,31 +89,6 @@ interface PopoverProps {
                       Visualizar
                     </Text>
                   </Popover.Item>
-                  {/* <Popover.Item>
-                    <Popover
-                    visible={secondPopoverVisible}
-                    onVisibleChange={changeHandlerSecondPopover}
-                      placement="right"
-                      content={
-                        <>
-                          <Popover.Item>
-                            <Link href="#">Ciência</Link>
-                          </Popover.Item>
-                          <Popover.Item>
-                            <Link href="#">Confirmação</Link>
-                          </Popover.Item>
-                          <Popover.Item>
-                            <Link href="#">Operação não realizada</Link>
-                          </Popover.Item>
-                          <Popover.Item>
-                            <Link href="#">Desconhecimento</Link>
-                          </Popover.Item>
-                        </>
-                      }
-                    >
-                      Registrar evento
-                    </Popover>
-                  </Popover.Item> */}
                   <Popover.Item>
                     <a href={item?.rowValue.xml} download>
                     <Text
@@ -124,7 +99,8 @@ interface PopoverProps {
                     </Text>
                     </a>
                   </Popover.Item>
-               { cteHistoricalPermission &&  <Popover.Item>
+               { ctePermissions.HISTORICO &&  
+                <Popover.Item>
                     <Text 
                     style={{ cursor: "pointer" }}
                     onClick={() => {

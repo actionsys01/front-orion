@@ -3,7 +3,6 @@ import api from "@services/api";
 interface DriverProps {
     rg: string;
     nome: string;
-    data_entrada: Date;
     empresa: number
 }
 

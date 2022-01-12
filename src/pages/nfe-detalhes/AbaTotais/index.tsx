@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import DadosGeraisNfe from "../DadosGeraisNfe";
 import { GridAlinhaTextoCentro, Titulo } from "../styled";
 
+
 interface IProps {
   data: {
     informacoes_nfe: {
@@ -36,7 +37,7 @@ interface IProps {
     versao: string;
   };
 }
-export default function AbaTotais({ data }: IProps) {
+export default function AbaTotais({ data }) {
   return (
     <>
       <DadosGeraisNfe data={data} />

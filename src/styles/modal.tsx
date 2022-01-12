@@ -18,11 +18,12 @@ position: absolute;
 left: 40%;
 top: 30%;
 background-color: #fff;
+padding: 1rem 2rem;
+box-sizing: border-box;
 
-
-h4 {
+h5 {
   font-size: 1rem; 
-  letter-spacing: 0.11rem;
+  /* letter-spacing: 0.11rem; */
   font-weight: 600;
   margin: 20px auto;
   vertical-align: middle;
@@ -30,7 +31,7 @@ h4 {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60%;
+  height: 50%;
 }
 
 div {

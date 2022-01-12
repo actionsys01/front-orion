@@ -13,7 +13,6 @@ interface FilterProps {
     // console.log("filtros na request", filters)
     const filtros = filters.reduce((acc, {campo, valor}) => {
         if(campo === "data_entrada" || campo === "data_saida") {
-            console.log("vai")
             const [dia, mes, ano] = valor.toString().split("/")
             valor = `${ano}-${mes}-${dia}`
         }

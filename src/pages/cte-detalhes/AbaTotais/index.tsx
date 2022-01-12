@@ -36,7 +36,7 @@ interface IProps {
     versao: string;
   };
 }
-export default function AbaTotais({ data }: IProps) {
+export default function AbaTotais({ data }) {
 
 const getTotalsData = useMemo(() => {
   const icmsData: any = [];

@@ -49,7 +49,7 @@ interface UserData {
 
 export default function Usuarios({}) {
   const [session] = useSession();
-  const {userPermission} = useSecurityContext()
+  const {userPermissions} = useSecurityContext()
   const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
   const [page, setPage] = useState(1);
@@ -130,13 +130,13 @@ function optionUserPopover (data: any) {
           type="success-light"
           size="small"
           icon={<Plus />}
+          disabled={!userPermissions.ADICIONAR}
           onClick={() => router.push("/cadastrar-usuario")}
         >
           Adicionar
         </Button>
       </Row>
       <Spacer y={1} />
-   {userPermission &&
     <GridStyle>
       <table>
         <thead>
@@ -147,6 +147,7 @@ function optionUserPopover (data: any) {
           <th>Perfil</th>
           </tr>
         </thead>
+    {userPermissions.ADICIONAR &&
         <tbody>
         {UsersByCompanyData.map((item: any, i: any) => (
         <tr key={i}>
@@ -157,9 +158,9 @@ function optionUserPopover (data: any) {
         </tr>
         ))}
         </tbody>
+}
       </table>
     </GridStyle>
-}
       <Pages>
     <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
     </ Pages>

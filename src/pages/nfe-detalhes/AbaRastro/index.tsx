@@ -54,10 +54,10 @@ interface IProps {
               | { nLote: string; dVal: string; qLote: string; dFab: string };
           };
         };
-        versao: string;
+        // versao: string;
   };
 }
-export default function AbaRastro({ data }: IProps) {
+export default function AbaRastro({ data }) {
   const [rastros, setRastros] = useState([]);
 
   useEffect(() => {

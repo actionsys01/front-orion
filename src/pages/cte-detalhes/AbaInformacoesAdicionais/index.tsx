@@ -23,7 +23,7 @@ interface IProps {
     versao: string
   };
 }
-export default function AbaInformacoesAdicionais({ data }: IProps) {
+export default function AbaInformacoesAdicionais({ data }) {
   const [observacoes, setObservacoes] = useState< { xCampo: string; xTexto: string }[]>([]);
   
   //console.log(data)

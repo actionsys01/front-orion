@@ -69,7 +69,7 @@ export default function PlanoCadastro() {
                     </div>
                 <div>
                     <span>Descrição</span>
-                    <input type="text" onChange={(e) => setDescription(e.target.value)}/>
+                    <textarea onChange={(e) => setDescription(e.target.value)}></textarea>
                 </div>
                 <SmallInputs>
                     <Column>

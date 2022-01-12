@@ -6,6 +6,7 @@ import Head from "next/head";
 import { useRouter } from "next/router"
 import api from "@services/api";
 import {format} from "date-fns"
+import { useSession } from "next-auth/client";
 
 interface HistoricoTotal {
     total: number;
@@ -27,8 +28,9 @@ interface Historico {
 
 export default function Historico () {
     const router = useRouter()
+    const [session] = useSession();
     const key = router.query.chave_nota
-    const empresa_id = router.query.empresa_id
+    const empresa_id = Number(session?.usuario.empresa.id)
     const [, setToast] = useToasts();
     const [historicalData, setHistoricalData] = useState<Historico[]>([])
 
@@ -41,7 +43,7 @@ export default function Historico () {
         try {
             const response = await api.get(`/historico/?empresa_id=${empresa_id}&chave_nota=${key}`)
             const data  = await response.data
-           
+            setHistoricalData(data.historico)
             return data
         } catch (error) {
             setToast({
@@ -52,7 +54,7 @@ export default function Historico () {
     }
 
     useEffect(() => {
-        getHistoricalNotes().then(response => setHistoricalData(response.historico))
+        getHistoricalNotes()
     }, [])
 
     const gatheredData = useMemo(() => {

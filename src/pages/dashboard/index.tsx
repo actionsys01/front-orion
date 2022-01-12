@@ -3,7 +3,7 @@ import { Speedometer, InfoContainer, SelectStyle } from './style';
 import { useSession } from "next-auth/client";
 import Head from "next/head";
 import {useSecurityContext} from "@contexts/security";
-import  {useCertificateContext} from "@contexts/certificate"
+import  { useCompanyContext } from "@contexts/company"
 import GaugeChart from "react-gauge-chart";
 import { BsChevronCompactUp } from "react-icons/bs";
 import { useRouter } from "next/router";
@@ -13,15 +13,7 @@ import CertificateConfirm from './modal';
 import { useToasts } from "@geist-ui/react";
 import { setDate } from 'date-fns';
 export default function Dashboard() {
-    const {
-      nfePermission,
-      ctePermission, 
-      nfsePermission, 
-      userPermission, 
-      profilePermission, 
-      entrancePermission} 
-      = useSecurityContext()
-    const { isCertificated } = useCertificateContext()
+    const { isCertificated } = useCompanyContext()
     const [nfeAmount, setNfeAmount] = useState(0)
     const [cteAmount, setCteAmount] = useState(0)
     const [nfseAmount, setNfseAmount] = useState(0)
@@ -68,43 +60,58 @@ export default function Dashboard() {
         },[])
   
         // request de dashboard data
-      const getDashboardData = useCallback(async() => {
-        let date = dateDash
-        // console.log(`date na função`, date)
-        try {
-          const response = await empresas.dashboardRequest(Number(session?.usuario.empresa.id), date)
-        const data = response.data
-        setTotalAmount(data.notas)
-        setTotalUsersAmount(data.usuarios)
-        setNfeAmount(data?.NfeCount)
-        setCteAmount(data.CteCount)
-        setNfseAmount(data.NfseCount)
-        return data
-        } catch (error) {
-          setToast({
-            text: "Houve um problema, por favor tente novamente",
-            type: "warning"
-          })
-        }
-        },[dateDash])
-      
-      function getPercentage(partial: number, total: number) {
-        return partial / total
+      // const getDashboardData = useCallback(async() => {
+      //   let date = dateDash
+      //   // console.log(`date na função`, date)
+      //   try {
+      //     const response = await empresas.dashboardRequest(Number(session?.usuario.empresa.id), date)
+      //   const data = response.data
+      //   setTotalValue(data.notas)
+      //   setTotalUsers(data.usuarios)
+      //   setAccountName(data.nome)
+      //   setAccountDescription(data.descricao)
+      //   return data
+      // } catch (error) {
+      //   setToast({
+      //     text: "Houve um problema, por favor tente novamente",
+      //     type: "warning"
+      //   })
+      // }
+      // },[])
+
+      // request de dashboard data
+    const getDashboardData = useCallback(async() => {
+      let date = dateDash
+      // console.log(`date na função`, date)
+      try {
+        const response = await empresas.dashboardRequest(Number(session?.usuario.empresa.id), date)
+      const data = response.data
+      setTotalAmount(data.notas)
+      setTotalUsersAmount(data.usuarios)
+      setNfeAmount(data?.NfeCount)
+      setCteAmount(data.CteCount)
+      setNfseAmount(data.NfseCount)
+      return data
+      } catch (error) {
+        setToast({
+          text: "Houve um problema, por favor tente novamente",
+          type: "warning"
+        })
       }
-  
-      useEffect(() => {
-        getAccountData()
-        getDashboardData()
-          const firstSpeedometer = getPercentage(totalAmount, totalValue)
-          const secondSpeedometer = getPercentage(totalUsersAmount, totalUsers)
-          setFirstPercentage(firstSpeedometer)
-          setSecondPercentage(secondSpeedometer)
-      }, [totalValue, totalAmount, totalUsers, totalUsersAmount, dateDash])
-  
-  
-      // useEffect(() => {
-      //   console.log("date dash", typeof(dateDash), dateDash)
-      // }, [dateDash])
+      },[dateDash])
+    
+    function getPercentage(partial: number, total: number) {
+      return partial / total
+    }
+
+    useEffect(() => {
+      getAccountData()
+      getDashboardData()
+        const firstSpeedometer = getPercentage(totalAmount, totalValue)
+        const secondSpeedometer = getPercentage(totalUsersAmount, totalUsers)
+        setFirstPercentage(firstSpeedometer)
+        setSecondPercentage(secondSpeedometer)
+    }, [totalValue, totalAmount, totalUsers, totalUsersAmount, dateDash])
 
 
     return  <>
@@ -114,7 +121,6 @@ export default function Dashboard() {
         <h2>Dashboard</h2>
         <SelectStyle>
           <input type="month" onChange={(e) => setDateDash(e.target.value)} />
-          {/* <select name="" id="">Ano</select> */}
         </SelectStyle>
         <InfoContainer>
           <div>
@@ -137,7 +143,7 @@ export default function Dashboard() {
           <div>
             <div>
               <h2>{accountName}</h2>
-              <p>{accountDescription}</p>
+              <textarea disabled readOnly value={accountDescription}></textarea>
             </div>
           </div>
         </InfoContainer>

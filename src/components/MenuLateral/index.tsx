@@ -21,8 +21,8 @@ import {
   SubMenu,
 } from "react-pro-sidebar";
 import {useSecurityContext} from "@contexts/security"
-import { useCertificateContext } from '@contexts/certificate';
-import * as dashboard from "@services/empresas"
+import { useCompanyContext } from '@contexts/company';
+import { NoBefore, AlignSubmenu } from "./style"
 
 interface IProps {
   setCollapsed(collapsed: boolean): void;
@@ -40,8 +40,17 @@ export default function MenuLateral({
   const [session] = useSession();
   const router = useRouter();
   const { limpar } = useFiltro();
-  const {nfePermission,ctePermission, nfsePermission, profilePermission, userPermission} = useSecurityContext()
-  const {isCertificated} = useCertificateContext()
+  const {nfePermissions, 
+    ctePermissions, 
+    nfsePermissions, 
+    userPermissions, 
+    profilePermission,
+    certificatePermissions, 
+    entrancePermissions,
+    cnpjPermissions,
+    isCompanyConfig
+  } = useSecurityContext()
+  const { isCertificated, companyFeatures } = useCompanyContext()
 
 
   const isMD = useMediaQuery("lg");
@@ -50,8 +59,6 @@ export default function MenuLateral({
     await limpar();
     signOut();
   }
-
-
 
   return (
     <aside>
@@ -70,51 +77,69 @@ export default function MenuLateral({
                 onClick={() => setCollapsed(!collapsed)}
               />
             )}
-            <MenuItem icon={<img src="images/actionsys.jpg" style={{objectFit: "contain", borderRadius: "50%"}} />}
-             onClick={() => router.push("/dashboard")}>
-              Actionsys
+            <MenuItem icon={<img src={companyFeatures.logo} style={{objectFit: "contain", borderRadius: "50%"}} />}
+              onClick={() => router.push("/dashboard")}>
+                {companyFeatures.nome}
             </MenuItem>
-              <SubMenu title="Painéis" icon={<FileText />}>
-                {nfePermission && <MenuItem onClick={() => router.push("/nfe")}>NF-e</MenuItem>}
-                {ctePermission && <MenuItem onClick={() => router.push("/cte")}>CT-e</MenuItem>}
-               {/*  {nfsePermission && */} <MenuItem onClick={() => router.push("/nfse")}>NFS-e</MenuItem>
+              <SubMenu title="Notas Fiscais" icon={<FileText />} >
+              <AlignSubmenu>
+                {nfePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/nfe")}>NF-e</MenuItem>}
+                {ctePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/cte")}>CT-e</MenuItem>}
+                {nfsePermissions.VISUALIZAR && <MenuItem onClick={() => router.push("/nfse")}>NFS-e</MenuItem>}
+              </AlignSubmenu>
               </SubMenu>
               <SubMenu title="Aplicações" icon={<Grid />}>
-                <MenuItem onClick={() => router.push("/controle-entrada")}>Controle de Entrada</MenuItem>
-                {/* <MenuItem>Contagem Física</MenuItem>
-                <MenuItem>Controle Divergência</MenuItem> */}
+                <AlignSubmenu>
+                  {entrancePermissions.VISUALIZAR &&
+                  <MenuItem onClick={() => router.push("/controle-entrada")}>
+                    Controle de Entrada
+                  </MenuItem>}
+                </AlignSubmenu>
               </SubMenu>
               <SubMenu title="Configurações" icon={<Settings />}>
-                {profilePermission && <MenuItem onClick={() => router.push("/perfil-acesso")}>
-                  Perfil de Acesso
-                </MenuItem>}
-                {userPermission && <MenuItem onClick={() => router.push("/usuarios")}>
-                  Usuários
-                </MenuItem>}
-                <MenuItem onClick={() => router.push({
-                  pathname: "/certificado-digital",
-                  query: {isCertificated: "true"}
-                })}>
-                    Certificado Digital
-                </MenuItem>
-                <MenuItem
-                onClick={() => router.push("/cnpjs-empresa")}
-                >
+              <AlignSubmenu>
+                {profilePermission.ADICIONAR && 
+                  <MenuItem onClick={() => router.push("/perfil-acesso")}>
+                    Perfil de Acesso
+                  </MenuItem>}
+                {userPermissions.ADICIONAR && 
+                  <MenuItem onClick={() => router.push("/usuarios")}>
+                    Usuários
+                  </MenuItem>}
+                {certificatePermissions.ADICIONAR &&
+                  <MenuItem onClick={() => router.push({
+                      pathname: "/certificado-digital",
+                      query: {isCertificated: "true"}})}>
+                        Certificado Digital
+                  </MenuItem>}
+                {cnpjPermissions.ADICIONAR &&
+                  <MenuItem
+                    onClick={() => router.push("/cnpjs-empresa")}>
                   CNPJs da Empresa
-                </MenuItem>
+                </MenuItem>}
                 {/* <MenuItem onClick={() => router.push("/empresas")}>
                   Cadastro de Empresa
                 </MenuItem>
                 <MenuItem onClick={() => router.push("/planos")}>
                   Cadastro de Plano
                 </MenuItem> */}
+                {isCompanyConfig && 
+                  <MenuItem onClick={() => router.push("/perfil-conta")}>
+                    Perfil da Empresa
+                  </MenuItem>}
+              </AlignSubmenu>
                 </SubMenu>
-                {!isCertificated && <MenuItem style={{textShadow: "1px 0 red"}}
-                onClick={() => router.push({
-                  pathname: "/dashboard",
-                  query: {certificate: "open"}
-                })}
-                >Cadastro Pendente</MenuItem>}
+                <NoBefore>
+                {!isCertificated && 
+                  <MenuItem icon="" 
+                  style={collapsed ? {textShadow: "1px 0 red", fontSize: "25px", textAlign: 'center', paddingLeft: '.5rem' } 
+                  : {textShadow: ".4px 0 red", textAlign: 'center'}}
+                    onClick={() => router.push({
+                      pathname: "/dashboard",
+                      query: {certificate: "open"}})}>
+                      {!collapsed ? "Cadastro Pendente" : "!"}
+                  </MenuItem>}
+                  </NoBefore>
           </Menu>
         </SidebarContent>
         <SidebarFooter>

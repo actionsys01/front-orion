@@ -8,6 +8,8 @@ import { useSession } from "next-auth/client";
 import * as companyRequest from "@services/empresas";
 import { useToasts } from "@geist-ui/react";
 import router from 'next/router';
+import MaskedInput from '@components/Masked-Input';
+
 
 export default function CadastrarCnpj() {
     const [name, setName] = useState("")
@@ -45,23 +47,14 @@ export default function CadastrarCnpj() {
                 type: "success"
             })
         } catch (error) {
-            console.log(error)
-            
             setToast({
-                text: "Houve um problema, por favor tente novamente",
+                text: error.response.data.mensagem,
                 type: "warning"
             })
         }
         router.push("/cnpjs-empresa")
     }
 
-    // function formatCnpj(string : string) {
-        
-    // }
-
-    // useEffect(() => {
-    //     console.log("ua",uf)
-    // }, [uf])
 
 
     return <>
@@ -74,14 +67,13 @@ export default function CadastrarCnpj() {
                 <section>
                     <div>
                         <InputStyle>
-                            <div><span>CNPJ</span></div>
-                            <input type="text" onChange={(e) => setCnpj(e.target.value)} />
-                        </InputStyle>
-                    </div>
-                    <div>
-                        <InputStyle>
-                            <div><span>Nome</span></div>
-                            <input type="text" onChange={(e) => setName(e.target.value)}/>
+                            <label htmlFor="cnpj">CNPJ</label>
+                            <MaskedInput 
+                                value={cnpj} 
+                                onChange={(event) => setCnpj(event.target.value)}
+                            />
+                            <label htmlFor="nome">Nome</label>
+                            <input type="text" id='nome' onChange={(e) => setName(e.target.value)}/>
                         </InputStyle>
                     </div>
                     <div>
@@ -90,13 +82,12 @@ export default function CadastrarCnpj() {
                         <div className="uf">
                             <span>UF</span>
                             <select onChange={(e) => setUf(e.target.value)}>
-                                <option value='' selected></option>
+                                <option defaultValue=''></option>
                                 {estados.map((item, i ) => 
                                 <option value={item} key={i}>{item}</option>
                                 )}
                                 
                             </select>
-                            {/* <input type="text" onChange={(e) => setUf(e.target.value)}/> */}
                         </div>
                         
                         <CheckboxContainer>
@@ -109,8 +100,6 @@ export default function CadastrarCnpj() {
                             CT-e
                         </span>
                         </CheckboxContainer>
-                            {/* <span>NSU</span>
-                            <input type="text" onChange={(e) => setNsu(e.target.value)}/> */}
                         </Column>
                     </SmallInputs>
                     </div>

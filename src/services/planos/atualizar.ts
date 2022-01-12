@@ -5,6 +5,7 @@ interface IUpdatePlanoDTO {
     nome : string;
     desconto : number;
     usuarios : number;
+    descricao: string;
     notas : number;
     valor : number;
     dias : number;

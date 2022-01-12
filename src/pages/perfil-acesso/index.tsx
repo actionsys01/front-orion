@@ -54,7 +54,7 @@ export interface IPerfil  {
 
 export default function PerfilAcesso() {
   const [session] = useSession();
-  const {profilePermission} = useSecurityContext()
+  const { profilePermission } = useSecurityContext()
   const { setVisible, bindings } = useModal();
   const [empresaId, setEmpresaId] = useState<number>()
   const [perfilId, setPerfiId] = useState<number>();
@@ -152,6 +152,7 @@ export default function PerfilAcesso() {
           type="success-light"
           size="small"
           icon={<Plus />}
+          disabled={!profilePermission.ADICIONAR}
           onClick={() => {
             setVisible(true);
           }}
@@ -163,7 +164,7 @@ export default function PerfilAcesso() {
       <Spacer y={1} />
      
         <Grid>
-         {profilePermission && 
+         {profilePermission.ADICIONAR && 
          <Table data={perfis}>
             <Table.Column prop="link" width={15} />
             <Table.Column prop="nome" label="Nome" width={500} />

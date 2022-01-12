@@ -11,7 +11,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import  { Pages } from "@styles/pages";
 import { useToasts } from "@geist-ui/react";
 import ModalCnpjs from  "./modal"
-import { BsChevronCompactLeft } from 'react-icons/bs';
+import {useSecurityContext} from "@contexts/security"
 
 interface CnpjProps {
     id: number;
@@ -39,6 +39,7 @@ export default function CnpjsEmpresa() {
     const [ cnpj, setCnpj] = useState<CnpjProps[]>([])
     const [, setToast] = useToasts();
     const [ selectId, setSelectId] = useState(0)
+    const { cnpjPermissions } = useSecurityContext()
     // modal
     const[ visibleModal, setVisibleModal] = useState(false)
 
@@ -86,7 +87,7 @@ export default function CnpjsEmpresa() {
         },[],)
 
     async function deleteCnpj ()  {
-       console.log("id", selectId)
+    //    console.log("id", selectId)
         try {
             await companyRequest.deleteCnpj(selectId)
             getCompanyCnpj()
@@ -107,17 +108,17 @@ export default function CnpjsEmpresa() {
     const gatheredData = useMemo(() => {
         const allData: any = [];
         if(cnpj) {
-            cnpj.forEach((item) => {
+            cnpj.forEach((item, i) => {
                 allData.push({
                     ...item,
-                    option: <Popover content={[
+                    option: <Popover num={i} quant={2} content={[
                         {
                             optionName: "Editar",
-                            onClick: () => handleEdit(item)
+                            onClick: cnpjPermissions.EDITAR ? () => handleEdit(item) : () => ""
                         },
                         {
                             optionName: "Deletar",
-                            onClick: ()  => handleDelete(item.id)
+                            onClick: cnpjPermissions.EXCLUIR ? ()  => handleDelete(item.id) : () => ""
                         }
                     ]} />
                 })
@@ -125,7 +126,6 @@ export default function CnpjsEmpresa() {
         }
         return allData
     }, [cnpj])
-    console.log(cnpj)
 
     return <>
             <Head>
@@ -133,7 +133,7 @@ export default function CnpjsEmpresa() {
             </Head>
             <h2>CNPJs da Empresa</h2>
             <AddBtn>
-                <button
+                <button disabled={!cnpjPermissions.ADICIONAR}
                 onClick={() => router.push("/cadastrar-cnpj")} >
                     <span><Plus /></span>
                     Adicionar
@@ -148,13 +148,6 @@ export default function CnpjsEmpresa() {
                             <th>Nome</th>
                             <th>Código UF</th>
                             <th>Status Sefaz</th>
-                            {/* <th>Motivo</th>
-                            <th>Data Resposta</th>
-                            <th>Hora Resposta</th>
-                            <th>Indicador de Continuação</th>
-                            <th>Minutos</th>
-                            <th>Tipo Ambiente</th>
-                            <th>Tipo Nota</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -165,13 +158,6 @@ export default function CnpjsEmpresa() {
                             <td>{item.nome}</td>
                             <td>{item.uf}</td>
                             <td>{item.status_sefaz}</td>
-                            {/* <td>{}</td>
-                            <td>{}</td>
-                            <td>{}</td>
-                            <td>{}</td>
-                            <td>{}</td>
-                            <td>{}</td>
-                            <td>{}</td> */}
                         </tr>
                         ))}
                        
