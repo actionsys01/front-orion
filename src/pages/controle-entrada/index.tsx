@@ -236,13 +236,9 @@ export default function ControleEntrada() {
                     option: <Popover num={i} content={[
                         {
                             optionName: 'Autorizar',
-<<<<<<< HEAD
-                            onClick: item.controle_entrada?.status === 2 ? () => handleFinished() : () => handleApproval(item.controle_entrada.id)
-=======
                             onClick:  !entrancePermissions.AUTORIZAR ? () => '' : item.controle_entrada?.status === 2 ? () => handleFinished() 
                             : () => handleApproval(item.controle_entrada.id),
                             className: entrancePermissions.AUTORIZAR ? 'able' : 'disabled'
->>>>>>> NfseFeatures
                         },
                         {
                             optionName: 'Editar',
