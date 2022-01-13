@@ -33,7 +33,6 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
     const [, setToast] = useToasts();
     const [session] = useSession();
     const [ password, setPassword] = useState("")
-    const [ confirmPassword, setConfirmPassword ] = useState('')
     const company_id = Number(session?.usuario.empresa.id)
 
     const { setIsCertificated } = useCompanyContext()
@@ -46,8 +45,14 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
     },[certificate])
 
     async function sendData() {
+        if(!pageData.expiringDate || !pageData.initialDate || !password) {
+            setToast({
+                text: "Favor inserir dados válidos",
+                type: "warning"
+            })
+            return
+        }
         try {
-                if(password === confirmPassword) {
                 setProgress(60)
                 await sendCertificate(certificate, {
                     company_id,
@@ -64,12 +69,6 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
             })
             setUpload(true)
             setIsCertificated(true)
-                } else {
-                    setToast({
-                        text: "As senhas digitadas contém diferenças",
-                        type: "warning"
-                    })
-                }
         } catch (error) {
             console.log(error)
             setToast({

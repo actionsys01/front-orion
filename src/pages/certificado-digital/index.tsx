@@ -29,8 +29,8 @@ export default function CertificadoDigital() {
     const { certificatePermissions } = useSecurityContext()
     const [, setToast] = useToasts();
 
-    console.log(`router.query`, router.query)
-    console.log(`isCertificated`, isCertificated)
+    // console.log(`router.query`, router.query)
+    // console.log(`isCertificated`, isCertificated)
 
     useEffect(() => {
         if (router.query.isCertificated === "false" ) {
@@ -97,9 +97,9 @@ export default function CertificadoDigital() {
         getCerficateData()
     }, [])
 
-    useEffect(() => {
-        console.log(`pageData`, pageData)
-    }, [pageData])
+    // useEffect(() => {
+    //     console.log(`pageData`, pageData)
+    // }, [pageData])
 
 
     return <>
