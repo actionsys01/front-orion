@@ -1,21 +1,22 @@
 import React, {useMemo,useState, useCallback, useEffect} from "react";
+import { TopMenu, CardStyle } from "@styles/vizualizar";
 import BotaoVoltar from "@components/BotaoVoltar";
-import { Tabs } from "@geist-ui/react";
-import useRequest from "@hooks/useRequest";
-import {Menu} from "./style";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import AbaCarga from "./AbaCarga";
 import AbaCte from "./AbaCte";
 import AbaInformacoesAdicionais from "./AbaInformacoesAdicionais";
 import AbaTotais from "./AbaTotais";
+import DadosGeraisCte from "./DadosGeraisCte";
 import getCteXml from "@services/cte/getCteXml";
+import { CteXmlProps } from "@services/cte-mongo/cte-type/cte";
 import { useToasts } from "@geist-ui/react";
 
 export default function NfeDetalhes() {
   const router = useRouter();
-  const [ data, setData ] = useState([])
+  const [ data, setData ] = useState<CteXmlProps>()
   const [, setToast] = useToasts();
+  const [ tab, setTab ] = useState<'AbaCte' | 'AbaTotais' | 'AbaCarga' | 'AbaInformacoesAdicionais'>("AbaTotais")
 
   const getXml = useCallback(async() => {
       try {
@@ -34,32 +35,38 @@ export default function NfeDetalhes() {
     useEffect(() => {
       getXml()
     }, [])
- 
-  
+
   return (
     <>
       <Head>
         <title>Orion | CT-e - Detalhes </title>
       </Head>
-      <div style={{ padding: 10 }}>
-        <BotaoVoltar />
-        <Menu>
-        <Tabs initialValue="1" className="style">
-          <Tabs.Item label="CTe" value="1">
-            <AbaCte data={data} />
-          </Tabs.Item>
-          <Tabs.Item label="Totais" value="2">
-            <AbaTotais data={data} />
-          </Tabs.Item>
-          <Tabs.Item label="Carga" value="3">
-            <AbaCarga data={data} />
-          </Tabs.Item>
-          <Tabs.Item label="Informações Adicionais" value="4">
-            <AbaInformacoesAdicionais data={data} />
-          </Tabs.Item>
-        </Tabs>
-        </Menu>
-      </div>
+      <BotaoVoltar />
+      <TopMenu>
+        <ul>
+          <li 
+            onClick={() => setTab('AbaCte')}
+            className={tab === 'AbaCte' && 'active'}>
+              CT-e</li>
+          <li 
+            onClick={() => setTab('AbaTotais')}
+            className={tab === 'AbaTotais' && 'active'}>
+              Totais</li>
+          <li 
+            onClick={() => setTab('AbaCarga')}
+            className={tab === 'AbaCarga' && 'active'}>
+              Carga</li>
+          <li 
+            onClick={() => setTab('AbaInformacoesAdicionais')}
+            className={tab === 'AbaInformacoesAdicionais' && 'active'}>
+              Informações Adicionais</li>
+        </ul>
+      </TopMenu>
+      <DadosGeraisCte data={data} />
+
+      {tab === 'AbaCte' ? <AbaCte data={data}/> :
+      tab === 'AbaTotais' ? <AbaTotais data={data}/> : ''
+    }
     </>
   );
 }

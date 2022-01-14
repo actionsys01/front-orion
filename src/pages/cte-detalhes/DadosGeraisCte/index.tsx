@@ -1,9 +1,5 @@
-import { Grid, Spacer, Text } from "@geist-ui/react";
-import { Titulo } from "@components/Titulo";
-import { GridAlinhaTextoCentro } from "@components/GridAlinhaTextoCentro";
-import { BackgroundCinza } from "@components/BackgroundCinza/styled";
 import { useRouter } from "next/router";
-
+import {  CardStyle } from "@styles/vizualizar";
 interface IProps {
   data: {
     informacoes_cte: {
@@ -14,28 +10,26 @@ interface IProps {
 }
 export default function DadosGeraisCte({ data }: IProps) {
   const router = useRouter();
-  return (
-    <>
-      <BackgroundCinza>
-        <Text h3>Dados Gerais </Text>
-        <Grid.Container gap={2}>
-          <Grid>
-            <Titulo h6>Chave de acesso </Titulo>
-            <Text small style={{ wordBreak: "break-word" }}>
-              {router.query?.chave_nota}
-            </Text>
-          </Grid>
-          <GridAlinhaTextoCentro>
-            <Titulo>Número </Titulo>
-            <Text small>{data?.informacoes_cte?.nCT}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Versão XML</Titulo>
-            <Text small>{data?.versao}</Text>
-          </GridAlinhaTextoCentro>
-        </Grid.Container>
-      </BackgroundCinza>
-      <Spacer />
+  return <>
+  <CardStyle>
+        <div>
+          <h3>Dados Gerais</h3>
+          <div>
+            <div>
+              <h5>Chave de Acesso</h5>
+              <h6>{String(router.query?.chave_nota)}</h6>
+            </div>
+            <div>
+              <h5>Número</h5>
+              <h6>{data?.informacoes_cte?.nCT}</h6>
+            </div>
+            <div>
+              <h5>Versão XML</h5>
+              <h6>{data?.versao}</h6>
+            </div>
+          </div>
+        </div>
+      </CardStyle>
     </>
-  );
+  
 }

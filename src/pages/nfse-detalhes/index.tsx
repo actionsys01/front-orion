@@ -10,19 +10,30 @@ import AbaNfse from './AbaNfse';
 import AbaDadosComplementares from './AbaDadosComplementares';
 import { NfseFormattedProps } from "@services/nfse/types/NfseProps"
 import { format } from 'date-fns';
+import * as nfseRequest from "@services/nfse"
 
 export default function NfseDetalhes() {
     const router = useRouter()
     const [ selectTab, setSelectTab] = useState(false)
     const [ xmlData, setXmlData ] = useState([])
-// console.log(`curry`, router.query)
+    const [, setToast] = useToasts();
+    const chave = router?.query.nfse_id.toString()
 
 
-const getData = useCallback(() => {
-        // const response = nfseXmlData
-        setXmlData(nfseXmlData)
-
-    },[nfseXmlData])
+const getData = useCallback(async() => {
+    try {
+        const response = await nfseRequest.getNfseMongo(chave)
+        const data = response .data
+        
+        setXmlData([data])
+    } catch (error) {
+        console.log(error)
+        setToast({
+            text: 'Notas não localizadas',
+            type: 'warning'
+          })
+    }
+    },[])
 
 const formattedData = useMemo(() => {
     const allData: NfseFormattedProps[] = []
@@ -43,9 +54,9 @@ const formattedData = useMemo(() => {
 
 useEffect(() => {
     getData()
-}, [xmlData])
+}, [])
 
-// console.log(`xmlData`, xmlData)
+
     return <>
             <Head>
                 <title>Orion | Detalhes NFS-e</title>

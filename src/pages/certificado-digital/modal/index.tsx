@@ -12,7 +12,6 @@ import { useSession } from 'next-auth/client';
 import { useCompanyContext } from "@contexts/company"
 
 interface CertificadoProps {
-    cnpj: string;
     responsible: string;
     initialDate: Date;
     expiringDate: Date;
@@ -52,7 +51,6 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
                 await sendCertificate(certificate, {
                     company_id,
                     certificado: '',
-                    cnpj: pageData.cnpj,
                     data_inicio: pageData.initialDate,
                     data_vencimento: pageData.expiringDate,
                     senha: password,

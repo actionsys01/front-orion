@@ -2,41 +2,42 @@ import { Grid, Spacer, Text } from "@geist-ui/react";
 import { Titulo } from "@components/Titulo";
 import { GridAlinhaTextoCentro } from "@components/GridAlinhaTextoCentro";
 import { BackgroundCinza } from "@components/BackgroundCinza/styled";
-import DadosGeraisCte from "../DadosGeraisCte";
 import React, {useMemo} from 'react'
+import { AbaProps } from "@services/cte-mongo/cte-type/cte";
+import { CardStyle, LineStyle } from "@styles/vizualizar";
 
-interface IProps {
-  data: {
-    impostos: {
-      ICMS: {
-        ICMS00: { CST: string; vBC: string; vICMS: string; pICMS: string};
-        ICMS20: { CST: string; vBC: string; pRedBC: string; vICMS: string; pICMS: string };
-        ICMS45: { CST: string;};
-        ICMS60: { CST: string; vBCSTRet: string; vICMSSTRet: string; pICMSSTRet: string };
-        ICMS90: { CST: string; pRedBC: string; vBC: string; pICMS: string; vICMS: string };
-        ICMSOutraUF: {
-          CST: string;
-          pRedBCOutraUF: string;
-          vBCOutraUF: string;
-          pICMSOutraUF: string;
-          vICMSOutraUF: string;
-        };
-        ICMSSN: {
-          CST: string;
-          indSN: string;
-          vTotTrib: string;
-          infAdFisco: string;
-        };
-      };
-    };
-    valores_servicos: { vTPrest: string; vRec: string };
-    informacoes_cte: {
-      cCT: string;
-    };
-    versao: string;
-  };
-}
-export default function AbaTotais({ data }) {
+// interface IProps {
+//   data: {
+//     impostos: {
+//       ICMS: {
+//         ICMS00: { CST: string; vBC: string; vICMS: string; pICMS: string};
+//         ICMS20: { CST: string; vBC: string; pRedBC: string; vICMS: string; pICMS: string };
+//         ICMS45: { CST: string;};
+//         ICMS60: { CST: string; vBCSTRet: string; vICMSSTRet: string; pICMSSTRet: string };
+//         ICMS90: { CST: string; pRedBC: string; vBC: string; pICMS: string; vICMS: string };
+//         ICMSOutraUF: {
+//           CST: string;
+//           pRedBCOutraUF: string;
+//           vBCOutraUF: string;
+//           pICMSOutraUF: string;
+//           vICMSOutraUF: string;
+//         };
+//         ICMSSN: {
+//           CST: string;
+//           indSN: string;
+//           vTotTrib: string;
+//           infAdFisco: string;
+//         };
+//       };
+//     };
+//     valores_servicos: { vTPrest: string; vRec: string };
+//     informacoes_cte: {
+//       cCT: string;
+//     };
+//     versao: string;
+//   };
+// }
+export default function AbaTotais({ data } : AbaProps) {
 
 const getTotalsData = useMemo(() => {
   const icmsData: any = [];
@@ -58,22 +59,25 @@ const getTotalsData = useMemo(() => {
   //console.log(data)
   return (
     <>
-      <DadosGeraisCte data={data} />
         {getTotalsData.map((item: any, i: any) => (
           <div key={i}>
-      <BackgroundCinza>
-        <Text h3>Totais </Text>
-        <Grid.Container gap={2}>
-          <GridAlinhaTextoCentro>
-            <Titulo>Valor Total da Prestação de Serviços </Titulo>
-            <Text small>{item?.valores_servicos?.vTPrest}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Valor a Receber</Titulo>
-            <Text small>{item?.valores_servicos?.vRec}</Text>
-          </GridAlinhaTextoCentro>
-        </Grid.Container>
-      </BackgroundCinza>
+      <CardStyle>
+        <div>
+          <h3>Totais</h3>
+          <div>
+            <div>
+              <h5>Valor Total da Prestação de Serviços </h5>
+              <h6>{item?.valores_servicos?.vTPrest}</h6>
+            </div>
+            <div>
+              <h5>Valor a Receber </h5>
+              <h6>{item?.valores_servicos?.vRec}</h6>
+            </div>
+          </div>
+        </div>
+      </CardStyle>
+
+
       <BackgroundCinza>
         <Text h3>Impostos </Text>
         {/* PRIMEIRO */}
@@ -98,10 +102,6 @@ const getTotalsData = useMemo(() => {
             <Titulo>Alíquota de redução da BC</Titulo>
             <Text small>{item?.ICMS?.vBCSTRet}</Text>
           </GridAlinhaTextoCentro>
-          {/* <GridAlinhaTextoCentro>
-            <Titulo>ICMS Indicador SN</Titulo>
-            <Text small>{item?.informacoes_cte?.serie}</Text>
-          </GridAlinhaTextoCentro> */}
         </Grid.Container>
           {/* SEGUNDO */}
         <Grid.Container gap={2}>
