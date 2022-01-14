@@ -10,11 +10,6 @@ interface EntranceModalProps {
 
 const EntranceModal = ({modalStatus, modalHandler, updateEntrance}: EntranceModalProps) => {
 
-<<<<<<< HEAD
-    // console.log(`modalStatus`, modalStatus)
-=======
-
->>>>>>> NfseFeatures
     if(modalStatus === "fechado") {
         return <Modal> 
                     <div>
