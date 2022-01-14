@@ -1,8 +1,7 @@
 import React, {useMemo, useCallback} from "react";
 import getCteByCompanyId from '@services/cte';
 import INfeDto from '@services/nfe/dtos/INfeDTO';
-import { Dot, Table, Text, Tooltip } from "@geist-ui/react";
-import { MoreHorizontal } from "@geist-ui/react-icons";
+import { Dot, Table, Loading, Tooltip, useToasts } from "@geist-ui/react";
 import { useEffect } from "react";
 import { Grid, Pages } from './style'
 import { useState } from "react";
@@ -12,7 +11,7 @@ import { useRouter } from "next/router";
 import  {format} from "date-fns"
 import PopoverCte from "./Popover"
 import {useSecurityContext} from "@contexts/security"
-import { useToasts } from "@geist-ui/react";
+import Loader from "@components/Loader"
 
 interface Props {
   company_id: number | undefined;
@@ -35,6 +34,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
   const [quantityPage, setQuantityPage] = useState(1)
   const {ctePermissions} = useSecurityContext()
   const [, setToast] = useToasts();
+  const [ loading, setLoading ] = useState(true)
   
 
 
@@ -47,6 +47,7 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
       const responseCtes = await getCteByCompanyId(company_id, token, page, ctes )
       const { data } = responseCtes;
       setCtes(data.ctes)
+      setLoading(false)
       setQuantityPage(Math.ceil(data.total / 8));
     } catch (error) {
       setToast({
@@ -100,9 +101,12 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
   }, [cte]);
 
 
-
+  if(loading) {
+    return <Loader />
+  }
 
   return (
+    
     <>
       <Grid>
 
@@ -125,6 +129,6 @@ export default function CtePagination({ company_id, token, sefaz, portaria }: Pr
       <Pages>
           <Pagination onChange={handleChange} count={quantityPage}  shape='rounded' />
           </Pages>
-      </>
+    </>
   )
 }

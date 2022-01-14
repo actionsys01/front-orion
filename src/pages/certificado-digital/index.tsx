@@ -63,7 +63,7 @@ export default function CertificadoDigital() {
             const response = await companyRequest.getCertificate(company_id)
             const data = response.data.certificate
             console.log("certi",data)
-            setPageData({...pageData, cnpj: data.cnpj, initialDate: data.data_inicio, expiringDate: data.data_vencimento})
+            setPageData({...pageData, initialDate: data.data_inicio, expiringDate: data.data_vencimento})
             return data
         } catch (error) {
             // console.log(error)
@@ -113,10 +113,10 @@ export default function CertificadoDigital() {
             <Section>
                 <div>
                     <div>
-                        <InputStyle>
+                        {/* <InputStyle>
                             <span>CNPJ:</span>
                             <input type="text" readOnly value={isCertificated ? pageData.cnpj : ""} />
-                        </InputStyle>
+                        </InputStyle> */}
                             <InlineInputs>
                                 <span>Validade</span>
                                 <div>

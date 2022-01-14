@@ -16,6 +16,7 @@ import { RowBtn } from "./style"
 import Danfse from "@components/danfse"
 import { useSecurityContext } from "@contexts/security"
 import * as nfseRequest from "@services/nfse"
+import Loader from "@components/Loader"
 
 interface GatheredProps {
    id: number,
@@ -47,6 +48,7 @@ export default function Nfse() {
    const { nfsePermissions } = useSecurityContext()
    const company_id = Number(session?.usuario.empresa.id)
    const [, setToast] = useToasts();
+   const [ loading, setLoading ] = useState(true)
 
    const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
       setPage(value)
@@ -57,7 +59,7 @@ export default function Nfse() {
          const responseNfse = await nfseRequest.getNfse(page, company_id, nfses)
          const { data } = responseNfse
          setNfseData(data.nfses)
-      
+         setLoading(false)
          setQuantityPage(Math.ceil(data.total / 8));
       } catch (error) {
          setToast({
@@ -150,6 +152,9 @@ export default function Nfse() {
       return allData
    }, [nfseData])
 
+   if(loading) {
+      return <Loader />
+   }
 
    return <>
       <Head>

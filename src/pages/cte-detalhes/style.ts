@@ -27,12 +27,5 @@ export const Menu = styled.div`
     }
   }
 
-  div {
-    
-
-
-
-  }
-
 }
 `
