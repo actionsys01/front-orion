@@ -12,6 +12,7 @@ import  {format} from "date-fns"
 import PopoverComponent from "./Popover";
 import {useSecurityContext} from "@contexts/security"
 import { useToasts } from "@geist-ui/react";
+import Loader from "@components/Loader"
 
 
 
@@ -36,6 +37,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
   const [quantityPage, setQuantityPage] = useState(1)
   const { nfePermissions } = useSecurityContext()
   const [, setToast] = useToasts();
+  const [ loading, setLoading ] = useState(true)
 
   const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
     setPage(value)
@@ -45,6 +47,7 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
     try {
       const responseNfes = await getNfePagesByCompanyId(company_id, token, page, nfes)
       const { data } = responseNfes;
+      setLoading(false)
       setNfes(data.nfes)
       setQuantityPage(Math.ceil(data.total / 8));
     } catch (error) {
@@ -105,7 +108,9 @@ export default function NfePagination({ company_id, token, sefaz, portaria }: Pr
 
  
 
-
+if(loading) {
+  return <Loader />
+}
 
   return (
     <>

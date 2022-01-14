@@ -100,28 +100,29 @@ export interface CteXmlProps {
         versao: string;
         impostos: {
             ICMS: {
-                ICMS00: { CST: string; vBC: string; vICMS: string; pICMS: string};
-                ICMS20: { CST: string; vBC: string; pRedBC: string; vICMS: string; pICMS: string };
-                ICMS45: { CST: string;};
-                ICMS60: { CST: string; vBCSTRet: string; vICMSSTRet: string; pICMSSTRet: string };
-                ICMS90: { CST: string; pRedBC: string; vBC: string; pICMS: string; vICMS: string };
-                ICMSOutraUF: {
-                    CST: string;
-                    pRedBCOutraUF: string;
-                    vBCOutraUF: string;
-                    pICMSOutraUF: string;
-                    vICMSOutraUF: string;
-                };
-                ICMSSN: {
-                    CST: string;
-                    indSN: string;
-                    vTotTrib: string;
-                    infAdFisco: string;
-                };
-                };
+            ICMS00: { CST: string; vBC: string; vICMS: string; pICMS: string};
+            ICMS20: { CST: string; vBC: string; pRedBC: string; vICMS: string; pICMS: string };
+            ICMS45: { CST: string;};
+            ICMS60: { CST: string; vBCSTRet: string; vICMSSTRet: string; pICMSSTRet: string };
+            ICMS90: { CST: string; pRedBC: string; vBC: string; pICMS: string; vICMS: string };
+            ICMSOutraUF: {
+                CST: string;
+                pRedBCOutraUF: string;
+                vBCOutraUF: string;
+                pICMSOutraUF: string;
+                vICMSOutraUF: string;
             };
+            ICMSSN: {
+                CST: string;
+                indSN: string;
+                vTotTrib: string;
+                infAdFisco: string;
+            };
+            };
+        };
         valores_servicos: {
             vTPrest: string;
+            vRec: string
         };
         sefaz: {
             status: string;
