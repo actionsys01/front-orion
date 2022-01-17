@@ -65,7 +65,6 @@ export default function CertificadoDigital() {
         try {
             const response = await companyRequest.getCertificate(company_id)
             const data = response.data
-            console.log("certi",data)
             setPageData({...pageData, initialDate: data.data_inicio, expiringDate: data.data_vencimento})
             return data
         } catch (error) {

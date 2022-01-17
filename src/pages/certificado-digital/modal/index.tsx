@@ -42,14 +42,39 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
         }
     },[certificate])
 
+
     async function sendData() {
-        if(!pageData.expiringDate || !pageData.initialDate || !password) {
+        if(pageData.initialDate.getFullYear() > pageData.expiringDate.getFullYear()) {
             setToast({
-                text: "Favor inserir dados válidos",
+                text: "A data de validade deve ser posterior a data de início.",
                 type: "warning"
             })
             return
         }
+        if (!pageData.expiringDate || !pageData.initialDate || !password || !certificate) {
+            setToast({
+                text: "Favor preencher os campos corretamente.",
+                type: "warning"
+            })
+            return
+        } 
+        if(pageData.initialDate.getFullYear() === pageData.expiringDate.getFullYear() &&
+            pageData.initialDate.getMonth() > pageData.expiringDate.getMonth()) {
+            setToast({
+                text: "A data de validade deve ser posterior a data de início.",
+                type: "warning"
+            })
+            return
+        }
+        if(pageData.initialDate.getFullYear() === pageData.expiringDate.getFullYear() &&
+            pageData.initialDate.getMonth() === pageData.expiringDate.getMonth() && 
+            pageData.initialDate.getDate() > pageData.expiringDate.getDate()){
+                setToast({
+                    text: "A data de validade deve ser posterior a data de início.",
+                    type: "warning"
+                })
+                return
+            }
         try {
                 setProgress(60)
                 await sendCertificate(certificate, {

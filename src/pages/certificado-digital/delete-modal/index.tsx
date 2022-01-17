@@ -15,7 +15,7 @@ const DeletarModal = ({deleteModalHandler, deleteCertificate} : ModalProps) => {
 
     return <Modal> 
         <div>
-            <h4>
+            <h4 style={{textAlign: 'center'}}>
                 Deseja realmente excluir o certificado?
             </h4>
             <div>
