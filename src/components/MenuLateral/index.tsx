@@ -117,12 +117,6 @@ export default function MenuLateral({
                     onClick={() => router.push("/cnpjs-empresa")}>
                   CNPJs da Empresa
                 </MenuItem>}
-                {/* <MenuItem onClick={() => router.push("/empresas")}>
-                  Cadastro de Empresa
-                </MenuItem>
-                <MenuItem onClick={() => router.push("/planos")}>
-                  Cadastro de Plano
-                </MenuItem> */}
                 {isCompanyConfig && 
                   <MenuItem onClick={() => router.push("/perfil-conta")}>
                     Perfil da Empresa
@@ -130,7 +124,7 @@ export default function MenuLateral({
               </AlignSubmenu>
                 </SubMenu>
                 <NoBefore>
-                {!isCertificated && 
+                {!isCertificated && certificatePermissions.ADICIONAR && 
                   <MenuItem icon="" 
                   style={collapsed ? {textShadow: "1px 0 red", fontSize: "25px", textAlign: 'center', paddingLeft: '.5rem' } 
                   : {textShadow: ".4px 0 red", textAlign: 'center'}}

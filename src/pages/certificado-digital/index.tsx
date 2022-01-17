@@ -32,11 +32,14 @@ export default function CertificadoDigital() {
     console.log(`router.query`, router.query)
     console.log(`isCertificated`, isCertificated)
 
-    useEffect(() => {
-        if (router.query.isCertificated === "false" ) {
+    function uploadModalHandler() {
+        if (router.query.isCertificated === "false" &&  !isCertificated) {
             setVisibleModal(true)
-        }
-    }, [])
+        } else setVisibleModal(false)
+    }
+    useEffect(() => {
+        uploadModalHandler()
+    }, [isCertificated])
 
     useEffect(() => {
         if(!isCertificated && upload ) {
@@ -61,7 +64,7 @@ export default function CertificadoDigital() {
     async function getCerficateData() {
         try {
             const response = await companyRequest.getCertificate(company_id)
-            const data = response.data.certificate
+            const data = response.data
             console.log("certi",data)
             setPageData({...pageData, initialDate: data.data_inicio, expiringDate: data.data_vencimento})
             return data
@@ -113,19 +116,15 @@ export default function CertificadoDigital() {
             <Section>
                 <div>
                     <div>
-                        {/* <InputStyle>
-                            <span>CNPJ:</span>
-                            <input type="text" readOnly value={isCertificated ? pageData.cnpj : ""} />
-                        </InputStyle> */}
-                            <InlineInputs>
-                                <span>Validade</span>
-                                <div>
-                                    <span>De:</span>
-                                    <input type="text" readOnly value={isCertificated ? format(new Date(pageData.initialDate), "dd/MM/yyyy"): ""} />
-                                    <span>Até:</span>
-                                    <input type="text" readOnly value={isCertificated ? format(new Date(pageData.expiringDate), "dd/MM/yyyy"): ""} />
-                                </div>
-                            </InlineInputs>
+                        <InlineInputs>
+                            <span>Validade</span>
+                            <div>
+                                <span>De:</span>
+                                <input type="text" readOnly value={isCertificated ? format(new Date(pageData.initialDate), "dd/MM/yyyy"): ""} />
+                                <span>Até:</span>
+                                <input type="text" readOnly value={isCertificated ? format(new Date(pageData.expiringDate), "dd/MM/yyyy"): ""} />
+                            </div>
+                        </InlineInputs>
                     </div>
                     <RightInput>
                             <span>Status:</span>

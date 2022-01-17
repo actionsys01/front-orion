@@ -33,7 +33,6 @@ export const companyProfile = {
 }
 
 export const certificateState = {
-    responsible: "",
     initialDate: new Date,
     expiringDate: new Date,
 }

@@ -12,7 +12,6 @@ import { useSession } from 'next-auth/client';
 import { useCompanyContext } from "@contexts/company"
 
 interface CertificadoProps {
-    responsible: string;
     initialDate: Date;
     expiringDate: Date;
 }
@@ -46,7 +45,6 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
 
     async function sendData() {
         try {
-                if(password === confirmPassword) {
                 setProgress(60)
                 await sendCertificate(certificate, {
                     company_id,
@@ -62,12 +60,6 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
             })
             setUpload(true)
             setIsCertificated(true)
-                } else {
-                    setToast({
-                        text: "As senhas digitadas contém diferenças",
-                        type: "warning"
-                    })
-                }
         } catch (error) {
             console.log(error)
             setToast({

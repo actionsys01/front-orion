@@ -28,13 +28,12 @@ const CompanyProvider:  React.FC = ({ children }: any) => {
         if(session) {
             try {
                 const response = await companyRequest.getCertificate(Number(session?.usuario.empresa.id))
-                const data = response.data.certificate.certificado
-                console.log(`data`, data)
-                const cnpjResponse = await companyRequest.getCnpj(Number(session?.usuario.empresa.id))
-                const cnpjData = cnpjResponse.data.total
-                console.log(`cnpjData`, cnpjData)
-                setIsCertificated(data && cnpjData > 0 ? true : false)
-                return data
+                const data = response.data.certificado
+                console.log(`data CONTEXT`, data)
+                // const cnpjResponse = await companyRequest.getCnpj(Number(session?.usuario.empresa.id))
+                // const cnpjData = cnpjResponse.data.total
+                // console.log(`cnpjData`, cnpjData)
+                setIsCertificated(true)
             } catch (error) {
                 
                 setIsCertificated(false)
