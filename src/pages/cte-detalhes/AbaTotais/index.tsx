@@ -77,67 +77,53 @@ const getTotalsData = useMemo(() => {
         </div>
       </CardStyle>
 
-
-      <BackgroundCinza>
-        <Text h3>Impostos </Text>
-        {/* PRIMEIRO */}
-        <Grid.Container gap={2}>
-          <GridAlinhaTextoCentro>
-            <Titulo>CST </Titulo>
-            <Text small>{item?.ICMS?.CST}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>BC do ICMS</Titulo>
-            <Text small>{item?.ICMS?.vBC}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Alíquota do ICMS</Titulo>
-            <Text small>{item?.ICMS?.pICMS}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Valor do ICMS</Titulo>
-            <Text small>{item?.ICMS?.vICMS}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Alíquota de redução da BC</Titulo>
-            <Text small>{item?.ICMS?.vBCSTRet}</Text>
-          </GridAlinhaTextoCentro>
-        </Grid.Container>
-          {/* SEGUNDO */}
-        <Grid.Container gap={2}>
-          <GridAlinhaTextoCentro>
-            <Titulo>BC do ST Ret</Titulo>
-            <Text small>{item?.ICMS?.vBCSTRet}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Valor do ICMS ST Ret</Titulo>
-            <Text small>{item?.ICMS?.vICMSSTRet}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Alíquota Redução ICMS ST Ret</Titulo>
-            <Text small>{item?.ICMS?.vBCSTRet}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Alíquota ICMS ST Ret </Titulo>
-            <Text small>{item?.ICMS?.pICMSSTRet}</Text>
-          </GridAlinhaTextoCentro>
-        </Grid.Container>
-        {/* TERCEIRO */}
-        <Grid.Container gap={2}>
-        <GridAlinhaTextoCentro>
-            <Titulo>BC do ICMS Outra UF</Titulo>
-            <Text small>{item?.ICMS?.vBCOutraUF}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Alíquota ICMS Outra UF</Titulo>
-            <Text small>{item?.ICMS?.pICMSOutraUF}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Valor ICMS Outra UF</Titulo>
-            <Text small>{item?.ICMS?.vICMSOutraUF}</Text>
-          </GridAlinhaTextoCentro>
-        </Grid.Container>
-      </BackgroundCinza>
+      <CardStyle>
+        <div>
+          <h3>Impostos</h3>
+          <LineStyle>
+            <div>
+              <h5>CST</h5>
+              <h6>{item?.ICMS?.CST}</h6>
+            </div>
+            <div>
+              <h5>BC do ICMS</h5>
+              <h6>{item?.ICMS?.vBC}</h6>
+            </div>
+            <div>
+              <h5>Alíquota do ICMS</h5>
+              <h6>{item?.ICMS?.pICMS}</h6>
+            </div>
+            <div>
+              <h5>Valor do ICMS</h5>
+              <h6>{item?.ICMS?.vICMS}</h6>
+            </div>
+            <div>
+              <h5>Alíquota de redução da BC</h5>
+              <h6>{item?.ICMS?.vBCSTRet}</h6>
+            </div>
+          </LineStyle>
+          <LineStyle>
+            <div>
+              <h5>BC do ICMS</h5>
+              <h6>{item?.ICMS?.vBC}</h6>
+            </div>
+            <div>
+              <h5>Alíquota do ICMS</h5>
+              <h6>{item?.ICMS?.pICMS}</h6>
+            </div>
+            <div>
+              <h5>Valor do ICMS</h5>
+              <h6>{item?.ICMS?.vICMS}</h6>
+            </div>
+            <div>
+              <h5>Alíquota de redução da BC</h5>
+              <h6>{item?.ICMS?.vBCSTRet}</h6>
+            </div>
+          </LineStyle>
+          
+        </div>
+      </CardStyle>
+    
       </div>
         ))}
       <Spacer />

@@ -12,7 +12,6 @@ import { useSession } from 'next-auth/client';
 import { useCompanyContext } from "@contexts/company"
 
 interface CertificadoProps {
-    responsible: string;
     initialDate: Date;
     expiringDate: Date;
 }

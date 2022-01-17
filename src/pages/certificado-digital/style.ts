@@ -61,6 +61,7 @@ export const InlineInputs = styled.div`
         flex-direction: row !important;
         align-items: center;
         background-color: #fff;
+        height: 10px;
         
         padding: 1.8rem;
 
@@ -86,6 +87,7 @@ export const RightInput = styled.div`
         flex-direction: column;
         align-items: center;
         width: 75% !important;
+
         > span {
                 margin: 0 0.5rem;
                 font-size: 0.8rem;
@@ -125,7 +127,7 @@ export const UploadModal = styled.div`
 
     >  div {
         width: 53%;
-        height: 45%;
+        height: 48%;
         min-height: 250px;
         border: none;
         position: absolute;
@@ -148,7 +150,6 @@ export const UploadModal = styled.div`
 
         h4 {
             font-size: 1.25rem; 
-            /* letter-spacing: 0.11rem; */
             font-weight: 600;
             margin: 14px auto;
             vertical-align: middle;
@@ -168,14 +169,23 @@ export const UploadModal = styled.div`
         @media (max-width: 495px) {
             min-height: 275px;
         }
-        @media (max-width: 820px) {
-           
+
+        @media (max-width: 575px) {
             > div {
-                min-height: 875px;
-                top: 10%;
+                left: 20%!IMPORTANT;
+                h4 {
+                    font-size: 1rem;
+                }
             }
         }
-   
+        @media (max-width: 820px) {
+        
+            > div {
+                min-height: 475px;
+                top: 10%;
+                left: 38%;
+            }
+        }
 `
 
 
@@ -185,6 +195,12 @@ export const ModalContent = styled.div`
     /* margin: 0 2rem;  */
     box-sizing: border-box;
     gap: 100px;
+
+    @media (max-width: 820px) {
+        flex-direction: column;
+        gap: 35px;
+        
+    }
 `
 
 export const IconContainer = styled.div`
@@ -197,20 +213,20 @@ export const IconContainer = styled.div`
             width: 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
+            /* align-items: center; */
             cursor: pointer;
 
             span {
                 white-space: pre!IMPORTANT;
-                /*color: red; */
+                padding-top: .1rem;
                 max-width: 130px;
-                
+                text-align: center;
             }
 
             svg {
             padding: 5px 2px;
-            width: 125px;
-            height: 125px;
+            width: 160px;
+            height: 135px;
             stroke-width: .7px;
             }
     }

@@ -4,6 +4,7 @@ import { Grid as GridGeist } from "@geist-ui/react";
 export const Grid = styled(GridGeist)`
   overflow: auto;
   max-height: auto;
+  min-height: 26rem;
   table {
     th {
       background-color: ${(props) => props.theme.palette.foreground};
