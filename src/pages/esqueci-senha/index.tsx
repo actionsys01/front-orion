@@ -56,8 +56,8 @@ const esqueciSenha = () => {
 
 
         <Container>
+          <h4>Para prosseguir insira um e-mail válido. <br/>Dentro de instantes entraremos em contato com mais instruções.</h4>
           <Form>
-
           <Input
             size="large"
             placeholder="Seu e-mail"

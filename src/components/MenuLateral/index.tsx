@@ -20,7 +20,7 @@ import {
   SidebarFooter,
   SubMenu,
 } from "react-pro-sidebar";
-import {useSecurityContext} from "@contexts/security"
+import { useSecurityContext } from "@contexts/security"
 import { useCompanyContext } from '@contexts/company';
 import { NoBefore, AlignSubmenu } from "./style"
 

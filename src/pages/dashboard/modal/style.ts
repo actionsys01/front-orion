@@ -88,4 +88,23 @@ export const ModalStyle = styled.div`
         }
         
     }
+
+@media (max-width: 1090px) {
+    > div {
+        height: 58%;
+    }
+}
+
+@media (max-width: 725px) {
+    > div {
+        left: 38%;
+    }
+}
+
+@media (max-width: 575px) {
+    > div {
+        height: 65%;
+        left: 25%;
+    }
+}
 `

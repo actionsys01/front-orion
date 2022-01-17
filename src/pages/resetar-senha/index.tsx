@@ -8,7 +8,7 @@ import { Button, Input } from "@geist-ui/react";
 import { Container, Form } from './style'
 import { useRouter } from "next/router";
 import { useState } from 'react'
-
+import { useCompanyContext } from '@contexts/company';
 
 
 export default function resetarSenha() {
@@ -20,8 +20,8 @@ export default function resetarSenha() {
     const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState("");
     const [confirmationPassword, setConfirmationPassword] = useState("");
+    const { companyFeatures } = useCompanyContext()
 
-    console.log(query)
 
 
 
@@ -77,8 +77,9 @@ export default function resetarSenha() {
 
 
             <Container>
+                <h4>Seja Bem-Vindo(a) {companyFeatures?.nome}!</h4>
+                <h6>Por favor escolha a sua nova senha, esta senha será utilizada para acessar nosso aplicativo.</h6>
                 <Form>
-
                     <Input
                         type="password"
                         size="large"
