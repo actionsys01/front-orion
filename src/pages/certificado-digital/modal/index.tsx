@@ -24,7 +24,6 @@ interface ModalProps {
 }
 
 const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) => {
-
     const [ fileName, setFileName ] = useState("");
     const [ progress, setProgress ] = useState(0);
     const [ certificate, setCertificate] = useState<File | null>(null);
@@ -76,20 +75,25 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
                 return
             }
         try {
-                setProgress(100)
+                setProgress(60)
                 await sendCertificate(certificate, {
                     company_id,
                     certificado: '',
                     data_inicio: pageData.initialDate,
                     data_vencimento: pageData.expiringDate,
                     senha: password,
+                }).then(() => {
+                    setProgress(100),
+                    setTimeout(() => {
+                        setToast({
+                            text: "Documento enviado com sucesso",
+                            type: "success"
+                        })
+                        setUpload(true)
+                        setIsCertificated(true)
+                        modalHandler()
+                }, 1350);
                 })
-            setToast({
-                text: "Documento enviado com sucesso",
-                type: "success"
-            })
-            setUpload(true)
-            setIsCertificated(true)
         } catch (error) {
             console.log(error)
             setToast({
@@ -97,7 +101,6 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
                 type: "warning"
             })
         }
-        modalHandler()
     }
     
 

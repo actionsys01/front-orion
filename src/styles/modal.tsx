@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Modal = styled.div`
-z-index: auto;
+z-index: 1000;
 display: block;
 position: fixed;
 top: 0;
