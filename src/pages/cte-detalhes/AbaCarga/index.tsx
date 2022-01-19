@@ -35,8 +35,8 @@ export default function AbaCarga({ data } : AbaProps) {
     if(Array.isArray(infQ)){
       cargas = infQ
     } else {
-      const { cUnid, qCarga, tpMed } = infQ;
-      cargas.push({ cUnid, qCarga, tpMed });
+      // const { cUnid, qCarga, tpMed } = infQ;
+      cargas.push(infQ);
     }
     console.log(`cargas`, cargas)
     return cargas
