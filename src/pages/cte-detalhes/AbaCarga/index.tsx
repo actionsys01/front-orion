@@ -17,53 +17,11 @@ import getNfeData from "@services/nfe/getNfeData"
 import { useState } from "react";
 import { useSession } from "next-auth/client";
 import { useRouter } from "next/router";
+import { AbaProps } from "@services/cte-mongo/cte-type/cte";
+import { CardStyle, LineStyle } from "@styles/vizualizar";
 
-interface IProps {
-  data: {
-    informacoes_normal_substituto: {
-      infCarga: {
-        vCarga: string;
-        proPred: string;
-        xOutCat: string;
-        infQ: [
-              {
-                tpMed: string;
-                cUnid: string;
-                qCarga: string;
-              }
-            ]
-          | {
-              tpMed: string;
-              cUnid: string;
-              qCarga: string;
-            };
-      };
-      infDoc: {
-        infNFe: [
-              {
-                chave: string;
-                nDoc: string;
-                serie: string;
-                dEmi: string;
-                vNF: string;
-              }
-            ]
-          | {
-              chave: string;
-              nDoc: string;
-              serie: string;
-              dEmi: string;
-              vNF: string;
-            };
-      };
-    };
-    informacoes_cte: {
-      cCT: string;
-    };
-    versao: string;
-  };
-}
-export default function AbaCarga({ data }) {
+
+export default function AbaCarga({ data } : AbaProps) {
   
   const [loading, setLoading] = useState(false);
   const [, setToast] = useToasts();
@@ -71,7 +29,7 @@ export default function AbaCarga({ data }) {
 
   const router = useRouter();
 
-  const cargas: any = () => {
+  const cargas: any = useMemo(() => {
     let cargas = []
     const infQ = data?.informacoes_normal_substituto?.infCarga.infQ;
     if(Array.isArray(infQ)){
@@ -80,9 +38,9 @@ export default function AbaCarga({ data }) {
       const { cUnid, qCarga, tpMed } = infQ;
       cargas.push({ cUnid, qCarga, tpMed });
     }
-    // console.log(`cargas`, cargas)
+    console.log(`cargas`, cargas)
     return cargas
-  }
+  },[])
 
   const nfes = useMemo(() => {
     const nfes = [];
@@ -171,31 +129,29 @@ export default function AbaCarga({ data }) {
 
   return (
     <>
-      <DadosGeraisCte data={data} />
-      <BackgroundCinza>
-        <Text h3>Totais </Text>
-        <Grid.Container gap={2}>
-          <GridAlinhaTextoCentro>
-            <Titulo>Valor total da Carga</Titulo>
-            <Text small>
-              {data?.informacoes_normal_substituto?.infCarga?.vCarga}
-            </Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Produto Predominante</Titulo>
-            <Text small>
-              {data?.informacoes_normal_substituto?.infCarga?.proPred}
-            </Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Outras Características</Titulo>
-            <Text small>
-              {data?.informacoes_normal_substituto?.infCarga?.xOutCat}
-            </Text>
-          </GridAlinhaTextoCentro>
-        </Grid.Container>
-      </BackgroundCinza>
-      <Spacer />
+    <CardStyle>
+      <div>
+        <h3>
+          Totais
+        </h3>
+        <div>
+          <div>
+            <h5>Valor total da Carga</h5>
+            <h6>{data?.informacoes_normal_substituto?.infCarga?.vCarga}</h6>
+          </div>
+          <div>
+            <h5>Produto Predominante</h5>
+            <h6>{data?.informacoes_normal_substituto?.infCarga?.proPred}</h6>
+          </div>
+          <div>
+            <h5>Outras Características</h5>
+            <h6>{data?.informacoes_normal_substituto?.infCarga?.xOutCat}</h6>
+          </div>
+        </div>
+      </div>
+    </CardStyle>
+
+    <Spacer />
       <Text h3>Quantidade Carga </Text>
       {cargas.length && (
         <Grid>
@@ -207,6 +163,17 @@ export default function AbaCarga({ data }) {
         </Grid>
       )}
       <Spacer />
+    {/* <CardStyle>
+      <div>
+        <h3>
+          Quantidade Carga
+        </h3>
+        <div>
+          <h5></h5>
+        </div>
+      </div>
+    </CardStyle> */}
+      
       <Text h3>Notas Fiscais Eletrônicas </Text>
       {nfes.length && (
         <Grid>

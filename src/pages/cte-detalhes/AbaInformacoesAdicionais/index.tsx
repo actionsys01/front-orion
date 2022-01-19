@@ -5,6 +5,7 @@ import { Grid } from "@components/Grid";
 import { useEffect, useState } from "react";
 import { GridAlinhaTextoCentro } from "@components/GridAlinhaTextoCentro";
 import { Titulo } from "@pages/nfe-detalhes/styled";
+import { CardStyle, LineStyle } from "@styles/vizualizar";
 
 interface IProps {
   data: {
@@ -45,7 +46,6 @@ export default function AbaInformacoesAdicionais({ data }) {
 
   return (
     <>
-      <DadosGeraisCte data={data} />
       <BackgroundCinza>
         <Text h3>Informações Adicionais de Interesse do Fisco</Text>
         <Text small>{data?.imposto?.ICMSSN?.infAdFisco} </Text>
