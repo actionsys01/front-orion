@@ -16,7 +16,7 @@ export default function NfeDetalhes() {
   const router = useRouter();
   const [ data, setData ] = useState<CteXmlProps>()
   const [, setToast] = useToasts();
-  const [ tab, setTab ] = useState<'AbaCte' | 'AbaTotais' | 'AbaCarga' | 'AbaInformacoesAdicionais'>("AbaTotais")
+  const [ tab, setTab ] = useState<'AbaCte' | 'AbaTotais' | 'AbaCarga' | 'AbaInformacoesAdicionais'>("AbaCte")
 
   const getXml = useCallback(async() => {
       try {
@@ -65,7 +65,9 @@ export default function NfeDetalhes() {
       <DadosGeraisCte data={data} />
 
       {tab === 'AbaCte' ? <AbaCte data={data}/> :
-      tab === 'AbaTotais' ? <AbaTotais data={data}/> : ''
+      tab === 'AbaTotais' ? <AbaTotais data={data}/> : 
+      tab === 'AbaCarga' ? <AbaCarga data={data}/> :
+      tab === 'AbaInformacoesAdicionais' ? <AbaInformacoesAdicionais data={data}/> : ""
     }
     </>
   );

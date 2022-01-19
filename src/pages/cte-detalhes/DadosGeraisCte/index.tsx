@@ -12,7 +12,7 @@ export default function DadosGeraisCte({ data }: IProps) {
   const router = useRouter();
   return <>
   <CardStyle>
-        <div>
+        <div style={{backgroundColor: "#fff"}}>
           <h3>Dados Gerais</h3>
           <div>
             <div>
