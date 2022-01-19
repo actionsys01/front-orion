@@ -2,15 +2,14 @@ import React, { useCallback, useState, useEffect } from "react";
 import BotaoVoltar from "@components/BotaoVoltar";
 import { Table, ButtonStyle } from "./style";
 import { useSession } from "next-auth/client";
-import NaoEncontrado from "@components/NaoEncontrado";
 import { Checkbox } from '@material-ui/core';
 import * as perfil from "@services/perfis"
 import Head from "next/head";
 import { ChevronDown, ChevronUp  } from '@geist-ui/react-icons'
 import {  useRouter } from "next/router";
-import {useSecurityContext} from "@contexts/security";
-import { useToasts} from "@geist-ui/react";
-
+import { useSecurityContext } from "@contexts/security";
+import { useToasts } from "@geist-ui/react";
+import { initialState, initial, initialStateEntrada, initialStateB } from "@utils/initial-states"
 
 type ICreateProfile = {
   name: string;
@@ -44,6 +43,16 @@ export default function PerfilCadastro() {
   const [ certificadoVisible, setCertificadoVisible ] = useState(false)
   const [ visible, setVisible] = useState(false)
   const [ companyModal, setCompanyModal ] = useState(false)
+  // checkbox
+  const [ isNfe, setIsNfe ] = useState({...initialState})
+  const [ isCte, setIsCte ] = useState({...initialStateB})
+  const [ isCnpj, setIsCnpj ] = useState({...initial})
+  const [ isCertificate, setIsCertificate ] = useState({...initial})
+  const [ isUser, setIsUser ] = useState({...initial})
+  const [ isProfile, setIsProfile ] = useState({...initial})
+  const [ isEntrance, setIsEntrance ] = useState({...initialStateEntrada})
+  const [ isNfse, setIsNfse ] = useState({...initialStateB})
+  const [ isCompanyConfig, setIsCompanyConfig ] = useState(false)
 
 
   const [profileApp, setProfileApp] = useState<number[]>([])
@@ -94,7 +103,7 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                 <title>Orion | Perfil de Cadastro</title>
               </Head>
               <BotaoVoltar/>
-              <h2>Perfil de Cadastro</h2>
+              <h2>Cadastro de Perfil</h2>
               <ButtonStyle>
                 <button
                     type="button"
@@ -135,31 +144,38 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                       <div >
                         <span>
                           <span><Checkbox value={2} 
+                          checked={isNfe.VISUALIZAR}
+                          onClick={() => setIsNfe({...isNfe, VISUALIZAR : !isNfe.VISUALIZAR})}  
                           onChange={() => gatherData(2)}/></span>
                           Visualizar</span>
-                        {/* {nfeHistoricalPermission &&   */}
                           <span>  
-                            <span><Checkbox value={1} 
+                            <span><Checkbox value={1}
+                            checked={isNfe.HISTORICO} 
+                            onClick={() => setIsNfe({...isNfe, HISTORICO : !isNfe.HISTORICO})}
                             onChange={() => gatherData(1)}/></span>
                           Histórico de Notas</span>
-                          {/* {nfeAwarePermission &&  */}
                           <span> 
                             <span><Checkbox value={3} 
+                            checked={isNfe.CIENCIA}
+                            onClick={() => setIsNfe({...isNfe, CIENCIA : !isNfe.CIENCIA})}
                             onChange={() => gatherData(3)}/></span>
                           Registrar Evento - Ciência da Operação</span>
-                          {/* {nfeConfirmPermission &&  */}
                           <span> 
                             <span><Checkbox value={4} 
+                            checked={isNfe.CONFIRMACAO} 
+                            onClick={() => setIsNfe({...isNfe, CONFIRMACAO : !isNfe.CONFIRMACAO})}
                             onChange={() => gatherData(4)}/></span>
                           Registrar Evento - Confirmação da Operação</span>
-                        {/* {nfeUnauthorizedPermission && */}
                           <span> 
                             <span><Checkbox value={6} 
+                            checked={isNfe.OPERACAO_NAO_REALIZADA} 
+                            onClick={() => setIsNfe({...isNfe, OPERACAO_NAO_REALIZADA : !isNfe.OPERACAO_NAO_REALIZADA})}
                             onChange={() => gatherData(6)}/></span>
                           Registrar Evento - Operação Não Realizada</span>
-                          {/* {nfeUnawarePermission &&  */}
                           <span> 
                             <span><Checkbox value={5} 
+                            checked={isNfe.DESCONHECIMENTO} 
+                            onClick={() => setIsNfe({...isNfe, DESCONHECIMENTO : !isNfe.DESCONHECIMENTO})}
                             onChange={() => gatherData(5)}/></span>
                           Registrar Evento - Desconhecimento da Operação</span>
                           
@@ -167,8 +183,6 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                     </div>
                       }
                       </div>
-                      {/* } */}
-                      {/* {isCte && ctePermission && */}
                     <div className="body-row">
                       <div onClick={handleCteModal} style={{cursor: "pointer"}}>  
                         <span className="line">
@@ -189,11 +203,17 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                     <div className="modal">
                       <div >
                         <span>
-                          <span><Checkbox  onChange={() => gatherData(14)}/></span>
+                          <span><Checkbox 
+                            checked={isCte.VISUALIZAR} 
+                            onClick={() => setIsCte({...isCte, VISUALIZAR : !isCte.VISUALIZAR})}
+                            onChange={() => gatherData(14)}/></span>
                           Visualizar
                         </span>
                         <span> 
-                          <span><Checkbox  onChange={() => gatherData(13)}/></span>
+                          <span><Checkbox  
+                            checked={isCte.HISTORICO} 
+                            onClick={() => setIsCte({...isCte, HISTORICO : !isCte.HISTORICO})}
+                            onChange={() => gatherData(13)}/></span>
                           Histórico de Notas
                         </span>
                       </div>
@@ -202,37 +222,45 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                     </div> 
                     <div className="body-row">
                       <div onClick={handleNfseModal} style={{cursor: "pointer"}}>
-                      <span className="line">
-                      <h5>
-                        Nfs-e
-                      </h5>
-                      </span>
-                      <span className="line">
-                      <h5>
-                        Painel e Visualização de Nfs-e
-                      </h5>
-                      </span>
-                      <span>
-                      {!nfseModal ? <ChevronDown  className="icon"/> : <ChevronUp  className="icon"/>}
-                      </span>
-                    </div>
+                        <span className="line">
+                        <h5>
+                          Nfs-e
+                        </h5>
+                        </span>
+                        <span className="line">
+                        <h5>
+                          Painel e Visualização de Nfs-e
+                        </h5>
+                        </span>
+                        <span>
+                        {!nfseModal ? <ChevronDown  className="icon"/> : <ChevronUp  className="icon"/>}
+                        </span>
+                      </div>
                     {nfseModal &&
                     <div className="modal">
                       <div >
                         <span>
-                          <span><Checkbox value={17} onChange={() => gatherData(17)} /></span>
+                          <span><Checkbox value={17} 
+                            checked={isNfse.VISUALIZAR}
+                            onClick={() => setIsNfse({...isNfse, VISUALIZAR : !isNfse.VISUALIZAR})}
+                            onChange={() => gatherData(17)} /></span>
                           Visualizar</span>
                         <span> 
-                          <span><Checkbox value={16} onChange={() => gatherData(16)} /></span>
+                          <span><Checkbox value={16} 
+                            checked={isNfse.HISTORICO}
+                            onClick={() => setIsNfse({...isNfse, HISTORICO : !isNfse.HISTORICO})}
+                            onChange={() => gatherData(16)} /></span>
                           Histórico de Notas</span>
                         <span> 
-                          <span><Checkbox value={18} onChange={() => gatherData(18)} /></span>
+                          <span><Checkbox value={18}
+                            checked={isNfse.IMPRIMIR}
+                            onClick={() => setIsNfse({...isNfse, IMPRIMIR : !isNfse.IMPRIMIR})}
+                            onChange={() => gatherData(18)} /></span>
                           Imprimir Notas</span>
                       </div>
                     </div>
                     } 
                     </div>
-                    {/* } */}
                     <div className="body-row">
                       <div onClick={handleEntranceModal} style={{cursor: "pointer"}}>
                         <span className="line">
@@ -253,25 +281,39 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                     <div className="modal">
                       <div >
                         <span>
-                          <span><Checkbox value={19} onChange={() => gatherData(19)}/></span>
+                          <span><Checkbox value={19} 
+                            checked={isEntrance.VISUALIZAR}
+                            onClick={() => setIsEntrance({...isEntrance, VISUALIZAR : !isEntrance.VISUALIZAR})}
+                            onChange={() => gatherData(19)}/></span>
                           Visualizar</span>
                         <span> 
-                          <span><Checkbox value={20} onChange={() => gatherData(20)}/></span>
+                          <span><Checkbox value={20} 
+                            checked={isEntrance.AUTORIZAR}
+                            onClick={() => setIsEntrance({...isEntrance, AUTORIZAR : !isEntrance.AUTORIZAR})}
+                            onChange={() => gatherData(20)}/></span>
                           Autorizar</span>
                         <span> 
-                          <span><Checkbox value={21} onChange={() => gatherData(21)}/></span>
+                          <span><Checkbox value={21}
+                            checked={isEntrance.EDITAR}
+                            onClick={() => setIsEntrance({...isEntrance, EDITAR : !isEntrance.EDITAR})}
+                            onChange={() => gatherData(21)}/></span>
                           Editar</span>
                         <span> 
-                          <span><Checkbox value={22} onChange={() => gatherData(22)}/></span>
+                          <span><Checkbox value={22} 
+                            checked={isEntrance.CANCELAR}
+                            onClick={() => setIsEntrance({...isEntrance, CANCELAR : !isEntrance.CANCELAR})} 
+                            onChange={() => gatherData(22)}/></span>
                           Cancelar</span>
                         <span> 
-                          <span><Checkbox value={23} onChange={() => gatherData(23)}/></span>
+                          <span><Checkbox value={23} 
+                            checked={isEntrance.ADICIONAR}
+                            onClick={() => setIsEntrance({...isEntrance, ADICIONAR : !isEntrance.ADICIONAR})} 
+                            onChange={() => gatherData(23)}/></span>
                           Adicionar</span>
                       </div>
                     </div>
                     }
                     </div>
-                  {/* {profilePermission && */}
                     <div className="body-row">
                       <div onClick={handleProfileModal} style={{cursor: "pointer"}}>
                         <span className="line">
@@ -292,23 +334,28 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                     <div className="modal">
                       <div >
                         <span> 
-                          <span><Checkbox  onChange={() => gatherData(11)}/></span>
+                          <span><Checkbox  
+                            checked={isProfile.ADICIONAR} 
+                            onClick={() => setIsProfile({...isProfile, ADICIONAR : !isProfile.ADICIONAR})}
+                            onChange={() => gatherData(11)}/></span>
                           Cadastrar Perfil</span>
-                          {/* {profileDeletePermission && */}
                         <span> 
-                          <span><Checkbox onChange={() => gatherData(10)}/></span>
+                          <span><Checkbox 
+                            checked={isProfile.EXCLUIR}  
+                            onClick={() => setIsProfile({...isProfile, EXCLUIR : !isProfile.EXCLUIR})}
+                            onChange={() => gatherData(10)}/></span>
                           Excluir Perfil</span>
-                          {/* {profileUpdatePermission && */}
                         <span>  
-                          <span><Checkbox onChange={() => gatherData(12)} /></span>
+                          <span><Checkbox 
+                            checked={isProfile.EDITAR}  
+                            onClick={() => setIsProfile({...isProfile, EDITAR : !isProfile.EDITAR})}
+                            onChange={() => gatherData(12)} /></span>
                           Editar Perfil</span>
                           
                       </div>
                     </div>
                     }
                     </div>
-                    {/* } */}
-                  {/* {userPermission && */}
                     <div className="body-row">
                       <div onClick={handleUsersModal} style={{cursor: "pointer"}}>
                         <span className="line">
@@ -329,21 +376,27 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                       <div className="modal">
                         <div >
                           <span> 
-                            <span><Checkbox value={8} onChange={() => gatherData(8)}/></span>
+                            <span><Checkbox value={8} 
+                              checked={isUser.ADICIONAR}
+                              onClick={() => setIsUser({...isUser, ADICIONAR : !isUser.ADICIONAR})} 
+                              onChange={() => gatherData(8)}/></span>
                             Adicionar Usuário</span>
-                            {/* {userDeletePermission && */}
                           <span> 
-                            <span><Checkbox value={7}  onChange={() => gatherData(7)}/></span>
+                            <span><Checkbox value={7}  
+                              checked={isUser.EXCLUIR} 
+                              onClick={() => setIsUser({...isUser, EXCLUIR : !isUser.EXCLUIR})}
+                              onChange={() => gatherData(7)}/></span>
                             Excluir Usuário</span>
-                            {/* {userUpdatePermission && */}
                           <span> 
-                            <span><Checkbox value={9} onChange={() => gatherData(9)}/></span>
+                            <span><Checkbox value={9} 
+                              checked={isUser.EDITAR}
+                              onClick={() => setIsUser({...isUser, EDITAR : !isUser.EDITAR})}
+                              onChange={() => gatherData(9)}/></span>
                             Editar Usuário</span>
                         </div>
                       </div>
                     }
                     </div>
-                    {/* } */}
                     <div className="body-row">
                         <div onClick={modalHandler} style={{cursor: "pointer"}} >
                             <span className="line">
@@ -364,19 +417,27 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                           <div className="modal">
                             <div>
                               <span>
-                                <span><Checkbox value={25} onChange={() => gatherData(25)}/></span>
+                                <span><Checkbox value={25} 
+                                    checked={isCnpj.ADICIONAR} 
+                                    onClick={() => setIsCnpj({...isCnpj, ADICIONAR : !isCnpj.ADICIONAR})}
+                                    onChange={() => gatherData(25)}/></span>
                                   Adicionar CNPJ
                               </span>
                               <span>
-                                <span><Checkbox value={24} onChange={() => gatherData(24)}/></span>
+                                <span><Checkbox value={24} 
+                                    checked={isCnpj.EXCLUIR}
+                                    onClick={() => setIsCnpj({...isCnpj, EXCLUIR : !isCnpj.EXCLUIR})}
+                                    onChange={() => gatherData(24)}/></span>
                                   Excluir CNPJ
                               </span>
                               <span>
-                                <span><Checkbox value={26} onChange={() => gatherData(26)}/></span>
+                                <span><Checkbox value={26} 
+                                    checked={isCnpj.EDITAR}
+                                    onClick={() => setIsCnpj({...isCnpj, EDITAR : !isCnpj.EDITAR})}
+                                    onChange={() => gatherData(26)}/></span>
                                   Editar CNPJ
                               </span>
                             </div>
-
                           </div>}
                     </div>
                     <div className="body-row">
@@ -399,11 +460,17 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                         <div className="modal">
                           <div>
                               <span>
-                                <span><Checkbox value={28} onChange={() => gatherData(28)}/></span>
+                                <span><Checkbox value={28} 
+                                    checked={isCertificate.ADICIONAR}
+                                    onClick={() => setIsCertificate({...isCertificate, ADICIONAR : !isCertificate.ADICIONAR})}
+                                    onChange={() => gatherData(28)}/></span>
                                   Adicionar Certificado
                               </span>
                               <span>
-                                <span><Checkbox value={27} onChange={() => gatherData(27)}/></span>
+                                <span><Checkbox value={27} 
+                                    checked={isCertificate.EXCLUIR}
+                                    onClick={() => setIsCertificate({...isCertificate, EXCLUIR : !isCertificate.EXCLUIR})}
+                                    onChange={() => gatherData(27)}/></span>
                                   Excluir Certificado
                               </span>
                           </div>
@@ -430,7 +497,10 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                         <div className="modal">
                           <div>
                             <span>
-                              <span><Checkbox value={29} onChange={() => gatherData(29)}/></span>
+                              <span><Checkbox value={29} 
+                                  checked={isCompanyConfig}
+                                  onClick={() => setIsCompanyConfig(!isCompanyConfig)}
+                                  onChange={() => gatherData(29)}/></span>
                                 Confirgurações de Perfil
                             </span>
                           </div>

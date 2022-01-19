@@ -99,9 +99,6 @@ export default function CertificadoDigital() {
         getCerficateData()
     }, [])
 
-    // useEffect(() => {
-    //     console.log(`pageData`, pageData)
-    // }, [pageData])
 
 
     return <>

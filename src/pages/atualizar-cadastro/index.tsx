@@ -225,7 +225,7 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
         <title>Orion | Perfil de Cadastro</title>
       </Head>
       <BotaoVoltar/>
-      <h2>Perfil de Cadastro</h2>
+      <h2>Atualização de Perfil</h2>
       <ButtonStyle>
         <button
             className="btn"
@@ -453,7 +453,6 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                     </div>
                   </div>}
                 </div>
-              {/* {profilePermission && */}
                 <div className="body-row">
                   <div onClick={handleProfileModal} style={{cursor: "pointer"}}>
                     <span className="line">
@@ -474,19 +473,22 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                 <div className='modal'>
                   <div >
                     <span> 
-                      <span><Checkbox checked={isProfile.ADICIONAR}  
+                      <span><Checkbox 
+                          checked={isProfile.ADICIONAR}  
                           onChange={() => gatherData(11)} 
                           onClick={() => setIsProfile({...isProfile, ADICIONAR : !isProfile.ADICIONAR})}/></span>
                         Cadastrar Perfil
                       </span>
                     <span> 
-                      <span><Checkbox checked={isProfile.EXCLUIR}  
+                      <span><Checkbox 
+                          checked={isProfile.EXCLUIR}  
                           onChange={() => gatherData(10)}  
                           onClick={() => setIsProfile({...isProfile, EXCLUIR : !isProfile.EXCLUIR})}/></span>
                         Excluir Perfil
                       </span>
                     <span> 
-                      <span><Checkbox checked={isProfile.EDITAR}  
+                      <span><Checkbox 
+                          checked={isProfile.EDITAR}  
                           onChange={() => gatherData(12)}  
                           onClick={() => setIsProfile({...isProfile, EDITAR : !isProfile.EDITAR})} /></span>
                         Editar Perfil
@@ -515,20 +517,24 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                 <div className='modal'>
                   <div >
                     <span> 
-                      <span><Checkbox checked={isUser.ADICIONAR}  
+                      <span><Checkbox 
+                          checked={isUser.ADICIONAR}  
                           value={8} onChange={() => gatherData(8)} 
                           onClick={() => setIsUser({...isUser, ADICIONAR : !isUser.ADICIONAR})} /></span>
                         Adicionar Usuário
                       </span>
                     <span> 
-                      <span><Checkbox checked={isUser.EXCLUIR} 
+                      <span><Checkbox 
+                        checked={isUser.EXCLUIR} 
                         value={7}  onChange={() => gatherData(7)} 
                         onClick={() => setIsUser({...isUser, EXCLUIR : !isUser.EXCLUIR})} /></span>
                       Excluir Usuário
                     </span>
                     <span> 
-                      <span><Checkbox checked={isUser.EDITAR} value={9} onChange={() => gatherData(9)} 
-                      onClick={() => setIsUser({...isUser, EDITAR : !isUser.EDITAR})} /></span>
+                      <span><Checkbox 
+                          checked={isUser.EDITAR} value={9} 
+                          onChange={() => gatherData(9)} 
+                          onClick={() => setIsUser({...isUser, EDITAR : !isUser.EDITAR})} /></span>
                         Editar Usuário
                     </span>
                   </div>
@@ -555,19 +561,22 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                           <div className="modal">
                             <div>
                               <span>
-                                <span><Checkbox value={25} checked={isCnpj.ADICIONAR} 
+                                <span><Checkbox value={25} 
+                                    checked={isCnpj.ADICIONAR} 
                                     onChange={() => gatherData(25)} 
                                     onClick={() => setIsCnpj({...isCnpj, ADICIONAR : !isCnpj.ADICIONAR})}/></span>
                                   Adicionar CNPJ
                               </span>
                               <span>
-                                <span><Checkbox value={24} checked={isCnpj.EXCLUIR} 
+                                <span><Checkbox value={24} 
+                                    checked={isCnpj.EXCLUIR} 
                                     onChange={() => gatherData(24)} 
                                     onClick={() => setIsCnpj({...isCnpj, EXCLUIR : !isCnpj.EXCLUIR})}/></span>
                                   Excluir CNPJ
                               </span>
                               <span>
-                                <span><Checkbox value={26} checked={isCnpj.EDITAR} 
+                                <span><Checkbox value={26} 
+                                    checked={isCnpj.EDITAR} 
                                     onChange={() => gatherData(26)} 
                                     onClick={() => setIsCnpj({...isCnpj, EDITAR : !isCnpj.EDITAR})}/></span>
                                   Editar CNPJ
@@ -595,15 +604,17 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                         <div className="modal">
                           <div>
                               <span>
-                                <span><Checkbox value={28} checked={isCertificate.ADICIONAR}
-                                  onChange={() => gatherData(28)} 
-                                  onClick={() => setIsCertificate({...isCertificate, ADICIONAR : !isCertificate.ADICIONAR})}/></span>
+                                <span><Checkbox value={28} 
+                                      checked={isCertificate.ADICIONAR}
+                                      onChange={() => gatherData(28)} 
+                                      onClick={() => setIsCertificate({...isCertificate, ADICIONAR : !isCertificate.ADICIONAR})}/></span>
                                     Adicionar Certificado
                               </span>
                               <span>
-                                <span><Checkbox value={27} checked={isCertificate.EXCLUIR}
-                                  onChange={() => gatherData(27)} 
-                                  onClick={() => setIsCertificate({...isCertificate, EXCLUIR : !isCertificate.EXCLUIR})}/></span>
+                                <span><Checkbox value={27} 
+                                      checked={isCertificate.EXCLUIR}
+                                      onChange={() => gatherData(27)} 
+                                      onClick={() => setIsCertificate({...isCertificate, EXCLUIR : !isCertificate.EXCLUIR})}/></span>
                                     Excluir Certificado
                               </span>
                           </div>

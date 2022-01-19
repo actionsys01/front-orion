@@ -14,7 +14,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState, useEffect, useMemo } from "react";
 import * as usuarios from "../../services/usuarios";
-
+import Modal from "./modal"
 interface IPerfil {
   id: number;
   nome: string;
@@ -38,22 +38,21 @@ export interface Perfil {
   atualizadoPorIp: string;
 }
 
-
-
 export default function Usuarios() {
   const [session] = useSession();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [email, setEmail] = useState<string>("");
-  const [senha, setSenha] = useState<string>("");
-  const [nome, setNome] = useState<string>("");
-  const [perfilId, setPerfilId] = useState<string>(""); 
-  const [empresaId, setEmpresaId] = useState<string>("")
+
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirm, setConfirm] = useState("")
+  const [nome, setNome] = useState("");
+  const [perfilId, setPerfilId] = useState(""); 
+  const [empresaId, setEmpresaId] = useState("")
+
   const { data } = useRequest<NewProfile[]>({ url: `/perfil/all/${empresaId}` });
   const [, setToast] = useToasts();
-  
- 
-  
+  const [ visibleModal, setVisibleModal ] = useState(false)
   
 
   useEffect(() => {
@@ -63,50 +62,34 @@ export default function Usuarios() {
     }
   }, []);
 
- 
- 
 
-   async function criarUsuario() {
+  async function criarUsuario() {
     setLoading(true);
     try {
-      if (session && router.query.nome) {
-        if (!nome || !perfilId) {
-          setLoading(false);
-          setToast({
-            text: "Informe todos os dados do usuário.",
-            type: "warning",
-          });
-          return;
-        }
-        // await usuarios.atualizar({
-        //   nome,
-        //   perfil: perfilId,
-        //   senha,
-        //   id: Number(router.query.id as string),
-        // });
-        setEmail("");
-        setSenha("");
-        setNome("");
-        router.back();
-        return;
-      }
-
-      if (!nome || !email || !senha || !perfilId) {
+      if (!nome || !email || !senha || !perfilId || !confirm) {
         setLoading(false);
         setToast({
-          text: "Informe todos os dados do usuário.",
+          text: "Informe todos os dados do usuário",
+          type: "warning",
+        });
+        return;
+      }
+      if(senha != confirm) {
+        setLoading(false);
+        setToast({
+          text: "Por favor confirme sua senha corretamente",
           type: "warning",
         });
         return;
       }
       if(session && !router.query.nome) {
-   await usuarios.cadastrar({ nome, email, senha, perfil_id: perfilId, empresa_id: empresaId })
+      await usuarios.cadastrar({ nome, email, senha, perfil_id: perfilId, empresa_id: empresaId })
       setLoading(false);
       setEmail("");
       setSenha("");
       setNome("");
       setPerfilId("")
-      router.back();
+      setVisibleModal(true)
       }
     } catch (error: any) {
       setLoading(false);
@@ -135,6 +118,7 @@ export default function Usuarios() {
         <title>Orion | Cadastrar Usuário </title>
       </Head>
       <BotaoVoltar />
+      {visibleModal && <Modal />}
       <Row justify="center" align="middle" style={{ height: "100%" }}>
         <div style={{ width: 400 }}>
           <Text h1 style={{ textAlign: "center", width: "100%", lineHeight: 1 }}>
@@ -143,12 +127,12 @@ export default function Usuarios() {
           <Select
             placeholder={"Tipo perfil"}
             value={perfilId} 
-             onChange={(value) => setPerfilId(value as string)}
+            onChange={(value) => setPerfilId(value as string)}
             //  initialValue={data?.[0].id.toString()}
             width={"100%"}
             style={{ maxWidth: "100%" }}
           >
-             {data?.map((item: any) => (
+              {data?.map((item: any) => (
               <Select.Option key={item.id} value={item.id.toString()}>
                 {item.nome}
               </Select.Option>
@@ -158,8 +142,8 @@ export default function Usuarios() {
           <Input
             placeholder="Nome"
             width="100%"
-             value={nome}
-             onChange={(e) => setNome(e.target.value)} 
+            value={nome}
+            onChange={(e) => setNome(e.target.value)} 
           />
           {!router.query.nome && (
             <>
@@ -168,7 +152,7 @@ export default function Usuarios() {
                 placeholder="Email"
                 width="100%"
                 value={email}
-                 onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </>
           )}
@@ -178,8 +162,15 @@ export default function Usuarios() {
               <Input.Password
                 placeholder="Senha"
                 width="100%"
-                 value={senha}
+                value={senha}
                 onChange={(e) => setSenha(e.target.value)}
+              />
+              <Spacer y={0.5} />
+              <Input.Password
+                placeholder="Confirme sua senha"
+                width="100%"
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
               />
             </>
           )}
