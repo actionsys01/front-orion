@@ -103,7 +103,7 @@ const companyModalHandler = useCallback(() => {setCompanyModal(!companyModal)}, 
                 <title>Orion | Perfil de Cadastro</title>
               </Head>
               <BotaoVoltar/>
-              <h2>Cadastro de Perfil{profileApp}</h2>
+              <h2>Cadastro de Perfil</h2>
               <ButtonStyle>
                 <button
                     type="button"
