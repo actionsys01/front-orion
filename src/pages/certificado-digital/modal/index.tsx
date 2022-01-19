@@ -76,15 +76,14 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
                 return
             }
         try {
-                setProgress(60)
+                setProgress(100)
                 await sendCertificate(certificate, {
                     company_id,
                     certificado: '',
                     data_inicio: pageData.initialDate,
                     data_vencimento: pageData.expiringDate,
                     senha: password,
-                });
-            setProgress(100)
+                })
             setToast({
                 text: "Documento enviado com sucesso",
                 type: "success"
@@ -103,7 +102,7 @@ const Modal = ({modalHandler, setUpload, pageData, setPageData }: ModalProps) =>
     
 
     return <>
-    <UploadModal>
+        <UploadModal>
             <div>
                 <span><X  onClick={() => modalHandler()}/></span>
                 <h4>Localize seu certificado</h4>
