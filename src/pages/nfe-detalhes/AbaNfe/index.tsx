@@ -111,7 +111,7 @@ export default function AbaNfe({ data }) {
 
       <Spacer />
       <InsideGrid  >
-        <Collapse.Group className="collapse"  style={{ padding: 0 }}>
+        <Collapse.Group className="collapse"  style={{ padding: 0}}>
           <Collapse title="Dados Emitentes" >
             <Grid.Container direction="row" >
               <Grid>
@@ -184,6 +184,7 @@ export default function AbaNfe({ data }) {
               </Grid>
             </Grid.Container>
           </Collapse>
+          
           <Collapse title="Dados Destinatário">
             <Grid.Container gap={2} direction="row">
               <Grid>

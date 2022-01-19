@@ -128,7 +128,44 @@ export interface CteXmlProps {
             status: string;
             descricao: string;
         };
-    
+        informacoes_normal_substituto: {
+        infCarga: {
+            vCarga: string;
+            proPred: string;
+            xOutCat: string;
+            infQ: [
+                {
+                    tpMed: string;
+                    cUnid: string;
+                    qCarga: string;
+                }
+                ]
+            | {
+                tpMed: string;
+                cUnid: string;
+                qCarga: string;
+                };
+        };
+        infDoc: {
+            infNFe: [
+                {
+                    chave: string;
+                    nDoc: string;
+                    serie: string;
+                    dEmi: string;
+                    vNF: string;
+                }
+                ]
+            | {
+                chave: string;
+                nDoc: string;
+                serie: string;
+                dEmi: string;
+                vNF: string;
+                };
+        };
+        };
+        
 }
 
 export interface AbaProps {
