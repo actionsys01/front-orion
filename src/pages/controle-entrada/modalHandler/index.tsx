@@ -30,8 +30,14 @@ const ModalHandler = ({modalStatus, modalVisibleHandler} : ModalProps) => {
     return <Modal>
         <div>
             <h5>
-                Não é possível {modalStatus} uma nota já {finishText}
+                Não é possível {modalStatus} uma nota já {finishText}.
             </h5>
+            <div>
+                <button
+                onClick={() => modalVisibleHandler()}>
+                    OK
+                </button>
+            </div>
         </div>
     </Modal>
 }

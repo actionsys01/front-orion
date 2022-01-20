@@ -15,7 +15,7 @@ import { useControlFilter } from "@contexts/ControlFilter"
 import RadioFilter from "@components/FilterRadio"
 import EntranceModal from "./modal"
 import { useSecurityContext } from "@contexts/security"
-
+import ModalHandler from "./modalHandler"
 
 interface Entrance {
     id: number
@@ -88,6 +88,7 @@ export default function ControleEntrada() {
     // Modal
     const [visibleModal, setVisibleModal] = useState(false)
     const [ modalStatus, setModalStatus ] = useState("")
+    const [ hModal, setHModal ] = useState(false)
     // filtros
     const [ filtersObject, setFiltersObject] = useState({})
 
@@ -99,6 +100,10 @@ export default function ControleEntrada() {
         const modalHandler = useCallback(() => {
             setVisibleModal(!visibleModal)
         }, [visibleModal])
+
+        const modalVisibleHandler = useCallback(() => {
+            setHModal(!hModal)
+        }, [hModal])
 
     
         const handleApproval = useCallback(async (id) => {
@@ -179,7 +184,7 @@ export default function ControleEntrada() {
                     entradas_notas: entranceKeys
                 })
                 setToast({
-                    text: "Plano atualizado com sucesso",
+                    text: "Motorista cadastrado com sucesso",
                     type: "success"
                 })
             } catch (error) {
@@ -237,7 +242,7 @@ export default function ControleEntrada() {
                         {
                             optionName: 'Autorizar',
                             onClick:  !entrancePermissions.AUTORIZAR ? () => '' : item.controle_entrada?.status === 2 ? () => handleFinished() 
-                            : () => handleApproval(item.controle_entrada.id),
+                            : item.controle_entrada?.status === 1 ? () => modalVisibleHandler() : () => handleApproval(item.controle_entrada.id),
                             className: entrancePermissions.AUTORIZAR ? 'able' : 'disabled'
                         },
                         {
@@ -247,7 +252,8 @@ export default function ControleEntrada() {
                         },
                         {
                             optionName: 'Cancelar',
-                            onClick: !entrancePermissions.CANCELAR ? () => '' : () => handleCancel(item.controle_entrada.id),
+                            onClick: !entrancePermissions.CANCELAR ? () => '' : item.controle_entrada?.status === 4 ? () => modalVisibleHandler() 
+                             : () => handleCancel(item.controle_entrada.id),
                             className: entrancePermissions.CANCELAR ? 'able' : 'disabled'
                         }
                     ]}/>,
@@ -290,6 +296,9 @@ export default function ControleEntrada() {
                             </button>
                     </div>
                 </BtnRow>
+                {hModal && <ModalHandler 
+                    modalVisibleHandler={modalVisibleHandler} 
+                    modalStatus={modalStatus}/>}
             <EntranceGrid>
                 <table>
                     <thead>
