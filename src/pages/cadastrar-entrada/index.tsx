@@ -325,21 +325,21 @@ export default function CadastrarEntrada() {
             <Section>
                 <div className="header">
                     <h6>Motorista / Entregador</h6>
-                            <BtnPattern 
-                            type="button"
-                            onClick={() => {setVisibleModal(true)}}>
-                                Cadastrar
-                            </BtnPattern>
                 </div>
                 <Inline>
                     <div>
                         <div>
                             <span>RG</span>
-                            <input type="text" value={driverId} onChange={(e) => setDriverId(e.target.value)} onBlur={(e) => findDriver(e.target.value)} />
+                            <input type="text" 
+                                value={driverId} 
+                                onChange={(e) => setDriverId(e.target.value)} 
+                                onBlur={(e) => findDriver(e.target.value)} />
                         </div>
                         <div>
                             <span >Nome</span>
-                            <input type="text" value={driver} onChange={(e) => setDriver(e.target.value)}/>
+                            <input type="text" 
+                                value={driver} 
+                                onChange={(e) => setDriver(e.target.value)}/>
                         </div>
                     </div>
                         </Inline>
@@ -347,11 +347,6 @@ export default function CadastrarEntrada() {
                 <Section>
                 <div className="header">
                     <h6>Veículos</h6>
-                    <BtnPattern
-                    type="button"
-                    onClick={() => setSecondModal(true)}>
-                        Cadastrar
-                    </BtnPattern>
                 </div>
                 <ModalContainer>
                     <div>

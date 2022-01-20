@@ -156,7 +156,7 @@ function getUserPermissions() {
 useEffect(() => {
   getUserPermissions()
 }, [permissions])
-// console.log(`ctePermissions`, nfePermissions)
+// console.log('entrancePermissions', entrancePermissions);
 
 
 
