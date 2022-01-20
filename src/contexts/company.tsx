@@ -29,7 +29,7 @@ const CompanyProvider:  React.FC = ({ children }: any) => {
             try {
                 const response = await companyRequest.getCertificate(Number(session?.usuario.empresa.id))
                 const data = response.data.certificado
-                console.log(`data CONTEXT`, data)
+                // console.log(`data CONTEXT`, data)
                 // const cnpjResponse = await companyRequest.getCnpj(Number(session?.usuario.empresa.id))
                 // const cnpjData = cnpjResponse.data.total
                 // console.log(`cnpjData`, cnpjData)

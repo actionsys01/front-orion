@@ -36,3 +36,21 @@ export const certificateState = {
     initialDate: new Date,
     expiringDate: new Date,
 }
+
+export const entranceInitials = {
+    driverId: "",
+    driver: "",
+    statusDescription: "",
+    vehicleLicense: "",
+    loadedWeight: 0,
+    emptyWeight: 0,
+    measure: "kG",
+    firstHaulage: "",
+    secondHaulage: "",
+    thirdHaulage: "",
+    arrivalDate: new Date,
+    arrivalTime: "",
+    exitDate: new Date,
+    exitTime: "",
+    status: 0
+}

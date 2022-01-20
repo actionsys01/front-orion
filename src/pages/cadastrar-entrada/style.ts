@@ -51,6 +51,10 @@ export const OneLineContainer = styled.div`
             max-width: 350px !important;
         }
     }
+
+    @media (max-width: 650px) {
+        flex-direction: column;
+    }
 `
 export const Inline = styled.div`
     border: 1px solid rgba(151, 151, 151, .45);
@@ -195,7 +199,7 @@ export const ModalContainer = styled.div`
 `
 
 export const BtnPattern = styled.button`
-        display: none;
+        /* display: none; */
         color: #fff;
         background-color: #1C496A;
         border: 1px solid #1C496A;

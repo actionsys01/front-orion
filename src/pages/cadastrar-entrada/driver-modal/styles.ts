@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ModalStyle = styled.div`
-    z-index: auto;
+    z-index: 1000;
     display: block;
     position: fixed;
     top: 0;
@@ -35,7 +35,6 @@ export const ModalStyle = styled.div`
         }
 
         h4 {
-            letter-spacing: 0.11rem;
             font-weight: 600;
             margin: 14px auto;
             vertical-align: middle;

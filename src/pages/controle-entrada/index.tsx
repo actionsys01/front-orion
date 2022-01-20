@@ -179,7 +179,7 @@ export default function ControleEntrada() {
                     entradas_notas: entranceKeys
                 })
                 setToast({
-                    text: "Motorista cadastrado com sucesso",
+                    text: "Plano atualizado com sucesso",
                     type: "success"
                 })
             } catch (error) {
@@ -247,7 +247,7 @@ export default function ControleEntrada() {
                         },
                         {
                             optionName: 'Cancelar',
-                            onClick: entrancePermissions.CANCELAR ? () => '' : () => handleCancel(item.controle_entrada.id),
+                            onClick: !entrancePermissions.CANCELAR ? () => '' : () => handleCancel(item.controle_entrada.id),
                             className: entrancePermissions.CANCELAR ? 'able' : 'disabled'
                         }
                     ]}/>,

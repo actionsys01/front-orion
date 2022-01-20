@@ -13,7 +13,7 @@ const EntranceModal = ({modalStatus, modalHandler, updateEntrance}: EntranceModa
     if(modalStatus === "fechado") {
         return <Modal> 
                     <div>
-                        <h4>Não é possível autorizar uma entrada concluída </h4>
+                        <h5>Não é possível autorizar uma entrada concluída </h5>
                         <div>
                             <button onClick={() =>  modalHandler()}>RETORNAR</button>
                             {/* <button onClick={() =>{ updateEntrance(), modalHandler()}} >CONFIRMAR</button> */}
@@ -23,7 +23,7 @@ const EntranceModal = ({modalStatus, modalHandler, updateEntrance}: EntranceModa
     }
     return <Modal> 
             <div>
-                <h4>Deseja realmente {modalStatus} a entrada?</h4>
+                <h5>Deseja realmente {modalStatus} a entrada?</h5>
                 <div>
                     <button onClick={() =>  modalHandler()}>CANCELAR</button>
                     <button onClick={() =>{ updateEntrance(), modalHandler()}} >CONFIRMAR</button>
