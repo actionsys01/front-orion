@@ -80,7 +80,7 @@ export default function resetarSenha() {
                 <h4>Seja Bem-Vindo(a) {companyFeatures?.nome}!</h4>
                 <h6>Por favor escolha a sua nova senha, esta senha será utilizada para acessar nosso aplicativo.</h6>
                 <Form>
-                    <Input
+                    <Input.Password
                         type="password"
                         size="large"
                         placeholder="Senha"
@@ -90,7 +90,7 @@ export default function resetarSenha() {
                     />
 
 
-                    <Input
+                    <Input.Password
                         type="password"
                         size="large"
                         placeholder="Confirmar senha"

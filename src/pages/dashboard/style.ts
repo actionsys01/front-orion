@@ -101,7 +101,7 @@ export const InfoContainer = styled.div`
       border: none;
       background-color: transparent;
       resize: none;
-      min-width: 280px;
+      min-width: 365px;
     }
 
     svg {
