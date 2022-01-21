@@ -51,13 +51,13 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
       }, [])
 
       async function getProfileId (id: number) {
-        const response = await api.get(`/perfil/search?profile_id=${id}`)
+        const response = await perfil.getProfileById(id)
         const profile = response.data.permissoes
         const permissions =  profile.map((item: any) => item.id)
         setCopiedPermissions(permissions)
       }
 
-
+      console.log('copiedPermissions', copiedPermissions);
 
        function copiar({ nome,
         descricao} : Omit<IPerfilAplicacao, "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp" | "id"> ) {
