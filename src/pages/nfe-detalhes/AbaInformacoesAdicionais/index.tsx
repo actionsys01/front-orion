@@ -37,7 +37,6 @@ interface IProps {
 export default function AbaInformacoesAdicionais({ data }) {
   return (
     <>
-      <DadosGeraisNfe data={data} />
       <BackgroundCinza>
         <Text h3>Informações Adicionais </Text>
         <Grid.Container gap={2} direction="row">

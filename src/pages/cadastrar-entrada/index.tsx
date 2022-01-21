@@ -331,6 +331,7 @@ export default function CadastrarEntrada() {
                         <div>
                             <span>RG</span>
                             <input type="text" 
+                                accept='1,4'
                                 value={driverId} 
                                 onChange={(e) => setDriverId(e.target.value)} 
                                 onBlur={(e) => findDriver(e.target.value)} />

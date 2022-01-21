@@ -391,6 +391,9 @@ export const ProgressBarStyle = styled.div`
             }
             button {
                     cursor: pointer;
+                    background-color: #1C496A;
+                    color: #fff;
+                    padding: .3rem;
                 }
 `
 

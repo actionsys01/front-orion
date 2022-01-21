@@ -5,7 +5,7 @@ import DadosGeraisNfe from "../DadosGeraisNfe";
 import { Titulo, GridAlinhaTextoCentro } from "../styled";
 import { BackgroundCinza } from "@components/BackgroundCinza/styled";
 import { Tag } from "@geist-ui/react-icons";
-import { nfeXmlProps } from "@services/nfe/dtos/nfeXml"
+import { NfeProps } from "@services/nfe/dtos/nfeXml"
 
 interface Produto {
   cProd: string;
@@ -119,7 +119,6 @@ export default function AbaProdutosServicos({ data }) {
   
   return (
     <>
-      <DadosGeraisNfe data={data} />
       <Text h3>Dados dos Produtos e Serviços </Text>
       {produtos.map((produto, i) => (
         <Collapse.Group key={i}>

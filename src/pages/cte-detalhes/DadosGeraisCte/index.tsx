@@ -11,7 +11,7 @@ interface IProps {
 export default function DadosGeraisCte({ data }: IProps) {
   const router = useRouter();
   return <>
-  <CardStyle>
+      <CardStyle>
         <div style={{backgroundColor: "#fff"}}>
           <h3>Dados Gerais</h3>
           <div>

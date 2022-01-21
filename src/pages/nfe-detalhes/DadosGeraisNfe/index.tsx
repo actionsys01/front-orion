@@ -1,40 +1,39 @@
-import { Grid as GridGeist, Spacer, Text } from "@geist-ui/react";
 import { useRouter } from "next/router";
-import { GridAlinhaTextoCentro, Titulo } from "../styled";
-import { General } from "./styles";
+import {  CardStyle } from "@styles/vizualizar";
+import { NfeXmlDataProps } from "@services/nfe/dtos/nfeXml"
 
-interface IProps {
-  data: {
-    informacoes_nfe: {
-      nNF: string;
-    };
-    versao: string;
-  };
-}
-export default function DadosGeraisNfe({ data }: IProps) {
+// interface IProps {
+//   data: {
+//     informacoes_nfe: {
+//       nNF: string;
+//     };
+//     versao: string;
+//   };
+// }
+export default function DadosGeraisNfe({ data }: NfeXmlDataProps) {
   const router = useRouter();
-  return (
-    <>
-      <General>
-        <Text h3>Dados gerais </Text>
-        <GridGeist.Container gap={2}>
-          <GridGeist>
-            <Titulo h6>Chave de acesso </Titulo>
-            <Text small style={{ wordBreak: "break-word" }}>
-              {router.query?.chave_nota}
-            </Text>
-          </GridGeist>
-          <GridAlinhaTextoCentro>
-            <Titulo>Número </Titulo>
-            <Text small>{data?.informacoes_nfe?.nNF}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Versão XML</Titulo>
-            <Text small>{data?.versao}</Text>
-          </GridAlinhaTextoCentro>
-        </GridGeist.Container>
-      </General>
-      <Spacer />
+
+  return <>
+      <CardStyle>
+        <div style={{backgroundColor: "#fff"}}>
+          <h3>Dados Gerais</h3>
+          <div>
+            <div>
+              <h5>Chave de acesso</h5>
+              <h6>{router.query?.chave_nota}</h6>
+            </div>
+            <div>
+              <h5>Número</h5>
+              <h6>{data?.informacoes_nfe?.nNF}</h6>
+            </div>
+            <div>
+              <h5>Versão XML</h5>
+              <h6>{data?.versao}</h6>
+            </div>
+          </div>
+        </div>
+      </CardStyle>
+      
     </>
-  );
+  
 }

@@ -97,7 +97,6 @@ export default function AbaNotaReferenciada({ data }) {
 
   return (
     <>
-      <DadosGeraisNfe data={data} />
       <Text h3>Notas Referenciadas </Text>
       {notasReferenciadas.length !== 0 && (
         <Grid>

@@ -57,7 +57,6 @@ export default function AbaTransporte({ data }) {
   
   return (
     <>
-      <DadosGeraisNfe data={data} />
       <BackgroundCinza>
         <Text h3>Dados do Transporte </Text>
         <GridGeist.Container gap={2}>
