@@ -86,7 +86,6 @@ export default function AbaRastro({ data }) {
 
   return (
     <>
-      <DadosGeraisNfe data={data} />
       <Text h3>Rastros </Text>
       {rastros && (
         <Grid>

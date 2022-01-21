@@ -1,10 +1,8 @@
-import { Collapse, Grid, Spacer, Text } from "@geist-ui/react";
+import { useMemo, useState } from 'react'
 import { useRouter } from "next/router";
-import { useMemo } from 'react'
-import DadosGeraisNfe from "../DadosGeraisNfe";
-import { GridAlinhaTextoCentro, Titulo } from "../styled";
-import { Container, InsideGrid } from "./style";
+import {  CardStyle, DadosStyle, LineStyle } from "@styles/vizualizar";
 import {format} from "date-fns"
+import { ChevronDown, ChevronUp } from '@geist-ui/react-icons'
 export interface IProps {
   data: {
     informacoes_nfe: {
@@ -62,7 +60,8 @@ export interface IProps {
 }
 export default function AbaNfe({ data }) {
   const router = useRouter();
-
+  const [ modalEmitente, setModalEmitente ] = useState(false)
+  const [ modalDestinatário, setModalDestinatario ] = useState(false)
 
   const dataEmissao = useMemo(() => {
     let dataEmissao 
@@ -78,202 +77,208 @@ export default function AbaNfe({ data }) {
 
   return (
     <>
-      <DadosGeraisNfe data={data} />
-      <Container>
-        <Text h3>Dados NF-e </Text>
-        <Grid.Container gap={2}>
-          <GridAlinhaTextoCentro>
-            <Titulo>Modelo </Titulo>
-            <Text small>{data?.informacoes_nfe?.mod}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Série</Titulo>
-            <Text small>{data?.informacoes_nfe?.serie}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Número</Titulo>
-            <Text small>{data?.informacoes_nfe?.nNF}</Text>
-          </GridAlinhaTextoCentro>
-          <Grid>
-            <Titulo>Data de emissão</Titulo>
-            <Text small>{dataEmissao}</Text>
-          </Grid>
-          <Grid>
-            <Titulo>Data de saída/entrada</Titulo>
-            <Text small>{data?.informacoes_nfe?.dSaiEnt}</Text>
-          </Grid>
-          <GridAlinhaTextoCentro>
-            <Titulo>Valor total NF-e</Titulo>
-            <Text small>{data?.total?.ICMSTot.vNF}</Text>
-          </GridAlinhaTextoCentro>
-        </Grid.Container>
-      </Container>
-
-      <Spacer />
-      <InsideGrid  >
-        <Collapse.Group className="collapse"  style={{ padding: 0}}>
-          <Collapse title="Dados Emitentes" >
-            <Grid.Container direction="row" >
-              <Grid>
-                <Titulo>Razão social</Titulo>
-                <Text small>{data?.emitente?.xNome}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>Nome fantasia</Titulo>
-                <Text small>{data?.emitente?.xFant}</Text>
-              </Grid>
-            </Grid.Container>
-            <Spacer />
-            <Grid.Container gap={2} direction="row">
-              <Grid>
-                <Titulo>CNPJ </Titulo>
-                <Text small>{data?.emitente?.CNPJ}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>Inscrição Estadual</Titulo>
-                <Text small>{data?.emitente?.IE}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>Inscrição Munincipal</Titulo>
-                <Text small>{data?.emitente?.IM}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>CNAE Fiscal</Titulo>
-                <Text small>{data?.emitente?.CNAE}</Text>
-              </Grid>
-            </Grid.Container>
-            <Spacer />
-            <Grid.Container gap={2} direction="row">
-              <Grid>
-                <Titulo>Telefone</Titulo>
-                <Text small>{data?.emitente?.enderEmit?.fone}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>CEP</Titulo>
-                <Text small>{data?.emitente?.enderEmit?.CEP}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>UF</Titulo>
-                <Text small>{data?.emitente?.enderEmit?.UF}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>País</Titulo>
-                <Text small>{data?.emitente?.enderEmit?.xPais}</Text>
-              </Grid>
-            </Grid.Container>
-            <Spacer />
-            <Grid.Container gap={2} direction="row">
-              <Grid>
-                <Titulo>Endereço </Titulo>
-                <Text small>{data?.emitente?.enderEmit?.xLgr}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>Número</Titulo>
-                <Text small>{data?.emitente?.enderEmit?.nro}</Text>
-              </Grid>
-            </Grid.Container>
-            <Spacer />
-            <Grid.Container gap={2} direction="row">
-              <Grid>
-                <Titulo>Bairro</Titulo>
-                <Text small>{data?.emitente?.enderEmit?.xBairro}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>Município</Titulo>
-                <Text small>{data?.emitente?.enderEmit?.xMun}</Text>
-              </Grid>
-            </Grid.Container>
-          </Collapse>
-          
-          <Collapse title="Dados Destinatário">
-            <Grid.Container gap={2} direction="row">
-              <Grid>
-                <Titulo>Razão social</Titulo>
-                <Text small>{data?.destinatario?.xNome}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>Nome fantasia</Titulo>
-                <Text small>{data?.destinatario?.xFant}</Text>
-              </Grid>
-            </Grid.Container>
-            <Spacer />
-            <Grid.Container gap={2} direction="row">
-              <Grid>
-                <Titulo>CNPJ </Titulo>
-                <Text small>{data?.destinatario?.CNPJ}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>Inscrição Estadual</Titulo>
-                <Text small>{data?.destinatario?.IE}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>Inscrição Munincipal</Titulo>
-                <Text small>{data?.destinatario?.IM}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>CNAE Fiscal</Titulo>
-                <Text small>{data?.destinatario?.CNAE}</Text>
-              </Grid>
-            </Grid.Container>
-            <Spacer />
-
-            <Grid.Container gap={2} direction="row">
-              <Grid>
-                <Titulo>Telefone</Titulo>
-                <Text small>{data?.destinatario?.enderDest?.fone}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>CEP</Titulo>
-                <Text small>{data?.destinatario?.enderDest?.CEP}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>UF</Titulo>
-                <Text small>{data?.destinatario?.enderDest?.UF}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>País</Titulo>
-                <Text small>{data?.destinatario?.enderDest?.xPais}</Text>
-              </Grid>
-            </Grid.Container>
-            <Spacer />
-            <Grid.Container gap={2} direction="row">
-              <Grid>
-                <Titulo>Endereço </Titulo>
-                <Text small>{data?.destinatario?.enderDest?.xLgr}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>Número</Titulo>
-                <Text small>{data?.destinatario?.enderDest?.nro}</Text>
-              </Grid>
-            </Grid.Container>
-            <Spacer />
-            <Grid.Container gap={2} direction="row">
-              <Grid>
-                <Titulo>Bairro</Titulo>
-                <Text small>{data?.destinatario?.enderDest?.xBairro}</Text>
-              </Grid>
-              <Grid>
-                <Titulo>Município</Titulo>
-                <Text small>{data?.destinatario?.enderDest?.xMun}</Text>
-              </Grid>
-            </Grid.Container>
-          </Collapse>
-        </Collapse.Group>
-      </InsideGrid>
-      <Spacer />
-      <Container>
-        <Text h3>Situação Atual</Text>
-        <Grid.Container gap={2}>
-          <GridAlinhaTextoCentro>
-            <Titulo>Status Sefaz </Titulo>
-            <Text small>{router.query.status_sefaz}</Text>
-          </GridAlinhaTextoCentro>
-          <GridAlinhaTextoCentro>
-            <Titulo>Descrição Status</Titulo>
-            <Text small>{router.query.desc_status_sefaz}</Text>
-          </GridAlinhaTextoCentro>
-        </Grid.Container>
-      </Container>
+      <CardStyle>
+        <div>
+        <h3>Dados NF-e </h3>
+        <div>
+          <div>
+            <h5>Modelo </h5>
+            <h6>{data?.informacoes_nfe?.mod}</h6>
+          </div>
+          <div>
+            <h5>Série</h5>
+            <h6>{data?.informacoes_nfe?.serie}</h6>
+          </div>
+          <div>
+            <h5>Número</h5>
+            <h6>{data?.informacoes_nfe?.nNF}</h6>
+          </div>
+          <div>
+            <h5>Data de emissão</h5>
+            <h6>{dataEmissao}</h6>
+          </div>
+          <div>
+            <h5>Data de saída/entrada</h5>
+            <h6>{data?.informacoes_nfe?.dSaiEnt}</h6>
+          </div>
+          <div>
+            <h5>Valor total NF-e</h5>
+            <h6>{data?.total?.ICMSTot.vNF}</h6>
+          </div>
+        </div>
+        </div>
+      </CardStyle>
+      <DadosStyle>
+        <div>
+          <div className="header"
+          onClick={() => setModalEmitente(!modalEmitente)}>
+            <h3>Dados Emitente</h3>
+            {!modalEmitente ? <ChevronDown /> : <ChevronUp />}
+          </div>
+          {modalEmitente && 
+          <>
+            <LineStyle>
+              <div>
+                <h5>Razão social</h5>
+                <h6>{data?.emitente?.xNome}</h6>
+              </div>
+              <div>
+                <h5>Nome fantasia</h5>
+                <h6>{data?.emitente?.xFant}</h6>
+              </div>
+            </LineStyle>
+            <LineStyle>
+              <div>
+                <h5>CNPJ </h5>
+                <h6>{data?.emitente?.CNPJ}</h6>
+              </div>
+              <div>
+                <h5>Inscrição Estadual</h5>
+                <h6>{data?.emitente?.IE}</h6>
+              </div>
+              <div>
+                <h5>Inscrição Munincipal</h5>
+                <h6>{data?.emitente?.IM}</h6>
+              </div>
+              <div>
+                <h5>CNAE Fiscal</h5>
+                <h6>{data?.emitente?.CNAE}</h6>
+              </div>
+            </LineStyle>
+            <LineStyle>
+              <div>
+                <h5>Telefone</h5>
+                <h6>{data?.emitente?.enderEmit?.fone}</h6>
+              </div>
+              <div>
+                <h5>CEP</h5>
+                <h6>{data?.emitente?.enderEmit?.CEP}</h6>
+              </div>
+              <div>
+                <h5>UF</h5>
+                <h6>{data?.emitente?.enderEmit?.UF}</h6>
+              </div>
+              <div>
+                <h5>País</h5>
+                <h6>{data?.emitente?.enderEmit?.xPais}</h6>
+              </div>
+            </LineStyle>
+            <LineStyle>
+              <div>
+                <h5>Endereço </h5>
+                <h6>{data?.emitente?.enderEmit?.xLgr}</h6>
+              </div>
+              <div>
+                <h5>Número</h5>
+                <h6>{data?.emitente?.enderEmit?.nro}</h6>
+              </div>
+            </LineStyle>
+            <LineStyle>
+              <div>
+                <h5>Bairro</h5>
+                <h6>{data?.emitente?.enderEmit?.xBairro}</h6>
+              </div>
+              <div>
+                <h5>Município</h5>
+                <h6>{data?.emitente?.enderEmit?.xMun}</h6>
+              </div>
+            </LineStyle>
+          </>}
+        </div>
+      </DadosStyle>
+      <DadosStyle>
+        <div>
+          <div className="header"
+          onClick={() => setModalDestinatario(!modalDestinatário)}>
+            <h3>Dados Destinatário</h3>
+            {!modalDestinatário ? <ChevronDown /> : <ChevronUp />}
+          </div>
+          {modalDestinatário && 
+          <>
+          <LineStyle>
+            <div>
+              <h5>Razão social</h5>
+              <h6>{data?.destinatario?.xNome}</h6>
+            </div>
+            <div>
+              <h5>Nome fantasia</h5>
+              <h6>{data?.destinatario?.xFant}</h6>
+            </div>
+          </LineStyle>
+          <LineStyle>
+            <div>
+              <h5>CNPJ </h5>
+              <h6>{data?.destinatario?.CNPJ}</h6>
+            </div>
+            <div>
+              <h5>Inscrição Estadual</h5>
+              <h6>{data?.destinatario?.IE}</h6>
+            </div>
+            <div>
+              <h5>Inscrição Munincipal</h5>
+              <h6>{data?.destinatario?.IM}</h6>
+            </div>
+            <div>
+              <h5>CNAE Fiscal</h5>
+              <h6>{data?.destinatario?.CNAE}</h6>
+            </div>
+          </LineStyle>
+          <LineStyle>
+            <div>
+              <h5>Telefone</h5>
+              <h6>{data?.destinatario?.enderDest?.fone}</h6>
+            </div>
+            <div>
+              <h5>CEP</h5>
+              <h6>{data?.destinatario?.enderDest?.CEP}</h6>
+            </div>
+            <div>
+              <h5>UF</h5>
+              <h6>{data?.destinatario?.enderDest?.UF}</h6>
+            </div>
+            <div>
+              <h5>País</h5>
+              <h6>{data?.destinatario?.enderDest?.xPais}</h6>
+            </div>
+          </LineStyle>
+          <LineStyle>
+            <div>
+              <h5>Endereço </h5>
+              <h6>{data?.destinatario?.enderDest?.xLgr}</h6>
+            </div>
+            <div>
+              <h5>Número</h5>
+              <h6>{data?.destinatario?.enderDest?.nro}</h6>
+            </div>
+          </LineStyle>
+          <LineStyle>
+            <div>
+              <h5>Bairro</h5>
+              <h6>{data?.destinatario?.enderDest?.xBairro}</h6>
+            </div>
+            <div>
+              <h5>Município</h5>
+              <h6>{data?.destinatario?.enderDest?.xMun}</h6>
+            </div>
+          </LineStyle>
+          </>}
+        </div>
+      </DadosStyle>
+      <CardStyle>
+        <div> 
+        <h3>Situação Atual</h3>
+          <div>
+            <div>
+              <h5>Status Sefaz </h5>
+              <h6>{router.query.status_sefaz}</h6>
+            </div>
+            <div>
+              <h5>Descrição Status</h5>
+              <h6>{router.query.desc_status_sefaz}</h6>
+            </div>
+          </div> 
+        </div>
+      </CardStyle>
     </>
   );
 }

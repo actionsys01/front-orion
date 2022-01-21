@@ -1,4 +1,4 @@
-export interface nfeXmlProps {
+export interface NfeProps {
      informacoes_nfe: {
             mod: string;
             serie: string;
@@ -177,4 +177,8 @@ export interface nfeXmlProps {
               xCont: string;
             };
           };
+}
+
+export interface NfeXmlDataProps {
+  data: NfeProps
 }

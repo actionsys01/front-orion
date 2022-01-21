@@ -38,7 +38,6 @@ export default function AbaCobranca({ data }) {
 
   return (
     <>
-      <DadosGeraisNfe data={data} />
       <Text h3>Duplicatas </Text>
       {cobrancas.length !== 0 && (
         <Grid>

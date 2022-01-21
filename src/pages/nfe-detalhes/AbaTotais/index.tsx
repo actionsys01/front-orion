@@ -40,7 +40,6 @@ interface IProps {
 export default function AbaTotais({ data }) {
   return (
     <>
-      <DadosGeraisNfe data={data} />
       <BackgroundCinza>
         <Text h3>Totais </Text>
         <GridGeist.Container gap={2}>
