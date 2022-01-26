@@ -3,7 +3,7 @@
     "target": "esnext",
     "module": "esnext",
     "jsx": "preserve",
-    "lib": ["dom", "es2017", "ES2019"],
+    "lib": ["dom", "es2017", "ES2019", "esnext.string"],
     "moduleResolution": "node",
     "allowJs": true,
     "noEmit": true,
