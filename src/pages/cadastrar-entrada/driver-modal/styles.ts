@@ -117,7 +117,6 @@ export const InputStyles = styled.div`
             max-width: 450px;
             width: 100%;
             height: 28px;
-            letter-spacing: .125rem;
             border: 1px solid #eaeaea;
             padding-inline-start: .625rem;
         }
