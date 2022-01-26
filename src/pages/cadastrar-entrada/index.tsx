@@ -214,7 +214,7 @@ export default function CadastrarEntrada() {
                 })
             })
         }
-        console.log("ally",allData)
+        // console.log("ally",allData)
         return allData
     }, [nota])
 
@@ -260,19 +260,27 @@ export default function CadastrarEntrada() {
             })
         }
 
+    const validateDriverId = useCallback((rg: string) => {
+        // console.log({ rg, test: rg.replaceAll(/[0-9]*/g, '') });
+        const stringFormatted = rg.replaceAll(/a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|y|z|\W*/g, '')
+        if (stringFormatted.length <= 11) {
+            setDriverId(stringFormatted)
+        }
+    },[driverId])
+
         async function findDriver(rg : string) {
-            if(rg.length > 6) {
-                 try {
+            console.log('rg no focus', rg);
+            if(rg.length >= 6) {
+                try {
                 const response = await entranceReq.getDriverById(rg)
                 const data = response.data.nome
                 // console.log("motorista",data)
                 setDriver(data)
                 return data
-            } catch (error) {
+                } catch (error) {
                 setVisibleModal(true)
+                }
             }
-            }
-           
         }
 
         async function findVehicle(placa : string) {
@@ -331,9 +339,9 @@ export default function CadastrarEntrada() {
                         <div>
                             <span>RG</span>
                             <input type="text" 
-                                accept='1,4'
-                                value={driverId} 
-                                onChange={(e) => setDriverId(e.target.value)} 
+                                value={driverId}
+                                placeholder='Apenas números ou X'
+                                onChange={(e) => validateDriverId(e.target.value)} 
                                 onBlur={(e) => findDriver(e.target.value)} />
                         </div>
                         <div>

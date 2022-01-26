@@ -184,7 +184,7 @@ export default function ControleEntrada() {
                     entradas_notas: entranceKeys
                 })
                 setToast({
-                    text: "Motorista cadastrado com sucesso",
+                    text: "Atualização concluída com sucesso",
                     type: "success"
                 })
             } catch (error) {
