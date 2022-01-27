@@ -18,6 +18,7 @@ import * as entranceReq from "@services/controle-entrada"
 import DriverModal from "./driver-modal"
 import VehicleModal from "./vehicle-modal"
 import FinishModal from "./finish-modal"
+import { entranceInitials } from "@utils/initial-states"
 
 interface Props  {
     company_id: number | undefined;
@@ -34,6 +35,9 @@ interface Props  {
 
 
 export default function CadastrarEntrada() {
+    const [, setToast] = useToasts();
+    const [session] = useSession();
+    const company_id = Number(session?.usuario.empresa.id);
     // visibilidade de modais
     const [visible, setVisible] = useState<boolean>(false);
     const [visibleModal, setVisibleModal] = useState(false);
@@ -42,36 +46,21 @@ export default function CadastrarEntrada() {
     // nota 
     const key: any = useRef(null)
     const [nota, setNota] = useState<INfeDto[] | CteProps[]>([])
-    const [, setToast] = useToasts();
-    const [session] = useSession();
-    const company_id = Number(session?.usuario.empresa.id);
     const [ableInput, setAbleInput] = useState(true)
-    // states dos inputs
     const [entranceKeys, setEntranceKeys] = useState<string[]>([]);
-    const [driverId, setDriverId] = useState("");
-    const [driver, setDriver] = useState("");
-    const [statusDescription, setStatusDescription] = useState("");
-    const [vehicleLicense, setVehicleLicense] = useState("");
-    const [loadedWeight, setLoadedWeight] = useState(0);
-    const [emptyWeight, setEmptyWeight] = useState(0);
-    const [measure, setMeasure] = useState("Kg");
-    const [firstHaulage, setFirstHaulage] = useState("");
-    const [secondHaulage, setSecondHaulage] = useState("");
-    const [thirdHaulage, setThirdHaulage] = useState("");
+    const [entrance, setEntrance] = useState({...entranceInitials})
+    const [ status, setStatus] = useState(0)
+
     const [arrivalDate, setArrivalDate] = useState(new Date)
     const [arrivalTime, setArrivalTime] = useState("")
     const [exitDate, setExitDate] = useState<Date | null>()
     const [exitTime, setExitTime] = useState("")
-    const [ status, setStatus] = useState(0)
 
     const [dataEntrada, setDataEntrada] = useState("")
     const [ hasChanged, setHasChanged] = useState(false)
     const [dataSaida, setDataSaida] = useState("")
     const [ hasSChanged, setHasSChanged] = useState(false)
     const [ entranceFinished, setEntranceFinished ] = useState(false)
-
-
-
 
     const modalHandler = useCallback(() => {
         setVisibleModal(!visibleModal)
@@ -86,20 +75,48 @@ export default function CadastrarEntrada() {
     }, [thirdModal])
 
     
-
-
     // input de chave de acesso
     const getNfe = useCallback(async (e) => {
         e.preventDefault()
-        // console.log("e", key.current.value )
-        // console.log(`key.current.value.length`, key.current.value.length)
-        // nova func
-        if(key.current.value.startsWith("NFe") || key.current.value.startsWith("CTe") && key.current.value.length === 47){
-            // console.log("com tag")
-                const notaPura =  key.current.value.slice(3, 47)
-                // console.log(`notaPura`, notaPura)
-                // console.log(notaPura.substring(20, 22) )
-                if(Number(notaPura.substring(20,22)) === 57 ) {
+        const keyCheck =  entranceKeys.find((value) => value.toString() == key.current.value.toString())
+        if (!keyCheck) {
+            if(key.current.value.startsWith("NFe") || key.current.value.startsWith("CTe") && key.current.value.length === 47){
+                    const notaPura =  key.current.value.slice(3, 47)
+                    if(Number(notaPura.substring(20,22)) === 57 ) {
+                        try {
+                            const response = await getCteById(key.current.value, company_id)
+                            setNota(state =>[...state, response.data])
+                            setEntranceKeys(state =>[...state, key.current.value])
+                            setToast({
+                                text: "Nota localizada com sucesso",
+                                type: "success"
+                            });
+                        } catch (error) {
+                            console.log(error)
+                            setToast({
+                                text: "Houve um problema, CT-e não localizado",
+                                type: "warning"
+                            });
+                        }
+                    } else {
+                        try {
+                            const response = await getNfeById(key.current.value, company_id);
+                            setNota(state =>[...state, response.data])
+                            setEntranceKeys(state =>[...state, key.current.value])
+                            setToast({
+                                text: "Nota localizada com sucesso",
+                                type: "success"
+                            });
+                        } catch (error) {
+                            console.log(error)
+                            setToast({
+                                text: "Houve um problema, NF-e não localizado",
+                                type: "warning"
+                            });
+                        }
+                    }
+            } else if (key.current.value.length === 44) {
+                if(Number(key.current.value.substring(20,22)) === 57 ) {
                     try {
                         const response = await getCteById(key.current.value, company_id)
                         setNota(state =>[...state, response.data])
@@ -115,10 +132,9 @@ export default function CadastrarEntrada() {
                             type: "warning"
                         });
                     }
-                } else {
+                } else if(Number(key.current.value.substring(20,22)) === 55) {
                     try {
                         const response = await getNfeById(key.current.value, company_id);
-                        // console.log(response.data)
                         setNota(state =>[...state, response.data])
                         setEntranceKeys(state =>[...state, key.current.value])
                         setToast({
@@ -132,61 +148,33 @@ export default function CadastrarEntrada() {
                             type: "warning"
                         });
                     }
-                }
-        } else if (key.current.value.length === 44) {
-            if(Number(key.current.value.substring(20,22)) === 57 ) {
-                try {
-                    const response = await getCteById(key.current.value, company_id)
-                    // console.log(`response cte nova req`, response.data)
-                    setNota(state =>[...state, response.data])
-                    setEntranceKeys(state =>[...state, key.current.value])
+                } else {
                     setToast({
-                        text: "Nota localizada com sucesso",
-                        type: "success"
-                    });
-                } catch (error) {
-                    console.log(error)
-                    setToast({
-                        text: "Houve um problema, por favor tente novamente CTE",
+                        text: "Chave inválida, por favor tente novamente",
                         type: "warning"
                     });
                 }
-            } else if(Number(key.current.value.substring(20,22)) === 55) {
-                try {
-                    const response = await getNfeById(key.current.value, company_id);
-                    // console.log(response.data)
-                    setNota(state =>[...state, response.data])
-                    setEntranceKeys(state =>[...state, key.current.value])
-                    setToast({
-                        text: "Nota localizada com sucesso",
-                        type: "success"
-                    });
-                } catch (error) {
-                    console.log(error)
-                    setToast({
-                        text: "Houve um problema, por favor tente novamente",
-                        type: "warning"
-                    });
-                }
+            } else if(key.current.value.startsWith("NFe") || key.current.value.startsWith("CTe") && key.current.value.length != 47){
+                setToast({
+                    text: "Chave inválida, a chave deve conter 47 caracteres",
+                    type: "warning"
+                });
             } else {
                 setToast({
                     text: "Chave inválida, por favor tente novamente",
                     type: "warning"
                 });
             }
-        } else if(key.current.value.startsWith("NFe") || key.current.value.startsWith("CTe") && key.current.value.length != 47){
-            setToast({
-                text: "Chave inválida, a chave deve conter 47 caracteres",
-                type: "warning"
-            });
+            e.target.reset()
+            return
         } else {
             setToast({
-                text: "Chave inválida, por favor tente novamente",
+                text: "Chave já inserida",
                 type: "warning"
             });
         }
         e.target.reset()
-    }, [] )
+    }, [entranceKeys] )
 
 
     const gatheredData = useMemo(() => {
@@ -207,10 +195,10 @@ export default function CadastrarEntrada() {
                     nota: (item.nota || item.informacoes_cte.nCT),
                     serie: (item.serie || item.informacoes_cte.serie),
                     emissionDate: (!item.informacoes_cte ? format(new Date(item.dt_hr_emi), "dd/MM/yyyy") : (format(new Date(item.informacoes_cte.dhEmi), "dd/MM/yyyy") || format(new Date(item.informacoes_cte.dEmi), "dd/MM/yyyy"))),
-                    // arrivalDate: format(new Date(item.portaria_status_ent_dt_hr), "dd/MM/yyyy"),
-                    // arrivalTime: (item.portaria_status_ent_dt_hr).toString().slice(11, 16),
-                    // exitDate: (item.portaria_status_sai_dt_hr === null ? "" : format(new Date(item?.portaria_status_sai_dt_hr), "dd/MM/yyyy")),
-                    // exitTime: (item?.portaria_status_sai_dt_hr)?.toString().slice(11, 16),
+                    arrivalDate: item.portaria_status_ent_dt_hr ? format(new Date(item.portaria_status_ent_dt_hr), "dd/MM/yyyy") : "",
+                    arrivalTime: item.portaria_status_ent_dt_hr ? (item.portaria_status_ent_dt_hr).toString().slice(11, 16) : "",
+                    exitDate: item.portaria_status_sai_dt_hr ? format(new Date(item?.portaria_status_sai_dt_hr), "dd/MM/yyyy") : "",
+                    exitTime: item?.portaria_status_sai_dt_hr ? (item?.portaria_status_sai_dt_hr)?.toString().slice(11, 16) : "",
                 })
             })
         }
@@ -229,20 +217,20 @@ export default function CadastrarEntrada() {
         
             try {
                 await entranceReq.create({
-                    rg_motorista: driverId,
-                    placa_principal: vehicleLicense,
+                    rg_motorista: entrance.driverId,
+                    placa_principal: entrance.vehicleLicense,
                     status: status,
-                    descricao_status: statusDescription,
+                    descricao_status: entrance.statusDescription,
                     empresa: Number(session?.usuario.empresa.id),
                     entradas_notas: entranceKeys,
-                    peso_cheio: loadedWeight,
-                    peso_vazio: emptyWeight,
-                    unidade_medida: measure,
+                    peso_cheio: entrance.loadedWeight,
+                    peso_vazio: entrance.emptyWeight,
+                    unidade_medida: entrance.measure,
                     data_entrada: hasChanged ? new Date(`${anoE}-${mesE}-${diaE} ${horaE}:${minutoE}`) : arrivalDate,
                     data_saida:  hasSChanged ? new Date(`${anoS}-${mesS}-${diaS} ${horaS}:${minutoS}`) : exitDate,
-                    placa_reboque1: firstHaulage,
-                    placa_reboque2: secondHaulage,
-                    placa_reboque3: thirdHaulage
+                    placa_reboque1: entrance.firstHaulage,
+                    placa_reboque2: entrance.secondHaulage,
+                    placa_reboque3: entrance.thirdHaulage
                 })
                 setToast({
                     text: "Cadastro efetuado com sucesso",
@@ -262,20 +250,20 @@ export default function CadastrarEntrada() {
 
     const validateDriverId = useCallback((rg: string) => {
         // console.log({ rg, test: rg.replaceAll(/[0-9]*/g, '') });
-        const stringFormatted = rg.replaceAll(/a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|y|z|\W*/g, '')
+        const stringFormatted = rg.replaceAll(/[^0-9 | x | X]|\W*/g, '')
         if (stringFormatted.length <= 11) {
-            setDriverId(stringFormatted)
+            setEntrance({...entrance, driverId: stringFormatted})
         }
-    },[driverId])
+    },[entrance.driverId])
 
         async function findDriver(rg : string) {
-            console.log('rg no focus', rg);
+            // console.log('rg no focus', rg);
             if(rg.length >= 6) {
                 try {
                 const response = await entranceReq.getDriverById(rg)
                 const data = response.data.nome
                 // console.log("motorista",data)
-                setDriver(data)
+                setEntrance({...entrance, driver : data})
                 return data
                 } catch (error) {
                 setVisibleModal(true)
@@ -289,7 +277,7 @@ export default function CadastrarEntrada() {
                 const response = await entranceReq.getVehicleById(placa)
                 const data = response.data.descricao
                 // console.log("vehicle",data)
-                setStatusDescription(data)
+                setEntrance({...entrance, statusDescription : data})
                 return data
             } catch (error) {
                 setSecondModal(true)
@@ -303,9 +291,8 @@ export default function CadastrarEntrada() {
         }
 
         // useEffect(() => {
-        //     console.log("entrada data",dataEntrada)
-        //     console.log("entrada hora",arrivalTime)
-        // }, [ dataEntrada, arrivalTime])
+        //     console.log('entranceKeys', entranceKeys);
+        // }, [ entranceKeys])
  
     return <>
         <Head>
@@ -339,7 +326,7 @@ export default function CadastrarEntrada() {
                         <div>
                             <span>RG</span>
                             <input type="text" 
-                                value={driverId}
+                                value={entrance.driverId}
                                 placeholder='Apenas números ou X'
                                 onChange={(e) => validateDriverId(e.target.value)} 
                                 onBlur={(e) => findDriver(e.target.value)} />
@@ -347,8 +334,8 @@ export default function CadastrarEntrada() {
                         <div>
                             <span >Nome</span>
                             <input type="text" 
-                                value={driver} 
-                                onChange={(e) => setDriver(e.target.value)}/>
+                                value={entrance.driver} 
+                                onChange={(e) => setEntrance({...entrance, driver : (e.target.value)})}/>
                         </div>
                     </div>
                         </Inline>
@@ -361,11 +348,15 @@ export default function CadastrarEntrada() {
                     <div>
                         <div>
                             <span className="first">Placa Principal</span>
-                            <input type="text" value={vehicleLicense} onChange={(e) => setVehicleLicense(e.target.value)} onBlur={(e) => findVehicle(e.target.value)} />
+                            <input type="text" value={entrance.vehicleLicense} 
+                                onChange={(e) => setEntrance({...entrance, vehicleLicense : e.target.value})} 
+                                onBlur={(e) => findVehicle(e.target.value)} />
                         </div>
                         <div>
                             <span>Descrição</span>
-                            <input type="text" value={statusDescription} className="description" onChange={(e) => setStatusDescription(e.target.value)}/>
+                            <input type="text" value={entrance.statusDescription} 
+                                className="description" 
+                                onChange={(e) => setEntrance({...entrance, statusDescription : e.target.value})}/>
                         </div>
                         <div>
                             <span className="icon">Reboque<Checkbox onChange={() => setVisible(!visible)}/></span> 
@@ -376,17 +367,17 @@ export default function CadastrarEntrada() {
                     <div>
                         <div>
                             <span>Reboque 1</span>
-                            <input type="text" onChange={(e) => setFirstHaulage(e.target.value)}/>
+                            <input type="text" onChange={(e) => setEntrance({...entrance, firstHaulage : e.target.value})}/>
                         </div>
                         <div>
                             <span className="second">Reboque 2</span>
-                            <input type="text" className="description" onChange={(e) => setSecondHaulage(e.target.value)}/>
+                            <input type="text" className="description" onChange={(e) => setEntrance({...entrance, secondHaulage : e.target.value})}/>
                         </div>
                     </div>
                     <div>
                         <div>
                             <span>Reboque 3</span>
-                            <input type="text" onChange={(e) => setThirdHaulage(e.target.value)}/>
+                            <input type="text" onChange={(e) => setEntrance({...entrance, thirdHaulage : e.target.value})}/>
                         </div>
                         <div>
                             {/* <span>Descrição</span>
@@ -428,24 +419,24 @@ export default function CadastrarEntrada() {
                         <Column>
                             <div>
                                 <span>Peso Carregado</span>
-                                <input onChange={(e) => setLoadedWeight(Number(e.target.value))}/>
+                                <input onChange={(e) => setEntrance({...entrance, loadedWeight : Number(e.target.value)})}/>
                             </div>
                             <div>
                                 <span>Peso Vazio</span>
-                                <input onChange={(e) => setEmptyWeight(Number(e.target.value))}
+                                <input onChange={(e) => setEntrance({...entrance, emptyWeight : Number(e.target.value)})}
                                 className={!ableInput ? "" : "disabled"} onFocus={() => setAbleInput(false)} />
                             </div>
                         </Column>
                         <Column style={{justifyContent: "space-between"}}>
                             <div style={{justifyContent: "center"}}>
                                 <span>UM</span>
-                                <select onChange={(e) => setMeasure(e.target.value)} >
+                                <select onChange={(e) => setEntrance({...entrance, measure : e.target.value})} >
                                     <option value="Kg">Kg</option>
                                     <option value="Ton">Ton</option>
                                 </select>
                             </div>
                             <div style={{justifyContent: "center", alignItems: "flex-end", fontSize: "0.75rem"}}>
-                                <BtnStyle disabled={exitDate === undefined && emptyWeight === 0 ? true : false} 
+                                <BtnStyle disabled={exitDate === undefined && entrance.emptyWeight === 0 ? true : false} 
                                     onClick={() => {setStatus(2), setEntranceFinished(true), setThirdModal(true)}} type="button">
                                     Encerrar Entrega
                                 </BtnStyle>
@@ -494,14 +485,9 @@ export default function CadastrarEntrada() {
                 </EntranceGrid>
                 </div>
                 { visibleModal &&
-                    <DriverModal  setDriverId={setDriverId} 
-                        setDriver={setDriver} driver={driver} 
-                        driverId={driverId} modalHandler={modalHandler}/>}
+                    <DriverModal  entrance={entrance} setEntrance={setEntrance} modalHandler={modalHandler}/>}
                 { secondModal &&
-                    <VehicleModal setVehicleLicense={setVehicleLicense}
-                        vehicleLicense={vehicleLicense}
-                        statusDescription={statusDescription} 
-                        setStatusDescription={setStatusDescription}
+                    <VehicleModal entrance={entrance} setEntrance={setEntrance} 
                         secondModalHandler={secondModalHandler}/>}
                 {thirdModal && 
                     <FinishModal thirdModalHandler={thirdModalHandler} setStatus={setStatus}

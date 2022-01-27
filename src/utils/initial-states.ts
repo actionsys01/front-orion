@@ -48,9 +48,19 @@ export const entranceInitials = {
     firstHaulage: "",
     secondHaulage: "",
     thirdHaulage: "",
-    arrivalDate: new Date,
-    arrivalTime: "",
-    exitDate: new Date,
-    exitTime: "",
     status: 0
+}
+
+export interface EntranceProps {
+    driverId: string,
+    driver: string,
+    statusDescription: string,
+    vehicleLicense: string,
+    loadedWeight: number,
+    emptyWeight: number,
+    measure: string,
+    firstHaulage: string,
+    secondHaulage: string,
+    thirdHaulage: string,
+    status: number
 }

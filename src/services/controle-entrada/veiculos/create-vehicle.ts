@@ -4,7 +4,6 @@ interface VehicleProps {
     placa: string;
     descricao: string;
     empresa: number;
-    data_entrada: Date
 }
 
 export default async function createVehicle(data: VehicleProps) {

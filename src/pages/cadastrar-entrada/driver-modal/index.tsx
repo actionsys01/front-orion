@@ -4,18 +4,16 @@ import { X  } from '@geist-ui/react-icons'
 import { useSession } from 'next-auth/client';
 import { BottomConfirmBtn, Section, InputStyles, InputDoubleStyles, ModalStyle } from "./styles";
 import * as entranceRequest from "@services/controle-entrada";
+import { EntranceProps } from "@utils/initial-states"
 
 interface ModalProps {
-    setDriverId: Dispatch<SetStateAction<string>>;
-    setDriver: Dispatch<SetStateAction<string>>;
-    driverId: string;
-    driver: string;
+    entrance: EntranceProps;
+    setEntrance: Dispatch<SetStateAction<EntranceProps>>;
     modalHandler: () => void;
 
 }
 
-const DriverModal = ({setDriverId, setDriver, driverId, driver, modalHandler}: ModalProps) => {
-    const [entranceDate, setEntranceDate] = useState<Date>()
+const DriverModal = ({entrance, setEntrance,  modalHandler}: ModalProps) => {
     const [, setToast] = useToasts();
     const [session] = useSession();
     const company_id = Number(session?.usuario?.empresa.id)
@@ -24,7 +22,7 @@ const DriverModal = ({setDriverId, setDriver, driverId, driver, modalHandler}: M
     async function registerDriver (e: any)  {
         e.preventDefault()
             try {
-                if(!driverId || !driverId ){
+                if(!entrance.driverId || !entrance.driverId ){
                     setToast({
                         text: "Por favor preencha os campos do formulário",
                         type: "warning"
@@ -32,8 +30,8 @@ const DriverModal = ({setDriverId, setDriver, driverId, driver, modalHandler}: M
                     return
                 } 
                 await entranceRequest.createDriver({
-                    rg: driverId,
-                    nome: driver,
+                    rg: entrance.driverId,
+                    nome: entrance.driver,
                     empresa: company_id
                 })
                 setToast({
@@ -58,13 +56,13 @@ const DriverModal = ({setDriverId, setDriver, driverId, driver, modalHandler}: M
                     <form onSubmit={registerDriver}>
                         <InputStyles>
                                 <div><span>RG</span></div>
-                                <input type="text" value={driverId} 
-                                    onChange={(e) => setDriverId(e.target.value)}/>
+                                <input type="text" value={entrance?.driverId} 
+                                    onChange={(e) => setEntrance({...entrance, driverId : (e.target.value)})}/>
                         </InputStyles>
                         <InputStyles>
                             <div><span>Nome</span></div>
-                            <input type="text" value={driver} 
-                                onChange={(e) => setDriver(e.target.value)}/>
+                            <input type="text" value={entrance?.driver} 
+                                onChange={(e) => setEntrance({...entrance, driver : (e.target.value)})}/>
                         </InputStyles>
                         <BottomConfirmBtn >
                             <button type="submit">

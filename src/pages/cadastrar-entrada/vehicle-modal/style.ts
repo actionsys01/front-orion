@@ -56,6 +56,7 @@ export const InputStyles = styled.div`
             height: 75px;
             border: 1px solid #eaeaea;
             padding-inline-start: .225rem;
+            resize: none;
         }
 
         input[type= "date" ] {

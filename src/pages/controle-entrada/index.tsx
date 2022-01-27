@@ -89,8 +89,6 @@ export default function ControleEntrada() {
     const [visibleModal, setVisibleModal] = useState(false)
     const [ modalStatus, setModalStatus ] = useState("")
     const [ hModal, setHModal ] = useState(false)
-    // filtros
-    const [ filtersObject, setFiltersObject] = useState({})
 
     const {filters} = useControlFilter()
     
@@ -241,19 +239,25 @@ export default function ControleEntrada() {
                     option: <Popover num={i} content={[
                         {
                             optionName: 'Autorizar',
-                            onClick:  !entrancePermissions.AUTORIZAR ? () => '' : item.controle_entrada?.status === 2 ? () => handleFinished() 
-                            : item.controle_entrada?.status === 1 ? () => modalVisibleHandler() : () => handleApproval(item.controle_entrada.id),
+                            onClick:  !entrancePermissions.AUTORIZAR ? () => ''  
+                                : item.controle_entrada?.status === 2 ? () => handleFinished() 
+                                : item.controle_entrada?.status === 1 ? () => {setModalStatus("autorizar"), modalVisibleHandler() }
+                                : item.controle_entrada?.status === 0 ? () => handleApproval(item.controle_entrada.id) 
+                                : item.controle_entrada?.status === 4 ? () =>  {setModalStatus("exception"), modalVisibleHandler() } 
+                                : () => '',
                             className: entrancePermissions.AUTORIZAR ? 'able' : 'disabled'
                         },
                         {
                             optionName: 'Editar',
-                            onClick: !entrancePermissions.EDITAR ? () => '' : () => handleEdit(item.controle_entrada.id),
+                            onClick: !entrancePermissions.EDITAR ? () => '' 
+                                : () => handleEdit(item.controle_entrada.id),
                             className: entrancePermissions.EDITAR ? 'able' : 'disabled'
                         },
                         {
                             optionName: 'Cancelar',
-                            onClick: !entrancePermissions.CANCELAR ? () => '' : item.controle_entrada?.status === 4 ? () => modalVisibleHandler() 
-                             : () => handleCancel(item.controle_entrada.id),
+                            onClick: !entrancePermissions.CANCELAR ? () => '' 
+                                : item.controle_entrada?.status === 4 ? () => {setModalStatus("cancelar"), modalVisibleHandler() }
+                                : () => handleCancel(item.controle_entrada.id),
                             className: entrancePermissions.CANCELAR ? 'able' : 'disabled'
                         }
                     ]}/>,
@@ -304,7 +308,7 @@ export default function ControleEntrada() {
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Chave de Acesso Nf-e</th>
+                            <th>Chave de Acesso</th>
                             <th>Status Portaria</th>
                             <th>Número Entrega</th>
                             <th>Peso Inicial do Veículo</th>

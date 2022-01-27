@@ -11,7 +11,7 @@ interface ModalProps {
 }
 
 const ModalHandler = ({modalStatus, modalVisibleHandler} : ModalProps) => {
-
+    console.log('modalStatus', modalStatus);
     const [ finishText, setFinishText ] = useState<"autorizada" | "cancelada">("autorizada")
 
     function checkFinishText() {
@@ -21,6 +21,10 @@ const ModalHandler = ({modalStatus, modalVisibleHandler} : ModalProps) => {
         if(modalStatus === "cancelar"){
             setFinishText("cancelada")
         }
+        if(modalStatus === "exception"){
+            setFinishText("cancelada")
+        }
+
     }
 
     useEffect(() => {
@@ -30,7 +34,7 @@ const ModalHandler = ({modalStatus, modalVisibleHandler} : ModalProps) => {
     return <Modal>
         <div>
             <h5>
-                Não é possível {modalStatus} uma nota já {finishText}.
+                Não é possível {modalStatus === "exception" ? "autorizar" : modalStatus} uma nota já {finishText}.
             </h5>
             <div>
                 <button
