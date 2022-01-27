@@ -55,7 +55,7 @@ const VehicleModal = ({entrance, setEntrance, secondModalHandler}: ModalProps) =
                             <div>
                                 <span>Placa</span>
                                 <input type="text" 
-                                    value={entrance.vehicleLicense} 
+                                    value={entrance?.vehicleLicense} 
                                     onChange={(e) => setEntrance({...entrance, vehicleLicense : e.target.value})}/>
                             </div>
                         </InputStyles>

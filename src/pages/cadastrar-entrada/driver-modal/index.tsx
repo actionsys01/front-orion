@@ -56,12 +56,12 @@ const DriverModal = ({entrance, setEntrance,  modalHandler}: ModalProps) => {
                     <form onSubmit={registerDriver}>
                         <InputStyles>
                                 <div><span>RG</span></div>
-                                <input type="text" value={entrance.driverId} 
+                                <input type="text" value={entrance?.driverId} 
                                     onChange={(e) => setEntrance({...entrance, driverId : (e.target.value)})}/>
                         </InputStyles>
                         <InputStyles>
                             <div><span>Nome</span></div>
-                            <input type="text" value={entrance.driver} 
+                            <input type="text" value={entrance?.driver} 
                                 onChange={(e) => setEntrance({...entrance, driver : (e.target.value)})}/>
                         </InputStyles>
                         <BottomConfirmBtn >
