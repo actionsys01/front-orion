@@ -57,7 +57,7 @@ const ProfilePopover: React.FC<PopoverProps> = ({ data, setPerfisAplicacoes }) =
         setCopiedPermissions(permissions)
       }
 
-      console.log('copiedPermissions', copiedPermissions);
+      // console.log('copiedPermissions', copiedPermissions);
 
        function copiar({ nome,
         descricao} : Omit<IPerfilAplicacao, "atualizadoEm" | "atualizadoPorIp" | "criadoEm" | "criadoPorIp" | "id"> ) {

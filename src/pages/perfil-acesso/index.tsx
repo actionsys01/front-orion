@@ -56,7 +56,7 @@ export default function PerfilAcesso() {
   const [session] = useSession();
   const { profilePermission } = useSecurityContext()
   const { setVisible, bindings } = useModal();
-  const [empresaId, setEmpresaId] = useState<number>()
+  const [planoId, setPlanoId] = useState<number>()
   const [perfilId, setPerfiId] = useState<number>();
   const [nome, setNome] = useState<string>("");
   const [descricao, setDescricao] = useState<string>("");
@@ -84,14 +84,14 @@ export default function PerfilAcesso() {
     const { data } = response
 
     setQuantityPage(Math.ceil(data.total / 8));
+    setPerfisAplicacoes(data.perfis)
     
-    return data.perfis
   }, [page])
 
   useEffect(() => {
-      getProfileData().then(response => setPerfisAplicacoes(response))
-      const companyId = session?.usuario.empresa.id
-      setEmpresaId(companyId)
+      getProfileData()
+      const companyId = session?.usuario.empresa.plano.id
+      setPlanoId(Number(companyId))
       
   },[page])
 
@@ -135,7 +135,7 @@ export default function PerfilAcesso() {
     } 
       router.push({
         pathname: "/perfil-cadastro",
-        query: { nome, descricao, empresaId },
+        query: { nome, descricao, planoId },
       });
   }
 

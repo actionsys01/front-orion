@@ -49,7 +49,7 @@ const VehicleModal = ({entrance, setEntrance, secondModalHandler}: ModalProps) =
         <div>
             <span><X  onClick={() => secondModalHandler()}/></span>
             <h4>Veículo não encontrado, complete o cadastro:</h4>
-             <Section>
+                <Section>
                     <form onSubmit={registerVehicle}>
                         <InputStyles>
                             <div>
@@ -72,7 +72,7 @@ const VehicleModal = ({entrance, setEntrance, secondModalHandler}: ModalProps) =
                             </button>
                         </BottomConfirmBtn>
                     </form>
-            </Section>
+                </Section>
         </div>
     </ModalStyle>
 }

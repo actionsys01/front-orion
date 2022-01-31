@@ -225,6 +225,7 @@ export default function ControleEntrada() {
             setPage(1)
         }
         }, [filters, quantityPage, page])
+    
 
 
 
