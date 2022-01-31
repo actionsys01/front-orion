@@ -64,3 +64,10 @@ export interface EntranceProps {
     thirdHaulage: string,
     status: number
 }
+
+export const availableResources = {
+    NFE: false,
+    CTE: false,
+    NFSE: false,
+    PORTARIA: false,
+}

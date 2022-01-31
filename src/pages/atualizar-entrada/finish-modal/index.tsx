@@ -14,7 +14,7 @@ const FinishUpdateModal = ({modalHandler,setStatus, finishihEntrance} : ModalPro
 
     return <Modal>
         <div>
-            <h4>Deseja finalizar a entrega?</h4>
+            <h5>Deseja finalizar a entrega?</h5>
             <div>
                 <button onClick={()  => {setStatus(0), modalHandler()}}>CANCELAR</button>
                 <button onClick={() => {finishihEntrance(), modalHandler()}}>CONFIRMAR</button>

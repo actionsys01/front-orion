@@ -8,7 +8,6 @@ import { Checkbox } from '@material-ui/core';
 import { INfeDto } from "@services/nfe/dtos/INfeDTO";
 import {CteProps} from "@services/cte-mongo/cte-type/cte"
 import getNfeById from "@services/nfe/getNfeById";
-import buscar from "@services/cte-mongo/buscar"
 import { useRouter } from "next/router";
 import {TopConfirmBtn} from "@styles/buttons"
 import * as entrances from "@services/controle-entrada";
@@ -96,95 +95,97 @@ export default function AtualizarEntrada() {
 
         
 
-    const insertKey = useCallback(async (e) => {
+    const getKey = useCallback(async (e) => {
         e.preventDefault()
-        // console.log("e", key.current.value )
-        if(key.current.value.startsWith("NFe") || key.current.value.startsWith("CTe") && key.current.value.length === 47){
-            // console.log("com tag")
-                const notaPura =  key.current.value.slice(3, 47)
-                // console.log(`notaPura`, notaPura)
-                // console.log(notaPura.substring(20, 22) )
-                if(Number(notaPura.substring(20,22)) === 57 ) {
-                    try {
-                        const response = await getCteById(key.current.value, company_id)
-                        // console.log(`response cte`, response)
-                        setNota(state =>[...state, response.data])
-                        setEntranceKeys(state =>[...state, key.current.value])
-                        setToast({
-                            text: "Nota localizada com sucesso",
-                            type: "success"
-                        });
-                    } catch (error) {
-                        console.log(error)
-                        setToast({
-                            text: "Houve um problema, por favor tente novamente CTE",
-                            type: "warning"
-                        });
-                    }
-                } else {
-                    try {
-                        const response = await getNfeById(key.current.value, company_id);
-                        setNota(state =>[...state, response.data])
-                        setEntranceKeys(state =>[...state, key.current.value])
-                        setToast({
-                            text: "Nota localizada com sucesso",
-                            type: "success"
-                        });
-                    } catch (error) {
-                        console.log(error)
-                        setToast({
-                            text: "Houve um problema, por favor tente novamente",
-                            type: "warning"
-                        });
-                    }
-                }
-        } else if (key.current.value.length === 44) {
-            if(Number(key.current.value.substring(20,22)) === 57 ) {
-                try {
-                    const response = await getCteById(key.current.value, company_id)
-                    setNota(state =>[...state, response.data])
-                    setEntranceKeys(state =>[...state, key.current.value])
-                    setToast({
-                        text: "Nota localizada com sucesso",
-                        type: "success"
-                    });
-                } catch (error) {
-                    console.log(error)
-                    setToast({
-                        text: "Houve um problema, por favor tente novamente CTE",
-                        type: "warning"
-                    });
-                }
-            } else if(Number(key.current.value.substring(20,22)) === 55) {
-                try {
-                    const response = await getNfeById(key.current.value, company_id);
-                    setNota(state =>[...state, response.data])
-                    setEntranceKeys(state =>[...state, key.current.value])
-                    setToast({
-                        text: "Nota localizada com sucesso",
-                        type: "success"
-                    });
-                } catch (error) {
-                    console.log(error)
-                    setToast({
-                        text: "Houve um problema, por favor tente novamente",
-                        type: "warning"
-                    });
-                }
-            } else {
+        if (!key.current.value) {
+            setToast({
+                text: "É necessário inserir uma nota no campo de busca",
+                type: "warning"
+            });
+            return
+        }
+
+        const response = await entrances.getEntrance(1, Number(session?.usuario.empresa.id), [{campo: "chave_nota", valor: key.current.value}])
+        const data = response.data.notas.filter((item) => item.controle_entrada.status === 4)
+        if (response.data.total >= 1 && !data.length) {
+            setToast({
+                text: `Nota duplicada, caso deseje prosseguir cancele a nota anterior`,
+                type: "warning"
+            });
+            e.target.reset() 
+            return
+        }
+
+        const keyCheck =  entranceKeys.find((value) => value.toString() == key.current.value.toString())
+        if (keyCheck) {
+            setToast({
+                text: "Chave já inserida",
+                type: "warning"
+            });
+            e.target.reset()
+            return
+        }
+
+        const notaValue = key.current.value.length === 47
+            ? key.current.value.slice(3, 47)
+            : key.current.value.length === 44
+                ? key.current.value : "";
+
+        if(Number(notaValue.substring(20,22)) === 57 ) {
+            try {
+                const response = await getCteById(key.current.value, company_id)
+                setNota(state =>[...state, response.data])
+                setEntranceKeys(state =>[...state, key.current.value])
                 setToast({
-                    text: "Chave inválida, por favor tente novamente",
+                    text: "Nota localizada com sucesso",
+                    type: "success"
+                });
+            } catch (error) {
+                console.log(error)
+                setToast({
+                    text: "Houve um problema, CT-e não localizado",
                     type: "warning"
                 });
             }
-        } else {
-            setToast({
-                text: "Chave inválida, por favor tente novamente",
-                type: "warning"
-            });
+            e.target.reset()
+            return
         }
-        e.target.reset()
-        }, [])
+        if (Number(notaValue.substring(20, 22)) === 55) {
+            try {
+                const response = await getNfeById(key.current.value, company_id);
+                setNota(state =>[...state, response.data])
+                setEntranceKeys(state =>[...state, key.current.value])
+                setToast({
+                    text: "Nota localizada com sucesso",
+                    type: "success"
+                });
+            } catch (error) {
+                console.log(error)
+                setToast({
+                    text: "Houve um problema, NF-e não localizado",
+                    type: "warning"
+                });
+            }
+            e.target.reset()
+            return
+        }
+        if (Number(notaValue.length) != 44) {
+            setToast({
+                    text: "Número de caracteres inválido",
+                    type: "warning"
+            });
+            e.target.reset()
+            return
+        }
+        if (Number(notaValue.substring(20, 22)) != 55 && Number(notaValue.substring(20, 22)) != 57) {
+            setToast({
+                    text: "Houve um problema, nota não localizada",
+                    type: "warning"
+                });
+            e.target.reset()
+            return
+        }
+    }, [entranceKeys] )
 
     const getEntranceKeys = useCallback(async (entranceKeys) => {
         if(entranceKeys.length) {
@@ -336,9 +337,12 @@ export default function AtualizarEntrada() {
             <Section>
                 <h6></h6>
                 <OneLineContainer>
-                    <form onSubmit={insertKey}>
+                    <form onSubmit={getKey}>
                         <span>Chave de Acesso</span>
-                        <input type="text" ref={key} readOnly={entranceFinished}/>
+                        <input type="text" ref={key} readOnly={entranceFinished} />
+                        <BtnPattern type="submit">
+                            enviar
+                        </BtnPattern>
                     </form>
                 </OneLineContainer>
             </Section>
