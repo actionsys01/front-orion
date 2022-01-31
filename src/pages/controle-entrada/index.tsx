@@ -16,6 +16,7 @@ import RadioFilter from "@components/FilterRadio"
 import EntranceModal from "./modal"
 import { useSecurityContext } from "@contexts/security"
 import ModalHandler from "./modalHandler"
+import { entranceInitials } from "@utils/initial-states"
 
 interface Entrance {
     id: number
@@ -68,20 +69,11 @@ export default function ControleEntrada() {
     const [ reload, setReload] = useState(true)
     const { entrancePermissions } = useSecurityContext()
     //
-    const [driverId, setDriverId] = useState("");
-    const [vehicleLicense, setVehicleLicense] = useState("");
-    const [firstHaulage, setFirstHaulage] = useState("");
-    const [secondHaulage, setSecondHaulage] = useState("");
-    const [thirdHaulage, setThirdHaulage] = useState("");
+    const [entranceData, setEntranceData] = useState({ ...entranceInitials })
     const [ status, setStatus] = useState(0)
-    const [statusDescription, setStatusDescription] = useState("");
     const [arrivalDate, setArrivalDate] = useState(new Date)
     const [exitDate, setExitDate] = useState(new Date)
-    const [loadedWeight, setLoadedWeight] = useState(0);
-    const [emptyWeight, setEmptyWeight] = useState(0);
-    const [measure, setMeasure] = useState("");
     const [entranceKeys, setEntranceKeys] = useState<string[]>([]);
-    const [driver, setDriver] = useState("");
     const [arrivalTime, setArrivalTime] = useState(new Date)
     const [exitTime, setExitTime] = useState()
     const [ entranceId, setEntranceId] = useState(0)
@@ -109,18 +101,21 @@ export default function ControleEntrada() {
             const data = response.data 
             const mappedData = data.entrada_notas.map((item) => item.chave_nota)
             setEntranceId(id)
-            setDriverId(data.motorista.rg)
-            setVehicleLicense(data.placa_principal)
-            setFirstHaulage(data.placa_reboque1)
-            setSecondHaulage(data.placa_reboque2)
-            setThirdHaulage(data.placa_reboque3)
+            setEntranceData({
+                ...entranceData,
+                driverId: data.motorista.rg,
+                vehicleLicense: data.placa_principa,
+                firstHaulage: data.placa_reboque1,
+                secondHaulage: data.placa_reboque2,
+                thirdHaulage: data.placa_reboque3,
+                statusDescription: data.descricao_status,
+                loadedWeight: Number(data.peso_cheio),
+                emptyWeight: Number(data.peso_vazio),
+                measure: data.unidade_medida
+            })
             setStatus(1)
-            setStatusDescription(data.descricao_status)
             setArrivalDate(new Date(data.data_entrada))
             setExitDate(data.data_saida === null ? new Date() : new Date(data.data_saida))              
-            setLoadedWeight(Number(data.peso_cheio))
-            setEmptyWeight(Number(data.peso_vazio))
-            setMeasure(data.unidade_medida)
             setEntranceKeys(mappedData)
             setModalStatus("autorizar")
             setVisibleModal(true)
@@ -141,18 +136,21 @@ export default function ControleEntrada() {
             const data = response.data 
             const mappedData = data.entrada_notas.map((item) => item.chave_nota)
             setEntranceId(id)
-            setDriverId(data.motorista.rg)
-            setVehicleLicense(data.placa_principal)
-            setFirstHaulage(data.placa_reboque1)
-            setSecondHaulage(data.placa_reboque2)
-            setThirdHaulage(data.placa_reboque3)
+            setEntranceData({
+                ...entranceData,
+                driverId: data.motorista.rg,
+                vehicleLicense: data.placa_principa,
+                firstHaulage: data.placa_reboque1,
+                secondHaulage: data.placa_reboque2,
+                thirdHaulage: data.placa_reboque3,
+                statusDescription: data.descricao_status,
+                loadedWeight: Number(data.peso_cheio),
+                emptyWeight: Number(data.peso_vazio),
+                measure: data.unidade_medida
+            })
             setStatus(4)
-            setStatusDescription(data.descricao_status)
             setArrivalDate(new Date(data.data_entrada))
             setExitDate(data.data_saida === null ? new Date() : new Date(data.data_saida))
-            setLoadedWeight(Number(data.peso_cheio))
-            setEmptyWeight(Number(data.peso_vazio))
-            setMeasure(data.unidade_medida)
             setEntranceKeys(mappedData)
             setModalStatus("cancelar")
             setVisibleModal(true)
@@ -166,19 +164,19 @@ export default function ControleEntrada() {
         async function updateEntrance() {
             try {
                 await entrances.updateEntrance(entranceId, {
-                    rg_motorista: driverId,
-                    placa_principal: vehicleLicense,
-                    placa_reboque1: firstHaulage,
-                    placa_reboque2: secondHaulage,
-                    placa_reboque3: thirdHaulage,
+                    rg_motorista: entranceData.driverId,
+                    placa_principal: entranceData.vehicleLicense,
+                    placa_reboque1: entranceData.firstHaulage,
+                    placa_reboque2: entranceData.secondHaulage,
+                    placa_reboque3: entranceData.thirdHaulage,
                     status: status,
-                    descricao_status: statusDescription,
+                    descricao_status: entranceData.statusDescription,
                     data_entrada: arrivalDate,
                     data_saida: exitDate,
-                    peso_cheio: loadedWeight,
-                    peso_vazio: emptyWeight,
+                    peso_cheio: entranceData.loadedWeight,
+                    peso_vazio: entranceData.emptyWeight,
                     empresa: company_id,
-                    unidade_medida: measure,
+                    unidade_medida: entranceData.measure,
                     entradas_notas: entranceKeys
                 })
                 setToast({
@@ -294,8 +292,8 @@ export default function ControleEntrada() {
                     <div>
                         <FilterModal data={filters} /> 
                             <button type="button" disabled={!entrancePermissions.ADICIONAR}
-                            className={entrancePermissions.ADICIONAR ? "add" : "disabled"}
-                             onClick={() => router.push({pathname: "/cadastrar-entrada"})}>
+                                className={entrancePermissions.ADICIONAR ? "add" : "disabled"}
+                                onClick={() => router.push({pathname: "/cadastrar-entrada"})}>
                                 <span><Plus /></span>
                                     Adicionar
                             </button>
@@ -323,7 +321,7 @@ export default function ControleEntrada() {
                             <th>Placa Reboque 3</th>
                         </tr>
                     </thead>
-                   {entrancePermissions.VISUALIZAR &&
+                {entrancePermissions.VISUALIZAR &&
                     <tbody>
                         {gatheredData.map((item: EntranceDataProps, i: any) => (
                             <tr key={i}>
