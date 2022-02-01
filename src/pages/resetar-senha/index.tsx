@@ -21,6 +21,7 @@ export default function resetarSenha() {
     const [password, setPassword] = useState("");
     const [confirmationPassword, setConfirmationPassword] = useState("");
     const { companyFeatures } = useCompanyContext()
+    const [ error, setError ] = useState(true);
 
 
 
@@ -50,7 +51,7 @@ export default function resetarSenha() {
           setLoading(false);
           
         } catch (error) {
-          setToast({ text: "Ocorreu um problema ao efetuar a troca de senha", type: "error" });
+          setError(true)
         } finally {
           setLoading(false);
           router.push("/")
@@ -58,7 +59,39 @@ export default function resetarSenha() {
       
       }
 
-
+    if (error) {
+        return <>
+            <Head>
+                <title>Orion | Entrar </title>
+            </Head>
+            <Row
+                align="middle"
+                // justify="space-between"
+                style={{ backgroundColor: palette.foreground, padding: 10, display: 'flex', gap: "20px" }}
+            >
+                
+                    <Box size={50} color="#fff" /> <h3  style={{color: '#fff', margin: "0"}}>GRA Web</h3>
+                
+            </Row>
+            <Container>
+                <h4>Seja Bem-Vindo(a) {companyFeatures?.nome}!</h4>
+                <h6 style={{ textAlign: 'center' }}>Aparentemente a senha já foi redefinida, caso deseje redefinir a senha novamente
+                    <br /> dirija-se à sessão redefinir senha clicando no botão abaixo.</h6>
+                
+                <Button
+                        loading={loading}
+                        size="large"
+                    onClick={() => router.push({
+                            pathname: '/esqueci-senha'
+                        })}
+                        type="secondary-light"
+                        // style={{ width: "100%" }}
+                    >
+                        Resetar senha
+                    </Button>
+            </Container>
+        </>
+    }
 
     return (
         <>
@@ -67,12 +100,12 @@ export default function resetarSenha() {
             </Head>
             <Row
                 align="middle"
-                justify="space-between"
-                style={{ backgroundColor: palette.foreground, padding: 10 }}
+                // justify="space-between"
+                style={{ backgroundColor: palette.foreground, padding: 10, display: 'flex', gap: "20px" }}
             >
-                <Link href="/">
-                    <Box size={50} color="#fff" />
-                </Link>
+                
+                    <Box size={50} color="#fff" /> <h3  style={{color: '#fff', margin: "0"}}>GRA Web</h3>
+                
             </Row>
             <Container>
                 <h4>Seja Bem-Vindo(a) {companyFeatures?.nome}!</h4>
