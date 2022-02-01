@@ -88,6 +88,8 @@ export default function CadastrarEntrada() {
 
         const response = await entranceReq.getEntrance(1, Number(session?.usuario.empresa.id), [{campo: "chave_nota", valor: key.current.value}])
         const data = response.data.notas.filter((item) => item.controle_entrada.status === 4)
+        console.log('response.data.total', response.data.total);
+        console.log('data', data);
         if (response.data.total >= 1 && !data.length) {
             setToast({
                 text: `Nota duplicada, caso deseje prosseguir cancele a nota anterior`,
@@ -241,7 +243,6 @@ export default function CadastrarEntrada() {
         }
 
     const validateDriverId = useCallback((rg: string) => {
-        // console.log({ rg, test: rg.replaceAll(/[0-9]*/g, '') });
         const stringFormatted = rg.replaceAll(/[^0-9 | x | X]|\W*/g, '')
         if (stringFormatted.length <= 11) {
             setEntrance({...entrance, driverId: stringFormatted})

@@ -10,13 +10,12 @@ import { Pages } from "./style"
 import { Plus } from "@geist-ui/react-icons";
 import {useSecurityContext} from "@contexts/security"
 import Pagination from "@material-ui/lab/Pagination";
-import * as usuario from "@services/usuarios";
-import { useSession } from "next-auth/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import getUsersByCompanyId from "@services/usuarios/getUsersByCompanyId";
 import UserPopover from "./Popover";
 import capitalize from "@utils/capitalize"
+import UserModal from "./modal";
 
 export interface IUsuario  {
   id: number;
@@ -35,26 +34,13 @@ interface Perfil {
   atualizadoPorIp: string;
 }
 
-interface UserData {
-  id: number;
-  nome: string;
-  email: string;
-  perfil: Perfil;
-  perfil_nome: string;
-  emailFormatted: string;
-  option: any
-}
-
-
-
 export default function Usuarios({}) {
-  const [session] = useSession();
   const {userPermissions} = useSecurityContext()
   const router = useRouter();
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
   const [page, setPage] = useState(1);
   const [quantityPage, setQuantityPage] = useState(1)
- 
+  const [ userModalVisible, setUserModalVisible ] = useState(false)
 
 
   
@@ -65,9 +51,7 @@ export default function Usuarios({}) {
   const getUsersAndTotalPage = useCallback(async () => {
     
     const responseNfes: any = await getUsersByCompanyId(page)
-
     const { data } = responseNfes;
-
 
     setUsuarios(data.usuarios)
   
@@ -76,15 +60,12 @@ export default function Usuarios({}) {
       
 
   useEffect(() => {
-
     getUsersAndTotalPage();
-
-
   }, [page])
 
 
 function optionUserPopover (data: any) {
-  return <UserPopover data={data} usuarios={usuarios} setUsuarios={setUsuarios} />
+  return <UserPopover data={data} usuarios={usuarios} setUsuarios={setUsuarios} setUserModalVisible={setUserModalVisible} />
 }
 
 
@@ -164,7 +145,7 @@ function optionUserPopover (data: any) {
       <Pages>
     <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
     </ Pages>
-   
+      {userModalVisible && <UserModal setUserModalVisible={setUserModalVisible}/>}
     </>
   );
 }
