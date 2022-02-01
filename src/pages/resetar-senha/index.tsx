@@ -21,7 +21,7 @@ export default function resetarSenha() {
     const [password, setPassword] = useState("");
     const [confirmationPassword, setConfirmationPassword] = useState("");
     const { companyFeatures } = useCompanyContext()
-    const [ error, setError ] = useState(true);
+    const [ error, setError ] = useState(false);
 
 
 
