@@ -46,12 +46,12 @@ const esqueciSenha = () => {
         </Head>
         <Row
           align="middle"
-          justify="space-between"
-          style={{ backgroundColor: palette.foreground, padding: 10 }}
+          // justify="space-between"
+          style={{ backgroundColor: palette.foreground, padding: 10, display: 'flex', gap: "20px" }}
         >
-          <Link href="/">
-            <Box size={50} color="#fff" />
-          </Link>
+          {/* <Link href="/"> */}
+            <Box size={50} color="#fff" /> <h3  style={{color: '#fff', margin: "0"}}>GRA Web</h3>
+          {/* </Link> */}
         </Row>
 
 
