@@ -25,12 +25,6 @@ interface Entrance {
     data_entrada: string
 }
 
-interface EntranceUpdateProps {
-    id: number
-    chave_nota: string;
-    controle_entrada: ControleProps
-}
-
 interface ControleProps {
     id: number;
     placa_principal: string;
@@ -74,9 +68,9 @@ export default function ControleEntrada() {
     const [arrivalDate, setArrivalDate] = useState(new Date)
     const [exitDate, setExitDate] = useState(new Date)
     const [entranceKeys, setEntranceKeys] = useState<string[]>([]);
-    const [arrivalTime, setArrivalTime] = useState(new Date)
-    const [exitTime, setExitTime] = useState()
     const [ entranceId, setEntranceId] = useState(0)
+    // const [arrivalTime, setArrivalTime] = useState(new Date)
+    // const [exitTime, setExitTime] = useState()
     // Modal
     const [visibleModal, setVisibleModal] = useState(false)
     const [ modalStatus, setModalStatus ] = useState("")
@@ -139,7 +133,7 @@ export default function ControleEntrada() {
             setEntranceData({
                 ...entranceData,
                 driverId: data.motorista.rg,
-                vehicleLicense: data.placa_principa,
+                vehicleLicense: data.placa_principal,
                 firstHaulage: data.placa_reboque1,
                 secondHaulage: data.placa_reboque2,
                 thirdHaulage: data.placa_reboque3,

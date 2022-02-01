@@ -1,4 +1,4 @@
-import React, { useState,  Dispatch, SetStateAction, useCallback} from 'react'; 
+import React, { useState,  Dispatch, SetStateAction, useCallback, useEffect} from 'react'; 
 import { MoreHorizontal } from "@geist-ui/react-icons";
 import {
     Popover,
@@ -9,18 +9,22 @@ import {
   } from "@geist-ui/react";
 import {useSecurityContext} from "@contexts/security"
 import * as usuario from "@services/usuarios"
+import * as companyRequest from '@services/empresas'
 import { useRouter } from "next/router";
-import {IUsuario} from "../index"
+import { IUsuario } from "../index"
+import { useSession } from "next-auth/client";
 
   interface PopoverProps {
     data: any;
     usuarios: IUsuario[];
     setUsuarios: Dispatch<SetStateAction<IUsuario[]>>
+    setUserModalVisible: Dispatch<SetStateAction<boolean>>
   }
 
-const UserPopover:  React.FC<PopoverProps> = ({data, setUsuarios, usuarios}) => {
+const UserPopover: React.FC<PopoverProps> = ({ data, setUsuarios, usuarios, setUserModalVisible } : PopoverProps) => {
     const { userPermissions } = useSecurityContext()
     const router = useRouter();
+    const [session] = useSession();
     const [visible, setVisible] = useState(false)
     const { setVisible: setVisibleModal, bindings } = useModal();
     const [userId, setUserId] = useState<number>(0);
@@ -31,32 +35,40 @@ const UserPopover:  React.FC<PopoverProps> = ({data, setUsuarios, usuarios}) => 
         setVisible(next)
       }, [])
 
-      function deletar(id: number) {
-        setVisible(false)
-        setVisibleModal(true)
-        setUserId(id)
+  async function deletar(id: number, userEmail: string) {
+    const response = await companyRequest.getCompanyById(Number(session?.usuario.empresa.id))
+    const userEAdress = response.data.email
+    if (userEAdress === userEmail) {
+      setUserModalVisible(true)
+      setVisible(false)
+      return
+    }
+      setVisible(false)
+      setVisibleModal(true)
+      setUserId(id)
       }
 
 
-     async function deleteUser() {
-         try {
-            const id: number = userId
-            await usuario.deletar(id);
-            setVisibleModal(false)
-            const usuariosAtualizados = usuarios?.filter((usuario) => usuario.id !== id);
-            setUsuarios(usuariosAtualizados)
-            setToast({
-                text: "Usuário excluído.",
-                type: "success",
-              });
-         } catch (error) {
-            setToast({
-                text: "Houve um problema, por favor tente novamente.",
-                type: "warning",
-              });
-         }
-        
-      } 
+    async function deleteUser() {
+        try {
+          const id: number = userId
+          await usuario.deletar(id);
+          setVisibleModal(false)
+          const usuariosAtualizados = usuarios?.filter((usuario) => usuario.id !== id);
+          setUsuarios(usuariosAtualizados)
+          setToast({
+              text: "Usuário excluído.",
+              type: "success",
+            });
+        } catch (error) {
+          setToast({
+              text: "Houve um problema, por favor tente novamente.",
+              type: "warning",
+            });
+        }
+      
+} 
+  
 
     return <>
     <Popover
@@ -93,7 +105,8 @@ const UserPopover:  React.FC<PopoverProps> = ({data, setUsuarios, usuarios}) => 
               }}
               onClick={() => {
                 const { id } = data;
-                deletar(id);
+                const userEmail = data.email
+                deletar(id, userEmail);
               }}
             >
               Deletar
