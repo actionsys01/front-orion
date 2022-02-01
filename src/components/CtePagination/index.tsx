@@ -28,7 +28,6 @@ interface Props {
 
 export default function CtePagination({ company_id, token, sefaz, portaria }: Props) {
   const [cte, setCtes] = useState<INfeDto[]>([])
-  const router = useRouter()
   const [page, setPage] = useState(1);
   const { ctes } = useFiltro()
   const [quantityPage, setQuantityPage] = useState(1)

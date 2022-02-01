@@ -27,37 +27,37 @@ export default function resetarSenha() {
 
 
 
-    async function sendEmailToForgotPasswrod() {
-        const { token } = query
-        setLoading(true);
-        if (password !== confirmationPassword) {
-          setLoading(false);
-          setToast({ text: "Senha precisa ser igual a senha de confirmação", type: "warning" });
-          return;
-        }
+async function sendEmailToForgotPasswrod() {
+    const { token } = query
+    setLoading(true);
+    if (password !== confirmationPassword) {
+        setLoading(false);
+        setToast({ text: "Senha precisa ser igual a senha de confirmação", type: "warning" });
+        return;
+    }
 
-        if(!token){
-            setLoading(false)
-            setToast({ text: "Imposssivel efetuar a troca de senha, vefique o link enviado ao seu e-mail", type: "warning" });
-            return;
-        }
-        try {
-          await api.post("/password/reset-password/", {
-           password,
-           token : query.token
-          })
+    if(!token){
+        setLoading(false)
+        setToast({ text: "Imposssivel efetuar a troca de senha, vefique o link enviado ao seu e-mail", type: "warning" });
+        return;
+    }
+    try {
+        await api.post("/password/reset-password/", {
+        password,
+        token : query.token
+        })
+
+        setToast({ text: "Senha alterada com sucesso", type: "success" });
+        setLoading(false);
+        
+    } catch (error) {
+        setError(true)
+    } finally {
+        setLoading(false);
+        router.push("/")
+    }
     
-          setToast({ text: "Senha alterada com sucesso", type: "success" });
-          setLoading(false);
-          
-        } catch (error) {
-          setError(true)
-        } finally {
-          setLoading(false);
-          router.push("/")
-        }
-      
-      }
+    }
 
     if (error) {
         return <>
