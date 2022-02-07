@@ -1,59 +1,62 @@
-import Select from '@components/Select-Control';
 import styled from 'styled-components';
+import SelectCompare from '../Select-Compare';
 
-export const CustomSelect = styled(Select).attrs(props => ({
+export const SelectCustom = styled(SelectCompare).attrs(props => ({
     styles: {
         menu: provided => ({
             ...provided,
-            backgroundColor: props.theme.palette.foreground,
+            backgroundColor: '#fff',
             fontSize: 12,
             textAlign: 'left',
-            color: '#fff',
+            color: '#1C496A',
         }),
-        control: provided => ({
+        control: () => ({
             borderColor: props.theme.palette.foreground,
             '&:hover': {
                 borderColor: props.theme.palette.foreground,
             },
             border: `1px solid ${props.theme.palette.foreground}`,
             boxShadow: 'none',
-            backgroundColor: props.theme.palette.foreground,
+            backgroundColor: '#fff',
             fontSize: 12,
-            height: 24,
+            height: 28,
             display: 'flex',
             borderRadius: 5,
             cursor: 'pointer',
-            color: '#fff',
+            color: '#1C496A',
         }),
 
         placeholder: provided => ({
             ...provided,
-            color: '#fff',
+            color: '#1C496A',
             fontSize: 12,
         }),
         option: provided => ({
             ...provided,
             zIndex: 1010,
-            backgroundColor: props.theme.palette.foreground,
+            cursor: 'pointer',
+            color: '#1C496A',
+            backgroundColor: '#fff',
             '&:hover': {
-                backgroundColor: props.theme.palette.foreground,
+                backgroundColor: '#1C496A',
+                color: '#fff',
             },
         }),
         input: provided => ({
             ...provided,
-            color: '#fff',
+            color: '#1C496A',
         }),
 
         dropdownIndicator: provided => ({
             ...provided,
-            color: '#fff',
+            color: '#1C496A',
             '&:hover': {
-                color: '#fff',
+                color: '#1C496A',
             },
         }),
         singleValue: provided => ({
             ...provided,
-            color: '#fff',
+            color: '#1C496A',
         }),
     },
     isSearchable: false,

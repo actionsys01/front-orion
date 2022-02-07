@@ -1,6 +1,6 @@
-import { ControlDataProps } from "@services/controle-entrada/entrance-types";
+import { ControlDataProps } from '@services/controle-entrada/entrance-types';
 
-export interface INfeDto{
+export interface INfeDto {
     chave_nota: string;
     empresa_id: number;
     nota: string;
@@ -30,7 +30,7 @@ export interface INfeDto{
     atualizado_por: string;
     criado_por_ip: string;
     atualizado_por_ip: string;
-    controle_entrada: ControlDataProps | null
+    controle_entrada: ControlDataProps | null;
 }
 
 export default INfeDto;

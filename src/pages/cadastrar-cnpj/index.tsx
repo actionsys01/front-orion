@@ -15,45 +15,14 @@ import * as companyRequest from '@services/empresas';
 import { useToasts } from '@geist-ui/react';
 import router from 'next/router';
 import MaskedInput from '@components/Masked-Input';
-
+import { estados } from '@utils/estados';
 export default function CadastrarCnpj() {
     const [name, setName] = useState('');
     const [cnpj, setCnpj] = useState('');
     const [uf, setUf] = useState('');
-    const [nsu, setNsu] = useState('');
     const [session] = useSession();
     const [, setToast] = useToasts();
     const company_id = Number(session.usuario.empresa.id);
-
-    const estados = [
-        'AC',
-        'AL',
-        'AP',
-        'AM',
-        'BA',
-        'CE',
-        'DF',
-        'ES',
-        'GO',
-        'MA',
-        'MT',
-        'MS',
-        'MG',
-        'PA',
-        'PB',
-        'PR',
-        'PE',
-        'PI',
-        'RJ',
-        'RN',
-        'RS',
-        'RO',
-        'RR',
-        'SC',
-        'SP',
-        'SE',
-        'TO',
-    ];
 
     async function handleSubmit(e) {
         e.preventDefault();

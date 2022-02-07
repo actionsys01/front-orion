@@ -9,6 +9,11 @@ interface IUnform {
     campo: string;
     valor: string;
 }
+interface IUnformCompare {
+    campo: string;
+    valor: string;
+    compare: string;
+}
 interface IFiltro {
     campo: { label: string; value: string } | undefined;
     valor: string;
@@ -17,11 +22,12 @@ interface IFiltro {
 interface FiltroContextType {
     nfes: IUnform[];
     ctes: IFiltro[];
-    nfses: IUnform[];
+    nfses: IUnformCompare[];
     cadastrarNfe(nfes: IUnform[]): void;
     cadastrarCte(ctes: IFiltro[]): void;
-    cadastrarNfse(nfses: IUnform[]): void;
+    cadastrarNfse(nfses: IUnformCompare[]): void;
     inicializarScope(filtro: IUnform[]): IFiltro[];
+    scopeIgnitionCompare(filtro: IUnformCompare[]): IUnformCompare[];
     scopeIgnition(filtro: IUnform[]): IUnform[];
     limpar(): void;
 }
@@ -39,7 +45,7 @@ export function useFiltro() {
 export default function FiltroProvider({ children }: IFiltroProps) {
     const [nfes, setNfes] = useState<IUnform[]>([]);
     const [ctes, setCtes] = useState<IFiltro[]>([]);
-    const [nfses, setNfses] = useState<IUnform[]>([]);
+    const [nfses, setNfses] = useState<IUnformCompare[]>([]);
 
     useEffect(() => {
         async function carregarStorage() {
@@ -70,7 +76,7 @@ export default function FiltroProvider({ children }: IFiltroProps) {
         localStorage.setItem('@orion:ctes', JSON.stringify(ctes));
     }
 
-    function cadastrarNfse(nfses: IUnform[]) {
+    function cadastrarNfse(nfses: IUnformCompare[]) {
         setNfses(nfses);
         localStorage.setItem('@orions:nfses', JSON.stringify(nfses));
     }
@@ -97,6 +103,17 @@ export default function FiltroProvider({ children }: IFiltroProps) {
 
         return filtro;
     }
+    function scopeIgnitionCompare(array: IUnformCompare[]): IUnformCompare[] {
+        console.log('array', array);
+        const filtro = array.map(({ campo, valor, compare }) => {
+            const coluna = nfse_colunas.find(option => option.value === campo);
+            if (coluna) {
+                return { campo, valor, compare };
+            }
+        });
+
+        return filtro;
+    }
 
     async function limpar() {
         localStorage.setItem('@orion:ctes', JSON.stringify([]));
@@ -114,6 +131,7 @@ export default function FiltroProvider({ children }: IFiltroProps) {
                 cadastrarNfe,
                 cadastrarNfse,
                 inicializarScope,
+                scopeIgnitionCompare,
                 scopeIgnition,
                 limpar,
             }}

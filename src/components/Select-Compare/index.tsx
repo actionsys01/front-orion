@@ -9,16 +9,9 @@ interface Props extends SelectProps<OptionTypeBase> {
     name: string;
 }
 
-export default function Select({ name, options, ...rest }: Props) {
+export default function SelectCompare({ name, options, ...rest }: Props) {
     const selectRef = useRef(null);
     const { fieldName, defaultValue, registerField, error } = useField(name);
-
-
-
-    // useEffect(() => {
-    //     console.log(`selectRef`, selectRef.current?.state.value);
-    //     console.log(`fieldName`, fieldName.toString());
-    // }, [fieldName, registerField, rest.isMulti]);
 
     useEffect(() => {
         registerField({
@@ -54,12 +47,10 @@ export default function Select({ name, options, ...rest }: Props) {
 
     return (
         <ReactSelect
-            defaultValue={
-                defaultValue &&
-                options.find(option => option.value === defaultValue)
-            }
+            defaultValue="equal"
+            placeholder="="
             ref={selectRef}
-            classNamePrefix="react-select"
+            classNamePrefix="select-container"
             options={options}
             {...rest}
         />

@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from 'react';
 import { HiPlusCircle } from 'react-icons/hi';
 import { useFiltro } from '@contexts/filtro';
 import colunas from '@utils/painel-controle-filtro';
+import compareColumns from '@utils/compare-select';
+import nfse_colunas from '@utils/controle-nfse-filtros';
 import {
     BotaoIncluir,
     BotaoRemover,
@@ -14,10 +16,12 @@ import {
     Modal,
     ModalBackground,
     SelectCustomizado,
-} from './styled';
+} from './style';
+import SelectCompare from '../Select-Compare';
+import { SelectCustom } from '../Select-Compare/styles'
 
 interface FormData {
-    filtros: [{ campo: string; valor: string }];
+    filtros: [{ campo: string; valor: string; compare: string }];
 }
 
 interface IFiltro {
@@ -28,21 +32,29 @@ interface IFiltro {
 interface IFilter {
     campo: string;
     valor: string;
+    compare: string;
 }
 interface IProps {
-    abaAtual: 'nfe' | 'cte';
-    data: IFiltro[] | IFilter[];
+    abaAtual: 'nfse';
+    data: IFilter[];
 }
 
 export default function Filtro({ abaAtual, data }: IProps) {
     const formRef = useRef<FormHandles>(null);
-    const { cadastrarCte, cadastrarNfe, inicializarScope, scopeIgnition } =
-        useFiltro();
+    const {
+        // cadastrarCte,
+        // cadastrarNfe,
+        cadastrarNfse,
+        // inicializarScope,
+        scopeIgnitionCompare,
+        // scopeIgnition,
+    } = useFiltro();
     const [erro, setErro] = useState(false);
     const [filtros, setFiltros] = useState<string[]>([]);
     const [modalVisivel, setModalVisivel] = useState(false);
 
     useEffect(() => {
+        // console.log('data no effect', data);
         data.map(() => {
             setFiltros([...filtros, '']);
         });
@@ -68,21 +80,25 @@ export default function Filtro({ abaAtual, data }: IProps) {
 
         filtrosForm.splice(index, 1);
 
-        if (abaAtual === 'cte') {
-            const filtro = inicializarScope(filtrosForm);
-            formRef.current?.setData({ filtros: filtro });
-        } else {
-            const filtro = scopeIgnition(filtrosForm);
-            formRef.current?.setData({ filtros: filtro });
-        }
+        // if (abaAtual === 'cte') {
+        //     const filtro = inicializarScope(filtrosForm);
+        //     formRef.current?.setData({ filtros: filtro });
+        // } else {
+        const filtro = scopeIgnitionCompare(filtrosForm);
+        formRef.current?.setData({ filtros: filtro });
 
         totalFiltros.splice(index, 1);
         setFiltros(totalFiltros);
     }
 
     const handleSubmit: SubmitHandler = (data: FormData) => {
+        // console.log('data', data.filtros);
         if (data.filtros === undefined) {
-            abaAtual == 'nfe' ? cadastrarNfe([]) : cadastrarCte([]);
+            // abaAtual == 'nfe'
+            //     ? cadastrarNfe([])
+            //     : abaAtual == 'cte'
+            //     ? cadastrarCte([])
+            cadastrarNfse([]);
             setErro(false);
             setModalVisivel(false);
             return;
@@ -94,13 +110,16 @@ export default function Filtro({ abaAtual, data }: IProps) {
             setErro(true);
             return;
         } else {
-            if (abaAtual === 'cte') {
-                const filtro = inicializarScope(data.filtros);
-                cadastrarCte(filtro);
-            } else {
-                const filtro = scopeIgnition(data.filtros);
-                cadastrarNfe(filtro);
-            }
+            // if (abaAtual === 'cte') {
+            //     const filtro = inicializarScope(data.filtros);
+            //     cadastrarCte(filtro);
+            // } else {
+            const filtro = scopeIgnitionCompare(data.filtros);
+            // console.log('filtro', filtro);
+            // console.log('data.filtros', data.filtros);
+            // abaAtual == 'nfe'
+            // ? cadastrarNfe(filtro)
+            cadastrarNfse(filtro);
         }
 
         setErro(false);
@@ -118,7 +137,11 @@ export default function Filtro({ abaAtual, data }: IProps) {
                 return;
             }
         }
-        abaAtual == 'nfe' ? cadastrarNfe([]) : cadastrarCte([]);
+        // abaAtual == 'nfe'
+        //     ? cadastrarNfe([])
+        //     : abaAtual == 'cte'
+        //     ? cadastrarCte([])
+        cadastrarNfse([]);
         setErro(false);
         setModalVisivel(false);
     }
@@ -147,7 +170,15 @@ export default function Filtro({ abaAtual, data }: IProps) {
                             <Scope path={`filtros[${index}]`} key={index}>
                                 <SelectCustomizado
                                     name="campo"
-                                    options={colunas}
+                                    options={
+                                        abaAtual != 'nfse'
+                                            ? colunas
+                                            : nfse_colunas
+                                    }
+                                />
+                                <SelectCustom
+                                    name="compare"
+                                    options={compareColumns}
                                 />
                                 <InputCustomizado
                                     name="valor"
