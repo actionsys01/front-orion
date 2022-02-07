@@ -1,6 +1,5 @@
-import React, { useState, SetStateAction, useEffect, Dispatch, useRef} from 'react';
-import { useToasts } from "@geist-ui/react";
-import  { Modal } from "@styles/modal";
+import React from 'react';
+import { Modal } from '@styles/modal';
 
 interface EntranceModalProps {
     modalStatus: string;
@@ -8,28 +7,41 @@ interface EntranceModalProps {
     updateEntrance: () => Promise<void>;
 }
 
-const EntranceModal = ({modalStatus, modalHandler, updateEntrance}: EntranceModalProps) => {
-
-    if(modalStatus === "fechado") {
-        return <Modal> 
+const EntranceModal = ({
+    modalStatus,
+    modalHandler,
+    updateEntrance,
+}: EntranceModalProps) => {
+    if (modalStatus === 'fechado') {
+        return (
+            <Modal>
+                <div>
+                    <h5>Não é possível autorizar uma entrada concluída </h5>
                     <div>
-                        <h5>Não é possível autorizar uma entrada concluída </h5>
-                        <div>
-                            <button onClick={() =>  modalHandler()}>RETORNAR</button>
-                            {/* <button onClick={() =>{ updateEntrance(), modalHandler()}} >CONFIRMAR</button> */}
-                        </div>
+                        <button onClick={() => modalHandler()}>RETORNAR</button>
+                        {/* <button onClick={() =>{ updateEntrance(), modalHandler()}} >CONFIRMAR</button> */}
                     </div>
-                </Modal>
+                </div>
+            </Modal>
+        );
     }
-    return <Modal> 
+    return (
+        <Modal>
             <div>
                 <h5>Deseja realmente {modalStatus} a entrada?</h5>
                 <div>
-                    <button onClick={() =>  modalHandler()}>CANCELAR</button>
-                    <button onClick={() =>{ updateEntrance(), modalHandler()}} >CONFIRMAR</button>
+                    <button onClick={() => modalHandler()}>CANCELAR</button>
+                    <button
+                        onClick={() => {
+                            updateEntrance(), modalHandler();
+                        }}
+                    >
+                        CONFIRMAR
+                    </button>
                 </div>
             </div>
-    </Modal>
-}
+        </Modal>
+    );
+};
 
-export default EntranceModal
+export default EntranceModal;
