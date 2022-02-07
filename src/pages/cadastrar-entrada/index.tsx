@@ -91,6 +91,11 @@ export default function CadastrarEntrada() {
     const getKey = useCallback(
         async e => {
             e.preventDefault();
+            console.log('key.current.value.length', key.current.value.length);
+            console.log(
+                'substring(20, 22)',
+                key.current.value.substring(20, 22),
+            );
             if (!key.current.value) {
                 setToast({
                     text: 'É necessário inserir uma nota no campo de busca',
@@ -107,8 +112,6 @@ export default function CadastrarEntrada() {
             const data = response.data.notas.filter(
                 item => item.controle_entrada.status === 4,
             );
-            console.log('response.data.total', response.data.total);
-            console.log('data', data);
             if (response.data.total >= 1 && !data.length) {
                 setToast({
                     text: `Nota duplicada, caso deseje prosseguir cancele a nota anterior`,

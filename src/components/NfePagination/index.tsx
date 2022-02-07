@@ -120,7 +120,7 @@ export default function NfePagination({
                                     ? 'Não se Aplica'
                                     : item?.controle_entrada?.status === 4
                                     ? 'Entrega Cancelada'
-                                    : ''
+                                    : 'Indisponível'
                             }
                             type={portaria?.cor}
                         >
@@ -135,7 +135,7 @@ export default function NfePagination({
                                         : item?.controle_entrada?.status === 3
                                         ? 'error'
                                         : item?.controle_entrada?.status === 4
-                                        ? 'success'
+                                        ? 'error'
                                         : 'default'
                                 }
                             />

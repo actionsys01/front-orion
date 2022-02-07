@@ -1,13 +1,12 @@
 import React, { useMemo, useCallback } from 'react';
 import getCteByCompanyId from '@services/cte';
 import INfeDto from '@services/nfe/dtos/INfeDTO';
-import { Dot, Table, Loading, Tooltip, useToasts } from '@geist-ui/react';
+import { Dot, Table, Tooltip, useToasts } from '@geist-ui/react';
 import { useEffect } from 'react';
 import { Grid, Pages } from './style';
 import { useState } from 'react';
 import { useFiltro } from '@contexts/filtro';
 import Pagination from '@material-ui/lab/Pagination';
-import { useRouter } from 'next/router';
 import { format } from 'date-fns';
 import PopoverCte from './Popover';
 import { useSecurityContext } from '@contexts/security';
@@ -32,7 +31,7 @@ export default function CtePagination({
     sefaz,
     portaria,
 }: Props) {
-    const [cte, setCtes] = useState<INfeDto[]>([]);
+    const [cte, setCte] = useState<INfeDto[]>([]);
     const [page, setPage] = useState(1);
     const { ctes } = useFiltro();
     const [quantityPage, setQuantityPage] = useState(1);
@@ -53,7 +52,8 @@ export default function CtePagination({
                 ctes,
             );
             const { data } = responseCtes;
-            setCtes(data.ctes);
+            setCte(data.ctes);
+
             setLoading(false);
             setQuantityPage(Math.ceil(data.total / 8));
         } catch (error) {
@@ -62,6 +62,7 @@ export default function CtePagination({
                 type: 'warning',
             });
         }
+        console.log('ctes', cte);
     }, [ctes, page]);
 
     useEffect(() => {
@@ -105,20 +106,32 @@ export default function CtePagination({
                     portaria_status: (
                         <Tooltip
                             text={
-                                item.portaria_status === 0
+                                item.controle_entrada?.status === 0
                                     ? 'Na Portaria'
-                                    : item.portaria_status === 1
-                                    ? ' Autorizada'
+                                    : item.controle_entrada?.status === 1
+                                    ? 'Entrada Autorizada'
+                                    : item?.controle_entrada?.status === 2
+                                    ? 'Entrada Fechada'
+                                    : item?.controle_entrada?.status === 3
+                                    ? 'Não se Aplica'
+                                    : item?.controle_entrada?.status === 4
+                                    ? 'Entrega Cancelada'
                                     : 'Indisponível'
                             }
                             type={portaria?.cor}
                         >
                             <Dot
                                 type={
-                                    item.portaria_status === 0
+                                    item.controle_entrada?.status === 0
                                         ? 'warning'
-                                        : item.portaria_status === 1
+                                        : item.controle_entrada?.status === 1
                                         ? 'success'
+                                        : item?.controle_entrada?.status === 2
+                                        ? 'success'
+                                        : item?.controle_entrada?.status === 3
+                                        ? 'error'
+                                        : item?.controle_entrada?.status === 4
+                                        ? 'error'
                                         : 'default'
                                 }
                             />

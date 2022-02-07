@@ -1,10 +1,10 @@
-import api from "@services/api";
+import api from '@services/api';
 
-export default async function getNfeById( key: string, company_id: number) {
-    const response = await api.get(`/nfe/controle/${key}`, {
+export default async function getNfeById(key: string, company_id: number) {
+    const response = await api.get(`/nfe/${key}`, {
         params: {
-            company_id
-        }
+            company_id,
+        },
     });
-    return response
+    return response;
 }
