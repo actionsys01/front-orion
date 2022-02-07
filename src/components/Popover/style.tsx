@@ -1,28 +1,28 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const PopStyle = styled.div`
     position: relative;
     cursor: pointer;
 
     div /* primeira div */ {
-    position: absolute;
-    width: -webkit-fill-available;
-    min-width: min-content;
-    height: fit-content;
-    min-height: 90px;
-    bottom: -2.865rem;
-    left: 26.99825px;
-    background-color: #fff;
-    color: #1c496a;
-    border-radius: 5px;
-    z-index: 1000;
-    box-shadow: 0 8px 30px rgb(0 0 0 / 12%);
-    border: none;
-    box-sizing: border-box;
-    padding: 8pt 12pt;
-    text-align: center;
-    
-        .able { 
+        position: absolute;
+        width: -webkit-fill-available;
+        min-width: min-content;
+        height: fit-content;
+        min-height: 90px;
+        bottom: -2.865rem;
+        left: 26.99825px;
+        background-color: #fff;
+        color: #1c496a;
+        border-radius: 5px;
+        z-index: 1000;
+        box-shadow: 0 8px 30px rgb(0 0 0 / 12%);
+        border: none;
+        box-sizing: border-box;
+        padding: 8pt 12pt;
+        text-align: center;
+
+        .able {
             cursor: pointer;
             margin: 0;
             font-size: 0.875rem;
@@ -36,7 +36,7 @@ export const PopStyle = styled.div`
             color: #eaeaea;
             cursor: default;
         }
-}
+    }
 
     div:before {
         content: '';
@@ -53,7 +53,7 @@ export const PopStyle = styled.div`
     }
 
     .beforeLast-prop {
-            bottom: -1.565rem;
+        bottom: -1.565rem;
     }
 
     .beforeLast-prop:before {
@@ -61,44 +61,43 @@ export const PopStyle = styled.div`
     }
 
     .last-prop {
-            bottom: -.565rem;
+        bottom: -0.565rem;
     }
 
     .last-prop:before {
         margin-top: 33px;
     }
-`
-
+`;
 
 export const PopStyleDouble = styled.div`
     position: relative;
     cursor: pointer;
 
     div /* primeira div */ {
-    position: absolute;
-    width: -webkit-fill-available;
-    min-width: min-content;
-    height: fit-content;
-    min-height: 90px;
-    bottom: -1.2rem;
-    left: 26.99825px;
-    background-color: #fff;
-    color: #1c496a;
-    border-radius: 5px;
-    z-index: 1000;
-    box-shadow: 0 8px 30px rgb(0 0 0 / 12%);
-    border: none;
-    box-sizing: border-box;
-    padding: 8pt 12pt;
-    text-align: center;
-    
-        p { 
+        position: absolute;
+        width: -webkit-fill-available;
+        min-width: min-content;
+        height: fit-content;
+        min-height: 90px;
+        bottom: -1.2rem;
+        left: 26.99825px;
+        background-color: #fff;
+        color: #1c496a;
+        border-radius: 5px;
+        z-index: 1000;
+        box-shadow: 0 8px 30px rgb(0 0 0 / 12%);
+        border: none;
+        box-sizing: border-box;
+        padding: 8pt 12pt;
+        text-align: center;
+
+        p {
             cursor: pointer;
             margin: 0;
             font-size: 0.875rem;
             line-height: 2rem;
         }
-}
+    }
 
     div:before {
         content: '';
@@ -115,7 +114,7 @@ export const PopStyleDouble = styled.div`
     }
 
     .beforeLast-prop {
-            bottom: -1.565rem;
+        bottom: -1.565rem;
     }
 
     .beforeLast-prop:before {
@@ -123,37 +122,37 @@ export const PopStyleDouble = styled.div`
     }
 
     .last-prop {
-            bottom: -.565rem;
+        bottom: -0.565rem;
     }
 
     .last-prop:before {
         margin-top: 33px;
     }
-`
+`;
 
 export const PopStyleFourLines = styled.div`
     position: relative;
     cursor: pointer;
 
     div /* primeira div */ {
-    position: absolute;
-    width: -webkit-fill-available;
-    min-width: min-content;
-    height: fit-content;
-    min-height: 90px;
-    bottom: -5.2rem;
-    left: 26.99825px;
-    background-color: #fff;
-    color: #1c496a;
-    border-radius: 5px;
-    z-index: 1000;
-    box-shadow: 0 8px 30px rgb(0 0 0 / 12%);
-    border: none;
-    box-sizing: border-box;
-    padding: 8pt 12pt;
-    text-align: center;
-    
-        .able { 
+        position: absolute;
+        width: -webkit-fill-available;
+        min-width: min-content;
+        height: fit-content;
+        min-height: 90px;
+        bottom: -5.2rem;
+        left: 26.99825px;
+        background-color: #fff;
+        color: #1c496a;
+        border-radius: 5px;
+        z-index: 1000;
+        box-shadow: 0 8px 30px rgb(0 0 0 / 12%);
+        border: none;
+        box-sizing: border-box;
+        padding: 8pt 12pt;
+        text-align: center;
+
+        .able {
             cursor: pointer;
             margin: 0;
             font-size: 0.875rem;
@@ -165,14 +164,14 @@ export const PopStyleFourLines = styled.div`
             font-size: 0.875rem;
             line-height: 2rem;
             color: #eaeaea;
-            cursor:  default;
+            cursor: default;
         }
 
         a {
             text-decoration: none;
-            color: inherit
+            color: inherit;
         }
-}
+    }
 
     div:before {
         content: '';
@@ -189,7 +188,7 @@ export const PopStyleFourLines = styled.div`
     }
 
     .beforeLast-prop {
-            bottom: -1.565rem;
+        bottom: -1.565rem;
     }
 
     .beforeLast-prop:before {
@@ -197,12 +196,10 @@ export const PopStyleFourLines = styled.div`
     }
 
     .last-prop {
-            bottom: -.565rem;
+        bottom: -0.565rem;
     }
 
     .last-prop:before {
         margin-top: 52px;
     }
-`
-
-
+`;

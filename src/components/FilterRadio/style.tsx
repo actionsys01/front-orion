@@ -1,14 +1,11 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-export const RadioFilterComponent =  styled.div` 
+export const RadioFilterComponent = styled.div`
+    .MuiSvgIcon-root {
+        font-size: 18px;
+    }
 
-.MuiSvgIcon-root {
-                font-size: 18px
-            }
-
-            .MuiRadio-colorSecondary.Mui-checked {
-                color: #1C496A;
-                
-                
-            }
-`
+    .MuiRadio-colorSecondary.Mui-checked {
+        color: #1c496a;
+    }
+`;
