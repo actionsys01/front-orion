@@ -17,16 +17,10 @@ import {
     ModalBackground,
     SelectCustomizado,
 } from './style';
-import SelectCompare from '../Select-Compare';
-import { SelectCustom } from '../Select-Compare/styles'
+import { SelectCustom } from '../Select-Compare/styles';
 
 interface FormData {
     filtros: [{ campo: string; valor: string; compare: string }];
-}
-
-interface IFiltro {
-    campo: { label: string; value: string } | undefined;
-    valor: string;
 }
 
 interface IFilter {
@@ -35,7 +29,7 @@ interface IFilter {
     compare: string;
 }
 interface IProps {
-    abaAtual: 'nfse';
+    abaAtual: 'nfe' | 'nfse';
     data: IFilter[];
 }
 
@@ -43,7 +37,7 @@ export default function Filtro({ abaAtual, data }: IProps) {
     const formRef = useRef<FormHandles>(null);
     const {
         // cadastrarCte,
-        // cadastrarNfe,
+        cadastrarNfe,
         cadastrarNfse,
         // inicializarScope,
         scopeIgnitionCompare,
@@ -94,11 +88,9 @@ export default function Filtro({ abaAtual, data }: IProps) {
     const handleSubmit: SubmitHandler = (data: FormData) => {
         // console.log('data', data.filtros);
         if (data.filtros === undefined) {
-            // abaAtual == 'nfe'
-            //     ? cadastrarNfe([])
+            abaAtual == 'nfe' ? cadastrarNfe([]) : cadastrarNfse([]);
             //     : abaAtual == 'cte'
             //     ? cadastrarCte([])
-            cadastrarNfse([]);
             setErro(false);
             setModalVisivel(false);
             return;
@@ -117,9 +109,7 @@ export default function Filtro({ abaAtual, data }: IProps) {
             const filtro = scopeIgnitionCompare(data.filtros);
             // console.log('filtro', filtro);
             // console.log('data.filtros', data.filtros);
-            // abaAtual == 'nfe'
-            // ? cadastrarNfe(filtro)
-            cadastrarNfse(filtro);
+            abaAtual == 'nfe' ? cadastrarNfe(filtro) : cadastrarNfse(filtro);
         }
 
         setErro(false);

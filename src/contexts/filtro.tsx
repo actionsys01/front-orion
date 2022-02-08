@@ -20,10 +20,10 @@ interface IFiltro {
 }
 
 interface FiltroContextType {
-    nfes: IUnform[];
+    nfes: IUnformCompare[];
     ctes: IFiltro[];
     nfses: IUnformCompare[];
-    cadastrarNfe(nfes: IUnform[]): void;
+    cadastrarNfe(nfes: IUnformCompare[]): void;
     cadastrarCte(ctes: IFiltro[]): void;
     cadastrarNfse(nfses: IUnformCompare[]): void;
     inicializarScope(filtro: IUnform[]): IFiltro[];
@@ -43,7 +43,7 @@ export function useFiltro() {
 }
 
 export default function FiltroProvider({ children }: IFiltroProps) {
-    const [nfes, setNfes] = useState<IUnform[]>([]);
+    const [nfes, setNfes] = useState<IUnformCompare[]>([]);
     const [ctes, setCtes] = useState<IFiltro[]>([]);
     const [nfses, setNfses] = useState<IUnformCompare[]>([]);
 
@@ -66,7 +66,7 @@ export default function FiltroProvider({ children }: IFiltroProps) {
 
     // }, [nfes])
 
-    function cadastrarNfe(nfes: IUnform[]) {
+    function cadastrarNfe(nfes: IUnformCompare[]) {
         setNfes(nfes);
         localStorage.setItem('@orions:nfes', JSON.stringify(nfes));
     }

@@ -27,14 +27,8 @@ interface Props {
     };
 }
 
-export default function NfePagination({
-    company_id,
-    token,
-    sefaz,
-    portaria,
-}: Props) {
+export default function NfePagination({ company_id, sefaz, portaria }: Props) {
     const [nfe, setNfes] = useState<INfeDto[]>([]);
-    const router = useRouter();
     const { nfes } = useFiltro();
     const [page, setPage] = useState(1);
     const [quantityPage, setQuantityPage] = useState(1);
@@ -75,7 +69,7 @@ export default function NfePagination({
         }
     }, [nfes, quantityPage, page]);
 
-    console.log('nfe.controle_entrada', nfe);
+    // console.log('nfe.controle_entrada', nfe);
 
     const dataFormatted = useMemo(() => {
         const newData: any = [];
@@ -92,7 +86,7 @@ export default function NfePagination({
                                     ? 'Autorizada'
                                     : item?.sefaz_status === 101
                                     ? 'Cancelada'
-                                    : null
+                                    : 'null'
                             }
                             type={sefaz?.cor}
                         >
@@ -120,7 +114,7 @@ export default function NfePagination({
                                     ? 'Não se Aplica'
                                     : item?.controle_entrada?.status === 4
                                     ? 'Entrega Cancelada'
-                                    : 'Indisponível'
+                                    : 'Aguardando Chegada'
                             }
                             type={portaria?.cor}
                         >

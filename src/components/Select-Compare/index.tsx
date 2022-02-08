@@ -18,11 +18,8 @@ export default function SelectCompare({ name, options, ...rest }: Props) {
             name: fieldName,
             ref: selectRef.current,
             getValue: (ref: any) => {
-                // console.log('aqui pt I');
                 if (rest.isMulti) {
-                    // console.log('aqui pt II');
                     if (!ref.state.value) {
-                        // console.log('aqui pt III');
                         return [];
                     }
                     return ref.state.value.map(
@@ -30,13 +27,11 @@ export default function SelectCompare({ name, options, ...rest }: Props) {
                     );
                 }
                 if (!ref.state.value) {
-                    // console.log('aqui pt IV');
                     return '';
                 }
                 return ref.state.value.value;
             },
             setValue: (ref, value) => {
-                // console.log('aqui pt V');
                 ref.select.setValue(value || null);
             },
             clearValue: ref => {
@@ -47,7 +42,7 @@ export default function SelectCompare({ name, options, ...rest }: Props) {
 
     return (
         <ReactSelect
-            defaultValue="equal"
+            defaultValue={{ value: 'equal', label: '=' }}
             placeholder="="
             ref={selectRef}
             classNamePrefix="select-container"

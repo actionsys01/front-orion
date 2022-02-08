@@ -15,7 +15,7 @@ export const Modal = styled.div<IModal>`
     transform: translate(-50%, -50%);
     height: 500px;
     max-height: 500px;
-    width: 420px;
+    width: 440px;
     max-width: 100%;
     display: ${({ visivel }) => (visivel ? 'block' : 'none')};
     border-radius: 5px;

@@ -116,7 +116,7 @@ export default function CtePagination({
                                     ? 'Não se Aplica'
                                     : item?.controle_entrada?.status === 4
                                     ? 'Entrega Cancelada'
-                                    : 'Indisponível'
+                                    : 'Aguardando Chegada'
                             }
                             type={portaria?.cor}
                         >
