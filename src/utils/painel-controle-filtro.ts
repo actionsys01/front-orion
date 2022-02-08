@@ -3,7 +3,7 @@ export default [
     { value: 'serie', label: 'Série' },
     { value: 'dest_cnpj', label: 'CNPJ destinatário' },
     { value: 'dest_nome', label: 'Destintário' },
-    { value: 'diverg_status', label: 'Status Divergência' },
+    // { value: 'diverg_status', label: 'Status Divergência' },
     { value: 'emit_cnpj', label: 'CNPJ do emitente' },
     { value: 'emit_nome', label: 'Fornecedor' },
     // { value: 'integracao_status', label: 'Status Integração' },

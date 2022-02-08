@@ -94,13 +94,8 @@ export default function Filtro({ abaAtual, data }: IProps) {
             setErro(true);
             return;
         } else {
-            if (abaAtual === 'cte') {
-                const filtro = inicializarScope(data.filtros);
-                cadastrarCte(filtro);
-            } else {
-                const filtro = scopeIgnition(data.filtros);
-                cadastrarNfe(filtro);
-            }
+            const filtro = inicializarScope(data.filtros);
+            cadastrarCte(filtro);
         }
 
         setErro(false);
