@@ -2,11 +2,10 @@ import React, {
     useEffect,
     useContext,
     useCallback,
-    useReducer,
     useState,
-    useMemo,
     Dispatch,
     SetStateAction,
+    ReactNode,
 } from 'react';
 import * as companyRequest from '@services/empresas';
 import { useSession } from 'next-auth/client';
@@ -24,9 +23,13 @@ interface CompanyProps {
     nome: string;
 }
 
+interface IFiltroProps {
+    children: ReactNode;
+}
+
 const CompanyContext = React.createContext({} as ContextProps);
 
-const CompanyProvider: React.FC = ({ children }: any) => {
+const CompanyProvider: React.FC = ({ children }: IFiltroProps) => {
     const [isCertificated, setIsCertificated] = useState(false);
     const [session] = useSession();
     // const company_id = Number(session?.usuario.empresa.id)
