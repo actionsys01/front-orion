@@ -29,20 +29,15 @@ interface IFilter {
     compare: string;
 }
 interface IProps {
-    abaAtual: 'nfe' | 'nfse';
+    abaAtual: 'nfe' | 'cte' | 'nfse';
     data: IFilter[];
 }
 
 export default function Filtro({ abaAtual, data }: IProps) {
     const formRef = useRef<FormHandles>(null);
-    const {
-        // cadastrarCte,
-        cadastrarNfe,
-        cadastrarNfse,
-        // inicializarScope,
-        scopeIgnitionCompare,
-        // scopeIgnition,
-    } = useFiltro();
+    const { cadastrarCte, cadastrarNfe, cadastrarNfse, scopeIgnitionCompare } =
+        useFiltro();
+
     const [erro, setErro] = useState(false);
     const [filtros, setFiltros] = useState<string[]>([]);
     const [modalVisivel, setModalVisivel] = useState(false);
@@ -88,9 +83,11 @@ export default function Filtro({ abaAtual, data }: IProps) {
     const handleSubmit: SubmitHandler = (data: FormData) => {
         // console.log('data', data.filtros);
         if (data.filtros === undefined) {
-            abaAtual == 'nfe' ? cadastrarNfe([]) : cadastrarNfse([]);
-            //     : abaAtual == 'cte'
-            //     ? cadastrarCte([])
+            abaAtual == 'nfe'
+                ? cadastrarNfe([])
+                : abaAtual == 'cte'
+                ? cadastrarCte([])
+                : cadastrarNfse([]);
             setErro(false);
             setModalVisivel(false);
             return;
@@ -102,14 +99,12 @@ export default function Filtro({ abaAtual, data }: IProps) {
             setErro(true);
             return;
         } else {
-            // if (abaAtual === 'cte') {
-            //     const filtro = inicializarScope(data.filtros);
-            //     cadastrarCte(filtro);
-            // } else {
             const filtro = scopeIgnitionCompare(data.filtros);
-            // console.log('filtro', filtro);
-            // console.log('data.filtros', data.filtros);
-            abaAtual == 'nfe' ? cadastrarNfe(filtro) : cadastrarNfse(filtro);
+            abaAtual == 'nfe'
+                ? cadastrarNfe(filtro)
+                : abaAtual == 'cte'
+                ? cadastrarCte(filtro)
+                : cadastrarNfse(filtro);
         }
 
         setErro(false);
@@ -127,11 +122,11 @@ export default function Filtro({ abaAtual, data }: IProps) {
                 return;
             }
         }
-        // abaAtual == 'nfe'
-        //     ? cadastrarNfe([])
-        //     : abaAtual == 'cte'
-        //     ? cadastrarCte([])
-        cadastrarNfse([]);
+        abaAtual == 'nfe'
+            ? cadastrarNfe([])
+            : abaAtual == 'cte'
+            ? cadastrarCte([])
+            : cadastrarNfse([]);
         setErro(false);
         setModalVisivel(false);
     }
@@ -154,7 +149,6 @@ export default function Filtro({ abaAtual, data }: IProps) {
                             Use o filtro para restringir seus dados
                         </Text>
                     )}
-
                     <ContainerFiltro>
                         {filtros.map((item, index) => (
                             <Scope path={`filtros[${index}]`} key={index}>
@@ -185,7 +179,6 @@ export default function Filtro({ abaAtual, data }: IProps) {
                             <Text> Incluir linha</Text>
                         </BotaoIncluir>
                     </ContainerFiltro>
-
                     {erro && (
                         <Text small size={10} type="error">
                             Para prosseguir não deixe os campos vazios.
@@ -203,7 +196,6 @@ export default function Filtro({ abaAtual, data }: IProps) {
                         >
                             <Text>Cancelar</Text>
                         </BotaoIncluir>
-
                         <BotaoIncluir
                             onClick={fecharModal}
                             type="button"
@@ -217,7 +209,6 @@ export default function Filtro({ abaAtual, data }: IProps) {
                     </Row>
                 </Modal>
             </Form>
-
             {modalVisivel && <ModalBackground />}
         </>
     );

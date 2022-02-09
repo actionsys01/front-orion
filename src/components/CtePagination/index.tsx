@@ -14,7 +14,6 @@ import Loader from '@components/Loader';
 
 interface Props {
     company_id: number | undefined;
-    token: string | undefined;
     sefaz?: {
         cor: 'secondary' | 'success' | 'error' | 'warning' | 'default';
         message: string;
@@ -25,12 +24,7 @@ interface Props {
     };
 }
 
-export default function CtePagination({
-    company_id,
-    token,
-    sefaz,
-    portaria,
-}: Props) {
+export default function CtePagination({ company_id, sefaz, portaria }: Props) {
     const [cte, setCte] = useState<INfeDto[]>([]);
     const [page, setPage] = useState(1);
     const { ctes } = useFiltro();
@@ -47,7 +41,6 @@ export default function CtePagination({
         try {
             const responseCtes = await getCteByCompanyId(
                 company_id,
-                token,
                 page,
                 ctes,
             );
@@ -57,6 +50,7 @@ export default function CtePagination({
             setLoading(false);
             setQuantityPage(Math.ceil(data.total / 8));
         } catch (error) {
+            console.log(error);
             setToast({
                 text: 'Notas não localizadas',
                 type: 'warning',
