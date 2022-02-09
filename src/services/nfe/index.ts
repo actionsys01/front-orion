@@ -41,7 +41,7 @@ export default async function getNfe(
                 : compare === 'different'
                 ? (campo = 'dt_hr_emit_different')
                 : '';
-            const [dia, mes, ano] = valor.toString().split('/');
+            const [dia, mes, ano] = valor.toString().trim().split('/');
             valor = `${ano}-${mes}-${dia}T`;
         }
         return { ...acc, [campo]: valor };

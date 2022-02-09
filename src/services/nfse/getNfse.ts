@@ -36,7 +36,7 @@ export default async function getNfse(
                 ? (campo = 'dt_hr_recebimento_different')
                 : '';
 
-            const [dia, mes, ano] = valor.toString().split('/');
+            const [dia, mes, ano] = valor.toString().trim().split('/');
             valor = `${ano}-${mes}-${dia}T`;
         }
 
