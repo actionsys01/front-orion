@@ -1,10 +1,4 @@
-import React, {
-    useEffect,
-    useContext,
-    useCallback,
-    useState,
-    useMemo,
-} from 'react';
+import React, { useEffect, useContext, useState, ReactNode } from 'react';
 import { useSession } from 'next-auth/client';
 import { useToasts } from '@geist-ui/react';
 import {
@@ -39,9 +33,13 @@ interface NewPermissions {
     [key: string]: boolean;
 }
 
+interface IFiltroProps {
+    children: ReactNode;
+}
+
 const SecurityContext = React.createContext({} as ContextProps);
 
-const SecurityProvider: React.FC = ({ children }: any) => {
+const SecurityProvider: React.FC = ({ children }: IFiltroProps) => {
     const [session] = useSession();
     const [permissions, setPermissions] = useState<Permissions[]>([]);
     const [, setToast] = useToasts();
