@@ -24,17 +24,8 @@ export default function Dashboard() {
     const [session] = useSession();
     const router = useRouter();
     const [, setToast] = useToasts();
-    const [account, setAccount] = useState(
-        Number(session.usuario.empresa.plano.id),
-    );
-    const [company, setCompany] = useState(Number(session.usuario.empresa.id));
-    // const account_id = Number(session?.usuario?.empresa?.plano?.id);
-    // const company_id = Number(session?.usuario.empresa.id);
 
     const [dateDash, setDateDash] = useState('');
-
-    // modal
-    const [modal, setModal] = useState(false);
 
     const chartStyle = {
         width: 225,
@@ -44,7 +35,9 @@ export default function Dashboard() {
     // request de plano
     const getAccountData = useCallback(async () => {
         try {
-            const response = await planos.getAccountById(account);
+            const response = await planos.getAccountById(
+                Number(session.usuario.empresa.plano.id),
+            );
             const data = response.data;
             setTotalValue(data.notas);
             setTotalUsers(data.usuarios);
@@ -64,7 +57,10 @@ export default function Dashboard() {
         const date = dateDash;
         // console.log(`date na função`, date)
         try {
-            const response = await empresas.dashboardRequest(company, date);
+            const response = await empresas.dashboardRequest(
+                Number(session.usuario.empresa.id),
+                date,
+            );
             const data = response.data;
             setTotalAmount(data.notas);
             setTotalUsersAmount(data.usuarios);
