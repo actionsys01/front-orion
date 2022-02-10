@@ -24,10 +24,7 @@ export default function Nfe() {
                 <Spacer x={0.2} />
             </Row>
             <Spacer y={0.5} />
-            <NfePagination
-                company_id={session?.usuario.empresa.id}
-                token={session?.token}
-            />
+            <NfePagination company_id={session?.usuario.empresa.id} />
         </>
     );
 }

@@ -15,8 +15,7 @@ import { useToasts } from '@geist-ui/react';
 import Loader from '@components/Loader';
 
 interface Props {
-    company_id: number | undefined;
-    token: string | undefined;
+    company_id: number;
     sefaz?: {
         cor: 'secondary' | 'success' | 'error' | 'warning' | 'default';
         message: string;
@@ -44,7 +43,7 @@ export default function NfePagination({ company_id, sefaz, portaria }: Props) {
         try {
             const responseNfes = await getNfePagesByCompanyId(
                 page,
-                company_id,
+                Number(company_id),
                 nfes,
             );
             const { data } = responseNfes;
