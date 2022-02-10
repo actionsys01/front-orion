@@ -39,7 +39,7 @@ export default function Dashboard() {
     const getAccountData = useCallback(async () => {
         try {
             const response = await planos.getAccountById(
-                Number(session?.usuario.empresa.plano.id),
+                Number(session?.usuario?.empresa?.plano?.id),
             );
             const data = response.data;
             setTotalValue(data.notas);
