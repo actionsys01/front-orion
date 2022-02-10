@@ -1,22 +1,14 @@
-import { useEffect, Dispatch, SetStateAction } from 'react';
+import { useEffect} from 'react';
 import { useContext, useState } from 'react';
 import { createContext } from 'react';
-import colunas from '@utils/painel-controle-filtro';
 import nfse_colunas from '@utils/controle-nfse-filtros';
 import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react';
 
-interface IUnform {
-    campo: string;
-    valor: string;
-}
+
 interface IUnformCompare {
     campo: string;
     valor: string;
     compare: string;
-}
-interface IFiltro {
-    campo: { label: string; value: string } | undefined;
-    valor: string;
 }
 
 interface FiltroContextType {
@@ -26,9 +18,7 @@ interface FiltroContextType {
     cadastrarNfe(nfes: IUnformCompare[]): void;
     cadastrarCte(ctes: IUnformCompare[]): void;
     cadastrarNfse(nfses: IUnformCompare[]): void;
-    inicializarScope(filtro: IUnform[]): IFiltro[];
     scopeIgnitionCompare(filtro: IUnformCompare[]): IUnformCompare[];
-    scopeIgnition(filtro: IUnform[]): IUnform[];
     limpar(): void;
 }
 
@@ -81,28 +71,7 @@ export default function FiltroProvider({ children }: IFiltroProps) {
         localStorage.setItem('@orions:nfses', JSON.stringify(nfses));
     }
 
-    function inicializarScope(array: IUnform[]): IFiltro[] {
-        const filtro: IFiltro[] = [];
 
-        array.forEach(item => {
-            const { campo, valor } = item;
-            const coluna = colunas.find(option => option.value === campo);
-            filtro.push({ campo: coluna, valor: valor });
-        });
-
-        return filtro;
-    }
-
-    function scopeIgnition(array: IUnform[]): IUnform[] {
-        const filtro = array.map(({ campo, valor }) => {
-            const coluna = nfse_colunas.find(option => option.value === campo);
-            if (coluna) {
-                return { campo, valor };
-            }
-        });
-
-        return filtro;
-    }
     function scopeIgnitionCompare(array: IUnformCompare[]): IUnformCompare[] {
         console.log('array', array);
         const filtro = array.map(({ campo, valor, compare }) => {
@@ -130,9 +99,7 @@ export default function FiltroProvider({ children }: IFiltroProps) {
                 cadastrarCte,
                 cadastrarNfe,
                 cadastrarNfse,
-                inicializarScope,
                 scopeIgnitionCompare,
-                scopeIgnition,
                 limpar,
             }}
         >
