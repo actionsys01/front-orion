@@ -15,7 +15,7 @@ export const Modal = styled.div<IModal>`
     transform: translate(-50%, -50%);
     height: 500px;
     max-height: 500px;
-    width: auto;
+    width: 440px;
     max-width: 100%;
     display: ${({ visivel }) => (visivel ? 'block' : 'none')};
     border-radius: 5px;
@@ -35,12 +35,12 @@ export const ModalBackground = styled.div`
 
 export const ContainerFiltro = styled.div`
     display: grid;
-    gap: 5px;
+    gap: 7px;
     margin-top: 0.5rem;
-    grid-template-columns: 150px 150px 20px;
+    grid-template-columns: 150px 70px 150px 25px;
     justify-content: center;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     @media (max-width: 768px) {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
@@ -54,6 +54,7 @@ export const InputCustomizado = styled(Input)`
     background-color: ${props => props.theme.palette.foreground};
     height: 24px;
     color: #fff;
+    padding-inline-start: 8px;
 `;
 export const BotaoRemover = styled(X)`
     cursor: pointer;
@@ -96,7 +97,7 @@ export const SelectCustomizado = styled(Select).attrs(props => ({
             boxShadow: 'none',
             backgroundColor: props.theme.palette.foreground,
             fontSize: 12,
-            height: 24,
+            height: 28,
             display: 'flex',
             borderRadius: 5,
             cursor: 'pointer',
@@ -142,3 +143,4 @@ export const SelectCustomizado = styled(Select).attrs(props => ({
     },
     // defaultValue: props.options[0],
 }))``;
+

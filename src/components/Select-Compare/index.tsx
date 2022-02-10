@@ -1,19 +1,17 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import ReactSelect, {
     OptionTypeBase,
     Props as SelectProps,
 } from 'react-select';
 import { useField } from '@unform/core';
-import { useControlFilter } from '@contexts/ControlFilter';
 
 interface Props extends SelectProps<OptionTypeBase> {
     name: string;
 }
 
-export default function Select({ name, options, ...rest }: Props) {
+export default function SelectCompare({ name, options, ...rest }: Props) {
     const selectRef = useRef(null);
     const { fieldName, defaultValue, registerField, error } = useField(name);
-    const [fieldStatus, setFieldStatus] = useState('');
 
     useEffect(() => {
         registerField({
@@ -44,12 +42,10 @@ export default function Select({ name, options, ...rest }: Props) {
 
     return (
         <ReactSelect
-            defaultValue={
-                defaultValue &&
-                options.find(option => option.value === defaultValue)
-            }
+            defaultValue={{ value: 'equal', label: '=' }}
+            placeholder="="
             ref={selectRef}
-            classNamePrefix="react-select"
+            classNamePrefix="select-container"
             options={options}
             {...rest}
         />

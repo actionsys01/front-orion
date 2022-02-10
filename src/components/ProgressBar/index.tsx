@@ -1,29 +1,30 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface ProgressProps {
-    done: number
+    done: number;
 }
 
-const ProgressBar =({done}: ProgressProps) => {
-    const [ bar, setBar] = useState({})
-    
+const ProgressBar = ({ done }: ProgressProps) => {
+    const [bar, setBar] = useState({});
+
     useEffect(() => {
         const newStyle = {
             opacity: 1,
-            width: `${done}%`
-        }
-        
+            width: `${done}%`,
+        };
+
         setBar(newStyle);
-    }, [done])
+    }, [done]);
 
-    return <>
-        <div className='progress'>
-            <div style={bar}>
-               <span style={{display: "none"}}> {done}</span>
+    return (
+        <>
+            <div className="progress">
+                <div style={bar}>
+                    <span style={{ display: 'none' }}> {done}</span>
+                </div>
             </div>
-        </div>
         </>
-    
-}
+    );
+};
 
-export default ProgressBar
+export default ProgressBar;

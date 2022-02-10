@@ -1,15 +1,13 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-
-export const NoBefore = styled.div` 
+export const NoBefore = styled.div`
     li:before {
-    display: none;
-}
-`
+        display: none;
+    }
+`;
 
-export const AlignSubmenu = styled.div` 
-    
+export const AlignSubmenu = styled.div`
     li:before {
-    display: none;
-}
-`
+        display: none;
+    }
+`;

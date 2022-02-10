@@ -32,3 +32,13 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# editorconfig
+.editorconfig
+
+# eslint
+.eslintrc
+.eslintignore
+
+# prettier
+.prettierrc

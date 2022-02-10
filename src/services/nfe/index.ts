@@ -1,56 +1,57 @@
-import api from "@services/api";
-
-interface INfeDto{
-    chave_nota: string;
-    empresa_id: number;
-    nota: string;
-    emit_cnpj: string;
-    dest_cnpj: string;
-    emit_nome: string;
-    dest_nome: string;
-    serie: string;
-    dt_hr_emi: Date;
-    sefaz_status: number;
-    sefaz_status_desc: string;
-    fisico_status: number;
-    fisico_status_dt_hr: Date;
-    sefaz_status_dt_hr: string;
-    diverg_status: number;
-    diverg_status_dt_hr: string;
-    frete_vinc_nfe_status: number;
-    frete_vinc_nfe_status_dt_hr: Date;
-    integracao_status: number;
-    integracao_status_dt_hr: Date;
-    portaria_status: number;
-    portaria_status_ent_dt_hr: Date;
-    portaria_status_sai_dt_hr: Date;
-    criado_em: string;
-    atualizado_em: Date;
-    criado_por: string;
-    atualizado_por: string;
-    criado_por_ip: string;
-    atualizado_por_ip: string;
-}
+import api from '@services/api';
 
 interface IFiltro {
-    campo: { label: string; value: string } | undefined;
-    valor: string;
-  }
+    campo?: string;
+    valor?: string | number;
+    compare?: string;
+}
 
-
-export default async function getNfePagesByCompanyId(company_id : number | undefined, token : string | undefined, page : number, filter? : IFiltro[] | undefined) {
-
-
-    const nfes = await  api.get(`/nfe/controle${!!filter ? `?filtro=${JSON.stringify(filter)}` : ""}`,
-    {
-        
-        params : {
-            page,
-            company_id
+export default async function getNfe(
+    page: number,
+    company_id: number,
+    nfe: IFiltro[] | undefined,
+) {
+    const filters = nfe.reduce((acc, { campo, valor, compare }) => {
+        if (campo === 'chave_nota' && compare === 'different') {
+            campo = 'chave_nota_different';
         }
-    }
-    )
+        if (campo === 'serie' && compare === 'different') {
+            campo = 'serie_different';
+        }
+        if (campo === 'dest_cnpj' && compare === 'different') {
+            campo = 'dest_cnpj_different';
+        }
+        if (campo === 'dest_nome' && compare === 'different') {
+            campo = 'dest_nome_different';
+        }
+        if (campo === 'emit_cnpj' && compare === 'different') {
+            campo = 'emit_cnpj_different';
+        }
+        if (campo === 'emit_nome' && compare === 'different') {
+            campo = 'emit_nome_different';
+        }
+        if (campo === 'nota' && compare === 'different') {
+            campo = 'nota_different';
+        }
+        if (campo === 'dt_hr_emit') {
+            compare === 'above'
+                ? (campo = 'dt_hr_emit_above')
+                : compare === 'lower'
+                ? (campo = 'dt_hr_emit_lower')
+                : compare === 'different'
+                ? (campo = 'dt_hr_emit_different')
+                : '';
+            const [dia, mes, ano] = valor.toString().trim().split('/');
+            valor = `${ano}-${mes}-${dia}T`;
+        }
+        return { ...acc, [campo]: valor };
+    }, {});
 
-    return nfes
-    
+    const response = await api.get(`/nfe/pagination/${company_id}`, {
+        params: {
+            page: page,
+            ...filters,
+        },
+    });
+    return response;
 }
