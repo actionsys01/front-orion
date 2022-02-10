@@ -24,6 +24,9 @@ export default function Dashboard() {
     const [session] = useSession();
     const router = useRouter();
     const [, setToast] = useToasts();
+    const [account, setAccount] = useState(
+        Number(session?.usuario?.empresa?.plano?.id),
+    );
     const account_id = Number(session?.usuario?.empresa?.plano?.id);
     const company_id = Number(session?.usuario.empresa.id);
 
@@ -40,7 +43,7 @@ export default function Dashboard() {
     // request de plano
     const getAccountData = useCallback(async () => {
         try {
-            const response = await planos.getAccountById(account_id);
+            const response = await planos.getAccountById(account);
             const data = response.data;
             setTotalValue(data.notas);
             setTotalUsers(data.usuarios);
