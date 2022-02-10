@@ -24,6 +24,8 @@ export default function Dashboard() {
     const [session] = useSession();
     const router = useRouter();
     const [, setToast] = useToasts();
+    const account_id = Number(session?.usuario?.empresa?.plano?.id);
+    const company_id = Number(session?.usuario.empresa.id);
 
     const [dateDash, setDateDash] = useState('');
 
@@ -38,9 +40,7 @@ export default function Dashboard() {
     // request de plano
     const getAccountData = useCallback(async () => {
         try {
-            const response = await planos.getAccountById(
-                Number(session?.usuario?.empresa?.plano?.id),
-            );
+            const response = await planos.getAccountById(account_id);
             const data = response.data;
             setTotalValue(data.notas);
             setTotalUsers(data.usuarios);
@@ -60,10 +60,7 @@ export default function Dashboard() {
         const date = dateDash;
         // console.log(`date na função`, date)
         try {
-            const response = await empresas.dashboardRequest(
-                Number(session?.usuario.empresa.id),
-                date,
-            );
+            const response = await empresas.dashboardRequest(company_id, date);
             const data = response.data;
             setTotalAmount(data.notas);
             setTotalUsersAmount(data.usuarios);
