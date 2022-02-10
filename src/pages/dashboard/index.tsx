@@ -45,6 +45,7 @@ export default function Dashboard() {
             setAccountDescription(data.descricao);
             return data;
         } catch (error) {
+            console.log(error)
             setToast({
                 text: 'Houve um problema, por favor tente novamente',
                 type: 'warning',
@@ -69,6 +70,7 @@ export default function Dashboard() {
             setNfseAmount(data.NfseCount);
             return data;
         } catch (error) {
+            console.log(error)
             setToast({
                 text: 'Houve um problema, por favor tente novamente',
                 type: 'warning',
