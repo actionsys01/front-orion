@@ -25,10 +25,11 @@ export default function Dashboard() {
     const router = useRouter();
     const [, setToast] = useToasts();
     const [account, setAccount] = useState(
-        Number(session?.usuario?.empresa?.plano?.id),
+        Number(session.usuario.empresa.plano.id),
     );
-    const account_id = Number(session?.usuario?.empresa?.plano?.id);
-    const company_id = Number(session?.usuario.empresa.id);
+    const [company, setCompany] = useState(Number(session.usuario.empresa.id));
+    // const account_id = Number(session?.usuario?.empresa?.plano?.id);
+    // const company_id = Number(session?.usuario.empresa.id);
 
     const [dateDash, setDateDash] = useState('');
 
@@ -63,7 +64,7 @@ export default function Dashboard() {
         const date = dateDash;
         // console.log(`date na função`, date)
         try {
-            const response = await empresas.dashboardRequest(company_id, date);
+            const response = await empresas.dashboardRequest(company, date);
             const data = response.data;
             setTotalAmount(data.notas);
             setTotalUsersAmount(data.usuarios);
