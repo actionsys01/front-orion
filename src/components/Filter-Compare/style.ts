@@ -2,6 +2,7 @@ import { X } from '@geist-ui/react-icons';
 import styled from 'styled-components';
 import Input from '../Input';
 import Select from '../Select';
+import MaskedInputDate from '@components/Masked-Input-Date';
 
 interface IModal {
   visivel: boolean;
@@ -143,3 +144,15 @@ export const SelectCustomizado = styled(Select).attrs(props => ({
   },
   // defaultValue: props.options[0],
 }))``;
+
+export const CustomDateMask = styled(MaskedInputDate)`
+  font-size: 12px;
+  /* padding: 10px; */
+  border-radius: 5px;
+  border: ${props => `1px solid  ${props.theme.palette.foreground}`};
+  background-color: ${props => props.theme.palette.foreground};
+  height: 28px;
+  color: #fff;
+  /* padding-inline-start: 18px; */
+  text-align: center;
+`;

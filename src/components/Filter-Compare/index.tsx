@@ -7,12 +7,14 @@ import { HiPlusCircle } from 'react-icons/hi';
 import { useFiltro } from '@contexts/filtro';
 import colunas from '@utils/painel-controle-filtro';
 import compareColumns from '@utils/compare-select';
+import MaskedInputDate from '@components/Masked-Input-Date';
 import nfse_colunas from '@utils/controle-nfse-filtros';
 import {
   BotaoIncluir,
   BotaoRemover,
   ContainerFiltro,
   InputCustomizado,
+  CustomDateMask,
   Modal,
   ModalBackground,
   SelectCustomizado,
@@ -41,9 +43,9 @@ export default function Filtro({ abaAtual, data }: IProps) {
   const [erro, setErro] = useState(false);
   const [filtros, setFiltros] = useState<string[]>([]);
   const [modalVisivel, setModalVisivel] = useState(false);
+  const [getSelectedValue, setGetSelectedValue] = useState('');
 
   useEffect(() => {
-    // console.log('data no effect', data);
     data.map(() => {
       setFiltros([...filtros, '']);
     });
@@ -68,11 +70,6 @@ export default function Filtro({ abaAtual, data }: IProps) {
     const totalFiltros = filtros.slice();
 
     filtrosForm.splice(index, 1);
-
-    // if (abaAtual === 'cte') {
-    //     const filtro = inicializarScope(filtrosForm);
-    //     formRef.current?.setData({ filtros: filtro });
-    // } else {
     const filtro = scopeIgnitionCompare(filtrosForm);
     formRef.current?.setData({ filtros: filtro });
 
@@ -81,7 +78,7 @@ export default function Filtro({ abaAtual, data }: IProps) {
   }
 
   const handleSubmit: SubmitHandler = (data: FormData) => {
-    // console.log('data', data.filtros);
+    console.log('data', data.filtros);
     if (data.filtros === undefined) {
       abaAtual == 'nfe'
         ? cadastrarNfe([])
@@ -130,8 +127,10 @@ export default function Filtro({ abaAtual, data }: IProps) {
   }
 
   const handleChange = e => {
-    console.log('e.value', e?.value);
+    setGetSelectedValue(e?.value);
   };
+
+  console.log('filtros', filtros)
 
   return (
     <>
@@ -160,11 +159,15 @@ export default function Filtro({ abaAtual, data }: IProps) {
                   onChange={handleChange}
                 />
                 <SelectCustom name="compare" options={compareColumns} />
-                <InputCustomizado
-                  name="valor"
-                  placeholder="valor"
-                  type="select"
-                />
+                {getSelectedValue != 'dt_hr_emit' ? (
+                  <InputCustomizado
+                    name="valor"
+                    placeholder="valor"
+                    type="select"
+                  />
+                ) : (
+                  <CustomDateMask name="valor" />
+                )}
                 <BotaoRemover size={15} onClick={() => remover(index)} />
               </Scope>
             ))}
