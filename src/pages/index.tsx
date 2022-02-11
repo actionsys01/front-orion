@@ -8,12 +8,10 @@ import {
     useToasts,
 } from '@geist-ui/react';
 import { ArrowRightCircle, Box } from '@geist-ui/react-icons';
-import api from '@services/api';
 import 'inter-ui/inter.css';
 import { GetServerSideProps } from 'next';
 import { getSession, signIn } from 'next-auth/client';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { HiLockClosed, HiOutlineMail } from 'react-icons/hi';
