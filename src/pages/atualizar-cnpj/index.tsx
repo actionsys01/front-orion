@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useCallback } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import BotaoVoltar from '@components/BotaoVoltar';
 import {
@@ -21,7 +21,6 @@ export default function AtualizarCnpj() {
   const [name, setName] = useState(router.query.nome.toString());
   const [cnpj, setCnpj] = useState(router.query.cnpj.toString());
   const [uf, setUf] = useState(router.query.uf.toString().toUpperCase());
-  const [session] = useSession();
   const [, setToast] = useToasts();
   const id = Number(router.query.id);
   // console.log("curry",router.query);
