@@ -40,8 +40,8 @@ export default function SelectCompare({ name, options, ...rest }: Props) {
 
   return (
     <ReactSelect
-      defaultValue={{ value: 'equal', label: '=' }}
-      placeholder="="
+      defaultValue={{ value: 'equal', label: 'Igual' }}
+      placeholder="Igual"
       ref={selectRef}
       classNamePrefix="select-container"
       options={options}

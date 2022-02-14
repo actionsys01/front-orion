@@ -12,6 +12,7 @@ import compareColumns from '@utils/filtros/compare-select';
 import nfse_colunas from '@utils/filtros/controle-nfse-filtros';
 import colunas from '@utils/filtros/painel-controle-filtro';
 import { statusOptions } from '@utils/filtros/status-filtro';
+import compareString from '@utils/filtros/compare-string';
 
 import {
   Container,
@@ -67,8 +68,17 @@ const FilterLine: React.FC<FilterLineProps> = ({
         options={abaAtual !== 'nfse' ? colunas : nfse_colunas}
         onChange={handleChange}
       />
-      <SelectCustom name="compare" options={compareColumns} />
-      {getSelectedValue === 'dt_hr_emit' ? (
+      <SelectCustom
+        name="compare"
+        options={
+          getSelectedValue === 'nome_tomador' ||
+          getSelectedValue === 'nome_emit'
+            ? compareString
+            : compareColumns
+        }
+      />
+      {getSelectedValue === 'dt_hr_emit' ||
+      getSelectedValue === 'dt_hr_recebimento' ? (
         <CustomDateMask name="valor" />
       ) : getSelectedValue === 'sefaz_status' ? (
         <SelectStatusStyle name="valor" options={statusOptions} />

@@ -43,7 +43,7 @@ export const ContainerFiltro = styled.div`
   display: grid;
   gap: 7px;
   margin-top: 0.5rem;
-  grid-template-columns: 150px 70px 150px 25px;
+  grid-template-columns: 110px 95px 160px 25px;
   justify-content: center;
   align-items: center;
   justify-content: center;
@@ -66,11 +66,6 @@ export const BotaoIncluir = styled.button`
     margin-left: 5px;
   }
 `;
-
-interface ISelect {
-  name: string;
-  options: [];
-}
 
 export const SelectCustomizado = styled(Select).attrs(props => ({
   styles: {
@@ -139,12 +134,14 @@ export const SelectCustomizado = styled(Select).attrs(props => ({
 
 export const CustomDateMask = styled(MaskedInputDate)`
   font-size: 12px;
-  /* padding: 10px; */
+  /* padding: 1px; */
+  box-sizing: border-box;
   border-radius: 5px;
   border: ${props => `1px solid  ${props.theme.palette.foreground}`};
   background-color: ${props => props.theme.palette.foreground};
-  height: 28px;
+  height: 26px;
   color: #fff;
+  letter-spacing: 2px;
   /* padding-inline-start: 18px; */
   text-align: center;
 `;
@@ -157,6 +154,10 @@ export const InputCustomizado = styled(Input)`
   background-color: ${props => props.theme.palette.foreground};
   height: 24px;
   color: #fff;
+  &::placeholder {
+    text-align: center;
+    color: #fff;
+  }
 `;
 export const BotaoRemover = styled(X)`
   cursor: pointer;
@@ -167,8 +168,9 @@ export const SelectCustom = styled(SelectCompare).attrs(props => ({
     menu: provided => ({
       ...provided,
       backgroundColor: '#fff',
-      fontSize: 12,
-      textAlign: 'left',
+      fontSize: 9,
+      // whiteSpace: 'nowrap',
+      textAlign: 'center',
       color: '#1C496A',
     }),
     control: () => ({
