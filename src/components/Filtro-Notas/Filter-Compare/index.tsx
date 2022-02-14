@@ -19,7 +19,7 @@ import {
   ModalBackground,
   SelectCustomizado,
 } from './style';
-import { SelectCustom } from '../Select-Compare/styles';
+import { SelectCustom } from '../../Select-Compare/styles';
 
 interface FormData {
   filtros: [{ campo: string; valor: string; compare: string }];
@@ -130,7 +130,7 @@ export default function Filtro({ abaAtual, data }: IProps) {
     setGetSelectedValue(e?.value);
   };
 
-  console.log('filtros', filtros)
+  console.log('filtros', filtros);
 
   return (
     <>

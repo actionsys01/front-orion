@@ -1,7 +1,7 @@
 import { X } from '@geist-ui/react-icons';
 import styled from 'styled-components';
-import Input from '../Input';
-import Select from '../Select';
+import Input from '../../Input';
+import Select from '../../Select';
 import MaskedInputDate from '@components/Masked-Input-Date';
 
 interface IModal {
