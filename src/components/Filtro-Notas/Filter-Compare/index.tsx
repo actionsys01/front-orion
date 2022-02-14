@@ -5,10 +5,7 @@ import { Form } from '@unform/web';
 import { useEffect, useRef, useState } from 'react';
 import { HiPlusCircle } from 'react-icons/hi';
 import { useFiltro } from '@contexts/filtro';
-import colunas from '@utils/painel-controle-filtro';
-import compareColumns from '@utils/compare-select';
 import MaskedInputDate from '@components/Masked-Input-Date';
-import nfse_colunas from '@utils/controle-nfse-filtros';
 import {
   BotaoIncluir,
   BotaoRemover,
@@ -20,6 +17,7 @@ import {
   SelectCustomizado,
 } from './style';
 import { SelectCustom } from '../Select-Compare/styles';
+import FilterLine from '../FilterLine';
 
 interface FormData {
   filtros: [{ campo: string; valor: string; compare: string }];
@@ -43,7 +41,6 @@ export default function Filtro({ abaAtual, data }: IProps) {
   const [erro, setErro] = useState(false);
   const [filtros, setFiltros] = useState<string[]>([]);
   const [modalVisivel, setModalVisivel] = useState(false);
-  const [getSelectedValue, setGetSelectedValue] = useState('');
 
   useEffect(() => {
     data.map(() => {
@@ -126,10 +123,6 @@ export default function Filtro({ abaAtual, data }: IProps) {
     setModalVisivel(false);
   }
 
-  const handleChange = e => {
-    setGetSelectedValue(e?.value);
-  };
-
   console.log('filtros', filtros);
 
   return (
@@ -152,24 +145,13 @@ export default function Filtro({ abaAtual, data }: IProps) {
           )}
           <ContainerFiltro>
             {filtros.map((item, index) => (
-              <Scope path={`filtros[${index}]`} key={index}>
-                <SelectCustomizado
-                  name="campo"
-                  options={abaAtual != 'nfse' ? colunas : nfse_colunas}
-                  onChange={handleChange}
-                />
-                <SelectCustom name="compare" options={compareColumns} />
-                {getSelectedValue != 'dt_hr_emit' ? (
-                  <InputCustomizado
-                    name="valor"
-                    placeholder="valor"
-                    type="select"
-                  />
-                ) : (
-                  <CustomDateMask name="valor" />
-                )}
-                <BotaoRemover size={15} onClick={() => remover(index)} />
-              </Scope>
+              <FilterLine
+                index={index}
+                formRef={formRef}
+                abaAtual={abaAtual}
+                setFiltros={setFiltros}
+                filtros={filtros}
+              />
             ))}
             <BotaoIncluir onClick={adicionar} type="button">
               <HiPlusCircle />
