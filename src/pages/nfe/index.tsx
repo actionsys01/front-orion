@@ -1,6 +1,6 @@
 import React from 'react';
 // import Filtro from '@components/Filtro';
-import Filtro from '@components/Filtro-Notas/Filter-Compare';
+import Filtro from '@components/Filtro-Notas/Filter-Modal';
 import { useFiltro } from '@contexts/filtro';
 import { Row, Spacer, Text } from '@geist-ui/react';
 import Head from 'next/head';

@@ -1,4 +1,4 @@
-import Filtro from '@components/Filtro-Notas/Filter-Compare';
+import Filtro from '@components/Filtro-Notas/Filter-Modal';
 import CtePagination from '@components/CtePagination';
 import { useFiltro } from '@contexts/filtro';
 import { Row, Spacer, Text } from '@geist-ui/react';

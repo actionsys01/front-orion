@@ -4,7 +4,7 @@ import { useToasts, Dot, Tooltip } from '@geist-ui/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useFiltro } from '@contexts/filtro';
-import Filtro from '@components/Filtro-Notas/Filter-Compare';
+import Filtro from '@components/Filtro-Notas/Filter-Modal';
 import { format } from 'date-fns';
 import { TableGrid } from '@styles/tableStyle';
 import { Pages } from '@styles/pages';

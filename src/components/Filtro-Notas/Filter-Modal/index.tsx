@@ -5,7 +5,12 @@ import { Form } from '@unform/web';
 import { useEffect, useRef, useState } from 'react';
 import { HiPlusCircle } from 'react-icons/hi';
 import { useFiltro } from '@contexts/filtro';
-import { BotaoIncluir, ContainerFiltro, Modal, ModalBackground } from './style';
+import {
+  BotaoIncluir,
+  ContainerFiltro,
+  Modal,
+  ModalBackground,
+} from '../style';
 import FilterLine from '../FilterLine';
 
 interface FormData {
@@ -14,7 +19,7 @@ interface FormData {
 
 interface IFilter {
   campo: string;
-  valor: string;
+  valor: string | number;
   compare: string;
 }
 interface IProps {

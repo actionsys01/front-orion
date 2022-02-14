@@ -1,11 +1,11 @@
 import { X } from '@geist-ui/react-icons';
 import styled from 'styled-components';
-import Input from '../Filtro-Components/Input-Basic';
-import Select from '../Filtro-Components/Select';
+import Input from './Filtro-Components/Input-Basic';
+import Select from './Filtro-Components/Select';
 import MaskedInputDate from '@components/Masked-Input-Date';
 import { Scope } from '@unform/core';
-import SelectCompare from '../Filtro-Components/Select-Compare';
-import SelectStatus from '../Filtro-Components/Select-Status';
+import SelectCompare from './Filtro-Components/Select-Compare';
+import SelectStatus from './Filtro-Components/Select-Status';
 
 export const Container = styled(Scope)``;
 

@@ -20,7 +20,7 @@ import {
   CustomDateMask,
   InputCustomizado,
   SelectStatusStyle,
-} from '../Filter-Compare/style';
+} from '../style';
 
 interface FilterLineProps {
   index: number;
