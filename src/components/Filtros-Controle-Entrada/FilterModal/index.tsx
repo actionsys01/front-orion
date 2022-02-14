@@ -6,7 +6,7 @@ import { Form } from '@unform/web';
 import { useEffect, useRef, useState } from 'react';
 import { HiPlusCircle } from 'react-icons/hi';
 import { useControlFilter } from '@contexts/ControlFilter';
-import colunas from '@utils/filtros-controle';
+import colunas from '@utils/filtros/filtros-controle';
 import {
   BotaoIncluir,
   BotaoRemover,
