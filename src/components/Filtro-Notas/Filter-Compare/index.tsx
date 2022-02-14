@@ -1,22 +1,11 @@
 import { Button, Row, Text } from '@geist-ui/react';
 import { Filter } from '@geist-ui/react-icons';
-import { FormHandles, Scope, SubmitHandler } from '@unform/core';
+import { FormHandles, SubmitHandler } from '@unform/core';
 import { Form } from '@unform/web';
 import { useEffect, useRef, useState } from 'react';
 import { HiPlusCircle } from 'react-icons/hi';
 import { useFiltro } from '@contexts/filtro';
-import MaskedInputDate from '@components/Masked-Input-Date';
-import {
-  BotaoIncluir,
-  BotaoRemover,
-  ContainerFiltro,
-  InputCustomizado,
-  CustomDateMask,
-  Modal,
-  ModalBackground,
-  SelectCustomizado,
-} from './style';
-// import { SelectCustom } from '../Select-Compare/styles';
+import { BotaoIncluir, ContainerFiltro, Modal, ModalBackground } from './style';
 import FilterLine from '../FilterLine';
 
 interface FormData {
@@ -35,8 +24,13 @@ interface IProps {
 
 export default function Filtro({ abaAtual, data }: IProps) {
   const formRef = useRef<FormHandles>(null);
-  const { cadastrarCte, cadastrarNfe, cadastrarNfse, scopeIgnitionCompare } =
-    useFiltro();
+  const {
+    cadastrarCte,
+    cadastrarNfe,
+    cadastrarNfse,
+    scopeIgnition,
+    scopeIgnitionCompare,
+  } = useFiltro();
 
   const [erro, setErro] = useState(false);
   const [filtros, setFiltros] = useState<string[]>([]);
@@ -93,12 +87,13 @@ export default function Filtro({ abaAtual, data }: IProps) {
       setErro(true);
       return;
     } else {
-      const filtro = scopeIgnitionCompare(data.filtros);
-      abaAtual == 'nfe'
-        ? cadastrarNfe(filtro)
-        : abaAtual == 'cte'
-        ? cadastrarCte(filtro)
-        : cadastrarNfse(filtro);
+      if (abaAtual !== 'nfse') {
+        const filtro = scopeIgnition(data.filtros);
+        abaAtual == 'nfe' ? cadastrarNfe(filtro) : cadastrarCte(filtro);
+      } else {
+        const filtro = scopeIgnitionCompare(data.filtros);
+        cadastrarNfse(filtro);
+      }
     }
 
     setErro(false);
@@ -122,8 +117,6 @@ export default function Filtro({ abaAtual, data }: IProps) {
     setErro(false);
     setModalVisivel(false);
   }
-
-  console.log('filtros', filtros);
 
   return (
     <>
@@ -151,6 +144,7 @@ export default function Filtro({ abaAtual, data }: IProps) {
                 abaAtual={abaAtual}
                 setFiltros={setFiltros}
                 filtros={filtros}
+                key={index}
               />
             ))}
             <BotaoIncluir onClick={adicionar} type="button">

@@ -9,14 +9,10 @@ interface Props extends SelectProps<OptionTypeBase> {
   name: string;
 }
 
-export default function SelectStatus({ name, ...rest }: Props) {
+export default function SelectStatus({ name, options, ...rest }: Props) {
   const selectRef = useRef(null);
   const { fieldName, defaultValue, registerField, error } = useField(name);
 
-  const options = [
-    { value: 'sefaz_status', label: '100 - Autorizado' },
-    { value: 'sefaz_status', label: '101 - Cancelado' },
-  ];
 
   useEffect(() => {
     registerField({

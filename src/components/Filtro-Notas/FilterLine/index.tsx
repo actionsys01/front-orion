@@ -1,4 +1,9 @@
-import React, { Dispatch, MutableRefObject, SetStateAction, useState } from 'react';
+import React, {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useState,
+} from 'react';
 
 import { useFiltro } from '@contexts/filtro';
 import { BotaoRemover } from '@styles/Filtro-Styles';
@@ -6,21 +11,23 @@ import { FormHandles } from '@unform/core';
 import compareColumns from '@utils/compare-select';
 import nfse_colunas from '@utils/controle-nfse-filtros';
 import colunas from '@utils/painel-controle-filtro';
+import { statusOptions } from '@utils/status-filtro';
 
 import {
   Container,
   SelectCustomizado,
   SelectCustom,
   CustomDateMask,
-  InputCustomizado
-} from './styles';
+  InputCustomizado,
+  SelectStatusStyle,
+} from '../Filter-Compare/style';
 
 interface FilterLineProps {
-  index: number
-  abaAtual: string
-  formRef: MutableRefObject<FormHandles>
-  setFiltros: Dispatch<SetStateAction<string[]>>
-  filtros: string[]
+  index: number;
+  abaAtual: string;
+  formRef: MutableRefObject<FormHandles>;
+  setFiltros: Dispatch<SetStateAction<string[]>>;
+  filtros: string[];
 }
 
 const FilterLine: React.FC<FilterLineProps> = ({
@@ -28,11 +35,11 @@ const FilterLine: React.FC<FilterLineProps> = ({
   abaAtual,
   formRef,
   setFiltros,
-  filtros
+  filtros,
 }) => {
   const { scopeIgnitionCompare } = useFiltro();
 
-  const [getSelectedValue, setGetSelectedValue] = useState('')
+  const [getSelectedValue, setGetSelectedValue] = useState('');
 
   const handleChange = e => {
     setGetSelectedValue(e?.value);
@@ -61,14 +68,12 @@ const FilterLine: React.FC<FilterLineProps> = ({
         onChange={handleChange}
       />
       <SelectCustom name="compare" options={compareColumns} />
-      {getSelectedValue !== 'dt_hr_emit' ? (
-        <InputCustomizado
-          name="valor"
-          placeholder="valor"
-          type="select"
-        />
-      ) : (
+      {getSelectedValue === 'dt_hr_emit' ? (
         <CustomDateMask name="valor" />
+      ) : getSelectedValue === 'sefaz_status' ? (
+        <SelectStatusStyle name="valor" options={statusOptions} />
+      ) : (
+        <InputCustomizado name="valor" placeholder="valor" type="select" />
       )}
       <BotaoRemover size={15} onClick={() => remover(index)} />
     </Container>
