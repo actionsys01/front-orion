@@ -1,71 +1,14 @@
-import { X } from '@geist-ui/react-icons';
 import styled from 'styled-components';
-import Input from '../Filtro-Components/Input-Basic';
-import Select from '../Filtro-Components/Select';
+import { X } from '@geist-ui/react-icons';
 import MaskedInputDate from '@components/Masked-Input-Date';
+import { Scope } from '@unform/core';
+import Select from '../Filtro-Components/Select';
+import SelectCompare from '../Select-Compare';
+import Input from '../Filtro-Components/Input-Basic';
 
-interface IModal {
-  visivel: boolean;
-}
-export const Modal = styled.div<IModal>`
-  background-color: #fff;
-  padding: 10px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height: 500px;
-  max-height: 500px;
-  width: 440px;
-  max-width: 100%;
-  display: ${({ visivel }) => (visivel ? 'block' : 'none')};
-  border-radius: 5px;
-  z-index: 1010;
-  overflow-y: auto;
+export const Container = styled(Scope)`
+
 `;
-
-export const ModalBackground = styled.div`
-  z-index: 1000;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-`;
-
-export const ContainerFiltro = styled.div`
-  display: grid;
-  gap: 7px;
-  margin-top: 0.5rem;
-  grid-template-columns: 150px 70px 150px 25px;
-  justify-content: center;
-  align-items: center;
-  justify-content: center;
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  }
-`;
-
-export const BotaoIncluir = styled.button`
-  font-size: 10px;
-  font-weight: bold;
-  align-items: fle;
-  background-color: transparent;
-  justify-content: center;
-  display: flex;
-  border-width: 0;
-  cursor: pointer;
-
-  text {
-    margin-left: 5px;
-  }
-`;
-
-interface ISelect {
-  name: string;
-  options: [];
-}
 
 export const SelectCustomizado = styled(Select).attrs(props => ({
   styles: {
@@ -132,6 +75,77 @@ export const SelectCustomizado = styled(Select).attrs(props => ({
   // defaultValue: props.options[0],
 }))``;
 
+
+export const SelectCustom = styled(SelectCompare).attrs(props => ({
+  styles: {
+    menu: provided => ({
+      ...provided,
+      backgroundColor: '#fff',
+      fontSize: 12,
+      textAlign: 'left',
+      color: '#1C496A',
+    }),
+    control: () => ({
+      borderColor: props.theme.palette.foreground,
+      '&:hover': {
+        borderColor: props.theme.palette.foreground,
+      },
+      border: `1px solid ${props.theme.palette.foreground}`,
+      boxShadow: 'none',
+      backgroundColor: '#fff',
+      fontSize: 12,
+      height: 28,
+      display: 'flex',
+      borderRadius: 5,
+      cursor: 'pointer',
+      color: '#1C496A',
+    }),
+
+    placeholder: provided => ({
+      ...provided,
+      color: '#1C496A',
+      fontSize: 12,
+    }),
+    option: provided => ({
+      ...provided,
+      zIndex: 1010,
+      cursor: 'pointer',
+      color: '#1C496A',
+      backgroundColor: '#fff',
+      '&:hover': {
+        backgroundColor: '#1C496A',
+        color: '#fff',
+      },
+    }),
+    input: provided => ({
+      ...provided,
+      color: '#1C496A',
+    }),
+
+    dropdownIndicator: provided => ({
+      ...provided,
+      color: '#1C496A',
+      '&:hover': {
+        color: '#1C496A',
+      },
+    }),
+    singleValue: provided => ({
+      ...provided,
+      color: '#1C496A',
+    }),
+  },
+  isSearchable: false,
+  noOptionsMessage: () => 'Nenhum registro',
+  name: props.name,
+  options: props.options,
+  components: {
+    IndicatorSeparator: () => null,
+  },
+  // defaultValue: props.options[0],
+}))``;
+
+
+
 export const CustomDateMask = styled(MaskedInputDate)`
   font-size: 12px;
   /* padding: 10px; */
@@ -144,7 +158,6 @@ export const CustomDateMask = styled(MaskedInputDate)`
   text-align: center;
 `;
 
-
 export const InputCustomizado = styled(Input)`
   font-size: 12px;
   /* padding: 10px; */
@@ -154,6 +167,7 @@ export const InputCustomizado = styled(Input)`
   height: 24px;
   color: #fff;
 `;
+
 export const BotaoRemover = styled(X)`
   cursor: pointer;
 `;

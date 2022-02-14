@@ -5,11 +5,7 @@ import { Form } from '@unform/web';
 import { useEffect, useRef, useState } from 'react';
 import { HiPlusCircle } from 'react-icons/hi';
 import { useFiltro } from '@contexts/filtro';
-import colunas from '@utils/painel-controle-filtro';
-import compareColumns from '@utils/compare-select';
-import DateScope from '../Scopes/Date-Scope';
-import BasicScope from '../Scopes/Basic-Scope';
-import nfse_colunas from '@utils/controle-nfse-filtros';
+import MaskedInputDate from '@components/Masked-Input-Date';
 import {
   BotaoIncluir,
   BotaoRemover,
@@ -20,7 +16,8 @@ import {
   ModalBackground,
   SelectCustomizado,
 } from './style';
-import { SelectCustom } from '../Filtro-Components/Select-Compare/styles';
+// import { SelectCustom } from '../Select-Compare/styles';
+import FilterLine from '../FilterLine';
 
 interface FormData {
   filtros: [{ campo: string; valor: string; compare: string }];
@@ -44,7 +41,6 @@ export default function Filtro({ abaAtual, data }: IProps) {
   const [erro, setErro] = useState(false);
   const [filtros, setFiltros] = useState<string[]>([]);
   const [modalVisivel, setModalVisivel] = useState(false);
-  const [getSelectedValue, setGetSelectedValue] = useState('');
 
   useEffect(() => {
     data.map(() => {
@@ -127,14 +123,6 @@ export default function Filtro({ abaAtual, data }: IProps) {
     setModalVisivel(false);
   }
 
-  const handleChange = e => {
-    setGetSelectedValue(e?.value);
-  };
-
-  useEffect(() => {
-    console.log('getSelectedValue', getSelectedValue);
-  }, [getSelectedValue]);
-
   console.log('filtros', filtros);
 
   return (
@@ -156,23 +144,15 @@ export default function Filtro({ abaAtual, data }: IProps) {
             </Text>
           )}
           <ContainerFiltro>
-            {filtros.map((item, index) =>
-              getSelectedValue != 'dt_hr_emit' ? (
-                <BasicScope
-                  index={index}
-                  abaAtual={abaAtual}
-                  handleChange={handleChange}
-                  remover={remover}
-                />
-              ) : (
-                <DateScope
-                  index={index}
-                  abaAtual={abaAtual}
-                  handleChange={handleChange}
-                  remover={remover}
-                />
-              ),
-            )}
+            {filtros.map((item, index) => (
+              <FilterLine
+                index={index}
+                formRef={formRef}
+                abaAtual={abaAtual}
+                setFiltros={setFiltros}
+                filtros={filtros}
+              />
+            ))}
             <BotaoIncluir onClick={adicionar} type="button">
               <HiPlusCircle />
               <Text> Incluir linha</Text>
