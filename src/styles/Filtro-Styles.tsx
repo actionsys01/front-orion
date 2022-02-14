@@ -1,8 +1,7 @@
 import { X } from '@geist-ui/react-icons';
 import styled from 'styled-components';
-import Input from '../Filtro-Components/Input';
-import Select from '../Filtro-Components/Select';
-import MaskedInputDate from '@components/Masked-Input-Date';
+import Input from '../components/Filtro-Notas/Filtro-Components/Input';
+import Select from '../components/Filtro-Notas/Filtro-Components/Select';
 
 interface IModal {
   visivel: boolean;
@@ -16,7 +15,7 @@ export const Modal = styled.div<IModal>`
   transform: translate(-50%, -50%);
   height: 500px;
   max-height: 500px;
-  width: 440px;
+  width: auto;
   max-width: 100%;
   display: ${({ visivel }) => (visivel ? 'block' : 'none')};
   border-radius: 5px;
@@ -36,12 +35,12 @@ export const ModalBackground = styled.div`
 
 export const ContainerFiltro = styled.div`
   display: grid;
-  gap: 7px;
+  gap: 5px;
   margin-top: 0.5rem;
-  grid-template-columns: 150px 70px 150px 25px;
+  grid-template-columns: 150px 150px 20px;
   justify-content: center;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   @media (max-width: 768px) {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
@@ -55,7 +54,6 @@ export const InputCustomizado = styled(Input)`
   background-color: ${props => props.theme.palette.foreground};
   height: 24px;
   color: #fff;
-  padding-inline-start: 8px;
 `;
 export const BotaoRemover = styled(X)`
   cursor: pointer;
@@ -98,7 +96,7 @@ export const SelectCustomizado = styled(Select).attrs(props => ({
       boxShadow: 'none',
       backgroundColor: props.theme.palette.foreground,
       fontSize: 12,
-      height: 28,
+      height: 24,
       display: 'flex',
       borderRadius: 5,
       cursor: 'pointer',
@@ -144,15 +142,3 @@ export const SelectCustomizado = styled(Select).attrs(props => ({
   },
   // defaultValue: props.options[0],
 }))``;
-
-export const CustomDateMask = styled(MaskedInputDate)`
-  font-size: 12px;
-  /* padding: 10px; */
-  border-radius: 5px;
-  border: ${props => `1px solid  ${props.theme.palette.foreground}`};
-  background-color: ${props => props.theme.palette.foreground};
-  height: 28px;
-  color: #fff;
-  /* padding-inline-start: 18px; */
-  text-align: center;
-`;
