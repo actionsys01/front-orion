@@ -13,7 +13,7 @@ import nfse_colunas from '@utils/controle-nfse-filtros';
 interface IScope {
   index: number;
   abaAtual: string;
-  handleChange: () => void;
+  handleChange: (e) => void;
   remover: (index: number) => void;
 }
 
@@ -28,7 +28,6 @@ const DateScope = ({ index, abaAtual, handleChange, remover }: IScope) => {
         />
         <SelectCustom name="compare" options={compareColumns} />
         <CustomDateMask name="valor" />
-        )
         <BotaoRemover size={15} onClick={() => remover(index)} />
       </Scope>
     </>

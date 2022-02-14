@@ -7,7 +7,8 @@ import { HiPlusCircle } from 'react-icons/hi';
 import { useFiltro } from '@contexts/filtro';
 import colunas from '@utils/painel-controle-filtro';
 import compareColumns from '@utils/compare-select';
-import MaskedInputDate from '@components/Masked-Input-Date';
+import DateScope from '../Scopes/Date-Scope';
+import BasicScope from '../Scopes/Basic-Scope';
 import nfse_colunas from '@utils/controle-nfse-filtros';
 import {
   BotaoIncluir,
@@ -130,6 +131,10 @@ export default function Filtro({ abaAtual, data }: IProps) {
     setGetSelectedValue(e?.value);
   };
 
+  useEffect(() => {
+    console.log('getSelectedValue', getSelectedValue);
+  }, [getSelectedValue]);
+
   console.log('filtros', filtros);
 
   return (
@@ -151,26 +156,23 @@ export default function Filtro({ abaAtual, data }: IProps) {
             </Text>
           )}
           <ContainerFiltro>
-            {filtros.map((item, index) => (
-              <Scope path={`filtros[${index}]`} key={index}>
-                <SelectCustomizado
-                  name="campo"
-                  options={abaAtual != 'nfse' ? colunas : nfse_colunas}
-                  onChange={handleChange}
+            {filtros.map((item, index) =>
+              getSelectedValue != 'dt_hr_emit' ? (
+                <BasicScope
+                  index={index}
+                  abaAtual={abaAtual}
+                  handleChange={handleChange}
+                  remover={remover}
                 />
-                <SelectCustom name="compare" options={compareColumns} />
-                {getSelectedValue != 'dt_hr_emit' ? (
-                  <InputCustomizado
-                    name="valor"
-                    placeholder="valor"
-                    type="select"
-                  />
-                ) : (
-                  <CustomDateMask name="valor" />
-                )}
-                <BotaoRemover size={15} onClick={() => remover(index)} />
-              </Scope>
-            ))}
+              ) : (
+                <DateScope
+                  index={index}
+                  abaAtual={abaAtual}
+                  handleChange={handleChange}
+                  remover={remover}
+                />
+              ),
+            )}
             <BotaoIncluir onClick={adicionar} type="button">
               <HiPlusCircle />
               <Text> Incluir linha</Text>
