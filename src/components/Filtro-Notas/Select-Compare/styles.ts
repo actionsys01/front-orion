@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import SelectCompare from '../Select-Compare';
+import SelectCompare from '.';
 
 export const SelectCustom = styled(SelectCompare).attrs(props => ({
   styles: {

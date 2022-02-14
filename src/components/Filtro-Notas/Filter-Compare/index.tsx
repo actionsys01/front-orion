@@ -130,7 +130,7 @@ export default function Filtro({ abaAtual, data }: IProps) {
     setGetSelectedValue(e?.value);
   };
 
-  console.log('filtros', filtros)
+  console.log('filtros', filtros);
 
   return (
     <>
