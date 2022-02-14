@@ -19,7 +19,7 @@ import {
   ModalBackground,
   SelectCustomizado,
 } from './style';
-import { SelectCustom } from '../Select-Compare/styles';
+import { SelectCustom } from '../Filtro-Components/Select-Compare/styles';
 
 interface FormData {
   filtros: [{ campo: string; valor: string; compare: string }];

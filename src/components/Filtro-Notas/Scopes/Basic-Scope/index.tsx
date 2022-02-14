@@ -7,7 +7,7 @@ import {
 } from '../../Filter-Compare/style';
 import colunas from '@utils/painel-controle-filtro';
 import compareColumns from '@utils/compare-select';
-import { SelectCustom } from '../../Select-Compare/styles';
+import { SelectCustom } from '../../Filtro-Components/Select-Compare/styles';
 import nfse_colunas from '@utils/controle-nfse-filtros';
 
 interface IScope {

@@ -17,7 +17,7 @@ interface IScope {
   remover: (index: number) => void;
 }
 
-const DateScope = ({ index, abaAtual, handleChange, remover }: IScope) => {
+const SelectScope = ({ index, abaAtual, handleChange, remover }: IScope) => {
   return (
     <>
       <Scope path={`filtros[${index}]`} key={index}>
@@ -35,4 +35,4 @@ const DateScope = ({ index, abaAtual, handleChange, remover }: IScope) => {
   );
 };
 
-export default DateScope;
+export default SelectScope;
