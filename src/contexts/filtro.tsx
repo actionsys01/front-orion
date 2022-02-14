@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { useContext, useState } from 'react';
 import { createContext } from 'react';
+import colunas from '@utils/painel-controle-filtro';
 import nfse_colunas from '@utils/controle-nfse-filtros';
 import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react';
 
 interface IUnformCompare {
   campo: string;
-  valor: string;
+  valor: string | number;
   compare: string;
 }
 
@@ -17,6 +18,7 @@ interface FiltroContextType {
   cadastrarNfe(nfes: IUnformCompare[]): void;
   cadastrarCte(ctes: IUnformCompare[]): void;
   cadastrarNfse(nfses: IUnformCompare[]): void;
+  scopeIgnition(filtro: IUnformCompare[]): IUnformCompare[];
   scopeIgnitionCompare(filtro: IUnformCompare[]): IUnformCompare[];
   limpar(): void;
 }
@@ -70,8 +72,18 @@ export default function FiltroProvider({ children }: IFiltroProps) {
     localStorage.setItem('@orions:nfses', JSON.stringify(nfses));
   }
 
+  function scopeIgnition(array: IUnformCompare[]): IUnformCompare[] {
+    const filtro = array.map(({ campo, valor, compare }) => {
+      const coluna = colunas.find(option => option.value === campo);
+      if (coluna) {
+        return { campo, valor, compare };
+      }
+    });
+
+    return filtro;
+  }
+
   function scopeIgnitionCompare(array: IUnformCompare[]): IUnformCompare[] {
-    console.log('array', array);
     const filtro = array.map(({ campo, valor, compare }) => {
       const coluna = nfse_colunas.find(option => option.value === campo);
       if (coluna) {
@@ -97,6 +109,7 @@ export default function FiltroProvider({ children }: IFiltroProps) {
         cadastrarCte,
         cadastrarNfe,
         cadastrarNfse,
+        scopeIgnition,
         scopeIgnitionCompare,
         limpar,
       }}

@@ -69,7 +69,7 @@ export default function Filtro({ abaAtual, data }: IProps) {
   }
 
   const handleSubmit: SubmitHandler = (data: FormData) => {
-    console.log('data', data.filtros);
+    // console.log('data', data.filtros);
     if (data.filtros === undefined) {
       abaAtual == 'nfe'
         ? cadastrarNfe([])

@@ -12,6 +12,7 @@ export default async function getNfe(
   nfe: IFiltro[] | undefined,
 ) {
   const filters = nfe.reduce((acc, { campo, valor, compare }) => {
+    console.log('filters antes', filters);
     if (campo === 'chave_nota' && compare === 'different') {
       campo = 'chave_nota_different';
     }
@@ -46,7 +47,7 @@ export default async function getNfe(
     }
     return { ...acc, [campo]: valor };
   }, {});
-  console.log('filters', filters);
+
   const response = await api.get(`/nfe/pagination/${company_id}`, {
     params: {
       page: page,
