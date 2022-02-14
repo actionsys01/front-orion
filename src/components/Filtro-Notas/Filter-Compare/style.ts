@@ -1,6 +1,6 @@
 import { X } from '@geist-ui/react-icons';
 import styled from 'styled-components';
-import Input from '../Filtro-Components/Input';
+import Input from '../Filtro-Components/Input-Basic';
 import Select from '../Filtro-Components/Select';
 import MaskedInputDate from '@components/Masked-Input-Date';
 

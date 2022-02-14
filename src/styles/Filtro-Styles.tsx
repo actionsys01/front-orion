@@ -1,6 +1,6 @@
 import { X } from '@geist-ui/react-icons';
 import styled from 'styled-components';
-import Input from '../components/Filtro-Notas/Filtro-Components/Input';
+import Input from '../components/Filtro-Notas/Filtro-Components/Input-Basic';
 import Select from '../components/Filtro-Notas/Filtro-Components/Select';
 
 interface IModal {
