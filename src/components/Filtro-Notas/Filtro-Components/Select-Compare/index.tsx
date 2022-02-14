@@ -7,11 +7,20 @@ import { useField } from '@unform/core';
 
 interface Props extends SelectProps<OptionTypeBase> {
   name: string;
+  defaultValue: {
+    value: string | number;
+    label: string;
+  };
 }
 
-export default function SelectCompare({ name, options, ...rest }: Props) {
+export default function SelectCompare({
+  name,
+  options,
+  defaultValue,
+  ...rest
+}: Props) {
   const selectRef = useRef(null);
-  const { fieldName, defaultValue, registerField, error } = useField(name);
+  const { fieldName, registerField, error } = useField(name);
 
   useEffect(() => {
     registerField({
@@ -40,7 +49,10 @@ export default function SelectCompare({ name, options, ...rest }: Props) {
 
   return (
     <ReactSelect
-      defaultValue={{ value: 'equal', label: 'Igual' }}
+      defaultValue={{
+        label: 'Igual',
+        value: 'equal',
+      }}
       placeholder="Igual"
       ref={selectRef}
       classNamePrefix="select-container"

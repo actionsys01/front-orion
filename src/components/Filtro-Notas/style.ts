@@ -21,7 +21,7 @@ export const Modal = styled.div<IModal>`
   transform: translate(-50%, -50%);
   height: 500px;
   max-height: 500px;
-  width: 440px;
+  width: 455px;
   max-width: 100%;
   display: ${({ visivel }) => (visivel ? 'block' : 'none')};
   border-radius: 5px;
@@ -43,7 +43,7 @@ export const ContainerFiltro = styled.div`
   display: grid;
   gap: 7px;
   margin-top: 0.5rem;
-  grid-template-columns: 110px 95px 160px 25px;
+  grid-template-columns: 145px 90px 160px 20px;
   justify-content: center;
   align-items: center;
   justify-content: center;

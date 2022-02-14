@@ -61,6 +61,8 @@ const FilterLine: React.FC<FilterLineProps> = ({
     setFiltros(totalFiltros);
   }
 
+  const pattern = { value: 'equal', label: 'Igual' };
+
   return (
     <Container path={`filtros[${index}]`} key={index}>
       <SelectCustomizado
@@ -70,8 +72,11 @@ const FilterLine: React.FC<FilterLineProps> = ({
       />
       <SelectCustom
         name="compare"
+        defaultValue={pattern}
         options={
           getSelectedValue === 'nome_tomador' ||
+          getSelectedValue === 'dest_nome' ||
+          getSelectedValue === 'emit_nome' ||
           getSelectedValue === 'nome_emit'
             ? compareString
             : compareColumns
