@@ -1,45 +1,47 @@
-import React, { useState, useMemo, useEffect, useCallback, useRef} from 'react';
-import { useSession } from "next-auth/client";
-import { useToasts } from "@geist-ui/react";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import  { Modal } from "@styles/modal";
+import React, { useState, useEffect } from 'react';
+import { Modal } from '@styles/modal';
 
 interface ModalProps {
     modalStatus: string;
     modalVisibleHandler: () => void;
 }
 
-const ModalHandler = ({modalStatus, modalVisibleHandler} : ModalProps) => {
-
-    const [ finishText, setFinishText ] = useState<"autorizada" | "cancelada">("autorizada")
+const ModalHandler = ({ modalStatus, modalVisibleHandler }: ModalProps) => {
+    // console.log('modalStatus', modalStatus);
+    const [finishText, setFinishText] = useState<'autorizada' | 'cancelada'>(
+        'autorizada',
+    );
 
     function checkFinishText() {
-        if(modalStatus === "autorizar"){
-            setFinishText("autorizada")
+        if (modalStatus === 'autorizar') {
+            setFinishText('autorizada');
         }
-        if(modalStatus === "cancelar"){
-            setFinishText("cancelada")
+        if (modalStatus === 'cancelar') {
+            setFinishText('cancelada');
+        }
+        if (modalStatus === 'exception') {
+            setFinishText('cancelada');
         }
     }
 
     useEffect(() => {
-        checkFinishText()
-    }, [])
+        checkFinishText();
+    }, []);
 
-    return <Modal>
-        <div>
-            <h5>
-                Não é possível {modalStatus} uma nota já {finishText}.
-            </h5>
+    return (
+        <Modal>
             <div>
-                <button
-                onClick={() => modalVisibleHandler()}>
-                    OK
-                </button>
+                <h5>
+                    Não é possível{' '}
+                    {modalStatus === 'exception' ? 'autorizar' : modalStatus}{' '}
+                    uma nota já {finishText}.
+                </h5>
+                <div>
+                    <button onClick={() => modalVisibleHandler()}>OK</button>
+                </div>
             </div>
-        </div>
-    </Modal>
-}
+        </Modal>
+    );
+};
 
-export default ModalHandler
+export default ModalHandler;

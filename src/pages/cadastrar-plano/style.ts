@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const InputContainer = styled.div`
     display: flex;
@@ -6,48 +6,45 @@ export const InputContainer = styled.div`
     align-items: center;
     box-sizing: border-box;
     margin-bottom: 2px;
-   
-   > div {
-    width: 500px;
-    height: 325px;
-    border: 1px solid rgba(151, 151, 151, .45);
-    padding: 1rem;
-    gap: 10px;
-   }
 
-   > div {
-            display: flex;
-            flex-direction: column;
-        }
-        span {
-                margin: 0 0.5rem;
-                font-size: 0.9rem;
-                white-space: nowrap;
-                color: #444;
-        }
+    > div {
+        width: 500px;
+        height: 325px;
+        border: 1px solid rgba(151, 151, 151, 0.45);
+        padding: 1rem;
+        gap: 10px;
+    }
 
-        input {
-            max-width: 450px;
-            width: 100%;
-            height: 28px;
-            border: 1px solid #eaeaea;
-        }
+    > div {
+        display: flex;
+        flex-direction: column;
+    }
+    span {
+        margin: 0 0.5rem;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        color: #444;
+    }
 
-        textarea {
-            min-width: 230px;
-            width: 100%;
-            height: 75px;
-            border: 1px solid #eaeaea;
-            padding-inline-start: .225rem;
-        }
+    input {
+        max-width: 450px;
+        width: 100%;
+        height: 28px;
+        border: 1px solid #eaeaea;
+    }
 
-     
-`
+    textarea {
+        min-width: 230px;
+        width: 100%;
+        height: 75px;
+        border: 1px solid #eaeaea;
+        padding-inline-start: 0.225rem;
+    }
+`;
 export const SmallInputs = styled.div`
     display: flex;
     justify-content: space-between;
-`
-
+`;
 
 export const Column = styled.div`
     display: flex;
@@ -57,13 +54,13 @@ export const Column = styled.div`
         flex-direction: column;
         margin-bottom: 1rem;
 
-         span {
+        span {
             margin: 0 0.5rem;
             font-size: 0.8rem;
             white-space: nowrap;
         }
 
-     input {
+        input {
             max-width: 280px;
             width: 90%;
             height: 28px;
@@ -71,17 +68,16 @@ export const Column = styled.div`
         }
 
         @media (max-width: 980px) {
-        flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
     }
-    }
-`
+`;
 
 export const BottomContainer = styled.div`
     display: flex;
     align-items: center;
     box-sizing: border-box;
     flex-direction: column;
-    
 
     .container {
         display: flex;
@@ -90,18 +86,17 @@ export const BottomContainer = styled.div`
         align-items: center;
         width: 500px;
         height: 165px;
-        border: 1px solid rgba(151, 151, 151, .45);
+        border: 1px solid rgba(151, 151, 151, 0.45);
 
         span {
             height: fit-content;
 
-             h5 {
+            h5 {
                 margin: 5px;
                 color: #444444;
                 font-weight: 400;
+            }
         }
-        }
-       
 
         .row {
             display: flex;
@@ -116,34 +111,29 @@ export const BottomContainer = styled.div`
                 margin: 10px 35px;
 
                 h6 {
-                   margin: 0;
+                    margin: 0;
                 }
 
                 span {
-                       
-
-                        .MuiSvgIcon-root {
-                            font-size: 18px
-                        }
-
-                        .Mui-checked {
-                            color: #1C496A;
-                            
-                            
-                        }
-                        
+                    .MuiSvgIcon-root {
+                        font-size: 18px;
                     }
+
+                    .Mui-checked {
+                        color: #1c496a;
+                    }
+                }
             }
         }
     }
-`
+`;
 
 export const ButtonStyle = styled.div`
     display: flex;
     position: relative;
     box-sizing: border-box;
-    margin-left: calc(0 * 16pt / 2 );
-    margin-right: calc(0 * 16pt / 2 );
+    margin-left: calc(0 * 16pt / 2);
+    margin-right: calc(0 * 16pt / 2);
     margin-top: 10px;
     row-gap: calc(0 * 16pt);
     justify-content: center;
@@ -165,14 +155,15 @@ export const ButtonStyle = styled.div`
         justify-content: center;
         text-align: center;
         white-space: nowrap;
-        transition: background-color 200ms ease 0ms,box-shadow 200ms ease 0ms, border 200ms ease 0ms,color 200ms ease 0ms;
+        transition: background-color 200ms ease 0ms, box-shadow 200ms ease 0ms,
+            border 200ms ease 0ms, color 200ms ease 0ms;
         position: relative;
         overflow: hidden;
         color: #fff;
-        background-color: #0DD0B3;
-        border: 1px solid #0DD0B3;
+        background-color: #0dd0b3;
+        border: 1px solid #0dd0b3;
         cursor: pointer;
         pointer-events: auto;
         box-shadow: none;
     }
-`
+`;

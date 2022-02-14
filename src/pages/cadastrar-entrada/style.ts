@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Section = styled.div`
     width: 85%;
     margin: 0 auto;
-    
+
     .header {
         display: flex;
         justify-content: space-between;
@@ -11,18 +11,16 @@ export const Section = styled.div`
         margin: 0.3rem;
 
         h6 {
-        color: #444;
-        
+            color: #444;
+        }
     }
-    }
-    
-`
+`;
 
 export const OneLineContainer = styled.div`
-    border: 1px solid rgba(151, 151, 151, .45);
+    border: 1px solid rgba(151, 151, 151, 0.45);
     padding: 1rem;
     display: flex;
-    
+
     > form {
         display: flex;
         align-items: center;
@@ -30,10 +28,9 @@ export const OneLineContainer = styled.div`
         width: 100%;
         gap: 3rem;
 
-
         span {
-                margin: 0 0.2rem;
-                font-size: 0.8rem;
+            margin: 0 0.2rem;
+            font-size: 0.8rem;
         }
 
         input {
@@ -43,9 +40,8 @@ export const OneLineContainer = styled.div`
             border: 1px solid #eaeaea;
         }
     }
-    
+
     @media (max-width: 1020px) {
-        
         flex-wrap: wrap;
         input {
             max-width: 350px !important;
@@ -55,9 +51,9 @@ export const OneLineContainer = styled.div`
     @media (max-width: 650px) {
         flex-direction: column;
     }
-`
+`;
 export const Inline = styled.div`
-    border: 1px solid rgba(151, 151, 151, .45);
+    border: 1px solid rgba(151, 151, 151, 0.45);
     padding: 1rem;
 
     > div {
@@ -71,9 +67,9 @@ export const Inline = styled.div`
             align-items: center;
         }
         span {
-                margin: 0 0.5rem;
-                font-size: 0.8rem;
-                white-space: nowrap;
+            margin: 0 0.5rem;
+            font-size: 0.8rem;
+            white-space: nowrap;
         }
 
         input {
@@ -83,16 +79,19 @@ export const Inline = styled.div`
             border: 1px solid #eaeaea;
         }
     }
-    
-    
+
     @media (max-width: 830px) {
-        div {flex-wrap: wrap}
-        span {white-space: normal}
+        div {
+            flex-wrap: wrap;
+        }
+        span {
+            white-space: normal;
+        }
     }
-`
+`;
 
 export const ModalContainer = styled.div`
-    border: 1px solid rgba(151, 151, 151, .45);
+    border: 1px solid rgba(151, 151, 151, 0.45);
     padding: 1rem;
 
     > div {
@@ -102,7 +101,6 @@ export const ModalContainer = styled.div`
         gap: 15%;
         min-height: 38px;
         position: relative;
-        
 
         div {
             display: flex;
@@ -112,36 +110,30 @@ export const ModalContainer = styled.div`
 
         .first {
             margin: 0 0.5rem;
-        
         }
 
         .second {
             margin: 0 1.2rem;
-        
         }
 
         span {
-                margin: 0 1.3rem;
-                font-size: 0.8rem;
-                white-space: nowrap;
-                /* width: 6rem; */
+            margin: 0 1.3rem;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            /* width: 6rem; */
         }
-
-        
 
         .icon {
             position: absolute;
             right: 0;
             .MuiSvgIcon-root {
-                            font-size: 18px;
-                            cursor: pointer;
-                        }
+                font-size: 18px;
+                cursor: pointer;
+            }
 
-                        .Mui-checked {
-                            color: #1C496A;
-                            
-                            
-                        }
+            .Mui-checked {
+                color: #1c496a;
+            }
         }
 
         input {
@@ -167,62 +159,57 @@ export const ModalContainer = styled.div`
             align-items: center;
         }
     }
-    
-    
+
     @media (max-width: 1160px) {
         div {
             flex-wrap: wrap;
             flex-direction: column;
         }
-        span {white-space: normal}
-        .icon{
+        span {
+            white-space: normal;
+        }
+        .icon {
             margin: 0;
             padding: 0;
-            right: -45px!important;
+            right: -45px !important;
             top: 0;
         }
         input {
-        max-width: 220px!important;
-        width: 100%;
+            max-width: 220px !important;
+            width: 100%;
+        }
     }
-}
 
     @media (max-width: 675px) {
         .icon {
             right: -20px;
         }
         input {
-        max-width: 180px!important;
-        width: 100%;
-       }
+            max-width: 180px !important;
+            width: 100%;
+        }
     }
-`
+`;
 
 export const BtnPattern = styled.button`
-        /* display: none; */
-        color: #fff;
-        background-color: #1C496A;
-        border: 1px solid #1C496A;
-        border-radius: 5px;
-        padding: 0 1.25rem;
-        height: 1.7rem;
-        font-weight: 400;
-        font-size: 0.875rem;
-        cursor: pointer;
+    /* display: none; */
+    color: #fff;
+    background-color: #1c496a;
+    border: 1px solid #1c496a;
+    border-radius: 5px;
+    padding: 0 1.25rem;
+    height: 1.7rem;
+    font-weight: 400;
+    font-size: 0.875rem;
+    cursor: pointer;
 
-        @media (max-width: 1030px) {
-            padding: 0 .75rem;
-            
-        }
-`
-
-
-
-
-
+    @media (max-width: 1030px) {
+        padding: 0 0.75rem;
+    }
+`;
 
 export const FormContainer = styled.div`
-    border: 1px solid rgba(151, 151, 151, .45);
+    border: 1px solid rgba(151, 151, 151, 0.45);
     padding: 1rem;
     display: flex;
     justify-content: space-between;
@@ -230,17 +217,15 @@ export const FormContainer = styled.div`
     @media (max-width: 1170px) {
         flex-wrap: wrap;
     }
-    
+
     @media (max-width: 830px) {
         flex-wrap: wrap;
     }
-
-`
+`;
 
 export const Column = styled.div`
     display: flex;
     flex-direction: column;
-    
 
     > div {
         display: flex;
@@ -262,16 +247,16 @@ export const Column = styled.div`
             border: 1px solid #eaeaea;
         }
 
-        input[type= "date" ] {
+        input[type='date'] {
             max-width: 150px;
             width: 50%;
             height: 26px;
             text-align: center;
             border: 1px solid #eaeaea;
-            font-size: .9rem;
+            font-size: 0.9rem;
         }
 
-        input[type="time"] {
+        input[type='time'] {
             min-width: 100px;
             width: 50%;
             height: 26px;
@@ -281,19 +266,19 @@ export const Column = styled.div`
 
         .disabled::-webkit-calendar-picker-indicator {
             display: none;
-            
         }
 
-        .disabled[type= "date" ], .disabled {
+        .disabled[type='date'],
+        .disabled {
             color: rgba(0, 0, 0, 0);
             background-color: #eaeaea;
         }
 
-        input[type="date"]::-webkit-calendar-picker-indicator {
+        input[type='date']::-webkit-calendar-picker-indicator {
             margin: 0;
-}
-        input[type= "time"]::-webkit-calendar-picker-indicator {
-            display: none
+        }
+        input[type='time']::-webkit-calendar-picker-indicator {
+            display: none;
         }
 
         select {
@@ -302,25 +287,23 @@ export const Column = styled.div`
             height: 22px;
             text-align: center;
             border: 1px solid #eaeaea;
-            font-size: .8rem;
-            line-height: .8rem;
+            font-size: 0.8rem;
+            line-height: 0.8rem;
 
             option {
                 line-height: 2rem;
             }
         }
-
     }
 
     @media (max-width: 1170px) {
         flex-wrap: wrap;
     }
-    
-    
+
     @media (max-width: 980px) {
-    flex-wrap: wrap;
-}
-`
+        flex-wrap: wrap;
+    }
+`;
 
 export const EntranceGrid = styled.div`
     margin: 0;
@@ -328,62 +311,59 @@ export const EntranceGrid = styled.div`
     overflow: auto;
     width: 85%;
     min-height: 7rem;
-    
+
     table {
         width: 100%;
         border-spacing: 0;
-    
-    thead {
-        display: table-header-group;
-        vertical-align: middle;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-        background-color: #1C496A;
-        color: #fff;
-        height: 2.5rem;
-        border-radius: 5px;
-        
-        > tr {
-            th:first-child {
+
+        thead {
+            display: table-header-group;
+            vertical-align: middle;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            background-color: #1c496a;
+            color: #fff;
+            height: 2.5rem;
+            border-radius: 5px;
+
+            > tr {
+                th:first-child {
                     border-top-left-radius: 5px;
                     border-bottom-left-radius: 5px;
                 }
-                th:last-child{
+                th:last-child {
                     border-top-right-radius: 5px;
                     border-bottom-right-radius: 5px;
                 }
-            th {
-            min-width: 45px;
-            font-size: 0.75rem;
-            font-weight: normal;
-            text-align: left;
-            letter-spacing: 0;
-            padding: 0 15px;
-            white-space: nowrap;
+                th {
+                    min-width: 45px;
+                    font-size: 0.75rem;
+                    font-weight: normal;
+                    text-align: left;
+                    letter-spacing: 0;
+                    padding: 0 15px;
+                    white-space: nowrap;
+                }
             }
-            }
-    }
+        }
 
-    tbody {
-        
-        > tr {
-            
-            td:first-child {
-            padding-left: 10px;
+        tbody {
+            > tr {
+                td:first-child {
+                    padding-left: 10px;
+                }
+                td {
+                    border-bottom: 1px solid #eaeaea;
+                    color: #444;
+                    height: 3rem;
+                    white-space: nowrap;
+                    padding: 0 15px;
+                    text-align: center;
+                }
             }
-            td {
-            border-bottom: 1px solid #eaeaea;
-            color: #444;
-            height: 3rem;
-            white-space: nowrap;
-            padding: 0 15px;
-            text-align: center;
-            }
-        }
-            
         }
     }
-`
+`;
 
 export const BtnStyle = styled.button`
     display: flex;
@@ -391,5 +371,4 @@ export const BtnStyle = styled.button`
     font-size: 0.67rem;
     padding: 4px;
     cursor: pointer;
-`
-
+`;

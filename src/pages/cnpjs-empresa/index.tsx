@@ -1,17 +1,23 @@
-import React, { useState, ChangeEvent,useMemo, useCallback, useEffect} from 'react';
-import Head from "next/head";
-import {Plus } from "@geist-ui/react-icons";
-import router, { useRouter } from "next/router";
-import { useSession } from "next-auth/client";
+import React, {
+    useState,
+    ChangeEvent,
+    useMemo,
+    useCallback,
+    useEffect,
+} from 'react';
+import Head from 'next/head';
+import { Plus } from '@geist-ui/react-icons';
+import router, { useRouter } from 'next/router';
+import { useSession } from 'next-auth/client';
 import { MainGrid } from './style';
 import Popover from '@components/Popover';
 import { AddBtn } from '@styles/buttons';
-import * as companyRequest from "@services/empresas";
-import Pagination from "@material-ui/lab/Pagination";
-import  { Pages } from "@styles/pages";
-import { useToasts } from "@geist-ui/react";
-import ModalCnpjs from  "./modal"
-import {useSecurityContext} from "@contexts/security"
+import * as companyRequest from '@services/empresas';
+import Pagination from '@material-ui/lab/Pagination';
+import { Pages } from '@styles/pages';
+import { useToasts } from '@geist-ui/react';
+import ModalCnpjs from './modal';
+import { useSecurityContext } from '@contexts/security';
 
 interface CnpjProps {
     id: number;
@@ -29,113 +35,127 @@ interface CnpjDataProps {
     uf: string;
     nsu: string;
     status_sefaz: number;
-    option: any
+    option: any;
 }
 
 export default function CnpjsEmpresa() {
-    const [ page, setPage] = useState(1);
-    const [ quantityPage, setQuantityPage] = useState(1)
-    const [ session ] = useSession()
-    const [ cnpj, setCnpj] = useState<CnpjProps[]>([])
+    const [page, setPage] = useState(1);
+    const [quantityPage, setQuantityPage] = useState(1);
+    const [session] = useSession();
+    const [cnpj, setCnpj] = useState<CnpjProps[]>([]);
     const [, setToast] = useToasts();
-    const [ selectId, setSelectId] = useState(0)
-    const { cnpjPermissions } = useSecurityContext()
+    const [selectId, setSelectId] = useState(0);
+    const { cnpjPermissions } = useSecurityContext();
     // modal
-    const[ visibleModal, setVisibleModal] = useState(false)
+    const [visibleModal, setVisibleModal] = useState(false);
 
-    const handleChange = (event: React.ChangeEvent<unknown>, value : number) => {
-        setPage(value)
-    }
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
 
     const modalHandler = useCallback(() => {
-        setVisibleModal(!visibleModal)
-    }, [visibleModal])
-
+        setVisibleModal(!visibleModal);
+    }, [visibleModal]);
 
     const getCompanyCnpj = useCallback(async () => {
         try {
-            const response = await companyRequest.getCnpj(Number(session.usuario.empresa.id),page)
-        const data = response.data
-        setQuantityPage(Math.ceil(data.total / 8));
-        setCnpj(data.cnpjs)
-        return data.cnpjs
+            const response = await companyRequest.getCnpj(
+                Number(session.usuario.empresa.id),
+                page,
+            );
+            const data = response.data;
+            setQuantityPage(Math.ceil(data.total / 8));
+            setCnpj(data.cnpjs);
+            return data.cnpjs;
         } catch (error) {
             setToast({
-                text: "Houve um problema, por favor tente novamente",
-                type: "warning"
-            })
+                text: 'Houve um problema, por favor tente novamente',
+                type: 'warning',
+            });
         }
-        
-        }, [page, cnpj])
-
+    }, [page, cnpj]);
 
     useEffect(() => {
-        getCompanyCnpj()
-    }, [page])    
-    
+        getCompanyCnpj();
+    }, [page]);
 
-    function handleEdit(item) { 
+    function handleEdit(item) {
         router.push({
-            pathname: "/atualizar-cnpj",
-            query: item
-        })
+            pathname: '/atualizar-cnpj',
+            query: item,
+        });
     }
 
-    const handleDelete = useCallback((id) => {
-        setSelectId(id)
-        setVisibleModal(true)
-        },[],)
+    const handleDelete = useCallback(id => {
+        setSelectId(id);
+        setVisibleModal(true);
+    }, []);
 
-    async function deleteCnpj ()  {
-    //    console.log("id", selectId)
+    async function deleteCnpj() {
+        //    console.log("id", selectId)
         try {
-            await companyRequest.deleteCnpj(selectId)
-            getCompanyCnpj()
+            await companyRequest.deleteCnpj(selectId);
+            getCompanyCnpj();
             setToast({
-                text: "CNPJ excluído com sucesso",
-                type: "success"
-            })
+                text: 'CNPJ excluído com sucesso',
+                type: 'success',
+            });
         } catch (error) {
-            console.log(error)
+            console.log(error);
             setToast({
-                text: "Houve um problema, por favor tente novamente",
-                type: "warning"
-            })
-        }   
-        setVisibleModal(false)  
+                text: 'Houve um problema, por favor tente novamente',
+                type: 'warning',
+            });
+        }
+        setVisibleModal(false);
     }
 
     const gatheredData = useMemo(() => {
         const allData: any = [];
-        if(cnpj) {
+        if (cnpj) {
             cnpj.forEach((item, i) => {
                 allData.push({
                     ...item,
-                    option: <Popover num={i} quant={2} content={[
-                        {
-                            optionName: "Editar",
-                            onClick: cnpjPermissions.EDITAR ? () => handleEdit(item) : () => ""
-                        },
-                        {
-                            optionName: "Deletar",
-                            onClick: cnpjPermissions.EXCLUIR ? ()  => handleDelete(item.id) : () => ""
-                        }
-                    ]} />
-                })
-            })
+                    option: (
+                        <Popover
+                            num={i}
+                            quant={2}
+                            content={[
+                                {
+                                    optionName: 'Editar',
+                                    onClick: cnpjPermissions.EDITAR
+                                        ? () => handleEdit(item)
+                                        : () => '',
+                                },
+                                {
+                                    optionName: 'Deletar',
+                                    onClick: cnpjPermissions.EXCLUIR
+                                        ? () => handleDelete(item.id)
+                                        : () => '',
+                                },
+                            ]}
+                        />
+                    ),
+                });
+            });
         }
-        return allData
-    }, [cnpj])
+        return allData;
+    }, [cnpj]);
 
-    return <>
+    return (
+        <>
             <Head>
                 <title>Orion | CNPJs da Empresa</title>
             </Head>
             <h2>CNPJs da Empresa</h2>
             <AddBtn>
-                <button disabled={!cnpjPermissions.ADICIONAR}
-                onClick={() => router.push("/cadastrar-cnpj")} >
-                    <span><Plus /></span>
+                <button
+                    disabled={!cnpjPermissions.ADICIONAR}
+                    onClick={() => router.push('/cadastrar-cnpj')}
+                >
+                    <span>
+                        <Plus />
+                    </span>
                     Adicionar
                 </button>
             </AddBtn>
@@ -152,26 +172,32 @@ export default function CnpjsEmpresa() {
                     </thead>
                     <tbody>
                         {gatheredData.map((item: CnpjDataProps, i: any) => (
-                             <tr key={i}>
-                            <td>{item.option}</td>
-                            <td>{item.cnpj}</td>
-                            <td>{item.nome}</td>
-                            <td>{item.uf}</td>
-                            <td>{item.status_sefaz}</td>
-                        </tr>
+                            <tr key={i}>
+                                <td>{item.option}</td>
+                                <td>{item.cnpj}</td>
+                                <td>{item.nome}</td>
+                                <td>{item.uf}</td>
+                                <td>{item.status_sefaz}</td>
+                            </tr>
                         ))}
-                       
                     </tbody>
                 </table>
             </MainGrid>
             <Pages>
-                <Pagination onChange={handleChange} count={quantityPage}  shape='rounded' />
+                <Pagination
+                    onChange={handleChange}
+                    count={quantityPage}
+                    shape="rounded"
+                />
             </Pages>
-            {visibleModal && 
-            <ModalCnpjs modalHandler={modalHandler} deleteCnpj={deleteCnpj} />}  
+            {visibleModal && (
+                <ModalCnpjs
+                    modalHandler={modalHandler}
+                    deleteCnpj={deleteCnpj}
+                />
+            )}
         </>
-    
+    );
 }
 
-CnpjsEmpresa.auth = true
-
+CnpjsEmpresa.auth = true;

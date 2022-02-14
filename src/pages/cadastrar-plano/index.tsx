@@ -1,57 +1,76 @@
-import React, {useState} from 'react'
-import BotaoVoltar from "@components/BotaoVoltar";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import {InputContainer, BottomContainer, ButtonStyle, SmallInputs, Column} from "./style"
+import React, { useState } from 'react';
+import BotaoVoltar from '@components/BotaoVoltar';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import {
+    InputContainer,
+    BottomContainer,
+    ButtonStyle,
+    SmallInputs,
+    Column,
+} from './style';
 import { Checkbox } from '@material-ui/core';
-import { useToasts } from "@geist-ui/react";
-import * as accounts from "@services/planos"
+import { useToasts } from '@geist-ui/react';
+import * as accounts from '@services/planos';
 
 export default function PlanoCadastro() {
     const router = useRouter();
-    const [name, setName] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
+    const [name, setName] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
     const [duration, setDuration] = useState<number>(0);
     const [invoiceQuantity, setInvoiceQuantity] = useState<number>(0);
     const [usersQuantity, setUsersQuantity] = useState<number>(0);
     const [discount, setDiscount] = useState<number>(0);
     const [value, setValue] = useState<number>(0);
-    const [applications, setApplications] = useState<number[]>([])
+    const [applications, setApplications] = useState<number[]>([]);
     const [, setToast] = useToasts();
 
+    const gatherApplications = (e: any) => {
+        const findApps = applications.find(value => value === Number(e));
 
-    const gatherApplications = (e: any)  => {
-        const findApps = applications.find(value => value === Number(e))
-        
         if (!findApps) {
-            setApplications(state => [...state, Number(e)])
-          return
+            setApplications(state => [...state, Number(e)]);
+            return;
         }
-        setApplications(state => state.filter(value => value !== e))
-        }
+        setApplications(state => state.filter(value => value !== e));
+    };
 
-
-    async function createAccount () {
+    async function createAccount() {
         try {
-            if(!name || !description || !value || !usersQuantity || !invoiceQuantity){
+            if (
+                !name ||
+                !description ||
+                !value ||
+                !usersQuantity ||
+                !invoiceQuantity
+            ) {
                 setToast({
-                    text: "Favor inserir dados válidos",
-                    type: "warning"
+                    text: 'Favor inserir dados válidos',
+                    type: 'warning',
                 });
-                return
+                return;
             }
-            await accounts.criar({nome: name, descricao: description, desconto: discount, usuarios: usersQuantity, notas: invoiceQuantity, valor: Number(value.toFixed(2)), dias: duration, aplicacoes: applications })
+            await accounts.criar({
+                nome: name,
+                descricao: description,
+                desconto: discount,
+                usuarios: usersQuantity,
+                notas: invoiceQuantity,
+                valor: Number(value.toFixed(2)),
+                dias: duration,
+                aplicacoes: applications,
+            });
             setToast({
-                text: "Plano cadastrado com sucesso.",
-                type: "success"
-            })
+                text: 'Plano cadastrado com sucesso.',
+                type: 'success',
+            });
         } catch (error) {
             setToast({
-                text: "Houve um problema, por favor tente novamente.",
-                type: "warning"
-            })
+                text: 'Houve um problema, por favor tente novamente.',
+                type: 'warning',
+            });
         }
-        router.push("/planos")
+        router.push('/planos');
     }
 
     return (
@@ -65,55 +84,92 @@ export default function PlanoCadastro() {
                 <div>
                     <div>
                         <span>Nome do Plano</span>
-                        <input type="tsext" onChange={(e) => setName(e.target.value)}/>
+                        <input
+                            type="tsext"
+                            onChange={e => setName(e.target.value)}
+                        />
                     </div>
-                <div>
-                    <span>Descrição</span>
-                    <textarea onChange={(e) => setDescription(e.target.value)}></textarea>
-                </div>
-                <SmallInputs>
-                    <Column>
-                        <div>
+                    <div>
+                        <span>Descrição</span>
+                        <textarea
+                            onChange={e => setDescription(e.target.value)}
+                        ></textarea>
+                    </div>
+                    <SmallInputs>
+                        <Column>
                             <div>
+                                <div>
                                     <span>Quantidade de Notas</span>
-                                    <input type="text" onChange={(e) => setInvoiceQuantity(Number(e.target.value))}/>
-                            </div>
-                            <div>
+                                    <input
+                                        type="text"
+                                        onChange={e =>
+                                            setInvoiceQuantity(
+                                                Number(e.target.value),
+                                            )
+                                        }
+                                    />
+                                </div>
+                                <div>
                                     <span>Duração (em dias)</span>
-                                    <input type="text" onChange={(e) => setDuration(Number(e.target.value))}/>
+                                    <input
+                                        type="text"
+                                        onChange={e =>
+                                            setDuration(Number(e.target.value))
+                                        }
+                                    />
+                                </div>
                             </div>
-                        </div>
-                    </Column>
-                    <Column>
-                        <div>
+                        </Column>
+                        <Column>
                             <div>
-                                <span>Quantidade de Usuários</span>
-                                <input type="text" onChange={(e) => setUsersQuantity(Number(e.target.value))}/>
+                                <div>
+                                    <span>Quantidade de Usuários</span>
+                                    <input
+                                        type="text"
+                                        onChange={e =>
+                                            setUsersQuantity(
+                                                Number(e.target.value),
+                                            )
+                                        }
+                                    />
+                                </div>
+                                <div>
+                                    <span>Valor da Mensalidade</span>
+                                    <input
+                                        placeholder="0,00"
+                                        type="number"
+                                        min="0,00"
+                                        max="10000,00"
+                                        step="0.01"
+                                        onChange={e =>
+                                            setValue(Number(e.target.value))
+                                        }
+                                    />
+                                </div>
                             </div>
-                            <div>
-                                <span>Valor da Mensalidade</span>
-                                <input placeholder="0,00" type="number" min="0,00" max="10000,00"  step="0.01" onChange={(e) => setValue(Number(e.target.value))}/>
-                            </div>
-                        </div>  
-                    </Column>
-                </SmallInputs>
-            </div>
+                        </Column>
+                    </SmallInputs>
+                </div>
             </InputContainer>
             <BottomContainer>
                 <div className="container">
                     <span>
-                    <h5>Funcionalidades contidas no plano:</h5>
+                        <h5>Funcionalidades contidas no plano:</h5>
                     </span>
                     <div className="row">
                         <div>
                             <span>
-                                <Checkbox onChange={() => gatherApplications(1)}/>
+                                <Checkbox
+                                    onChange={() => gatherApplications(1)}
+                                />
                             </span>
                             <h6>Nf-e</h6>
                         </div>
                         <div>
                             <span>
-                                <Checkbox onChange={() => gatherApplications(3)}/>
+                                <Checkbox
+                                    onChange={() => gatherApplications(3)}
+                                />
                             </span>
                             <h6>Nfs-e</h6>
                         </div>
@@ -121,13 +177,17 @@ export default function PlanoCadastro() {
                     <div className="row">
                         <div>
                             <span>
-                                <Checkbox onChange={() => gatherApplications(2)}/>
+                                <Checkbox
+                                    onChange={() => gatherApplications(2)}
+                                />
                             </span>
                             <h6>Ct-e</h6>
                         </div>
                         <div>
                             <span>
-                                <Checkbox onChange={() => gatherApplications(4)}/>
+                                <Checkbox
+                                    onChange={() => gatherApplications(4)}
+                                />
                             </span>
                             <h6>Controle de Portaria</h6>
                         </div>
@@ -135,13 +195,10 @@ export default function PlanoCadastro() {
                 </div>
             </BottomContainer>
             <ButtonStyle>
-                <button onClick={createAccount}>
-                    Confirmar
-                </button>
+                <button onClick={createAccount}>Confirmar</button>
             </ButtonStyle>
         </>
-    )
+    );
 }
 
-
-PlanoCadastro.auth = true
+PlanoCadastro.auth = true;

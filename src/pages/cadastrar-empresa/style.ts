@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const CompanyRegister = styled.div`
     display: flex;
@@ -6,52 +6,52 @@ export const CompanyRegister = styled.div`
     align-items: center;
     box-sizing: border-box;
     margin-bottom: 8px;
-   
-   div {
-    width: 500px;
-    height: 425px;
-    border: 1px solid rgba(151, 151, 151, .45);
 
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border: none;
+    div {
+        width: 500px;
+        height: 425px;
+        border: 1px solid rgba(151, 151, 151, 0.45);
 
-        .label {
-            position: relative;
+        .container {
             display: flex;
-            height: 20px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             border: none;
-         h6 {
-            position: absolute;
-            left: 75px;
-         }
-     }
 
-     .input-style  {
-            vertical-align: middle;
-            height: 35px;
-            width: 75%;
-            border-radius: 5px;
-            border: 1px solid #eaeaea;
-            margin: 7px 10px;
+            .label {
+                position: relative;
+                display: flex;
+                height: 20px;
+                border: none;
+                h6 {
+                    position: absolute;
+                    left: 75px;
+                }
+            }
 
-        input {
-            margin: 4px 10px;
-            padding:0;
-            box-shadow: none;
-            font-size: .875rem;
-            background-color: transparent;
-            border: none;
-            color: #1c496a;
-            outline:  none;
-            border-radius: 0;
-            width: 100%;
+            .input-style {
+                vertical-align: middle;
+                height: 35px;
+                width: 75%;
+                border-radius: 5px;
+                border: 1px solid #eaeaea;
+                margin: 7px 10px;
+
+                input {
+                    margin: 4px 10px;
+                    padding: 0;
+                    box-shadow: none;
+                    font-size: 0.875rem;
+                    background-color: transparent;
+                    border: none;
+                    color: #1c496a;
+                    outline: none;
+                    border-radius: 0;
+                    width: 100%;
+                }
+            }
         }
-   }
-   }
         select {
             max-width: 100%;
             display: inline-block;
@@ -60,10 +60,10 @@ export const CompanyRegister = styled.div`
             white-space: nowrap;
             position: relative;
             cursor: pointer;
-            max-width: 80vw; 
+            max-width: 80vw;
             width: 75%;
             overflow: hidden;
-            transition: border 0.2s ease 0s,color 0.2s ease-out 0s; 
+            transition: border 0.2s ease 0s, color 0.2s ease-out 0s;
             border: 1px solid #eaeaea;
             border-radius: 5px;
             padding: 0 4pt 0 8pt;
@@ -72,9 +72,7 @@ export const CompanyRegister = styled.div`
             background-color: #fff;
             justify-content: flex-end;
             flex-wrap: wrap;
-            margin:  7px 10px;
- 
-} 
-
-   }
-`
+            margin: 7px 10px;
+        }
+    }
+`;

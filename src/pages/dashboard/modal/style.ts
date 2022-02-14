@@ -1,17 +1,17 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ModalStyle = styled.div`
-      z-index: auto;
+    z-index: auto;
     display: block;
     position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
     width: 100vw;
-    background: rgba(0,0,0,0.22);
+    background: rgba(0, 0, 0, 0.22);
     box-sizing: border-box;
 
-    >  div {
+    > div {
         width: 53%;
         height: 35%;
         min-height: 250px;
@@ -26,27 +26,27 @@ export const ModalStyle = styled.div`
             left: 0.6rem;
             top: 0.2rem;
 
-                svg {
-                    height: 36px;
-                    width: 28px;
-                    cursor: pointer;
-                }
+            svg {
+                height: 36px;
+                width: 28px;
+                cursor: pointer;
+            }
         }
 
         h5 {
             /* letter-spacing: 0.1rem; */
             font-weight: 600;
             margin: 1rem;
-            padding: .5rem;
+            padding: 0.5rem;
             vertical-align: middle;
-            text-align: center ;
+            text-align: center;
             color: #444;
         }
 
         h6 {
             font-weight: 400;
-            margin: .5rem auto;
-            padding: .5rem;
+            margin: 0.5rem auto;
+            padding: 0.5rem;
             vertical-align: middle;
             text-align: center;
             line-height: 1.3rem;
@@ -65,46 +65,45 @@ export const ModalStyle = styled.div`
             border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
 
-        >  button {
-            font-size: 0.85rem;
-            border: none;
-            color: #1C496A;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex: 1;
-            height: 100%;
-            border-radius: 0;
-            min-width: 0;
-            background-color: #fff;
-            cursor: pointer;
-        }
+            > button {
+                font-size: 0.85rem;
+                border: none;
+                color: #1c496a;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex: 1;
+                height: 100%;
+                border-radius: 0;
+                min-width: 0;
+                background-color: #fff;
+                cursor: pointer;
+            }
 
-        button:last-child{
-        border-left: 1px solid #eaeaea;
-        background-color: #1C496A;
-        color: #fff;
+            button:last-child {
+                border-left: 1px solid #eaeaea;
+                background-color: #1c496a;
+                color: #fff;
             }
         }
-        
     }
 
-@media (max-width: 1090px) {
-    > div {
-        height: 58%;
+    @media (max-width: 1090px) {
+        > div {
+            height: 58%;
+        }
     }
-}
 
-@media (max-width: 725px) {
-    > div {
-        left: 38%;
+    @media (max-width: 725px) {
+        > div {
+            left: 38%;
+        }
     }
-}
 
-@media (max-width: 575px) {
-    > div {
-        height: 65%;
-        left: 25%;
+    @media (max-width: 575px) {
+        > div {
+            height: 65%;
+            left: 25%;
+        }
     }
-}
-`
+`;

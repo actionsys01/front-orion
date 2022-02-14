@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ModalStyle = styled.div`
     z-index: 1000;
@@ -8,10 +8,10 @@ export const ModalStyle = styled.div`
     left: 0;
     height: 100vh;
     width: 100vw;
-    background: rgba(0,0,0,0.22);
+    background: rgba(0, 0, 0, 0.22);
     box-sizing: border-box;
 
-    >  div {
+    > div {
         width: 53%;
         height: 50%;
         min-height: 250px;
@@ -27,18 +27,18 @@ export const ModalStyle = styled.div`
             left: 0.6rem;
             top: 0.2rem;
 
-                svg {
-                    height: 36px;
-                    width: 28px;
-                    cursor: pointer;
-                }
+            svg {
+                height: 36px;
+                width: 28px;
+                cursor: pointer;
+            }
         }
 
         h4 {
             font-weight: 600;
             margin: 14px auto;
             vertical-align: middle;
-            text-align: center ;
+            text-align: center;
             color: #444;
         }
     }
@@ -48,7 +48,7 @@ export const ModalStyle = styled.div`
             width: 65%;
             left: 15%;
             h4 {
-                font-size: .9rem;
+                font-size: 0.9rem;
                 margin: 32px auto;
             }
         }
@@ -61,17 +61,17 @@ export const ModalStyle = styled.div`
             }
         }
     }
-`
+`;
 
 export const Section = styled.div`
     display: flex;
     align-items: center;
     height: 70%;
     box-sizing: border-box;
-    
+
     form {
         margin: 0 auto;
-        padding: 2rem ;
+        padding: 2rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -81,12 +81,11 @@ export const Section = styled.div`
 
     @media (max-width: 1110px) {
         height: 40%;
-       form {
-           padding: .2rem 0;
-           box-sizing: border-box;
-           border: none;
-           
-       }
+        form {
+            padding: 0.2rem 0;
+            box-sizing: border-box;
+            border: none;
+        }
     }
 
     /* @media (max-width: 810px) {
@@ -94,46 +93,45 @@ export const Section = styled.div`
             align-items: normal;
         }
     } */
-`
+`;
 
 export const InputStyles = styled.div`
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: .3rem;
-   
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.3rem;
+
     div {
         width: 75%;
         display: flex;
         justify-content: flex-start;
     }
     span {
-            margin: 0 0.5rem;
-            font-size: 0.8rem;
+        margin: 0 0.5rem;
+        font-size: 0.8rem;
     }
 
     input {
-            max-width: 450px;
-            width: 100%;
-            height: 28px;
-            border: 1px solid #eaeaea;
-            padding-inline-start: .625rem;
-        }
-   
+        max-width: 450px;
+        width: 100%;
+        height: 28px;
+        border: 1px solid #eaeaea;
+        padding-inline-start: 0.625rem;
+    }
 
-        @media (max-width: 930px) {
-        padding: .3rem;
+    @media (max-width: 930px) {
+        padding: 0.3rem;
         width: 70%;
         flex-wrap: wrap;
-            div {
-                width: 100%;
-                justify-content: center;
-            }
-            input{
-                min-width: fit-content;
-                width: 70%;
-            }
+        div {
+            width: 100%;
+            justify-content: center;
+        }
+        input {
+            min-width: fit-content;
+            width: 70%;
+        }
     }
 
     @media (max-width: 815px) {
@@ -144,52 +142,51 @@ export const InputStyles = styled.div`
             width: 85%;
         }
     }
-`
+`;
 
 export const InputDoubleStyles = styled.div`
-        width: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    gap: 3rem;
+
+    > div {
         display: flex;
-        align-items: center;
+        flex-direction: column;
         justify-content: center;
-        margin-bottom: 1rem;
-        gap: 3rem;
-   
-   > div {
-       display: flex;
-       flex-direction: column;
-       justify-content: center;
-       align-items: center;
+        align-items: center;
     }
     span {
-            margin: 0 0.5rem;
-            font-size: 0.8rem;
+        margin: 0 0.5rem;
+        font-size: 0.8rem;
     }
 
     input {
-            max-width: 300px;
-            width: 100%;
-            height: 28px;
-            border: 1px solid #eaeaea;
-            padding-inline-start: .225rem;
-        }
+        max-width: 300px;
+        width: 100%;
+        height: 28px;
+        border: 1px solid #eaeaea;
+        padding-inline-start: 0.225rem;
+    }
 
-        
-        @media (max-width: 830px) {
-        padding: .3rem;
+    @media (max-width: 830px) {
+        padding: 0.3rem;
         flex-wrap: wrap;
         flex-direction: column;
         gap: 1rem;
     }
-`
+`;
 
 export const BottomConfirmBtn = styled.div`
     display: flex;
     position: relative;
     box-sizing: border-box;
-    margin-top: calc(1 * 16pt / 2 );
-    margin-left: calc(0 * 16pt / 2 );
-    margin-right: calc(0 * 16pt / 2 );
-    margin-bottom: calc(0 * 16pt / 2 );
+    margin-top: calc(1 * 16pt / 2);
+    margin-left: calc(0 * 16pt / 2);
+    margin-right: calc(0 * 16pt / 2);
+    margin-bottom: calc(0 * 16pt / 2);
     row-gap: calc(0 * 16pt);
     justify-content: center;
     align-items: center;
@@ -213,20 +210,18 @@ export const BottomConfirmBtn = styled.div`
         position: relative;
         overflow: hidden;
         color: #fff;
-        background-color: #0DD0B3;
-        border: 1px solid #0DD0B3;
+        background-color: #0dd0b3;
+        border: 1px solid #0dd0b3;
         cursor: pointer;
         pointer-events: auto;
         box-shadow: none;
     }
 
     @media (max-width: 975px) {
-      width: 100%;
+        width: 100%;
 
-      button {
-          width: 80%;
-      }
+        button {
+            width: 80%;
+        }
     }
-
-`
-
+`;

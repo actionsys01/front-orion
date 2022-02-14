@@ -1,172 +1,154 @@
-import { GridStyle } from "./style";
-import React, { useState, useMemo, useEffect, useCallback} from 'react'; 
-import {
-  Button,
-  Row,
-  Spacer,
-  Text
-} from "@geist-ui/react";
-import { Pages } from "./style"
-import { Plus } from "@geist-ui/react-icons";
-import {useSecurityContext} from "@contexts/security"
-import Pagination from "@material-ui/lab/Pagination";
-import * as usuario from "@services/usuarios";
-import { useSession } from "next-auth/client";
-import Head from "next/head";
-import { useRouter } from "next/router";
-import getUsersByCompanyId from "@services/usuarios/getUsersByCompanyId";
-import UserPopover from "./Popover";
-import capitalize from "@utils/capitalize"
+import { GridStyle } from './style';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { Button, Row, Spacer, Text } from '@geist-ui/react';
+import { Pages } from './style';
+import { Plus } from '@geist-ui/react-icons';
+import { useSecurityContext } from '@contexts/security';
+import Pagination from '@material-ui/lab/Pagination';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import getUsersByCompanyId from '@services/usuarios/getUsersByCompanyId';
+import UserPopover from './Popover';
+import capitalize from '@utils/capitalize';
+import UserModal from './modal';
 
-export interface IUsuario  {
-  id: number;
-  nome: string;
-  email: string;
-  perfil: Perfil
-};
+export interface IUsuario {
+    id: number;
+    nome: string;
+    email: string;
+    perfil: Perfil;
+}
 
 interface Perfil {
-  id: number;
-  nome: string;
-  descricao: string;
-  criadoEm: string;
-  atualizadaEm: string;
-  criadoPorIp: string;
-  atualizadoPorIp: string;
+    id: number;
+    nome: string;
+    descricao: string;
+    criadoEm: string;
+    atualizadaEm: string;
+    criadoPorIp: string;
+    atualizadoPorIp: string;
 }
 
-interface UserData {
-  id: number;
-  nome: string;
-  email: string;
-  perfil: Perfil;
-  perfil_nome: string;
-  emailFormatted: string;
-  option: any
-}
+export default function Usuarios() {
+    const { userPermissions } = useSecurityContext();
+    const router = useRouter();
+    const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
+    const [page, setPage] = useState(1);
+    const [quantityPage, setQuantityPage] = useState(1);
+    const [userModalVisible, setUserModalVisible] = useState(false);
 
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
 
+    const getUsersAndTotalPage = useCallback(async () => {
+        const responseNfes: any = await getUsersByCompanyId(page);
+        const { data } = responseNfes;
 
-export default function Usuarios({}) {
-  const [session] = useSession();
-  const {userPermissions} = useSecurityContext()
-  const router = useRouter();
-  const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
-  const [page, setPage] = useState(1);
-  const [quantityPage, setQuantityPage] = useState(1)
- 
+        setUsuarios(data.usuarios);
 
+        setQuantityPage(Math.ceil(data.total / 8));
+    }, [page]);
 
-  
-  const handleChange = (event : React.ChangeEvent<unknown>, value : number) => {
-    setPage(value)
-  }
+    useEffect(() => {
+        getUsersAndTotalPage();
+    }, [page]);
 
-  const getUsersAndTotalPage = useCallback(async () => {
-    
-    const responseNfes: any = await getUsersByCompanyId(page)
-
-    const { data } = responseNfes;
-
-
-    setUsuarios(data.usuarios)
-  
-    setQuantityPage(Math.ceil(data.total / 8));
-    }, [page])
-      
-
-  useEffect(() => {
-
-    getUsersAndTotalPage();
-
-
-  }, [page])
-
-
-function optionUserPopover (data: any) {
-  return <UserPopover data={data} usuarios={usuarios} setUsuarios={setUsuarios} />
-}
-
-
-
-  const UsersByCompanyData = useMemo(() => {
-    const allData: any = [];
-    if(usuarios) {
-      usuarios.forEach((item) => {
-        allData.push({
-          ...item,
-          perfil_nome: item.perfil.nome,
-          emailFormatted: item.email.toLowerCase(),
-          nome: capitalize(item.nome),
-          option:  optionUserPopover(item)
-        });
-      });
+    function optionUserPopover(data: any) {
+        return (
+            <UserPopover
+                data={data}
+                usuarios={usuarios}
+                setUsuarios={setUsuarios}
+                setUserModalVisible={setUserModalVisible}
+            />
+        );
     }
-    
-    return allData.sort(comparations);
-  },[usuarios])
 
+    const UsersByCompanyData = useMemo(() => {
+        const allData: any = [];
+        if (usuarios) {
+            usuarios.forEach(item => {
+                allData.push({
+                    ...item,
+                    perfil_nome: item.perfil.nome,
+                    emailFormatted: item.email.toLowerCase(),
+                    nome: capitalize(item.nome),
+                    option: optionUserPopover(item),
+                });
+            });
+        }
 
+        return allData.sort(comparations);
+    }, [usuarios]);
 
- function comparations (a: any, b: any) {
-  if ( a.nome < b.nome ){
-    return -1;
-  }
-  if ( a.nome > b.nome ){
-    return 1;
-  }
-  return 0;
- }
- 
+    function comparations(a: any, b: any) {
+        if (a.nome < b.nome) {
+            return -1;
+        }
+        if (a.nome > b.nome) {
+            return 1;
+        }
+        return 0;
+    }
 
-  return (
-    <>
-      <Head>
-        <title>Orion | Usuários</title>
-      </Head>
-      <Text h2>Usuários</Text>
-      <Row justify="end" align="middle">
-        <Button
-          type="success-light"
-          size="small"
-          icon={<Plus />}
-          disabled={!userPermissions.ADICIONAR}
-          onClick={() => router.push("/cadastrar-usuario")}
-        >
-          Adicionar
-        </Button>
-      </Row>
-      <Spacer y={1} />
-    <GridStyle>
-      <table>
-        <thead>
-          <tr>
-          <th></th>
-          <th>Nome</th>
-          <th>E-mail</th>
-          <th>Perfil</th>
-          </tr>
-        </thead>
-    {userPermissions.ADICIONAR &&
-        <tbody>
-        {UsersByCompanyData.map((item: any, i: any) => (
-        <tr key={i}>
-          <td>{item.option}</td>
-          <td style={{textTransform: "capitalize"}}>{item.nome }</td>
-          <td>{item.email}</td>
-          <td>{item.perfil_nome}</td>
-        </tr>
-        ))}
-        </tbody>
-}
-      </table>
-    </GridStyle>
-      <Pages>
-    <Pagination style={{margin : "0 auto"}} onChange={handleChange} count={quantityPage}  shape='rounded' />
-    </ Pages>
-   
-    </>
-  );
+    return (
+        <>
+            <Head>
+                <title>Orion | Usuários</title>
+            </Head>
+            <Text h2>Usuários</Text>
+            <Row justify="end" align="middle">
+                <Button
+                    type="success-light"
+                    size="small"
+                    icon={<Plus />}
+                    disabled={!userPermissions.ADICIONAR}
+                    onClick={() => router.push('/cadastrar-usuario')}
+                >
+                    Adicionar
+                </Button>
+            </Row>
+            <Spacer y={1} />
+            <GridStyle>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Perfil</th>
+                        </tr>
+                    </thead>
+                    {userPermissions.ADICIONAR && (
+                        <tbody>
+                            {UsersByCompanyData.map((item: any, i: any) => (
+                                <tr key={i}>
+                                    <td>{item.option}</td>
+                                    <td style={{ textTransform: 'capitalize' }}>
+                                        {item.nome}
+                                    </td>
+                                    <td>{item.email}</td>
+                                    <td>{item.perfil_nome}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    )}
+                </table>
+            </GridStyle>
+            <Pages>
+                <Pagination
+                    style={{ margin: '0 auto' }}
+                    onChange={handleChange}
+                    count={quantityPage}
+                    shape="rounded"
+                />
+            </Pages>
+            {userModalVisible && (
+                <UserModal setUserModalVisible={setUserModalVisible} />
+            )}
+        </>
+    );
 }
 
 Usuarios.auth = true;
