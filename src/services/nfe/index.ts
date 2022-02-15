@@ -19,14 +19,12 @@ export default async function getNfe(
       campo = `${campo}_contain`;
     }
     if (campo === 'dt_hr_emit') {
-      compare != 'equal' || compare === undefined
+      compare === 'above' || compare === 'lower' || compare === 'different'
         ? (campo = `${campo}_${compare}`)
-        : campo;
-
+        : (campo = 'dt_hr_emit');
       const [dia, mes, ano] = valor.toString().trim().split('/');
       valor = `${ano}-${mes}-${dia}T`;
     }
-
     return { ...acc, [campo]: valor };
   }, {});
 

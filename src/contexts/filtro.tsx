@@ -73,7 +73,7 @@ export default function FiltroProvider({ children }: IFiltroProps) {
   }
 
   function scopeIgnition(array: IUnformCompare[]): IUnformCompare[] {
-    console.log('array', array)
+    // console.log('array', array)
     const filtro = array.map(({ campo, valor, compare }) => {
       const coluna = colunas.find(option => option.value === campo);
       if (coluna) {
@@ -85,6 +85,7 @@ export default function FiltroProvider({ children }: IFiltroProps) {
   }
 
   function scopeIgnitionCompare(array: IUnformCompare[]): IUnformCompare[] {
+    //  console.log('array', array)
     const filtro = array.map(({ campo, valor, compare }) => {
       const coluna = nfse_colunas.find(option => option.value === campo);
       if (coluna) {
