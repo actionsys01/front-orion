@@ -74,8 +74,6 @@ export default function ControleEntrada() {
   const [exitDate, setExitDate] = useState(new Date());
   const [entranceKeys, setEntranceKeys] = useState<string[]>([]);
   const [entranceId, setEntranceId] = useState(0);
-  // const [arrivalTime, setArrivalTime] = useState(new Date)
-  // const [exitTime, setExitTime] = useState()
   // Modal
   const [visibleModal, setVisibleModal] = useState(false);
   const [modalStatus, setModalStatus] = useState('');
