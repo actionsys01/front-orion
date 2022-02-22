@@ -61,11 +61,12 @@ export const BotaoRemover = styled(X)`
 export const BotaoIncluir = styled.button`
   font-size: 10px;
   font-weight: bold;
-  align-items: fle;
+  align-items: center;
   background-color: transparent;
   justify-content: center;
   display: flex;
   border-width: 0;
+  gap: 8px;
   cursor: pointer;
 
   text {
