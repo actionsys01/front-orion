@@ -58,7 +58,6 @@ const FilterLine = ({
         ) : (
           <InputCustomizado name="valor" placeholder="valor" />
         )}
-
         <BotaoRemover size={15} onClick={() => removeFilter(index)} />
       </Container>
     </>
