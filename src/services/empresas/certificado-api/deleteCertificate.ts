@@ -1,9 +1,7 @@
-import api from "@services/api";
+import api from '@services/api';
 
-export default async function deleteCertificate(company_id : number) {
+export default async function deleteCertificate(company_id: number) {
+  const response = await api.delete(`/empresas/certificado/${company_id}`);
 
-    const response = await api.delete(`/empresas/certificado/delete/${company_id}`)
-
-    return response
-    
+  return response;
 }
