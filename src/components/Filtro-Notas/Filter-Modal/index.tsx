@@ -136,11 +136,11 @@ export default function Filtro({ abaAtual, data }: IProps) {
       <Form ref={formRef} onSubmit={handleSubmit}>
         <Modal visivel={modalVisivel}>
           <Text h6>Filtrar</Text>
-          {!filtros.length && (
+          {/* {!filtros.length && (
             <Text small size={10}>
               Use o filtro para restringir seus dados
             </Text>
-          )}
+          )} */}
           <ContainerFiltro>
             {filtros.map((item, index) => (
               <FilterLine
