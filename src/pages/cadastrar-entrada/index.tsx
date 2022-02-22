@@ -343,9 +343,13 @@ export default function CadastrarEntrada() {
   }
 
   // useEffect(() => {
-  //   console.log('nota', nota);
-  //   console.log('entranceKeys', entranceKeys)
-  // }, [nota, entranceKeys]);
+  //   // console.log('nota', nota);
+  //   // console.log('entranceKeys', entranceKeys)
+  //   console.log('entrance.driver', entrance.driver)
+  //   console.log('entrance.driverId', entrance.driverId)
+  //   console.log('entrance.vehicle', entrance.vehicleLicense)
+  //   console.log('entrance.statusDescription', entrance.statusDescription)
+  // }, [entrance.driver, entrance.driverId]);
 
   return (
     <>
