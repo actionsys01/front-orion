@@ -1,23 +1,20 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Button, Row, Text } from '@geist-ui/react';
 import { Filter } from '@geist-ui/react-icons';
-import { FormHandles, Scope, SubmitHandler } from '@unform/core';
+import { FormHandles, SubmitHandler } from '@unform/core';
 import { Form } from '@unform/web';
 import { useEffect, useRef, useState } from 'react';
 import { HiPlusCircle } from 'react-icons/hi';
 import { useControlFilter } from '@contexts/ControlFilter';
-import colunas from '@utils/filtros/filtros-controle';
 import {
   BotaoIncluir,
-  BotaoRemover,
   ContainerFiltro,
-  InputCustomizado,
   Modal,
   ModalBackground,
 } from '@styles/Filtro-Styles';
-import { CustomSelect } from './style';
+import FilterLine from '../FilterLine';
 
-interface FormFilterData {
+export interface FormFilterData {
   filtros: [{ campo: string; valor: string }];
 }
 
@@ -55,23 +52,6 @@ export default function Filtro({ data }: IProps) {
 
   function addFilter() {
     setControlFilters([...controlFilters, '']);
-  }
-
-  function removeFilter(index: number) {
-    const data = formRef.current?.getData() as FormFilterData;
-
-    const filtrosForm = data.filtros.slice();
-
-    const totalFiltros = controlFilters.slice();
-
-    filtrosForm.splice(index, 1);
-
-    const filtro = scopeIgnition(filtrosForm);
-
-    formRef.current?.setData({ filtros: filtro });
-
-    totalFiltros.splice(index, 1);
-    setControlFilters(totalFiltros);
   }
 
   const filterSubmitHandler: SubmitHandler = (data: FormFilterData) => {
@@ -126,14 +106,15 @@ export default function Filtro({ data }: IProps) {
               Use o filtro para restringir seus dados
             </Text>
           )} */}
-
           <ContainerFiltro>
             {controlFilters.map((item, index) => (
-              <Scope path={`filtros[${index}]`} key={index}>
-                <CustomSelect name="campo" options={colunas} />
-                <InputCustomizado name="valor" placeholder="valor" />
-                <BotaoRemover size={15} onClick={() => removeFilter(index)} />
-              </Scope>
+              <FilterLine
+                index={index}
+                formRef={formRef}
+                key={index}
+                controlFilters={controlFilters}
+                setControlFilters={setControlFilters}
+              />
             ))}
             <BotaoIncluir onClick={addFilter} type="button">
               <HiPlusCircle />
