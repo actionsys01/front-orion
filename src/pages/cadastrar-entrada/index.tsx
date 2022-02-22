@@ -1,9 +1,9 @@
 import React, {
   useState,
   useMemo,
-  useEffect,
   useCallback,
   useRef,
+  useEffect,
 } from 'react';
 import Head from 'next/head';
 import router, { useRouter } from 'next/router';
@@ -22,31 +22,20 @@ import {
 import { Checkbox } from '@material-ui/core';
 import { useToasts } from '@geist-ui/react';
 import { INfeDto } from '@services/nfe/dtos/INfeDTO';
-import { CteProps } from '@services/cte-mongo/cte-type/cte';
+import { CteProps, ICteGridData } from '@services/cte-mongo/cte-type/cte';
 import getNfeById from '@services/nfe/getNfeById';
 import getCteById from '@services/cte-mongo/getCteById';
 import { useSession } from 'next-auth/client';
 import { format } from 'date-fns';
-import { AddBtn, TopConfirmBtn } from '@styles/buttons';
+import { TopConfirmBtn } from '@styles/buttons';
 import * as entranceReq from '@services/controle-entrada';
 import DriverModal from './driver-modal';
 import VehicleModal from './vehicle-modal';
 import FinishModal from './finish-modal';
 import { entranceInitials } from '@utils/initial-states';
+import Popover from '@components/Popover';
 
-interface Props {
-  company_id: number | undefined;
-  token: string | undefined;
-  sefaz?: {
-    cor: 'secondary' | 'success' | 'error' | 'warning' | 'default';
-    message: string;
-  };
-  portaria?: {
-    cor: 'success' | 'warning' | 'default';
-    message: string;
-  };
-}
-
+type NotaProps = INfeDto & ICteGridData;
 export default function CadastrarEntrada() {
   const [, setToast] = useToasts();
   const [session] = useSession();
@@ -58,9 +47,9 @@ export default function CadastrarEntrada() {
   const [thirdModal, setThirdModal] = useState(false);
   // nota
   const key: any = useRef(null);
-  const [nota, setNota] = useState<INfeDto[] | CteProps[]>([]);
-  const [ableInput, setAbleInput] = useState(true);
+  const [nota, setNota] = useState<NotaProps[]>([]);
   const [entranceKeys, setEntranceKeys] = useState<string[]>([]);
+  const [ableInput, setAbleInput] = useState(true);
   const [entrance, setEntrance] = useState({ ...entranceInitials });
   const [status, setStatus] = useState(0);
 
@@ -91,8 +80,8 @@ export default function CadastrarEntrada() {
   const getKey = useCallback(
     async e => {
       e.preventDefault();
-      console.log('key.current.value.length', key.current.value.length);
-      console.log('substring(20, 22)', key.current.value.substring(20, 22));
+      // console.log('key.current.value.length', key.current.value.length);
+      // console.log('substring(20, 22)', key.current.value.substring(20, 22));
       if (!key.current.value) {
         setToast({
           text: 'É necessário inserir uma nota no campo de busca',
@@ -201,13 +190,21 @@ export default function CadastrarEntrada() {
   const gatheredData = useMemo(() => {
     const allData: any = [];
     if (nota) {
-      nota.forEach(item => {
+      nota.forEach((item, i) => {
         allData.push({
           ...item,
           option: (
-            <span>
-              <Checkbox />
-            </span>
+            <Popover
+              num={i}
+              quant={1}
+              content={[
+                {
+                  optionName: 'Excluir',
+                  onClick: () => deleteNotas(item.chave_nota),
+                  className: 'able',
+                },
+              ]}
+            />
           ),
           portaria_status:
             item.portaria_status === 0
@@ -221,17 +218,15 @@ export default function CadastrarEntrada() {
               : item.portaria_status === 4
               ? 'Entrega Cancelada'
               : null,
-          chave_nota:
-            item.chave_nota ||
-            item.informacoes_normal_substituto.infDoc.infNFe.chave,
-          emit_cnpj: item.emit_cnpj || item.emitente.CNPJ,
-          emit_nome: item.emit_nome || item.emitente.xNome,
-          nota: item.nota || item.informacoes_cte.nCT,
-          serie: item.serie || item.informacoes_cte.serie,
-          emissionDate: !item.informacoes_cte
+          chave_nota: item.chave_nota || item.chave_nota,
+          emit_cnpj: item.emit_cnpj || item.emit_cnpj,
+          emit_nome: item.emit_nome || item.emit_nome,
+          nota: item.nota || item.nota,
+          serie: item.serie || item.serie,
+          emissionDate: item.dt_hr_emi
             ? format(new Date(item.dt_hr_emi), 'dd/MM/yyyy')
-            : format(new Date(item.informacoes_cte.dhEmi), 'dd/MM/yyyy') ||
-              format(new Date(item.informacoes_cte.dEmi), 'dd/MM/yyyy'),
+            : format(new Date(item.dhEmi), 'dd/MM/yyyy') ||
+              format(new Date(item.dEmi), 'dd/MM/yyyy'),
           arrivalDate: item.portaria_status_ent_dt_hr
             ? format(new Date(item.portaria_status_ent_dt_hr), 'dd/MM/yyyy')
             : '',
@@ -340,9 +335,17 @@ export default function CadastrarEntrada() {
     registerEntrance();
   }
 
+  function deleteNotas(chave: string) {
+    const current = nota.filter(item => item.chave_nota !== chave);
+    const currentKey = entranceKeys.filter(item => item != chave);
+    setNota(current);
+    setEntranceKeys(currentKey);
+  }
+
   // useEffect(() => {
-  //     console.log('entranceKeys', entranceKeys);
-  // }, [ entranceKeys])
+  //   console.log('nota', nota);
+  //   console.log('entranceKeys', entranceKeys)
+  // }, [nota, entranceKeys]);
 
   return (
     <>
@@ -547,7 +550,6 @@ export default function CadastrarEntrada() {
                 />
               </div>
             </Column>
-
             <Column>
               <div>
                 <span>Peso Carregado</span>
