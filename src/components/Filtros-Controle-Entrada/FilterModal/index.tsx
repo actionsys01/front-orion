@@ -75,10 +75,7 @@ export default function Filtro({ data }: IProps) {
   }
 
   const filterSubmitHandler: SubmitHandler = (data: FormFilterData) => {
-    // console.log(`data.filtros`, data.filtros)
-    // console.log(`data debaixo de data.fitros`, data)
     if (data.filtros === undefined) {
-      // console.log("aqui I")
       registerFilter([]);
       setError(false);
       setVisibleModal(false);
@@ -87,11 +84,9 @@ export default function Filtro({ data }: IProps) {
     const emptyFields = data.filtros.filter(item => !item.valor).length;
 
     if (emptyFields) {
-      // console.log("aqui II")
       setError(true);
       return;
     } else {
-      // console.log("aqui III")
       const filtro = scopeIgnition(data.filtros);
       registerFilter(filtro);
     }
@@ -126,11 +121,11 @@ export default function Filtro({ data }: IProps) {
       <Form ref={formRef} onSubmit={filterSubmitHandler}>
         <Modal visivel={visibleModal}>
           <Text h6>Filtrar</Text>
-          {!controlFilters.length && (
+          {/* {!controlFilters.length && (
             <Text small size={10}>
               Use o filtro para restringir seus dados
             </Text>
-          )}
+          )} */}
 
           <ContainerFiltro>
             {controlFilters.map((item, index) => (
