@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import BotaoVoltar from '@components/BotaoVoltar';
 import {
@@ -23,12 +23,18 @@ export default function AtualizarCnpj() {
   const [uf, setUf] = useState(router.query.uf.toString().toUpperCase());
   const [, setToast] = useToasts();
   const id = Number(router.query.id);
-  // console.log("curry",router.query);
+  const [request, setRequest] = useState({
+    name: router.query.nome.toString(),
+    cnpj: router.query.cnpj.toString(),
+    uf: router.query.uf.toString().toUpperCase(),
+    nfe: router.query.nfe === 'true',
+    cte: router.query.cte === 'true',
+  });
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      if (!name || !cnpj || !uf) {
+      if (!request.name || !request.cnpj || !request.uf) {
         setToast({
           text: 'Por favor preencha todos os campos',
           type: 'warning',
@@ -36,10 +42,11 @@ export default function AtualizarCnpj() {
         return;
       }
       await companyRequest.updateCnpj(id, {
-        cnpj: cnpj,
-        nome: name,
-        nsu: 'padrão',
-        uf: uf,
+        cnpj: request.cnpj,
+        nome: request.name,
+        uf: request.uf,
+        nfe: request.nfe,
+        cte: request.cte,
         status_sefaz: 100,
       });
       setToast({
@@ -56,6 +63,10 @@ export default function AtualizarCnpj() {
     router.push('/cnpjs-empresa');
   }
 
+  useEffect(() => {
+    console.log('request', request);
+  }, [request]);
+
   return (
     <>
       <Head>
@@ -69,15 +80,17 @@ export default function AtualizarCnpj() {
             <InputStyle>
               <label htmlFor="cnpj">CNPJ</label>
               <MaskedInput
-                value={cnpj}
-                onChange={event => setCnpj(event.target.value)}
+                value={request.cnpj}
+                onChange={event =>
+                  setRequest({ ...request, cnpj: event.target.value })
+                }
               />
               <label htmlFor="nome">Nome</label>
               <input
                 type="text"
                 id="nome"
-                value={name}
-                onChange={e => setName(e.target.value)}
+                value={request.name}
+                onChange={e => setRequest({ ...request, name: e.target.value })}
               />
             </InputStyle>
           </div>
@@ -86,10 +99,12 @@ export default function AtualizarCnpj() {
               <Column>
                 <div className="uf">
                   <span>UF</span>
-                  <select onChange={e => setUf(e.target.value)}>
-                    <option value={uf} selected>
-                      {uf}
-                    </option>
+                  <select
+                    onChange={e =>
+                      setRequest({ ...request, uf: e.target.value })
+                    }
+                  >
+                    <option value={request.uf}>{request.uf}</option>
                     {estados.map((item, i) => (
                       <option value={item} key={i}>
                         {item}
@@ -101,13 +116,23 @@ export default function AtualizarCnpj() {
                 <CheckboxContainer>
                   <span>
                     <span>
-                      <Checkbox />
+                      <Checkbox
+                        checked={request.nfe}
+                        onChange={() =>
+                          setRequest({ ...request, nfe: !request.nfe })
+                        }
+                      />
                     </span>
                     NF-e
                   </span>
                   <span>
                     <span>
-                      <Checkbox />
+                      <Checkbox
+                        checked={request.cte}
+                        onChange={() =>
+                          setRequest({ ...request, cte: !request.cte })
+                        }
+                      />
                     </span>
                     CT-e
                   </span>
