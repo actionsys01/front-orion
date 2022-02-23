@@ -14,23 +14,23 @@ import uploadLogo from './logo/upload';
 import getCompanyById from './empresa-api/getCompanyById';
 
 export {
-    // empresas requests
-    getAllCompaniesByPage,
-    create,
-    update,
-    deletar,
-    getCompanyById,
-    // dashboard request
-    dashboardRequest,
-    // certificados requests
-    getCertificate,
-    sendCertificate,
-    deleteCertificate,
-    // CNPJ requests
-    getCnpj,
-    createCnpj,
-    deleteCnpj,
-    updateCnpj,
-    // LOGO
-    uploadLogo,
+  // empresas requests
+  getAllCompaniesByPage,
+  create,
+  update,
+  deletar,
+  getCompanyById,
+  // dashboard request
+  dashboardRequest,
+  // certificados requests
+  getCertificate,
+  sendCertificate,
+  deleteCertificate,
+  // CNPJ requests
+  getCnpj,
+  createCnpj,
+  deleteCnpj,
+  updateCnpj,
+  // LOGO
+  uploadLogo,
 };
