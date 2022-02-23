@@ -104,7 +104,7 @@ export default function AtualizarCnpj() {
                       setRequest({ ...request, uf: e.target.value })
                     }
                   >
-                    <option value={request.uf} selected>
+                    <option value={request.uf}>
                       {request.uf}
                     </option>
                     {estados.map((item, i) => (
