@@ -18,9 +18,6 @@ import MaskedInput from '@components/Masked-Input';
 import { estados } from '@utils/estados';
 
 export default function AtualizarCnpj() {
-  const [name, setName] = useState(router.query.nome.toString());
-  const [cnpj, setCnpj] = useState(router.query.cnpj.toString());
-  const [uf, setUf] = useState(router.query.uf.toString().toUpperCase());
   const [, setToast] = useToasts();
   const id = Number(router.query.id);
   const [request, setRequest] = useState({
