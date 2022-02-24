@@ -14,6 +14,7 @@ export default async function createCnpj(
   company_id: number,
   data: CreateCnpjToCompany,
 ) {
+  console.log('data', data);
   const response = await api.post(`/empresas/cnpj/${company_id}`, data);
   return response;
 }

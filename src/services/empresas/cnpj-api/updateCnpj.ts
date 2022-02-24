@@ -13,6 +13,7 @@ export default async function updateCnpj(
   id: number,
   data: UpdateCnpjToCompany,
 ) {
+  console.log('data update', data);
   const response = await api.put(`/empresas/cnpj/${id}`, data);
 
   return response;
