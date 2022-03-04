@@ -142,7 +142,7 @@ export default function AtualizarCnpj() {
           </div>
         </section>
         <BottomConfirmBtn>
-          <button type="submit">adicionar</button>
+          <button type="submit">atualizar</button>
         </BottomConfirmBtn>
       </Section>
     </>
