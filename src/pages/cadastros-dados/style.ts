@@ -42,3 +42,16 @@ export const CollumHide = styled.tr`
     -moz-appearance: textfield;
   }
 `;
+
+export const IconBtn = styled.div`
+  /* width: 25px; */
+  display: flex;
+  padding: 24px;
+  justify-content: flex-end;
+
+  svg {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+  }
+`;
