@@ -47,8 +47,8 @@ export const TableGrid = styled.div`
       position: relative;
       tr {
         td:first-child {
-          /* padding-left: 10px; */
-          z-index: 100;
+          padding-left: 15px;
+          width: 12px;
         }
         td {
           border-bottom: 1px solid #eaeaea;
