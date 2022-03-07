@@ -49,6 +49,10 @@ export const TableGrid = styled.div`
         td:first-child {
           padding-left: 15px;
           width: 12px;
+
+          > div {
+            width: 20px;
+          }
         }
         td {
           border-bottom: 1px solid #eaeaea;
