@@ -3,6 +3,7 @@ import GetConfigById from './cadastro-configs/GetConfigById';
 import DeleteConfig from './cadastro-configs/DeleteConfig';
 import UpdateConfig from './cadastro-configs/UpdateConfig';
 import CreateDado from './cadastro-dados/CreateDado';
+import DeleteDado from './cadastro-dados/DeleteDado';
 
 export {
   GetCategoryByCode,
@@ -10,4 +11,5 @@ export {
   DeleteConfig,
   UpdateConfig,
   CreateDado,
+  DeleteDado,
 };
