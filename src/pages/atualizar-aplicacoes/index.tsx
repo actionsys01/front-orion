@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/client';
 import { useToasts } from '@geist-ui/react';
 import Head from 'next/head';
@@ -30,7 +30,7 @@ export default function AtualizarAplicacoes() {
       const response = await request.GetConfigById(Number(mainData.id));
       const data = response.data;
       setRegister(data);
-      console.log('data', data);
+      // console.log('data', data);
     } catch (error) {
       console.log(error);
     }
@@ -108,6 +108,7 @@ export default function AtualizarAplicacoes() {
             type="text"
             id="descricao"
             className="description"
+            maxLength={20}
             value={register.desc_aplicacao}
             onChange={e =>
               setRegister({ ...register, desc_aplicacao: e.target.value })
