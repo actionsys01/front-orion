@@ -3,13 +3,13 @@ import styled from 'styled-components';
 export const MainPage = styled.div`
   display: flex;
   justify-content: center;
-
+  padding-top: 25px;
   /* > div {
     flex-direction: column;
   } */
 `;
 
-export const LabelStyle = styled.div`
+export const PageStyles = styled.div`
   width: 62%;
 
   label {
@@ -22,7 +22,7 @@ export const LabelStyle = styled.div`
   }
 `;
 
-export const LabelLineStyle = styled.div`
+export const TripleInputLineStyle = styled.div`
   display: flex;
   margin-top: 12px;
 
@@ -64,6 +64,55 @@ export const BoxStyle = styled.div`
     width: 240px;
     height: 55px;
     border: 1px solid #eaeaea;
+
+    .MuiFormControl-root {
+      margin-top: 6px;
+      width: 100%;
+      padding: 0 4px 0 4px;
+    }
+
+    .MuiFormGroup-root {
+      justify-content: space-around;
+    }
+
+    .MuiFormControlLabel-root {
+      display: flex;
+      flex-direction: column-reverse;
+      margin: 0;
+    }
+
+    .MuiTypography-body1 {
+      font-size: 12px;
+    }
+
+    .MuiSvgIcon-root {
+      font-size: 18px;
+      height: fit-content;
+    }
+
+    .MuiRadio-colorSecondary.Mui-checked {
+      color: #1c496a;
+    }
+
+    .PrivateSwitchBase-root-1 {
+      padding: 6px;
+    }
+  }
+  .checkbox-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    label {
+      font-size: 12px;
+    }
+    .MuiSvgIcon-root {
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .Mui-checked {
+      color: #1c496a;
+    }
   }
 `;
 
@@ -77,5 +126,142 @@ export const TextAreaStyles = styled.div`
     border: 1px solid #eaeaea;
     padding-inline-start: 0.225rem;
     resize: none;
+  }
+`;
+
+export const RastroCheckBoxStyle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 55rem;
+  label {
+    font-size: 12px;
+  }
+  .MuiSvgIcon-root {
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .Mui-checked {
+    color: #1c496a !important;
+  }
+`;
+
+export const SelectLineStyles = styled.div`
+  display: flex;
+  gap: 40px;
+  margin-top: 15px;
+  width: 55rem;
+
+  label {
+    font-size: 14px;
+  }
+
+  select,
+  input {
+    cursor: pointer;
+    max-width: 220px;
+    width: 100%;
+    height: 28px;
+    border: 1px solid #eaeaea;
+
+    option {
+      font-size: 12px;
+    }
+  }
+`;
+
+export const AdvanceBtn = styled.button`
+  margin-top: 20px;
+  margin-right: 80px;
+`;
+
+export const UMStyles = styled.div`
+  display: flex;
+  align-items: center;
+  /* width: 100%; */
+  gap: 15px;
+
+  > div {
+    input,
+    label {
+      display: block;
+    }
+
+    input {
+      cursor: pointer;
+      width: 100%;
+      height: 28px;
+      border: 1px solid #eaeaea;
+      max-width: 220px;
+    }
+
+    select {
+      cursor: pointer;
+      width: 100%;
+      height: 30px;
+      border: 1px solid #eaeaea;
+      min-width: 80px;
+      margin-top: 24px;
+    }
+
+    option {
+      font-size: 12px;
+      text-align: center;
+    }
+  }
+`;
+
+export const TextDiviser = styled.div`
+  margin-top: 75px;
+  margin-left: 20px;
+`;
+
+export const TripleSelectLine = styled.select`
+  cursor: pointer;
+  width: 100%;
+  height: 30px;
+  border: 1px solid #eaeaea;
+  min-width: 150px !important;
+  margin-top: 4px !important;
+
+  option {
+    font-size: 12px;
+    text-align: center;
+  }
+`;
+
+export const ImageBoxStyle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 360px;
+  height: 320px;
+  border: 1px solid #1c496a;
+  border-radius: 8px;
+
+  svg {
+    height: 80px;
+    width: 80px;
+  }
+`;
+
+export const CategoryCodesStyles = styled.div`
+  input,
+  label {
+    display: block;
+  }
+
+  label {
+    margin-top: 15px;
+  }
+
+  input {
+    cursor: pointer;
+    width: 100%;
+    height: 28px;
+    border: 1px solid #eaeaea;
+    max-width: 180px;
   }
 `;
