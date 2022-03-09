@@ -1,7 +1,6 @@
 export interface CreateProductDTOS {
   id_empresa: number;
   sku: number;
-  produto: string;
   cod_produto: string;
   ean?: string;
   desc_produto?: string;
@@ -41,7 +40,6 @@ export interface UpdateProductDTOS {
   id: number;
   id_empresa: number;
   sku: number;
-  produto: string;
   cod_produto?: string;
   ean?: string;
   desc_produto?: string;
@@ -82,7 +80,6 @@ export interface IProdutos {
   id_empresa: number;
   option: JSX.Element;
   sku: number;
-  produto: string;
   cod_produto: string;
   ean: string;
   desc_produto: string;
