@@ -121,7 +121,6 @@ export default function Produtos() {
             <tr>
               <th></th>
               <th>Nome</th>
-              <th>Descição</th>
               <th>Código do Produto</th>
               <th>Classe Contábil</th>
               <th>Origem</th>
@@ -141,7 +140,6 @@ export default function Produtos() {
             {gatheredData.map((item: IProdutos, i: number) => (
               <tr key={i}>
                 <td>{item.option}</td>
-                <td>{item.produto}</td>
                 <td>{item.desc_produto}</td>
                 <td>{item.cod_produto}</td>
                 <td>{item.classe_contabil}</td>
