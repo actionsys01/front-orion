@@ -296,7 +296,6 @@ export default function CadastrosDados() {
                       setAppData(newAppData);
                       // setRequestData(newAppData[i].chave_2)
                     }}
-                    // onFocus={() => getValidColumns()}
                   />
                 </td>
                 <td className={!columnData.chave_3?.trim() ? 'hideSeek' : ''}>
@@ -309,7 +308,6 @@ export default function CadastrosDados() {
                       setAppData(newAppData);
                       // setRequestData(newAppData[i])
                     }}
-                    // onFocus={() => getValidColumns()}
                   />
                 </td>
                 <td className={!columnData.chave_4?.trim() ? 'hideSeek' : ''}>
@@ -322,7 +320,6 @@ export default function CadastrosDados() {
                       setAppData(newAppData);
                       // setRequestData(newAppData[i])
                     }}
-                    // onFocus={() => getValidColumns()}
                   />
                 </td>
                 <td className={!columnData.chave_5?.trim() ? 'hideSeek' : ''}>
@@ -519,7 +516,6 @@ export default function CadastrosDados() {
                       newAppData[i].valor_number_3 = Number(e.target.value);
                       setAppData(newAppData);
                     }}
-                    onFocus={() => getValidColumns()}
                   />
                 </td>
                 <td
