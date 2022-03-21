@@ -14,7 +14,7 @@ export const PageStyles = styled.div`
 
   label {
     padding: 0 0.5rem;
-    font-weight: bold;
+    font-weight: 400;
   }
   input,
   label {
@@ -244,6 +244,58 @@ export const ImageBoxStyle = styled.div`
   svg {
     height: 80px;
     width: 80px;
+  }
+
+  img {
+    object-fit: contain;
+    /* border-radius: 50%; */
+    box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.2);
+    width: 165px;
+    height: auto;
+    cursor: pointer;
+  }
+`;
+
+export const UploadBtn = styled.div`
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  /* margin: 10px; */
+  row-gap: calc(0 * 16pt);
+  justify-content: center;
+  align-items: center;
+
+  div {
+    box-sizing: border-box;
+    display: flex;
+    padding: 0 1.25rem;
+    height: 2rem;
+    min-width: 13.375rem;
+    width: initial;
+    border-radius: 5px;
+    font-weight: 400;
+    font-size: 0.875rem;
+    user-select: none;
+    outline: none;
+    text-transform: capitalize;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    white-space: nowrap;
+    transition: background-color 200ms ease 0ms, box-shadow 200ms ease 0ms,
+      border 200ms ease 0ms, color 200ms ease 0ms;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    background-color: #0dd0b3;
+    border: 1px solid #0dd0b3;
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: none;
+
+    input {
+      display: none;
+    }
   }
 `;
 
