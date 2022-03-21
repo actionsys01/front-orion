@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import BotaoVoltar from '@components/BotaoVoltar';
 import Loader from '@components/Loader';
 import { BottomConfirmBtn } from '@styles/buttons';
+import * as request from '@services/produtos';
 import {
   MainPage,
   AdvanceBtn,
@@ -19,16 +20,18 @@ import {
   TextDiviser,
   TripleSelectLine,
 } from '../style';
+import { IProdutos } from '@services/produtos/types';
 
 export default function PesosMedidas() {
   const [, setToast] = useToasts();
-  const [session] = useSession();
   const router = useRouter();
+  const [session] = useSession();
   const [register, setRegister] = useState({
-    ...router.query,
-    um_peso: 'Kg',
-    um_volume: 'm2',
-  } as any);
+    um_peso: 'KG',
+    um_volume: 'm3',
+    id: Number(router.query.id),
+    sku: Number(router.query.sku),
+  } as IProdutos);
 
   console.log('router.query 2/5', router.query);
 
@@ -38,6 +41,35 @@ export default function PesosMedidas() {
       ...register,
       [evt.target.id]: value,
     });
+  }
+
+  async function updateProduct() {
+    if (!register.um_primaria) {
+      setToast({
+        text: 'Favor preencher os campos obrigatórios.',
+        type: 'warning',
+      });
+      return;
+    }
+    try {
+      await request.UpdateProduct({
+        id: register.id,
+        id_empresa: Number(session?.usuario.empresa.id),
+        sku: register.sku,
+        user_update: Number(session?.usuario.id),
+        ...register,
+      });
+      router.push({
+        pathname: '/produtos/informacoes-fiscais',
+        query: { id: register.id, sku: register.sku },
+      });
+    } catch (error) {
+      console.log(error);
+      setToast({
+        text: 'Houve um problema. Por favor tente novamente',
+        type: 'warning',
+      });
+    }
   }
 
   useEffect(() => {
@@ -84,10 +116,10 @@ export default function PesosMedidas() {
             />
           </div>
           <div>
-            <select id="um_volume" onChange={inputHandler} defaultValue="m2">
-              <option value="m2">m2</option>
+            <select id="um_volume" onChange={inputHandler} defaultValue="m3">
               <option value="m3">m3</option>
-              <option value="un">un</option>
+              <option value="litros">Litros</option>
+              <option value="un">Un</option>
             </select>
           </div>
         </UMStyles>
@@ -124,16 +156,7 @@ export default function PesosMedidas() {
         </UMStyles>
       </MainPage>
       <BottomConfirmBtn style={{ justifyContent: 'flex-end' }}>
-        <AdvanceBtn
-          onClick={() =>
-            router.push({
-              pathname: '/produtos/informacoes-fiscais',
-              query: register,
-            })
-          }
-        >
-          Avançar
-        </AdvanceBtn>
+        <AdvanceBtn onClick={() => updateProduct()}>Avançar</AdvanceBtn>
       </BottomConfirmBtn>
     </>
   );

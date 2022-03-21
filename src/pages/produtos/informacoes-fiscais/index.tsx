@@ -11,21 +11,19 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import BotaoVoltar from '@components/BotaoVoltar';
 import Loader from '@components/Loader';
+import * as request from '@services/produtos';
 import { BottomConfirmBtn } from '@styles/buttons';
-import {
-  MainPage,
-  AdvanceBtn,
-  UMStyles,
-  TextDiviser,
-  TripleSelectLine,
-} from '../style';
-
+import { MainPage, AdvanceBtn, UMStyles } from '../style';
+import { IProdutos } from '@services/produtos/types';
 export default function InformacoesFiscais() {
   const [, setToast] = useToasts();
   const [session] = useSession();
   const router = useRouter();
 
-  const [register, setRegister] = useState({ ...router.query });
+  const [register, setRegister] = useState({
+    id: Number(router.query.id),
+    sku: Number(router.query.sku),
+  } as IProdutos);
 
   function inputHandler(evt: any) {
     const value = evt.target.value;
@@ -33,6 +31,28 @@ export default function InformacoesFiscais() {
       ...register,
       [evt.target.id]: value,
     });
+  }
+
+  async function updateProduct() {
+    try {
+      await request.UpdateProduct({
+        id: register.id,
+        id_empresa: Number(session?.usuario.empresa.id),
+        sku: register.sku,
+        user_update: Number(session?.usuario.id),
+        ...register,
+      });
+      router.push({
+        pathname: '/produtos/imagem',
+        query: { id: register.id, sku: register.sku },
+      });
+    } catch (error) {
+      console.log(error);
+      setToast({
+        text: 'Houve um problema. Por favor tente novamente',
+        type: 'warning',
+      });
+    }
   }
 
   console.log('router.query 3/5', router.query);
@@ -75,16 +95,7 @@ export default function InformacoesFiscais() {
           height: '50%',
         }}
       >
-        <AdvanceBtn
-          onClick={() =>
-            router.push({
-              pathname: '/produtos/imagem',
-              query: register,
-            })
-          }
-        >
-          Avançar
-        </AdvanceBtn>
+        <AdvanceBtn onClick={() => updateProduct()}>Avançar</AdvanceBtn>
       </BottomConfirmBtn>
     </>
   );

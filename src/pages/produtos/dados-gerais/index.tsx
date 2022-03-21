@@ -24,15 +24,17 @@ import {
 import { Checkbox } from '@material-ui/core';
 import { BottomConfirmBtn } from '@styles/buttons';
 import BotaoVoltar from '@components/BotaoVoltar';
-
+import * as request from '@services/produtos';
+import { IProdutos } from '@services/produtos/types';
 export default function DadosGeraisProdutos() {
   const router = useRouter();
+  const [session] = useSession();
+  const [, setToast] = useToasts();
   const [register, setRegister] = useState({
     empacotado: false,
     controle_rastro: false,
-  });
-
-  console.log('router.query 2/5', router.query);
+    sku: 0,
+  } as IProdutos);
 
   function inputHandler(evt: any) {
     const value = evt.target.value;
@@ -40,6 +42,41 @@ export default function DadosGeraisProdutos() {
       ...register,
       [evt.target.id]: value,
     });
+  }
+
+  async function createProduct() {
+    if (
+      !register.desc_produto ||
+      !register.cod_produto ||
+      !register.sku ||
+      !register.comprado_produzido
+    ) {
+      setToast({
+        text: 'Favor preencher os campos obrigatórios.',
+        type: 'warning',
+      });
+      return;
+    }
+    try {
+      const response = await request.CreateProduct({
+        id_empresa: Number(session?.usuario.empresa.id),
+        sku: Number(register.sku),
+        user_insert: Number(session?.usuario.id),
+        // cod_produto: register.cod_produto,
+        ...register,
+      });
+      // console.log('response', response.data.id, response.data.sku);
+      router.push({
+        pathname: '/produtos/pesos-medidas',
+        query: { id: response.data.id, sku: response.data.sku },
+      });
+    } catch (error) {
+      console.log(error);
+      setToast({
+        text: 'Houve um problema. Por favor tente novamente',
+        type: 'warning',
+      });
+    }
   }
 
   useEffect(() => {
@@ -66,7 +103,12 @@ export default function DadosGeraisProdutos() {
               </div>
               <div>
                 <label htmlFor="sku">SKU</label>
-                <InputTriple id="sku" onChange={inputHandler} />
+                <InputTriple
+                  id="sku"
+                  onChange={e =>
+                    setRegister({ ...register, sku: Number(e.target.value) })
+                  }
+                />
               </div>
               <div>
                 <label htmlFor="ean">EAN</label>
@@ -116,11 +158,9 @@ export default function DadosGeraisProdutos() {
               <label htmlFor="origem">Origem</label>
               <select id="origem" defaultValue="" onChange={inputHandler}>
                 <option defaultValue=""></option>
-                <option value="Nacional">Nacional</option>
-                <option value="Importado">Importado</option>
-                <option value="Mercado Nacional">
-                  Comprado no mercado Nacional
-                </option>
+                <option value="BR">Nacional</option>
+                <option value="Imp">Importado</option>
+                <option value="Nac">Comprado no mercado Nacional</option>
               </select>
             </div>
             <div>
@@ -140,12 +180,12 @@ export default function DadosGeraisProdutos() {
                 onChange={inputHandler}
               >
                 <FormControlLabel
-                  value="Comprado"
+                  value="C"
                   control={<Radio id="comprado_produzido" />}
                   label="Comprado"
                 />
                 <FormControlLabel
-                  value="Produzido"
+                  value="P"
                   control={<Radio id="comprado_produzido" />}
                   label="Produzido"
                 />
@@ -164,16 +204,7 @@ export default function DadosGeraisProdutos() {
         </BoxStyle>
       </MainPage>
       <BottomConfirmBtn style={{ justifyContent: 'flex-end' }}>
-        <AdvanceBtn
-          onClick={() =>
-            router.push({
-              pathname: '/produtos/pesos-medidas',
-              query: register,
-            })
-          }
-        >
-          Avançar
-        </AdvanceBtn>
+        <AdvanceBtn onClick={() => createProduct()}>Avançar</AdvanceBtn>
       </BottomConfirmBtn>
     </>
   );

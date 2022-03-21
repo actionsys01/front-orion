@@ -1,15 +1,8 @@
-import React, {
-  useState,
-  useMemo,
-  useEffect,
-  useCallback,
-  useRef,
-} from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/client';
-import { useToasts } from '@geist-ui/react';
+import { useToasts, Dot, Tooltip } from '@geist-ui/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import BotaoVoltar from '@components/BotaoVoltar';
 import { Pages } from '@styles/pages';
 import Pagination from '@material-ui/lab/Pagination';
 import { Plus, Filter } from '@geist-ui/react-icons';
@@ -19,6 +12,7 @@ import { IProdutos } from '@services/produtos/types';
 import * as request from '@services/produtos';
 import Loader from '@components/Loader';
 import Popover from '@components/Popover';
+import DeleteModal from './modal';
 
 export default function Produtos() {
   const [page, setPage] = useState(1);
@@ -29,6 +23,8 @@ export default function Produtos() {
   const [loading, setLoading] = useState(true);
 
   const [data, setData] = useState<IProdutos[]>([]);
+  const [visibleModal, setVisibleModal] = useState(false);
+  const [productId, setProductId] = useState(0);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
@@ -60,6 +56,13 @@ export default function Produtos() {
       data.forEach((item, i) => {
         allData.push({
           ...item,
+          status_rastro: (
+            <Tooltip
+              text={item.controle_rastro ? 'Possui Rastro' : 'Sem Rastro'}
+            >
+              <Dot type={item.controle_rastro ? 'success' : 'warning'} />
+            </Tooltip>
+          ),
           option: (
             <Popover
               num={i}
@@ -67,22 +70,34 @@ export default function Produtos() {
               content={[
                 {
                   optionName: 'Visualizar',
-                  onclick: () => 'Visualizar',
+                  onClick: () => {
+                    router.push({
+                      pathname: '/produtos-detalhes',
+                      query: { action: 'visualizar', id: item.id },
+                    });
+                  },
                   className: 'able',
                 },
                 {
                   optionName: 'Item/Filial',
-                  onclick: () => 'Item/Filial',
+                  onClick: () => 'Item/Filial',
                   className: 'able',
                 },
                 {
                   optionName: 'Editar',
-                  onclick: () => 'Editar',
+                  onClick: () => {
+                    router.push({
+                      pathname: '/produtos-detalhes',
+                      query: { action: 'editar', id: item.id },
+                    });
+                  },
                   className: 'able',
                 },
                 {
                   optionName: 'Excluir',
-                  onclick: () => 'Excluir',
+                  onClick: () => {
+                    setVisibleModal(true), setProductId(item.id);
+                  },
                   className: 'able',
                 },
               ]}
@@ -95,12 +110,24 @@ export default function Produtos() {
     return allData;
   }, [data]);
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <>
       <Head>
         <title>Orion | Produtos</title>
       </Head>
       <h2>Produtos</h2>
+      {visibleModal && (
+        <DeleteModal
+          setVisibleModal={setVisibleModal}
+          data={data}
+          setData={setData}
+          id={productId}
+        />
+      )}
       <BtnRow>
         <button>
           <span>
@@ -144,7 +171,7 @@ export default function Produtos() {
                 <td>{item.cod_produto}</td>
                 <td>{item.classe_contabil}</td>
                 <td>{item.origem}</td>
-                <td>{item.controle_rastro}</td>
+                <td>{item.status_rastro}</td>
                 <td>{item.ean}</td>
                 <td>{item.um_primaria}</td>
                 <td>{item.um_secundaria}</td>
@@ -157,7 +184,6 @@ export default function Produtos() {
           </tbody>
         </table>
       </TableGrid>
-
       <Pages>
         <Pagination
           onChange={handleChange}
