@@ -97,7 +97,7 @@ export interface IProdutos {
   um_primaria: string;
   um_secundaria: string;
   um_compras: string;
-  cnm: string;
+  ncm: string;
   fci: string;
   finalidade_compra: string;
   url_foto: string;
@@ -113,4 +113,5 @@ export interface IProdutos {
   cod_categoria_act_5: string;
   ativo: boolean;
   user_update: number;
+  [x: string] : any
 }
