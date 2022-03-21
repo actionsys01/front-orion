@@ -38,7 +38,7 @@ export interface IConfigData {
 export interface IDados {
   [x: string]: any;
   // [x: string]: any;
-  // id: number;
+  id: number;
   chave_1?: number;
   chave_2?: string;
   chave_3?: string;
