@@ -135,7 +135,7 @@ export default function Produtos() {
           </span>
           Filtrar
         </button>
-        <button onClick={() => router.push('/produtos/dados-gerais')}>
+        <button onClick={() => router.push('/cadastrar-produtos')}>
           <span>
             <Plus />
           </span>
