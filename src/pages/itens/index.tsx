@@ -6,13 +6,15 @@ import { useRouter } from 'next/router';
 import { Pages } from '@styles/pages';
 import Pagination from '@material-ui/lab/Pagination';
 import { Plus, Filter } from '@geist-ui/react-icons';
-import { BtnRow } from '@styles/buttons';
+import { AddBtn } from '@styles/buttons';
 import { TableGrid } from '@styles/tableStyle';
 import { IProdutos } from '@services/itens/types';
 import * as request from '@services/itens';
 import Loader from '@components/Loader';
 import Popover from '@components/Popover';
 import DeleteModal from './modal';
+import { useFiltro } from '@contexts/filtro-itens';
+import Filtro from '@components/Filtro-Itens/Filter-Modal';
 
 export default function Produtos() {
   const [page, setPage] = useState(1);
@@ -21,6 +23,8 @@ export default function Produtos() {
   const [session] = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+
+  const { itens } = useFiltro();
 
   const [data, setData] = useState<IProdutos[]>([]);
   const [visibleModal, setVisibleModal] = useState(false);
@@ -32,7 +36,7 @@ export default function Produtos() {
 
   const getProductsData = useCallback(async () => {
     try {
-      const response = await request.GetProductsPagination(page);
+      const response = await request.GetProductsPagination(page, itens);
       const data = response.data;
       setData(data.produtos);
       setLoading(false);
@@ -44,11 +48,11 @@ export default function Produtos() {
         type: 'warning',
       });
     }
-  }, [page]);
+  }, [page, itens]);
 
   useEffect(() => {
     getProductsData();
-  }, [page]);
+  }, [page, itens]);
 
   const gatheredData = useMemo(() => {
     const allData: IProdutos[] = [];
@@ -128,20 +132,15 @@ export default function Produtos() {
           id={productId}
         />
       )}
-      <BtnRow>
-        <button>
-          <span>
-            <Filter />
-          </span>
-          Filtrar
-        </button>
+      <Filtro data={itens} />
+      <AddBtn>
         <button onClick={() => router.push('/cadastrar-itens')}>
           <span>
             <Plus />
           </span>
           Adicionar
         </button>
-      </BtnRow>
+      </AddBtn>
       <TableGrid>
         <table>
           <thead>

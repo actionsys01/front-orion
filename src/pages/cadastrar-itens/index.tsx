@@ -70,10 +70,9 @@ export default function CadastrarProdutos() {
   return (
     <>
       <Head>
-        <title>Orion | Cadastrar Produtos</title>
+        <title>Orion | Cadastrar Itens</title>
       </Head>
-      <h2>Cadastro de Produtos</h2>
-      <h4></h4>
+      <h2>Cadastro de Itens</h2>
       {tab === 'DadosGerais' && (
         <DadosGeraisProdutos
           register={register}

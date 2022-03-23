@@ -56,6 +56,7 @@ const ImagemProduto = ({
       const response = await request.GetProductById(requestId);
       const dataImg = response.data.url_foto;
       setImage(dataImg);
+      dataImg != null && setShowImage(true);
     } catch (error) {
       console.log(error);
       setToast({
@@ -66,8 +67,12 @@ const ImagemProduto = ({
   }
 
   useEffect(() => {
-    getImage();
+    isPageBack.page_4 && getImage();
   }, []);
+
+  useEffect(() => {
+    console.log('showImage', showImage);
+  }, [showImage]);
 
   return (
     <>
