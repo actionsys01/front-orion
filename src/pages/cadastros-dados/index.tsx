@@ -18,6 +18,8 @@ import { CollumHide, IconBtn } from './style';
 import { appInitialValue } from '@utils/initial-values';
 import { format } from 'date-fns';
 import DeleteModal from './modal';
+import { useFiltro } from '@contexts/filtro-dados';
+import Filtro from '@components/Filtro-Dados/Filter-Modal';
 
 const initialValues = {
   chave_8: false,
@@ -45,11 +47,15 @@ export default function CadastrosDados() {
     desc_aplicacao: router?.query?.desc,
   });
 
+  const { dados } = useFiltro();
   // console.log('router.query', router.query)
 
   const getDadosCadastrosPages = useCallback(async () => {
     try {
-      const response = await request.GetConfigById(Number(router.query.id));
+      const response = await request.GetConfigById(
+        Number(router.query.id),
+        dados,
+      );
       const data = response.data;
       const pageData = paginate(response.data.cadastro_dados_id);
       setColumnData(data);
@@ -69,7 +75,7 @@ export default function CadastrosDados() {
         type: 'warning',
       });
     }
-  }, [page]);
+  }, [page, dados]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value - 1);
@@ -77,7 +83,7 @@ export default function CadastrosDados() {
 
   useEffect(() => {
     getDadosCadastrosPages();
-  }, [page]);
+  }, [page, dados]);
 
   async function saveChanges() {
     const newData = appData.filter(item => item.active);
@@ -164,13 +170,9 @@ export default function CadastrosDados() {
       </Head>
       <BotaoVoltar />
       <h2>{`Cadastro de ${router.query.app}`} </h2>
+      <Filtro data={dados} />
       <BtnRow>
-        <button>
-          <span>
-            <Filter />
-          </span>
-          Filtrar
-        </button>
+        <button></button>
         <button onClick={() => saveChanges()}>Salvar</button>
       </BtnRow>
       {visibleModal && (

@@ -46,8 +46,6 @@ export default function CadastroApps() {
     setPage(value - 1);
   };
 
-  console.log('session', session)
-
   const getCompanyTables = useCallback(async () => {
     try {
       const company_response = await companyRequest.getCompanyById(
