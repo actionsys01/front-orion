@@ -33,7 +33,7 @@ export default function CadastrarProdutos() {
   } as IProdutos);
 
   const [requestId, setRequestId] = useState(0);
-  const [dataId, setDataId] = useState(0);
+  const [codeId, setCodeId] = useState(0);
   const [isPageBack, setIsPageBack] = useState({ ...productsPageWayBack });
 
   async function getCompanyCategoryData() {
@@ -45,7 +45,7 @@ export default function CadastrarProdutos() {
       const categoryId = data
         .filter(item => item.cod_categoria === 'Geral')
         .map(i => i.id);
-      setDataId(categoryId);
+      setCodeId(categoryId);
     } catch (error) {
       console.log(error);
     }
@@ -113,12 +113,12 @@ export default function CadastrarProdutos() {
           setIsPageBack={setIsPageBack}
         />
       )}
-      {tab === 'CodigoCategoria' && dataId != 0 && (
+      {tab === 'CodigoCategoria' && codeId != 0 && (
         <CodigosCategoria
           register={register}
           setRegister={setRegister}
           requestId={requestId}
-          dataId={dataId}
+          codeId={codeId}
           setTab={setTab}
           isPageBack={isPageBack}
           setIsPageBack={setIsPageBack}

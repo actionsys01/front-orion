@@ -23,7 +23,7 @@ interface ICadastroProdutos {
   register: IProdutos;
   setRegister: Dispatch<SetStateAction<IProdutos>>;
   requestId: number;
-  dataId: number;
+  codeId: number;
   setTab: Dispatch<SetStateAction<string>>;
   isPageBack: IPageBack;
   setIsPageBack: Dispatch<SetStateAction<IPageBack>>;
@@ -36,6 +36,7 @@ const CodigosCategoria = ({
   setTab,
   isPageBack,
   setIsPageBack,
+  codeId,
 }: ICadastroProdutos) => {
   const [, setToast] = useToasts();
   const [session] = useSession();
@@ -50,7 +51,10 @@ const CodigosCategoria = ({
   const [itemId, setItemId] = useState('');
 
   async function getData() {
-    const response = await categoriesRequest.GetCategoryByCode(2, []);
+    const response = await categoriesRequest.GetCategoryByCode(
+      Number(codeId),
+      [],
+    );
     const data = response.data;
     const ordered = data.sort(function (a, b) {
       return a.id - b.id;
@@ -105,15 +109,15 @@ const CodigosCategoria = ({
     showData();
   }, [itemId]);
 
-  useEffect(() => {
-    console.log('appValues', appValues);
-    console.log('itemId', itemId);
-    console.log('register', register);
-  }, [appValues, itemId, register, appIds]);
+  // useEffect(() => {
+  //   console.log('appValues', appValues);
+  //   console.log('itemId', itemId);
+  //   console.log('register', register);
+  // }, [appValues, itemId, register, appIds]);
 
-  useEffect(() => {
-    console.log('appIds', appIds);
-  }, [appIds]);
+  // useEffect(() => {
+  //   console.log('appIds', appIds);
+  // }, [appIds]);
 
   return (
     <>
