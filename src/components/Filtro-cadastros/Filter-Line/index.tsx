@@ -8,7 +8,7 @@ import React, {
 import { useFiltro } from '@contexts/filtro';
 import { BotaoRemover } from '@styles/Filtro-Styles';
 import { FormHandles } from '@unform/core';
-import colunas_categorias from '@utils/filtros/colunas_categorias';
+import colunas_categorias from '@utils/filtros/colunas/colunas_categorias';
 
 import {
   Container,
@@ -17,7 +17,7 @@ import {
   CustomDateMask,
   InputCustomizado,
 } from '../style';
-import compareSimple from '@utils/compare-simple';
+import compareSimple from '@utils/filtros/compare/compare-simple';
 
 interface FilterLineProps {
   index: number;

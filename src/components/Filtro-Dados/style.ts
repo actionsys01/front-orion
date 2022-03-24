@@ -5,6 +5,7 @@ import Select from './Filter-Components/Select';
 import MaskedInputDate from '@components/Masked-Input-Date';
 import { Scope } from '@unform/core';
 import SelectCompare from './Filter-Components/Select-Compare';
+import { BlockList } from 'net';
 
 
 export const Container = styled(Scope)``;
@@ -76,6 +77,7 @@ export const SelectCustomizado = styled(Select).attrs(props => ({
       fontSize: 12,
       textAlign: 'left',
       color: '#fff',
+      height: 'fit-content',
     }),
     control: provided => ({
       borderColor: props.theme.palette.foreground,

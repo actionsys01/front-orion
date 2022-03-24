@@ -16,11 +16,10 @@ import {
   CustomDateMask,
   InputCustomizado,
 } from '../style';
-import compareSimple from '@utils/compare-simple';
+import { compareDouble, compareEqual } from '@utils/filtros';
 
 interface FilterLineProps {
   index: number;
-  // abaAtual: string;
   formRef: MutableRefObject<FormHandles>;
   setFiltros: Dispatch<SetStateAction<string[]>>;
   filtros: string[];
@@ -28,18 +27,17 @@ interface FilterLineProps {
 
 const FilterLine: React.FC<FilterLineProps> = ({
   index,
-  // abaAtual,
   formRef,
   setFiltros,
   filtros,
 }) => {
   const { colunas_dados, scopeIgnition } = useFiltro();
 
-  // const [getSelectedValue, setGetSelectedValue] = useState('');
+  const [getSelectedValue, setGetSelectedValue] = useState('');
 
-  // const handleChange = e => {
-  //   setGetSelectedValue(e?.value);
-  // };
+  const handleChange = e => {
+    setGetSelectedValue(e?.value);
+  };
 
   function remover(index: number) {
     const data = formRef.current?.getData() as any;
@@ -63,12 +61,32 @@ const FilterLine: React.FC<FilterLineProps> = ({
       <SelectCustomizado
         name="campo"
         options={colunas_dados}
-        // onChange={handleChange}
+        onChange={handleChange}
       />
       <SelectCustom
         name="compare"
         defaultValue={pattern}
-        options={compareSimple}
+        options={
+          getSelectedValue === 'chave_1' ||
+          getSelectedValue === 'chave_2' ||
+          getSelectedValue === 'chave_3' ||
+          getSelectedValue === 'chave_4' ||
+          getSelectedValue === 'chave_5' ||
+          getSelectedValue === 'chave_6' ||
+          getSelectedValue === 'chave_7' ||
+          getSelectedValue === 'valor_string_1' ||
+          getSelectedValue === 'valor_string_2' ||
+          getSelectedValue === 'valor_string_3' ||
+          getSelectedValue === 'valor_string_4' ||
+          getSelectedValue === 'valor_string_5' ||
+          getSelectedValue === 'valor_string_6' ||
+          getSelectedValue === 'valor_string_7' ||
+          getSelectedValue === 'valor_string_8' ||
+          getSelectedValue === 'valor_string_9' ||
+          getSelectedValue === 'valor_string_10'
+            ? compareDouble
+            : compareEqual
+        }
       />
       <InputCustomizado name="valor" placeholder="valor" type="select" />
       <BotaoRemover size={15} onClick={() => remover(index)} />
