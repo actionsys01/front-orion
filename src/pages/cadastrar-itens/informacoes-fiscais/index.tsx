@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Loader from '@components/Loader';
 import * as request from '@services/itens';
 import { BottomConfirmBtn } from '@styles/buttons';
-import { MainPage, AdvanceBtn, UMStyles } from '../../itens/style';
+import { MainPage, AdvanceBtn, UMStyles } from '../style';
 import { IProdutos } from '@services/itens/types';
 import { ArrowLeftCircle } from '@geist-ui/react-icons';
 import { IPageBack } from '../utils';

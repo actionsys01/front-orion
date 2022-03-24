@@ -13,7 +13,7 @@ import {
   UMStyles,
   TextDiviser,
   TripleSelectLine,
-} from '../../itens/style';
+} from '../style';
 import { IProdutos } from '@services/itens/types';
 
 interface ICadastroProdutos {
@@ -99,7 +99,7 @@ const PesosMedidas = ({
             <select
               id="um_peso"
               defaultValue="KG"
-              value={register.um_peso && register.um_peso}
+              value={register?.um_peso && register?.um_peso}
               onChange={inputHandler}
             >
               <option value="Kg">Kg</option>
@@ -112,7 +112,7 @@ const PesosMedidas = ({
             <input
               type="text"
               id="volume"
-              value={register.volume?.toString()}
+              value={register?.volume?.toString()}
               onChange={inputHandler}
             />
           </div>

@@ -32,7 +32,7 @@ interface IDetails {
   setRegister: Dispatch<SetStateAction<IProdutos>>;
 }
 
-export const DadosGeraisDetalhes = ({ register, setRegister }: IDetails) => {
+const DadosGeraisDetalhes = ({ register, setRegister }: IDetails) => {
   const router = useRouter();
   const [session] = useSession();
   const [, setToast] = useToasts();
@@ -253,3 +253,5 @@ export const DadosGeraisDetalhes = ({ register, setRegister }: IDetails) => {
     </>
   );
 };
+
+export default DadosGeraisDetalhes;

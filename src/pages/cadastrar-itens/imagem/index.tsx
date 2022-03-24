@@ -6,12 +6,7 @@ import Loader from '@components/Loader';
 import { IPageBack } from '../utils';
 import { ArrowLeftCircle } from '@geist-ui/react-icons';
 import { BottomConfirmBtn } from '@styles/buttons';
-import {
-  MainPage,
-  AdvanceBtn,
-  ImageBoxStyle,
-  UploadBtn,
-} from '../../itens/style';
+import { MainPage, AdvanceBtn, ImageBoxStyle, UploadBtn } from '../style';
 
 import * as request from '@services/itens';
 import { IProdutos } from '@services/itens/types';
@@ -67,12 +62,12 @@ const ImagemProduto = ({
   }
 
   useEffect(() => {
-    isPageBack.page_4 && getImage();
+    isPageBack?.page_4 && getImage();
   }, []);
 
-  useEffect(() => {
-    console.log('showImage', showImage);
-  }, [showImage]);
+  // useEffect(() => {
+  //   console.log('showImage', showImage);
+  // }, [showImage]);
 
   return (
     <>
@@ -86,19 +81,19 @@ const ImagemProduto = ({
       />
       <MainPage>
         <ImageBoxStyle>
-          {!showImage && !isPageBack.page_4 ? (
+          {!showImage && !isPageBack?.page_4 ? (
             <UploadCloud />
-          ) : isPageBack.page_4 ? (
+          ) : isPageBack?.page_4 ? (
             <img src={image} />
           ) : (
             <img src={image} />
           )}
-          {!showImage && !isPageBack.page_4 ? (
+          {!showImage && !isPageBack?.page_4 ? (
             <p>Nenhum arquivo selecionado</p>
           ) : (
             ''
           )}
-          {!showImage && !isPageBack.page_4 ? (
+          {!showImage && !isPageBack?.page_4 ? (
             <UploadBtn>
               <label htmlFor="logo">
                 <div>

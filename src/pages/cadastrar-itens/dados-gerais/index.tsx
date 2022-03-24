@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { useSession } from 'next-auth/client';
 import { useToasts } from '@geist-ui/react';
 import Head from 'next/head';
@@ -14,7 +14,7 @@ import {
   RastroCheckBoxStyle,
   SelectLineStyles,
   AdvanceBtn,
-} from '../../itens/style';
+} from '../style';
 import {
   Radio,
   RadioGroup,
@@ -105,6 +105,11 @@ const DadosGeraisProdutos = ({
       });
     }
   }
+
+  // useEffect(() => {
+  //   console.log('register', register)
+  // }, [register])
+
 
   return (
     <>
@@ -238,21 +243,35 @@ const DadosGeraisProdutos = ({
             </FormControl>
           </div>
           <div className="checkbox-line">
-            <label htmlFor="empacotado">Item Empacotado</label>
-            <Checkbox
-              id="empacotado"
-              checked={register?.empacotado === true}
-              onChange={() =>
-                setRegister({ ...register, empacotado: !register.empacotado })
-              }
-            />
+            <div>
+              <label htmlFor="empacotado">Item Empacotado</label>
+              <Checkbox
+                id="empacotado"
+                checked={register?.empacotado === true}
+                onChange={() =>
+                  setRegister({ ...register, empacotado: !register.empacotado })
+                }
+              />
+            </div>
+            <div>
+              <label htmlFor="empacotado" style={{ marginRight: '54px' }}>
+                Estoque
+              </label>
+              <Checkbox
+                id="empacotado"
+                checked={register?.estoque === true}
+                onChange={() =>
+                  setRegister({ ...register, estoque: !register.estoque })
+                }
+              />
+            </div>
           </div>
         </BoxStyle>
       </MainPage>
       <BottomConfirmBtn style={{ justifyContent: 'flex-end' }}>
         <AdvanceBtn
           onClick={
-            !isPageBack.page_1 ? () => createProduct() : () => updateProduct()
+            !isPageBack?.page_1 ? () => createProduct() : () => updateProduct()
           }
         >
           Avançar
