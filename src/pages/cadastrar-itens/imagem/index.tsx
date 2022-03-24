@@ -62,12 +62,12 @@ const ImagemProduto = ({
   }
 
   useEffect(() => {
-    isPageBack.page_4 && getImage();
+    isPageBack?.page_4 && getImage();
   }, []);
 
-  useEffect(() => {
-    console.log('showImage', showImage);
-  }, [showImage]);
+  // useEffect(() => {
+  //   console.log('showImage', showImage);
+  // }, [showImage]);
 
   return (
     <>
@@ -81,19 +81,19 @@ const ImagemProduto = ({
       />
       <MainPage>
         <ImageBoxStyle>
-          {!showImage && !isPageBack.page_4 ? (
+          {!showImage && !isPageBack?.page_4 ? (
             <UploadCloud />
-          ) : isPageBack.page_4 ? (
+          ) : isPageBack?.page_4 ? (
             <img src={image} />
           ) : (
             <img src={image} />
           )}
-          {!showImage && !isPageBack.page_4 ? (
+          {!showImage && !isPageBack?.page_4 ? (
             <p>Nenhum arquivo selecionado</p>
           ) : (
             ''
           )}
-          {!showImage && !isPageBack.page_4 ? (
+          {!showImage && !isPageBack?.page_4 ? (
             <UploadBtn>
               <label htmlFor="logo">
                 <div>

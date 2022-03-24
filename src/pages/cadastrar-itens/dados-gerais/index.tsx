@@ -106,9 +106,9 @@ const DadosGeraisProdutos = ({
     }
   }
 
-  useEffect(() => {
-    console.log('register', register)
-  }, [register])
+  // useEffect(() => {
+  //   console.log('register', register)
+  // }, [register])
 
 
   return (
@@ -271,7 +271,7 @@ const DadosGeraisProdutos = ({
       <BottomConfirmBtn style={{ justifyContent: 'flex-end' }}>
         <AdvanceBtn
           onClick={
-            !isPageBack.page_1 ? () => createProduct() : () => updateProduct()
+            !isPageBack?.page_1 ? () => createProduct() : () => updateProduct()
           }
         >
           Avançar
