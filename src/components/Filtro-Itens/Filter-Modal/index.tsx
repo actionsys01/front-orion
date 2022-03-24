@@ -14,13 +14,13 @@ import {
 import FilterLine from '../Filter-Line';
 
 interface FormData {
-  filtros: [{ campo: string; valor: string /* ; compare: string */ }];
+  filtros: [{ campo: string; valor: string; compare: string }];
 }
 
 interface IFilter {
   campo: string;
   valor: string | number;
-  // compare: string;
+  compare: string;
 }
 interface IProps {
   // abaAtual: 'nfe' | 'cte' | 'nfse';
