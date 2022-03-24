@@ -55,17 +55,17 @@ export default function CadastrarProdutos() {
     getCompanyCategoryData();
   }, []);
 
-  useEffect(() => {
-    console.log('register', isPageBack);
-  }, [isPageBack]);
+  // useEffect(() => {
+  //   console.log('register', isPageBack);
+  // }, [isPageBack]);
 
-  useEffect(() => {
-    console.log('requestId', requestId);
-  }, [requestId]);
+  // useEffect(() => {
+  //   console.log('requestId', requestId);
+  // }, [requestId]);
 
-  useEffect(() => {
-    console.log('dataId', dataId);
-  }, [dataId]);
+  // useEffect(() => {
+  //   console.log('dataId', dataId);
+  // }, [dataId]);
 
   return (
     <>

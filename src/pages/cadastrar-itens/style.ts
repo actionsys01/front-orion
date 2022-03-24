@@ -111,9 +111,11 @@ export const BoxStyle = styled.div`
     }
   }
   .checkbox-line {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+
     label {
       font-size: 12px;
     }
