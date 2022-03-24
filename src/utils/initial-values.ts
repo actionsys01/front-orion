@@ -1,6 +1,7 @@
 export const appInitialValue = {
   // id_empresa: 0,
   // aplicacao: null,
+  id: null,
   chave_1: 0,
   chave_2: '---',
   chave_3: '---',
