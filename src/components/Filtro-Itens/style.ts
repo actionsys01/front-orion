@@ -4,8 +4,8 @@ import Input from './Filter-Components/Input-Basic';
 import Select from './Filter-Components/Select';
 import MaskedInputDate from '@components/Masked-Input-Date';
 import { Scope } from '@unform/core';
-// import SelectCompare from './Filter-Components/Select-Compare';
-
+import SelectCompare from './Filter-Components/Select-Compare';
+import SelectStatus from './Filter-Components/Select-Status';
 
 export const Container = styled(Scope)``;
 
@@ -21,7 +21,7 @@ export const Modal = styled.div<IModal>`
   transform: translate(-50%, -50%);
   height: 500px;
   max-height: 500px;
-  width: 385px;
+  width: 455px;
   max-width: 100%;
   display: ${({ visivel }) => (visivel ? 'block' : 'none')};
   border-radius: 5px;
@@ -43,7 +43,7 @@ export const ContainerFiltro = styled.div`
   display: grid;
   gap: 7px;
   margin-top: 0.5rem;
-  grid-template-columns: 145px 160px 20px;
+  grid-template-columns: 145px 90px 160px 20px;
   justify-content: center;
   align-items: center;
   justify-content: center;
@@ -165,73 +165,139 @@ export const BotaoRemover = styled(X)`
   cursor: pointer;
 `;
 
-// export const SelectCustom = styled(SelectCompare).attrs(props => ({
-//   styles: {
-//     menu: provided => ({
-//       ...provided,
-//       backgroundColor: '#fff',
-//       fontSize: 9,
-//       // whiteSpace: 'nowrap',
-//       textAlign: 'center',
-//       color: '#1C496A',
-//     }),
-//     control: () => ({
-//       borderColor: props.theme.palette.foreground,
-//       '&:hover': {
-//         borderColor: props.theme.palette.foreground,
-//       },
-//       border: `1px solid ${props.theme.palette.foreground}`,
-//       boxShadow: 'none',
-//       backgroundColor: '#fff',
-//       fontSize: 12,
-//       height: 28,
-//       display: 'flex',
-//       borderRadius: 5,
-//       cursor: 'pointer',
-//       color: '#1C496A',
-//     }),
+export const SelectCustom = styled(SelectCompare).attrs(props => ({
+  styles: {
+    menu: provided => ({
+      ...provided,
+      backgroundColor: '#fff',
+      fontSize: 9,
+      // whiteSpace: 'nowrap',
+      textAlign: 'center',
+      color: '#1C496A',
+    }),
+    control: () => ({
+      borderColor: props.theme.palette.foreground,
+      '&:hover': {
+        borderColor: props.theme.palette.foreground,
+      },
+      border: `1px solid ${props.theme.palette.foreground}`,
+      boxShadow: 'none',
+      backgroundColor: '#fff',
+      fontSize: 12,
+      height: 28,
+      display: 'flex',
+      borderRadius: 5,
+      cursor: 'pointer',
+      color: '#1C496A',
+    }),
 
-//     placeholder: provided => ({
-//       ...provided,
-//       color: '#1C496A',
-//       fontSize: 12,
-//     }),
-//     option: provided => ({
-//       ...provided,
-//       zIndex: 1010,
-//       cursor: 'pointer',
-//       color: '#1C496A',
-//       backgroundColor: '#fff',
-//       '&:hover': {
-//         backgroundColor: '#1C496A',
-//         color: '#fff',
-//       },
-//     }),
-//     input: provided => ({
-//       ...provided,
-//       color: '#1C496A',
-//     }),
+    placeholder: provided => ({
+      ...provided,
+      color: '#1C496A',
+      fontSize: 12,
+    }),
+    option: provided => ({
+      ...provided,
+      zIndex: 1010,
+      cursor: 'pointer',
+      color: '#1C496A',
+      backgroundColor: '#fff',
+      '&:hover': {
+        backgroundColor: '#1C496A',
+        color: '#fff',
+      },
+    }),
+    input: provided => ({
+      ...provided,
+      color: '#1C496A',
+    }),
 
-//     dropdownIndicator: provided => ({
-//       ...provided,
-//       color: '#1C496A',
-//       '&:hover': {
-//         color: '#1C496A',
-//       },
-//     }),
-//     singleValue: provided => ({
-//       ...provided,
-//       color: '#1C496A',
-//     }),
-//   },
-//   isSearchable: false,
-//   noOptionsMessage: () => 'Nenhum registro',
-//   name: props.name,
-//   options: props.options,
-//   components: {
-//     IndicatorSeparator: () => null,
-//   },
-//   // defaultValue: props.options[0],
-// }))``;
+    dropdownIndicator: provided => ({
+      ...provided,
+      color: '#1C496A',
+      '&:hover': {
+        color: '#1C496A',
+      },
+    }),
+    singleValue: provided => ({
+      ...provided,
+      color: '#1C496A',
+    }),
+  },
+  isSearchable: false,
+  noOptionsMessage: () => 'Nenhum registro',
+  name: props.name,
+  options: props.options,
+  components: {
+    IndicatorSeparator: () => null,
+  },
+  // defaultValue: props.options[0],
+}))``;
 
+export const SelectStatusStyle = styled(SelectStatus).attrs(props => ({
+  styles: {
+    menu: provided => ({
+      ...provided,
+      backgroundColor: '#1C496A',
+      fontSize: 12,
+      textAlign: 'left',
+      color: '#fff',
+    }),
+    control: () => ({
+      borderColor: props.theme.palette.foreground,
+      '&:hover': {
+        borderColor: props.theme.palette.foreground,
+      },
+      border: `1px solid ${props.theme.palette.foreground}`,
+      boxShadow: 'none',
+      backgroundColor: '#1C496A',
+      fontSize: 12,
+      height: 28,
+      display: 'flex',
+      borderRadius: 5,
+      cursor: 'pointer',
+      color: '#fff',
+    }),
 
+    placeholder: provided => ({
+      ...provided,
+      color: '#fff',
+      fontSize: 12,
+    }),
+    option: provided => ({
+      ...provided,
+      zIndex: 1010,
+      cursor: 'pointer',
+      color: '#fff',
+      backgroundColor: '#1C496A',
+      '&:hover': {
+        backgroundColor: '#fff',
+        color: '#1C496A',
+      },
+    }),
+    input: provided => ({
+      ...provided,
+      color: '#fff',
+    }),
+
+    dropdownIndicator: provided => ({
+      ...provided,
+      color: '#fff',
+      '&:hover': {
+        color: '#fff',
+      },
+    }),
+    singleValue: provided => ({
+      ...provided,
+      color: '#fff',
+    }),
+  },
+  isSearchable: false,
+  noOptionsMessage: () => 'Nenhum registro',
+  name: props.name,
+  options: props.options,
+  components: {
+    IndicatorSeparator: () => null,
+  },
+  // defaultValue: props.options[0],
+}))``;
