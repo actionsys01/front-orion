@@ -47,6 +47,7 @@ export default function Select({ name, options, ...rest }: Props) {
       classNamePrefix="react-select"
       options={options}
       {...rest}
+      // menuIsOpen={true}
     />
   );
 }
