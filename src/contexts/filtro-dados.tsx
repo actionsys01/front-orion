@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useContext, useState } from 'react';
 import { createContext } from 'react';
-import { InitalDados, ILabels } from '@utils/filtros/colunas_dados';
+import { InitalDados, ILabels } from '@utils/filtros/colunas/colunas_dados';
 // import colunas_dados from '@components/Filtro-Dados'
 import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react';
 import { IDados } from '@services/cadastros/types';
@@ -25,6 +25,7 @@ interface IFilter {
   scopeIgnition(filtro: IUnformCompare[]): IUnformCompare[];
   dataLabels: ILabels;
   colunas_dados: ILabelProps[];
+  getData: (configId: number) => Promise<void>;
 }
 
 interface IFiltroProps {
@@ -74,7 +75,7 @@ export default function FiltroContextProvider({ children }: IFiltroProps) {
     try {
       const response = await request.GetConfigById(configId, []);
       const data = response.data;
-      console.log('data', data);
+      // console.log('data', data);
       setDataLabels({
         ...dataLabels,
         chave_1: data.chave_1,
@@ -140,17 +141,17 @@ export default function FiltroContextProvider({ children }: IFiltroProps) {
     localStorage.setItem('@orion:dados', JSON.stringify([]));
   }
 
-  useEffect(() => {
-    getData(11);
-  }, []);
+  // useEffect(() => {
+  //   getData(11);
+  // }, []);
 
-  useEffect(() => {
-    console.log('dados', dados);
-  }, [dados]);
+  // useEffect(() => {
+  //   console.log('dados', dados);
+  // }, [dados]);
 
-  useEffect(() => {
-    console.log('labels', dataLabels);
-  }, [dataLabels]);
+  // useEffect(() => {
+  //   console.log('labels', dataLabels);
+  // }, [dataLabels]);
 
   return (
     <FiltroDadosContext.Provider
@@ -161,6 +162,7 @@ export default function FiltroContextProvider({ children }: IFiltroProps) {
         scopeIgnition,
         dataLabels,
         colunas_dados,
+        getData,
       }}
     >
       {children}

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useContext, useState } from 'react';
 import { createContext } from 'react';
-import colunas_itens from '@utils/filtros/colunas_itens';
+import colunas_itens from '@utils/filtros/colunas/colunas_itens';
 import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react';
 
 interface IUnformCompare {
