@@ -15,7 +15,7 @@ import { IConfigData, IDados, IGatheredDados } from '@services/cadastros/types';
 import {
   ModalStyle,
   TableModalStyle,
-} from '@pages/cadastrar-produtos/codigos-categoria/modal/style';
+} from '@pages/cadastrar-itens/codigos-categoria/modal/style';
 import { CollumHide } from '../../../cadastros-dados/style';
 import * as request from '@services/cadastros/';
 import {
@@ -81,7 +81,7 @@ const TableModalDetalhes = ({
 
   const getDadosCadastros = useCallback(async () => {
     try {
-      const response = await request.GetConfigById(Number(id));
+      const response = await request.GetConfigById(Number(id), []);
       const data = response.data;
       const pageData = response.data.cadastro_dados_id;
       setColumnData(data);
