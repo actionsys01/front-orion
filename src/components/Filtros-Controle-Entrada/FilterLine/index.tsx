@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import { FormHandles } from '@unform/core';
 import { useControlFilter } from '@contexts/ControlFilter';
-import colunas from '@utils/filtros/filtros-controle';
+import colunas from '@utils/filtros/colunas/filtros-controle';
 import { BotaoRemover, InputCustomizado } from '@styles/Filtro-Styles';
 import { FormFilterData } from '../FilterModal';
 import { Container, CustomSelect, CustomDateMask } from '../style';
