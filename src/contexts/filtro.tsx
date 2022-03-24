@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useContext, useState } from 'react';
 import { createContext } from 'react';
-import colunas from '@utils/filtros/painel-controle-filtro';
-import nfse_colunas from '@utils/filtros/controle-nfse-filtros';
+import colunas from '@utils/filtros/colunas/painel-controle-filtro';
+import nfse_colunas from '@utils/filtros/colunas/controle-nfse-filtros';
 import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react';
 
 interface IUnformCompare {

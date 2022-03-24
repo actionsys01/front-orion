@@ -21,6 +21,8 @@ import { TableGrid } from '@styles/tableStyle';
 import Popover from '@components/Popover';
 import paginate from '@utils/paginate';
 import DeleteModal from './modal';
+import { useFiltro } from '@contexts/filtro-cadastros';
+import Filtro from '@components/Filtro-cadastros/Filter-Modal';
 
 export interface IData {
   aplicacao: string;
@@ -38,6 +40,7 @@ export default function CadastroApps() {
   const [quantityPage, setQuantityPage] = useState(1);
   const [visibleModal, setVisibleModal] = useState(false);
   const [dataId, setDataId] = useState(0);
+  const { categorias } = useFiltro();;
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value - 1);
@@ -52,7 +55,10 @@ export default function CadastroApps() {
       const company_id = company_data
         .filter(item => item.cod_categoria === 'Geral')
         .map(i => i.id);
-      const response = await request.GetCategoryByCode(Number(company_id));
+      const response = await request.GetCategoryByCode(
+        Number(company_id),
+        categorias,
+      );
       const data = paginate(response.data);
       setData(data[page]);
       setQuantityPage(Math.ceil(data.length));
@@ -63,11 +69,11 @@ export default function CadastroApps() {
         type: 'warning',
       });
     }
-  }, [page]);
+  }, [page, categorias]);
 
   useEffect(() => {
     getCompanyTables();
-  }, [page]);
+  }, [page, categorias]);
 
   const gatheredData = useMemo(() => {
     const allData: IData[] = [];
@@ -144,18 +150,7 @@ export default function CadastroApps() {
         />
       )}
       <BtnRow>
-        <button>
-          <span>
-            <Filter />
-          </span>
-          Filtrar
-        </button>
-        <button>
-          <span>
-            <Plus />
-          </span>
-          Adicionar
-        </button>
+        <Filtro data={categorias} />
       </BtnRow>
       <TableGrid>
         <table>

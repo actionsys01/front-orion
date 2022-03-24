@@ -10,7 +10,7 @@ import { TableGrid } from '@styles/tableStyle';
 import Popover from '@components/Popover';
 import Loader from '@components/Loader';
 import paginate from '@utils/paginate';
-import { BtnRow } from '@styles/buttons';
+import { AddBtn } from '@styles/buttons';
 import BotaoVoltar from '@components/BotaoVoltar';
 import * as request from '@services/cadastros/';
 import { IConfigData, IDados, IGatheredDados } from '@services/cadastros/types';
@@ -18,6 +18,8 @@ import { CollumHide, IconBtn } from './style';
 import { appInitialValue } from '@utils/initial-values';
 import { format } from 'date-fns';
 import DeleteModal from './modal';
+import { useFiltro } from '@contexts/filtro-dados';
+import Filtro from '@components/Filtro-Dados/Filter-Modal';
 
 const initialValues = {
   chave_8: false,
@@ -45,13 +47,18 @@ export default function CadastrosDados() {
     desc_aplicacao: router?.query?.desc,
   });
 
+  const { dados, getData } = useFiltro();
   // console.log('router.query', router.query)
 
   const getDadosCadastrosPages = useCallback(async () => {
     try {
-      const response = await request.GetConfigById(Number(router.query.id));
+      const response = await request.GetConfigById(
+        Number(router.query.id),
+        dados,
+      );
       const data = response.data;
       const pageData = paginate(response.data.cadastro_dados_id);
+      getData(data.id);
       setColumnData(data);
       setAppData(pageData[page]);
       setQuantityPage(Math.ceil(pageData.length));
@@ -69,7 +76,7 @@ export default function CadastrosDados() {
         type: 'warning',
       });
     }
-  }, [page]);
+  }, [page, dados]);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value - 1);
@@ -77,11 +84,11 @@ export default function CadastrosDados() {
 
   useEffect(() => {
     getDadosCadastrosPages();
-  }, [page]);
+  }, [page, dados]);
 
   async function saveChanges() {
     const newData = appData.filter(item => item.active);
-    console.log('newData', newData);
+    // console.log('newData', newData);
     try {
       await newData.forEach(async data => {
         await request.CreateDado({
@@ -164,15 +171,10 @@ export default function CadastrosDados() {
       </Head>
       <BotaoVoltar />
       <h2>{`Cadastro de ${router.query.app}`} </h2>
-      <BtnRow>
-        <button>
-          <span>
-            <Filter />
-          </span>
-          Filtrar
-        </button>
+      <AddBtn style={{ gap: '10px' }}>
+        <Filtro data={dados} />
         <button onClick={() => saveChanges()}>Salvar</button>
-      </BtnRow>
+      </AddBtn>
       {visibleModal && (
         <DeleteModal
           setVisibleModal={setVisibleModal}
@@ -296,7 +298,6 @@ export default function CadastrosDados() {
                       setAppData(newAppData);
                       // setRequestData(newAppData[i].chave_2)
                     }}
-                    // onFocus={() => getValidColumns()}
                   />
                 </td>
                 <td className={!columnData.chave_3?.trim() ? 'hideSeek' : ''}>
@@ -309,7 +310,6 @@ export default function CadastrosDados() {
                       setAppData(newAppData);
                       // setRequestData(newAppData[i])
                     }}
-                    // onFocus={() => getValidColumns()}
                   />
                 </td>
                 <td className={!columnData.chave_4?.trim() ? 'hideSeek' : ''}>
@@ -322,7 +322,6 @@ export default function CadastrosDados() {
                       setAppData(newAppData);
                       // setRequestData(newAppData[i])
                     }}
-                    // onFocus={() => getValidColumns()}
                   />
                 </td>
                 <td className={!columnData.chave_5?.trim() ? 'hideSeek' : ''}>
@@ -519,7 +518,6 @@ export default function CadastrosDados() {
                       newAppData[i].valor_number_3 = Number(e.target.value);
                       setAppData(newAppData);
                     }}
-                    onFocus={() => getValidColumns()}
                   />
                 </td>
                 <td

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useContext, useState } from 'react';
 import { createContext } from 'react';
-import colunas from '@utils/filtros/filtros-controle';
+import colunas from '@utils/filtros/colunas/filtros-controle';
 import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react';
 
 interface IUnform {

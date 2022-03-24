@@ -11,7 +11,7 @@ export const AddBtn = styled.div`
   justify-content: flex-end;
   align-items: center;
 
-  button {
+  > button {
     box-sizing: border-box;
     display: inline-block;
     padding: 0 1.25rem;
@@ -197,7 +197,7 @@ export const BtnRow = styled.div`
   justify-content: flex-end;
   align-items: center;
 
-  button {
+  > button {
     box-sizing: border-box;
     display: inline-block;
     padding: 0 1.25rem;
@@ -224,12 +224,12 @@ export const BtnRow = styled.div`
     pointer-events: auto;
     box-shadow: none;
 
-    span {
+    > span {
       display: flex;
       position: absolute;
       top: 8px;
 
-      svg {
+      > svg {
         display: flex;
         align-items: center;
         height: 15px;
@@ -238,7 +238,7 @@ export const BtnRow = styled.div`
     }
   }
 
-  button:nth-child(2n) {
+  > button:nth-child(2n) {
     background-color: #0dd0b3;
     border: 1px solid #0dd0b3;
     cursor: pointer;
