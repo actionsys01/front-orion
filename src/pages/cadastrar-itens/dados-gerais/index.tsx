@@ -14,7 +14,7 @@ import {
   RastroCheckBoxStyle,
   SelectLineStyles,
   AdvanceBtn,
-} from '../../itens/style';
+} from '../style';
 import {
   Radio,
   RadioGroup,

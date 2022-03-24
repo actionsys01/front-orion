@@ -1,16 +1,13 @@
 import React, {
   useState,
-  useMemo,
   useEffect,
   useCallback,
-  useRef,
   Dispatch,
   SetStateAction,
 } from 'react';
 import { useSession } from 'next-auth/client';
 import { useToasts } from '@geist-ui/react';
 import { useRouter } from 'next/router';
-import BotaoVoltar from '@components/BotaoVoltar';
 import Loader from '@components/Loader';
 import { IPageBack, inputId, inputValues } from '../utils';
 import { ArrowLeftCircle } from '@geist-ui/react-icons';
@@ -19,7 +16,7 @@ import { IConfigData } from '@services/cadastros/types';
 import * as categoriesRequest from '@services/cadastros';
 import * as request from '@services/itens';
 import { IProdutos } from '@services/itens/types';
-import { MainPage, AdvanceBtn, CategoryCodesStyles } from '@pages/itens/style';
+import { MainPage, AdvanceBtn, CategoryCodesStyles } from '../style';
 import TableModal from './modal';
 
 interface ICadastroProdutos {

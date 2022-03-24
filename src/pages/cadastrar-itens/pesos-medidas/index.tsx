@@ -13,7 +13,7 @@ import {
   UMStyles,
   TextDiviser,
   TripleSelectLine,
-} from '../../itens/style';
+} from '../style';
 import { IProdutos } from '@services/itens/types';
 
 interface ICadastroProdutos {

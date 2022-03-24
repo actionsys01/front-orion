@@ -25,7 +25,7 @@ import {
 } from '@material-ui/core';
 import { BottomConfirmBtn } from '@styles/buttons';
 import { X } from '@geist-ui/react-icons';
-import Modalpaginate from '@pages/cadastrar-produtos/utils';
+// import Modalpaginate from '@pages/cadastrar-produtos/utils';
 
 const initialValues = {
   chave_8: false,
@@ -74,7 +74,7 @@ const TableModal = ({
 
   const getDadosCadastros = useCallback(async () => {
     try {
-      const response = await request.GetConfigById(Number(id));
+      const response = await request.GetConfigById(Number(id), []);
       const data = response.data;
       const pageData = response.data.cadastro_dados_id;
       setColumnData(data);

@@ -6,12 +6,7 @@ import Loader from '@components/Loader';
 import { IPageBack } from '../utils';
 import { ArrowLeftCircle } from '@geist-ui/react-icons';
 import { BottomConfirmBtn } from '@styles/buttons';
-import {
-  MainPage,
-  AdvanceBtn,
-  ImageBoxStyle,
-  UploadBtn,
-} from '../../itens/style';
+import { MainPage, AdvanceBtn, ImageBoxStyle, UploadBtn } from '../style';
 
 import * as request from '@services/itens';
 import { IProdutos } from '@services/itens/types';
