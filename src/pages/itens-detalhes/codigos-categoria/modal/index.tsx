@@ -26,7 +26,6 @@ import {
 } from '@material-ui/core';
 import { BottomConfirmBtn } from '@styles/buttons';
 import { X } from '@geist-ui/react-icons';
-import { boolean } from 'yup';
 
 const initialValues = {
   chave_8: false,
