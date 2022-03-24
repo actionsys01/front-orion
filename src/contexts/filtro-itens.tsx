@@ -7,7 +7,7 @@ import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react';
 interface IUnformCompare {
   campo: string;
   valor: string | number;
-  // compare: string;
+  compare: string;
 }
 
 interface IFilter {
@@ -47,10 +47,10 @@ export default function FiltroContextProvider({ children }: IFiltroProps) {
 
   function scopeIgnition(array: IUnformCompare[]): IUnformCompare[] {
     // console.log('array', array)
-    const filtro = array.map(({ campo, valor }) => {
+    const filtro = array.map(({ campo, valor, compare }) => {
       const coluna = colunas_itens.find(option => option.value === campo);
       if (coluna) {
-        return { campo, valor };
+        return { campo, valor, compare };
       }
     });
 
@@ -61,9 +61,9 @@ export default function FiltroContextProvider({ children }: IFiltroProps) {
     localStorage.setItem('@orion:itens', JSON.stringify([]));
   }
 
-  useEffect(() => {
-    console.log('itens', itens);
-  }, [itens]);
+  // useEffect(() => {
+  //   console.log('itens', itens);
+  // }, [itens]);
 
   return (
     <FiltroItemContext.Provider
