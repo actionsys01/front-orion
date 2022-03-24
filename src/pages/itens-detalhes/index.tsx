@@ -8,7 +8,7 @@ import { ProdutosDetailStyle } from './style';
 import { IProdutos } from '@services/itens/types';
 import * as request from '@services/itens';
 import Loader from '@components/Loader';
-import { DadosGeraisDetalhes } from './dados-gerais';
+import DadosGeraisDetalhes from './dados-gerais';
 import PesosMedidasDetalhes from './pesos-medidas';
 import InformacoesFiscaisDetalhes from './informacoes-fiscais';
 import ImagemDetalhes from './imagem';
@@ -32,7 +32,7 @@ export default function ProdutosDetalhes() {
   const [categoryId, setCategoryId] = useState(0);
   const [register, setRegister] = useState<IProdutos>();
 
-  console.log('router.query', router.query)
+  console.log('router.query', router.query);
 
   async function getProductData() {
     try {
@@ -73,7 +73,7 @@ export default function ProdutosDetalhes() {
   // }
 
   console.log('categoryId', categoryId);
-  console.log('register', register)
+  console.log('register', register);
 
   if (loading) {
     return <Loader />;
