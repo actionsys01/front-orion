@@ -10,7 +10,7 @@ import { TableGrid } from '@styles/tableStyle';
 import Popover from '@components/Popover';
 import Loader from '@components/Loader';
 import paginate from '@utils/paginate';
-import { BtnRow } from '@styles/buttons';
+import { AddBtn } from '@styles/buttons';
 import BotaoVoltar from '@components/BotaoVoltar';
 import * as request from '@services/cadastros/';
 import { IConfigData, IDados, IGatheredDados } from '@services/cadastros/types';
@@ -47,7 +47,7 @@ export default function CadastrosDados() {
     desc_aplicacao: router?.query?.desc,
   });
 
-  const { dados } = useFiltro();
+  const { dados, getData } = useFiltro();
   // console.log('router.query', router.query)
 
   const getDadosCadastrosPages = useCallback(async () => {
@@ -58,6 +58,7 @@ export default function CadastrosDados() {
       );
       const data = response.data;
       const pageData = paginate(response.data.cadastro_dados_id);
+      getData(data.id);
       setColumnData(data);
       setAppData(pageData[page]);
       setQuantityPage(Math.ceil(pageData.length));
@@ -87,7 +88,7 @@ export default function CadastrosDados() {
 
   async function saveChanges() {
     const newData = appData.filter(item => item.active);
-    console.log('newData', newData);
+    // console.log('newData', newData);
     try {
       await newData.forEach(async data => {
         await request.CreateDado({
@@ -170,11 +171,10 @@ export default function CadastrosDados() {
       </Head>
       <BotaoVoltar />
       <h2>{`Cadastro de ${router.query.app}`} </h2>
-      <Filtro data={dados} />
-      <BtnRow>
-        <button></button>
+      <AddBtn style={{ gap: '10px' }}>
+        <Filtro data={dados} />
         <button onClick={() => saveChanges()}>Salvar</button>
-      </BtnRow>
+      </AddBtn>
       {visibleModal && (
         <DeleteModal
           setVisibleModal={setVisibleModal}

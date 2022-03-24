@@ -1,11 +1,10 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { useSession } from 'next-auth/client';
 import { useToasts, Dot, Tooltip } from '@geist-ui/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Pages } from '@styles/pages';
 import Pagination from '@material-ui/lab/Pagination';
-import { Plus, Filter } from '@geist-ui/react-icons';
+import { Plus } from '@geist-ui/react-icons';
 import { AddBtn } from '@styles/buttons';
 import { TableGrid } from '@styles/tableStyle';
 import { IProdutos } from '@services/itens/types';
@@ -20,7 +19,6 @@ export default function Produtos() {
   const [page, setPage] = useState(1);
   const [quantityPage, setQuantityPage] = useState(1);
   const [, setToast] = useToasts();
-  const [session] = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
@@ -132,8 +130,8 @@ export default function Produtos() {
           id={productId}
         />
       )}
-      <Filtro data={itens} />
-      <AddBtn>
+      <AddBtn style={{ gap: '10px' }}>
+        <Filtro data={itens} />
         <button onClick={() => router.push('/cadastrar-itens')}>
           <span>
             <Plus />
@@ -157,7 +155,6 @@ export default function Produtos() {
               <th>UM de Compras</th>
               <th>Peso (Kg)</th>
               <th>Volume</th>
-              <th>Finalidade da Compra</th>
               {/* <th>Entrada</th>
               <th>Saída</th> */}
             </tr>
@@ -177,7 +174,6 @@ export default function Produtos() {
                 <td>{item.um_compras}</td>
                 <td>{item.peso}</td>
                 <td>{item.volume}</td>
-                <td>{item.finalidade_compra}</td>
               </tr>
             ))}
           </tbody>

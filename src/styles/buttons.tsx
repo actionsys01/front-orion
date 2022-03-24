@@ -11,7 +11,7 @@ export const AddBtn = styled.div`
   justify-content: flex-end;
   align-items: center;
 
-  button {
+  > button {
     box-sizing: border-box;
     display: inline-block;
     padding: 0 1.25rem;
