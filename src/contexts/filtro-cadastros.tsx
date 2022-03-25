@@ -61,9 +61,9 @@ export default function FiltroContextProvider({ children }: IFiltroProps) {
     localStorage.setItem('@orion:categorias', JSON.stringify([]));
   }
 
-  useEffect(() => {
-    console.log('categorias', categorias)
-  }, [categorias])
+  // useEffect(() => {
+  //   console.log('categorias', categorias)
+  // }, [categorias])
 
 
   return (
