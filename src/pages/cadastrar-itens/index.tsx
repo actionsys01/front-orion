@@ -22,7 +22,7 @@ export default function CadastrarProdutos() {
     | 'InformacoesFiscais'
     | 'Imagem'
     | 'CodigoCategoria'
-  >('CodigoCategoria');
+  >('DadosGerais');
 
   const [register, setRegister] = useState({
     empacotado: false,
@@ -46,7 +46,7 @@ export default function CadastrarProdutos() {
         .filter(item => item.cod_categoria === 'Geral')
         .map(i => i.id);
       setCodeId(categoryId);
-      console.log('codeId', categoryId)
+      // console.log('codeId', categoryId)
     } catch (error) {
       console.log(error);
     }
