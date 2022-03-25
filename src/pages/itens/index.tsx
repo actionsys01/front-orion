@@ -14,12 +14,14 @@ import Popover from '@components/Popover';
 import DeleteModal from './modal';
 import { useFiltro } from '@contexts/filtro-itens';
 import Filtro from '@components/Filtro-Itens/Filter-Modal';
+import { useSession } from "next-auth/client";
 
 export default function Produtos() {
   const [page, setPage] = useState(1);
   const [quantityPage, setQuantityPage] = useState(1);
   const [, setToast] = useToasts();
   const router = useRouter();
+  const [session] = useSession();
   const [loading, setLoading] = useState(true);
 
   const { itens } = useFiltro();
@@ -34,8 +36,13 @@ export default function Produtos() {
 
   const getProductsData = useCallback(async () => {
     try {
-      const response = await request.GetProductsPagination(page, itens);
+      const response = await request.GetProductsPagination(
+        page,
+        itens,
+        Number(session?.usuario.empresa.id),
+      );
       const data = response.data;
+      // console.log('data', data);
       setData(data.produtos);
       setLoading(false);
       setQuantityPage(Math.ceil(data.total / 8));
