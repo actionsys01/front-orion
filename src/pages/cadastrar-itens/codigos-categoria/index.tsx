@@ -56,12 +56,12 @@ const CodigosCategoria = ({
       [],
     );
     const data = response.data;
-    console.log('data', data)
+    // console.log('data', data)
     const ordered = data.sort(function (a, b) {
       return a.id - b.id;
     });
     const finalData = ordered.slice(0, 5);
-    console.log('finalData', finalData)
+    // console.log('finalData', finalData)
     setAppNames(finalData);
   }
 
@@ -111,12 +111,12 @@ const CodigosCategoria = ({
     showData();
   }, [itemId]);
 
-  useEffect(() => {
-    // console.log('appValues', appValues);
-    // console.log('itemId', itemId);
-    // console.log('register', register);
-    console.log('appNames', appNames)
-  }, [appNames]);
+  // useEffect(() => {
+  //   // console.log('appValues', appValues);
+  //   // console.log('itemId', itemId);
+  //   // console.log('register', register);
+  //   console.log('appNames', appNames)
+  // }, [appNames]);
 
   // useEffect(() => {
   //   console.log('appIds', appIds);
