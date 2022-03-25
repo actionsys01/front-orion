@@ -56,10 +56,12 @@ const CodigosCategoria = ({
       [],
     );
     const data = response.data;
+    console.log('data', data)
     const ordered = data.sort(function (a, b) {
       return a.id - b.id;
     });
     const finalData = ordered.slice(0, 5);
+    console.log('finalData', finalData)
     setAppNames(finalData);
   }
 
@@ -67,11 +69,11 @@ const CodigosCategoria = ({
     const response = await categoriesRequest.GetDadosById(Number(itemId));
     const data = response.data;
     for (let i = 2; i <= 9; i++) {
-      const teste = Object.entries(data)[i];
-      if (teste && teste[1] !== 0 && teste[1] !== null && teste[1] !== '---') {
+      const names = Object.entries(data)[i];
+      if (names && names[1] !== 0 && names[1] !== null && names[1] !== '---') {
         setAppValues({
           ...appValues,
-          [itemName]: teste[1],
+          [itemName]: names[1],
         });
         break;
       }
@@ -109,11 +111,12 @@ const CodigosCategoria = ({
     showData();
   }, [itemId]);
 
-  // useEffect(() => {
-  //   console.log('appValues', appValues);
-  //   console.log('itemId', itemId);
-  //   console.log('register', register);
-  // }, [appValues, itemId, register, appIds]);
+  useEffect(() => {
+    // console.log('appValues', appValues);
+    // console.log('itemId', itemId);
+    // console.log('register', register);
+    console.log('appNames', appNames)
+  }, [appNames]);
 
   // useEffect(() => {
   //   console.log('appIds', appIds);
