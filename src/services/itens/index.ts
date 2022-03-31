@@ -5,6 +5,7 @@ import GetProductById from './GetProductById';
 import GetProductsPagination from './GetProductsPagination';
 import GetProductByCode from './GetProductByCode';
 import UploadImage from './UploadImage';
+import UploadExcelFile from './UploadExcelFile';
 
 export {
   CreateProduct,
@@ -14,4 +15,5 @@ export {
   GetProductsPagination,
   GetProductByCode,
   UploadImage,
+  UploadExcelFile,
 };

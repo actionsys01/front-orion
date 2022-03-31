@@ -14,7 +14,8 @@ import Popover from '@components/Popover';
 import DeleteModal from './modal';
 import { useFiltro } from '@contexts/filtro-itens';
 import Filtro from '@components/Filtro-Itens/Filter-Modal';
-import { useSession } from "next-auth/client";
+import { useSession } from 'next-auth/client';
+import { ImportTableData } from './style';
 
 export default function Produtos() {
   const [page, setPage] = useState(1);
@@ -119,6 +120,29 @@ export default function Produtos() {
     return allData;
   }, [data]);
 
+  const uploadFileData = useCallback(async e => {
+    // console.log('e.target.files[0', e.target.files[0]);
+    // console.log('vim aqui');
+    try {
+      await request.UploadExcelFile(e.target.files[0], {
+        id_empresa: session?.usuario.empresa.id,
+        arquivo: '',
+        status: 0,
+        desc_status: 'confirmado',
+      });
+      setToast({
+        text: 'Upload realizado com sucesso',
+        type: 'success',
+      });
+    } catch (error) {
+      console.log(error);
+      setToast({
+        text: 'Houve um problema. Por favor tente novamente',
+        type: 'warning',
+      });
+    }
+  }, []);
+
   if (loading) {
     return <Loader />;
   }
@@ -128,7 +152,7 @@ export default function Produtos() {
       <Head>
         <title>Orion | Itens</title>
       </Head>
-      <h2>Itens</h2>
+      <h2 style={{ marginBottom: '0' }}>Itens</h2>
       {visibleModal && (
         <DeleteModal
           setVisibleModal={setVisibleModal}
@@ -137,6 +161,12 @@ export default function Produtos() {
           id={productId}
         />
       )}
+      <ImportTableData>
+        <label htmlFor="upload">
+          <h5>Importar dados</h5>
+          <input type="file" id="upload" onChange={e => uploadFileData(e)} />
+        </label>
+      </ImportTableData>
       <AddBtn style={{ gap: '10px' }}>
         <Filtro data={itens} />
         <button onClick={() => router.push('/cadastrar-itens')}>
