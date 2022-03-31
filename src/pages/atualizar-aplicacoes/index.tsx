@@ -27,7 +27,7 @@ export default function AtualizarAplicacoes() {
 
   async function getConfigData() {
     try {
-      const response = await request.GetConfigById(Number(mainData.id));
+      const response = await request.GetConfigById(Number(mainData.id), []);
       const data = response.data;
       setRegister(data);
       // console.log('data', data);

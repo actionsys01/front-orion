@@ -8,11 +8,11 @@ import React, {
 import { useFiltro } from '@contexts/filtro';
 import { BotaoRemover } from '@styles/Filtro-Styles';
 import { FormHandles } from '@unform/core';
-import compareColumns from '@utils/filtros/compare-select';
-import nfse_colunas from '@utils/filtros/controle-nfse-filtros';
-import colunas from '@utils/filtros/painel-controle-filtro';
-import { statusOptions } from '@utils/filtros/status-filtro';
-import compareString from '@utils/filtros/compare-string';
+import compareColumns from '@utils/filtros/compare/compare-select';
+import nfse_colunas from '@utils/filtros/colunas/controle-nfse-filtros';
+import colunas from '@utils/filtros/colunas/painel-controle-filtro';
+import { statusOptions } from '@utils/filtros/colunas/status-filtro';
+import compareString from '@utils/filtros/compare/compare-string';
 
 import {
   Container,

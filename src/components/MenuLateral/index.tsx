@@ -135,7 +135,7 @@ export default function MenuLateral({
                     Controle de Entrada
                   </MenuItem>
                 )}
-                <MenuItem onClick={() => router.push('/cadastros-aplicacoes')}>
+                <MenuItem onClick={() => router.push('/cadastros-gerais')}>
                   Cadastros Gerais
                 </MenuItem>
                 {/* {tables.map(item => (
