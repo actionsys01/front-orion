@@ -113,5 +113,12 @@ export interface IProdutos {
   cod_categoria_act_5: string;
   ativo: boolean;
   user_update: number;
-  [x: string] : any
+  [x: string]: any;
+}
+
+export interface IExcelFileRequest {
+  id_empresa: number;
+  arquivo: string;
+  status: number;
+  desc_status: string;
 }
