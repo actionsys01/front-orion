@@ -18,9 +18,8 @@ import {
   MainPage,
   AdvanceBtn,
   CategoryCodesStyles,
-} from '@pages/itens/style';
+} from '@pages/cadastrar-itens/style';
 import TableModalDetalhes from './modal';
-import app from 'next/app';
 
 interface IDetails {
   register: IProdutos;

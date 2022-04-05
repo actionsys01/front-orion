@@ -11,7 +11,7 @@ import {
   AdvanceBtn,
   ImageBoxStyle,
   UploadBtn,
-} from '@pages/itens/style';
+} from '@pages/cadastrar-itens/style';
 import * as companyRequest from '@services/empresas';
 import * as categoriesRequest from '@services/cadastros';
 import * as request from '@services/itens';

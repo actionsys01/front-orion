@@ -14,7 +14,7 @@ import {
   RastroCheckBoxStyle,
   SelectLineStyles,
   AdvanceBtn,
-} from '@pages/itens/style';
+} from '@pages/cadastrar-itens/style';
 import {
   Radio,
   RadioGroup,
