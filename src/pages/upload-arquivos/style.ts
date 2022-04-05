@@ -12,7 +12,7 @@ export const InitialTopPhrase = styled.div`
   p {
     margin: 0 5px;
   }
-`
+`;
 
 export const IconContainer = styled.div`
   display: flex;
@@ -26,4 +26,8 @@ export const IconContainer = styled.div`
     width: 95px;
     cursor: pointer;
   }
-`
+
+  input {
+    display: none;
+  }
+`;

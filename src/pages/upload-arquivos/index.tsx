@@ -13,11 +13,35 @@ import { useRouter } from 'next/router';
 import BotaoVoltar from '@components/BotaoVoltar';
 import Loader from '@components/Loader';
 import { MainBox, InitialTopPhrase, IconContainer } from './style';
+import * as request from '@services/itens';
 
 export default function UploadArquivosExcel() {
   const [, setToast] = useToasts();
   const [session] = useSession();
   const router = useRouter();
+
+  const uploadFileData = useCallback(async e => {
+    // console.log('e.target.files[0', e.target.files[0]);
+    // console.log('vim aqui');
+    try {
+      await request.UploadExcelFile(e.target.files[0], {
+        id_empresa: session?.usuario.empresa.id,
+        arquivo: '',
+        status: 0,
+        desc_status: 'confirmado',
+      });
+      setToast({
+        text: 'Upload realizado com sucesso',
+        type: 'success',
+      });
+    } catch (error) {
+      console.log(error);
+      setToast({
+        text: 'Houve um problema. Por favor tente novamente',
+        type: 'warning',
+      });
+    }
+  }, []);
 
   return (
     <>
@@ -31,7 +55,10 @@ export default function UploadArquivosExcel() {
           <p>Subir os dados para a plataforma</p>
         </InitialTopPhrase>
         <IconContainer>
-          <MdCloudUpload />
+          <label htmlFor="upload">
+            <MdCloudUpload />
+            <input type="file" id="upload" onChange={e => uploadFileData(e)} />
+          </label>
           <p>
             Subir a planilha com <br /> os dados preenchidos
           </p>
