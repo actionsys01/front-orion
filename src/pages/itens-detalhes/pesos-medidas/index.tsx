@@ -21,7 +21,7 @@ import {
   UMStyles,
   TextDiviser,
   TripleSelectLine,
-} from '@pages/itens/style';
+} from '@pages/cadastrar-itens/style';
 import { IProdutos } from '@services/itens/types';
 
 interface IDetails {

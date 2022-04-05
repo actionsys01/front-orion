@@ -15,7 +15,7 @@ import BotaoVoltar from '@components/BotaoVoltar';
 import Loader from '@components/Loader';
 import * as request from '@services/itens';
 import { BottomConfirmBtn } from '@styles/buttons';
-import { MainPage, AdvanceBtn, UMStyles } from '@pages/itens/style';
+import { MainPage, AdvanceBtn, UMStyles } from '@pages/cadastrar-itens/style';
 import { IProdutos } from '@services/itens/types';
 
 interface IDetails {
