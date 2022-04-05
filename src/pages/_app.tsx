@@ -15,11 +15,8 @@ import {
   useMediaQuery,
 } from '@geist-ui/react';
 import { AlignCenter } from '@geist-ui/react-icons';
-import { ReactNode } from 'hoist-non-react-statics/node_modules/@types/react';
 import 'inter-ui/inter.css';
-import { Provider, signIn, signOut, useSession } from 'next-auth/client';
-import { Session } from 'next-auth';
-import { AppProps } from 'next/app';
+import { Provider, useSession } from 'next-auth/client';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';

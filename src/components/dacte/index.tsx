@@ -54,28 +54,28 @@ function Dacte(
         : '',
       // tomador de serviço
       tomador:
-        item.informacoes_cte.toma3?.toma === '0'
+        item.informacoes_cte.toma3?.toma.toString() === '0'
           ? item.remetente
-          : item.informacoes_cte.toma3?.toma === '1'
+          : item.informacoes_cte.toma3?.toma.toString() === '1'
           ? item.expedidor
-          : item.informacoes_cte.toma3?.toma === '2'
+          : item.informacoes_cte.toma3?.toma.toString() === '2'
           ? item.recebedor
-          : item.informacoes_cte.toma3?.toma === '3'
+          : item.informacoes_cte.toma3?.toma.toString() === '3'
           ? item.destinatario
-          : item.informacoes_cte.toma03?.toma === '0'
+          : item.informacoes_cte.toma03?.toma.toString() === '0'
           ? item.remetente
           : null,
       // endereço tomador de serviço
       tomadorEnder:
-        item.informacoes_cte.toma3?.toma === '0'
+        item.informacoes_cte.toma3?.toma.toString() === '0'
           ? item.remetente.enderReme
-          : item.informacoes_cte.toma3?.toma === '1'
+          : item.informacoes_cte.toma3?.toma.toString() === '1'
           ? item.expedidor.enderExped
-          : item.informacoes_cte.toma3?.toma === '2'
+          : item.informacoes_cte.toma3?.toma.toString() === '2'
           ? item.recebedor.enderReceb
-          : item.informacoes_cte.toma3?.toma === '3'
+          : item.informacoes_cte.toma3?.toma.toString() === '3'
           ? item.destinatario.enderDest
-          : item.informacoes_cte.toma03?.toma === '0'
+          : item.informacoes_cte.toma03?.toma.toString() === '0'
           ? item.remetente
           : null,
       // fluxo

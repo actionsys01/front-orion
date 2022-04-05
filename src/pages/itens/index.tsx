@@ -14,7 +14,8 @@ import Popover from '@components/Popover';
 import DeleteModal from './modal';
 import { useFiltro } from '@contexts/filtro-itens';
 import Filtro from '@components/Filtro-Itens/Filter-Modal';
-import { useSession } from "next-auth/client";
+import { useSession } from 'next-auth/client';
+import { ImportTableData } from './style';
 
 export default function Produtos() {
   const [page, setPage] = useState(1);
@@ -128,7 +129,7 @@ export default function Produtos() {
       <Head>
         <title>Orion | Itens</title>
       </Head>
-      <h2>Itens</h2>
+      <h2 style={{ marginBottom: '0' }}>Itens</h2>
       {visibleModal && (
         <DeleteModal
           setVisibleModal={setVisibleModal}
@@ -137,6 +138,9 @@ export default function Produtos() {
           id={productId}
         />
       )}
+      <ImportTableData>
+        <h5 onClick={() => router.push('/upload-arquivos')}>Importar dados</h5>
+      </ImportTableData>
       <AddBtn style={{ gap: '10px' }}>
         <Filtro data={itens} />
         <button onClick={() => router.push('/cadastrar-itens')}>
