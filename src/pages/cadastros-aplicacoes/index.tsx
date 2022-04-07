@@ -40,7 +40,7 @@ export default function CadastroApps() {
   const [quantityPage, setQuantityPage] = useState(1);
   const [visibleModal, setVisibleModal] = useState(false);
   const [dataId, setDataId] = useState(0);
-  const { categorias } = useFiltro();;
+  const { categorias } = useFiltro();
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value - 1);

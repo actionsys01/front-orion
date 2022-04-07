@@ -14,7 +14,7 @@ interface IFilter {
   categorias: IUnformCompare[];
   registerCategory(categorias: IUnformCompare[]): void;
   cleanFilter(): void;
-  scopeIgnition(filtro: IUnformCompare[]): IUnformCompare[];
+  // scopeIgnition(filtro: IUnformCompare[]): IUnformCompare[];
 }
 
 interface IFiltroProps {
@@ -45,17 +45,17 @@ export default function FiltroContextProvider({ children }: IFiltroProps) {
     localStorage.setItem('@orion:categorias', JSON.stringify(category));
   }
 
-  function scopeIgnition(array: IUnformCompare[]): IUnformCompare[] {
-    // console.log('array', array)
-    const filtro = array.map(({ campo, valor, compare }) => {
-      const coluna = colunas_categorias.find(option => option.value === campo);
-      if (coluna) {
-        return { campo, valor, compare };
-      }
-    });
+  // function scopeIgnition(array: IUnformCompare[]): IUnformCompare[] {
+  //   // console.log('array', array)
+  //   const filtro = array.map(({ campo, valor, compare }) => {
+  //     const coluna = colunas_categorias.find(option => option.value === campo);
+  //     if (coluna) {
+  //       return { campo, valor, compare };
+  //     }
+  //   });
 
-    return filtro;
-  }
+  //   return filtro;
+  // }
 
   async function cleanFilter() {
     localStorage.setItem('@orion:categorias', JSON.stringify([]));
@@ -72,7 +72,7 @@ export default function FiltroContextProvider({ children }: IFiltroProps) {
         categorias,
         registerCategory,
         cleanFilter,
-        scopeIgnition,
+        // scopeIgnition,
       }}
     >
       {children}
