@@ -96,7 +96,7 @@ export default function Dashboard() {
       <Head>
         <title>Orion | Dashboard</title>
       </Head>
-      <h2>Teste</h2>
+      <h2>Dashboard</h2>
       <SelectStyle>
         <input type="month" onChange={e => setDateDash(e.target.value)} />
       </SelectStyle>
