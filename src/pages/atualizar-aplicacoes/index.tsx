@@ -88,6 +88,7 @@ export default function AtualizarAplicacoes() {
             <input
               type="text"
               id="aplicacao"
+              maxLength={20}
               value={register.aplicacao}
               onChange={inputHandler}
             />
