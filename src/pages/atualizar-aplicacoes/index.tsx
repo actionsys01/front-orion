@@ -88,6 +88,7 @@ export default function AtualizarAplicacoes() {
             <input
               type="text"
               id="aplicacao"
+              maxLength={20}
               value={register.aplicacao}
               onChange={inputHandler}
             />
@@ -108,7 +109,7 @@ export default function AtualizarAplicacoes() {
             type="text"
             id="descricao"
             className="description"
-            maxLength={20}
+            maxLength={50}
             value={register.desc_aplicacao}
             onChange={e =>
               setRegister({ ...register, desc_aplicacao: e.target.value })

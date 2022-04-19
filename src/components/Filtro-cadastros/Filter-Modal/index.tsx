@@ -29,7 +29,7 @@ interface IProps {
 
 export default function Filtro({ data }: IProps) {
   const formRef = useRef<FormHandles>(null);
-  const { registerCategory, scopeIgnition } = useFiltro();
+  const { registerCategory} = useFiltro();
 
   const [erro, setErro] = useState(false);
   const [filtros, setFiltros] = useState<string[]>([]);
@@ -60,8 +60,8 @@ export default function Filtro({ data }: IProps) {
     const totalFiltros = filtros.slice();
 
     filtrosForm.splice(index, 1);
-    const filtro = scopeIgnition(filtrosForm);
-    formRef.current?.setData({ filtros: filtro });
+    // const filtro = filtrosForm
+    formRef.current?.setData({ filtros: filtrosForm });
 
     totalFiltros.splice(index, 1);
     setFiltros(totalFiltros);
@@ -82,8 +82,8 @@ export default function Filtro({ data }: IProps) {
       setErro(true);
       return;
     } else {
-      const filtro = scopeIgnition(data.filtros);
-      registerCategory(filtro);
+      // const filtro = scopeIgnition(data.filtros);
+      registerCategory(data.filtros);
     }
 
     setErro(false);
