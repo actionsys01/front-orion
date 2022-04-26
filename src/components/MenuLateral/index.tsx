@@ -138,6 +138,10 @@ export default function MenuLateral({
                 <MenuItem onClick={() => router.push('/cadastros-gerais')}>
                   Cadastros Gerais
                 </MenuItem>
+                <MenuItem onClick={() => router.push('/integracao-sistemas')}>
+                  Integração de
+                  <br /> Sistemas
+                </MenuItem>
                 {/* {tables.map(item => (
                   <MenuItem>{item.aplicacao}</MenuItem>
                 ))} */}
