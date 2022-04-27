@@ -26,7 +26,24 @@ export const TokenContainer = styled.div`
   justify-content: center;
   div {
     border: 1px solid #eaeaea;
-    width: 40rem;
+    width: fit-content;
+    min-width: 44rem;
     height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    textArea {
+      text-align: center;
+      width: fit-content;
+      min-width: 44rem;
+      font-size: 10px;
+      height: 1rem;
+      padding: 8px;
+      border: none;
+      resize: none;
+      overflow: hidden;
+      /* cursor: pointer; */
+    }
   }
 `;

@@ -17,16 +17,35 @@ import * as request from '@services/empresas';
 
 export default function IntegracaoSistemas() {
   const [session] = useSession();
-  const [token, setToken] = useState();
+  const [token, setToken] = useState<any>();
+  const [, setToast] = useToasts();
+  const textAreaRef = useRef(null);
 
   async function generateToken() {
-    const tokenRequest = await request.createToken({
-      empresa_id: Number(session?.usuario.empresa.id),
-      user_insert: Number(session?.usuario.id),
-    });
-    setToken(tokenRequest.data.token);
-    console.log('tokenRequest', tokenRequest);
+    try {
+      const tokenRequest = await request.createToken({
+        empresa_id: Number(session?.usuario.empresa.id),
+        user_insert: Number(session?.usuario.id),
+      });
+      setToken(tokenRequest.data.token);
+    } catch (error) {
+      console.log(error);
+      setToast({
+        text: 'Houve um problema. Por favor tente novamente',
+        type: 'warning',
+      });
+    }
   }
+
+  function copyToClipboard(e) {
+    textAreaRef.current.select();
+    document.execCommand('copy');
+    // This is just personal preference.
+    // I prefer to not show the whole text area selected.
+    console.log(e.target.focus)
+  }
+
+
   return (
     <>
       <Head>
@@ -47,7 +66,13 @@ export default function IntegracaoSistemas() {
       </TextContainer>
       <TokenContainer>
         <div>
-          <p>{token}</p>
+          <textarea
+            onClick={e => copyToClipboard(e)}
+            ref={textAreaRef}
+            value={token}
+          >
+            {token}
+          </textarea>
         </div>
       </TokenContainer>
 
