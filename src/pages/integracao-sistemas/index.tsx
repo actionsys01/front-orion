@@ -83,7 +83,7 @@ export default function IntegracaoSistemas() {
           baixo:
         </h6>
         <h6>
-          <a href="https://gra-web.herokuapp.com/api-docs" target="_blank">
+          <a href="https://gra-web.herokuapp.com/gra-api" target="_blank">
             www.gra-web.com/rotas-api
           </a>
         </h6>
