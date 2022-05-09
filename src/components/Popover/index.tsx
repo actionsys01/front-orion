@@ -4,6 +4,7 @@ import {
   PopStyleDouble,
   PopStyleFourLines,
   PopSingleStyle,
+  PopStyleFiveLines,
 } from './style';
 import { BsThreeDots } from 'react-icons/bs';
 
@@ -87,6 +88,37 @@ const Popover = (props: any) => {
       </>
     );
   }
+
+  if (props.quant === 5) {
+    return (
+      <>
+        <PopStyleFiveLines>
+          <BsThreeDots onClick={visibleHandler} />
+          {visible && (
+            <div
+              onMouseLeave={() => setVisible(false)}
+              className={
+                props.num === 7
+                  ? 'last-prop'
+                  : props.num === 6
+                  ? 'beforeLast-prop'
+                  : props.num === 5
+                  ? 'numberFive-prop'
+                  : ''
+              }
+            >
+              {props?.content?.map((item: any, i: any) => (
+                <p className={item.className} key={i} onClick={item.onClick}>
+                  {item.optionName}
+                </p>
+              ))}
+            </div>
+          )}
+        </PopStyleFiveLines>
+      </>
+    );
+  }
+
   return (
     <>
       <PopStyle>
