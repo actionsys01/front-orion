@@ -1,6 +1,7 @@
 import { ControlDataProps } from '@services/controle-entrada/entrance-types';
 
 export interface INfeDto {
+  xml: string;
   chave_nota: string;
   empresa_id: number;
   nota: string;
