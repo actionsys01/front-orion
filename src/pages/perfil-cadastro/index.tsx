@@ -292,6 +292,18 @@ export default function PerfilCadastro() {
                       </span>
                       Histórico de Notas
                     </span>
+                    <span>
+                      <span>
+                        <Checkbox
+                          checked={isCte.IMPRIMIR}
+                          onClick={() =>
+                            setIsCte({ ...isCte, IMPRIMIR: !isCte.IMPRIMIR })
+                          }
+                          onChange={() => gatherData(15)}
+                        />
+                      </span>
+                      Imprimir Notas
+                    </span>
                   </div>
                 </div>
               )}
