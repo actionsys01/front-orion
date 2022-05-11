@@ -1,28 +1,30 @@
 import React, { useMemo, useCallback, useState, useEffect } from 'react';
-import Filtro from '@components/Filtro-Notas/Filter-Modal';
+
 import { useFiltro } from '@contexts/filtro';
+import { useSecurityContext } from '@contexts/security';
+
 import Head from 'next/head';
 import { useSession } from 'next-auth/client';
-import { RowBtn } from './style';
-import getNfePagesByCompanyId from '@services/nfe';
-import INfeDto from '@services/nfe/dtos/INfeDTO';
-import { Dot, Table, Tooltip } from '@geist-ui/react';
+import { Dot, Tooltip } from '@geist-ui/react';
 import Pagination from '@material-ui/lab/Pagination';
-import { Pages } from '@styles/pages';
-import { Grid } from '@components/NfePagination/style';
-import { TableGrid } from '@styles/tableStyle';
 import { useRouter } from 'next/router';
-import { format } from 'date-fns';
-// import PopoverComponent from './Popover';
-import { useSecurityContext } from '@contexts/security';
 import { useToasts } from '@geist-ui/react';
+import { RefreshCw } from '@geist-ui/react-icons';
+import { format } from 'date-fns';
+
+import getNfeData from '@services/nfe/getNfeData';
+import INfeDto from '@services/nfe/dtos/INfeDTO';
+import getNfePagesByCompanyId from '@services/nfe';
+
+import Filtro from '@components/Filtro-Notas/Filter-Modal';
+import Danfe from '@components/danfe';
 import Loader from '@components/Loader';
 import Popover from '@components/Popover';
-import PopoverEvento from './popover-eventos/second-popover';
-import { RefreshCw } from '@geist-ui/react-icons';
+
+import { TableGrid } from '@styles/tableStyle';
+import { Pages } from '@styles/pages';
+import { RowBtn } from './style';
 import { RefreshBtn } from '@styles/RefreshBtn';
-import Danfe from '@components/danfe';
-import getNfeData from '@services/nfe/getNfeData';
 
 interface Props {
   sefaz?: {
@@ -46,8 +48,8 @@ export default function Nfe({ sefaz, portaria }: Props) {
   const [, setToast] = useToasts();
   const [loading, setLoading] = useState(true);
   const company_id = Number(session?.usuario.empresa.id);
-  const [visible, setVisible] = useState(false);
-  const [item, setItem] = useState<any>();
+  // const [visible, setVisible] = useState(false);
+  // const [item, setItem] = useState<any>();
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
