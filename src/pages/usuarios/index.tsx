@@ -1,17 +1,21 @@
-import { GridStyle } from './style';
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { RefreshCw } from '@geist-ui/react-icons';
 import { Button, Row, Spacer, Text } from '@geist-ui/react';
-import { Pages } from './style';
 import { Plus } from '@geist-ui/react-icons';
-import { useSecurityContext } from '@contexts/security';
-import Pagination from '@material-ui/lab/Pagination';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Pagination from '@material-ui/lab/Pagination';
+
+import { useSecurityContext } from '@contexts/security';
+
 import getUsersByCompanyId from '@services/usuarios/getUsersByCompanyId';
-import UserPopover from './Popover';
+
 import capitalize from '@utils/capitalize';
+
+import UserPopover from './Popover';
 import UserModal from './modal';
-import { RefreshCw } from '@geist-ui/react-icons';
+import { TableGrid } from '@styles/tableStyle';
+import { Pages } from '@styles/pages';
 import { RefreshBtn } from '@styles/RefreshBtn';
 
 export interface IUsuario {
@@ -56,13 +60,14 @@ export default function Usuarios() {
     getUsersAndTotalPage();
   }, [page]);
 
-  function optionUserPopover(data: any) {
+  function optionUserPopover(data: any, i: number) {
     return (
       <UserPopover
         data={data}
         usuarios={usuarios}
         setUsuarios={setUsuarios}
         setUserModalVisible={setUserModalVisible}
+        i={i}
       />
     );
   }
@@ -70,13 +75,13 @@ export default function Usuarios() {
   const UsersByCompanyData = useMemo(() => {
     const allData: any = [];
     if (usuarios) {
-      usuarios.forEach(item => {
+      usuarios.forEach((item, i) => {
         allData.push({
           ...item,
           perfil_nome: item.perfil.nome,
           emailFormatted: item.email.toLowerCase(),
           nome: capitalize(item.nome),
-          option: optionUserPopover(item),
+          option: optionUserPopover(item, i),
         });
       });
     }
@@ -119,7 +124,7 @@ export default function Usuarios() {
         </Button>
       </Row>
       <Spacer y={1} />
-      <GridStyle>
+      <TableGrid>
         <table>
           <thead>
             <tr>
@@ -142,7 +147,7 @@ export default function Usuarios() {
             </tbody>
           )}
         </table>
-      </GridStyle>
+      </TableGrid>
       <Pages>
         <Pagination
           style={{ margin: '0 auto' }}
