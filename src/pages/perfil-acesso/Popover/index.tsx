@@ -1,17 +1,10 @@
-import {
-  Modal,
-  Text,
-  useModal,
-  useToasts,
-  Input,
-} from '@geist-ui/react';
+import { Modal, Text, useModal, useToasts, Input } from '@geist-ui/react';
 import { useCallback, useState, Dispatch, SetStateAction } from 'react';
 import router from 'next/router';
 import { useSecurityContext } from '@contexts/security';
 import { IPerfilAplicacao } from '../index';
 import * as perfil from '@services/perfis';
 import { useSession } from 'next-auth/client';
-import { number } from 'yup';
 import Popover from '@components/Popover';
 
 interface PopoverProps {
@@ -40,7 +33,7 @@ interface ProfilePermissions {
 const ProfilePopover: React.FC<PopoverProps> = ({
   data,
   setPerfisAplicacoes,
-  i
+  i,
 }) => {
   const [visible, setVisible] = useState(false);
   const { setVisible: setVisibleModal, bindings } = useModal();
