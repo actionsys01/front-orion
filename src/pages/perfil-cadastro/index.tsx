@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import BotaoVoltar from '@components/BotaoVoltar';
 import { ButtonStyle } from './style';
 import { useSession } from 'next-auth/client';
@@ -38,7 +38,7 @@ export default function PerfilCadastro() {
   const [availableApps, setAvailableApps] = useState({ ...availableResources });
   const [profileApp, setProfileApp] = useState<number[]>([]);
 
-  async function getAccountResources() {
+  const getAccountResources = useCallback(async () => {
     const response = await planos.getAccountById(Number(router.query.planoId));
     const data = response.data.aplicacoes;
     const apps: [] = data.map(item => item.categoria);
@@ -49,10 +49,6 @@ export default function PerfilCadastro() {
       accountApps[currentApps] = true;
       setAvailableApps(accountApps);
     }
-  }
-
-  useEffect(() => {
-    getAccountResources();
   }, []);
 
   const gatherData = (e: any) => {
@@ -85,6 +81,18 @@ export default function PerfilCadastro() {
     }
     router.push({ pathname: '/perfil-acesso' });
   }
+
+  useEffect(() => {
+    console.log('availableApps', availableApps);
+  }, [availableApps]);
+
+  useEffect(() => {
+    getAccountResources();
+  }, []);
+
+  useEffect(() => {
+    console.log('availableApps', availableApps);
+  }, [availableApps]);
 
   return (
     <>

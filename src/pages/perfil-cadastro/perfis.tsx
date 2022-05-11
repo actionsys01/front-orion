@@ -47,7 +47,7 @@ const Perfis = ({
             <h5></h5>
           </span>
         </header>
-        {availableApps.NFE && (
+        {availableApps?.NFE && (
           <div className="body-row">
             <div
               onClick={() =>
@@ -62,7 +62,7 @@ const Perfis = ({
                 <h5>Painel e Visualização de Nf-e</h5>
               </span>
               <span>
-                {!visible.nfeModal ? (
+                {!visible?.nfeModal ? (
                   <ChevronDown className="icon" />
                 ) : (
                   <ChevronUp className="icon" />
@@ -168,7 +168,7 @@ const Perfis = ({
             )}
           </div>
         )}
-        {availableApps.CTE && (
+        {availableApps?.CTE && (
           <div className="body-row">
             <div
               onClick={() =>
@@ -237,7 +237,7 @@ const Perfis = ({
             )}
           </div>
         )}
-        {availableApps.NFSE && (
+        {availableApps?.NFSE && (
           <div className="body-row">
             <div
               onClick={() =>
@@ -312,7 +312,7 @@ const Perfis = ({
             )}
           </div>
         )}
-        {availableApps.PORTARIA && (
+        {availableApps?.ENTRADA && (
           <div className="body-row">
             <div
               onClick={() =>
@@ -442,14 +442,14 @@ const Perfis = ({
               <h5>Cadastro de Perfis</h5>
             </span>
             <span>
-              {!visible.profileModal ? (
+              {!visible?.profileModal ? (
                 <ChevronDown className="icon" />
               ) : (
                 <ChevronUp className="icon" />
               )}
             </span>
           </div>
-          {visible.profileModal && (
+          {visible?.profileModal && (
             <div className="modal">
               <div>
                 <span>
@@ -518,14 +518,14 @@ const Perfis = ({
               <h5>Cadastro de Usuários</h5>
             </span>
             <span>
-              {!visible.usersModal ? (
+              {!visible?.usersModal ? (
                 <ChevronDown className="icon" />
               ) : (
                 <ChevronUp className="icon" />
               )}
             </span>
           </div>
-          {visible.usersModal && (
+          {visible?.usersModal && (
             <div className="modal">
               <div>
                 <span>
@@ -588,14 +588,14 @@ const Perfis = ({
               <h5>Cadastro de CNPJs</h5>
             </span>
             <span>
-              {!visible.cnpjModal ? (
+              {!visible?.cnpjModal ? (
                 <ChevronDown className="icon" />
               ) : (
                 <ChevronUp className="icon" />
               )}
             </span>
           </div>
-          {visible.cnpjModal && (
+          {visible?.cnpjModal && (
             <div className="modal">
               <div>
                 <span>
@@ -658,14 +658,14 @@ const Perfis = ({
               <h5>Upload do Certificado Digital</h5>
             </span>
             <span>
-              {!visible.certificadoModal ? (
+              {!visible?.certificadoModal ? (
                 <ChevronDown className="icon" />
               ) : (
                 <ChevronUp className="icon" />
               )}
             </span>
           </div>
-          {visible.certificadoModal && (
+          {visible?.certificadoModal && (
             <div className="modal">
               <div>
                 <span>
@@ -721,14 +721,14 @@ const Perfis = ({
               <h5>Confirgurações de Perfil da Empresa</h5>
             </span>
             <span>
-              {!visible.companyModal ? (
+              {!visible?.companyModal ? (
                 <ChevronDown className="icon" />
               ) : (
                 <ChevronUp className="icon" />
               )}
             </span>
           </div>
-          {visible.companyModal && (
+          {visible?.companyModal && (
             <div className="modal">
               <div>
                 <span>
