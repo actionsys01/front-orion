@@ -8,40 +8,24 @@ import { Checkbox } from '@material-ui/core';
 const Perfis = ({
   availableApps,
   gatherData,
-  nfeModal,
-  setNfeModal,
   isNfe,
   setIsNfe,
-  cteModal,
-  setCteModal,
   isCte,
   setIsCte,
-  nfseModal,
-  setNfseModal,
   isNfse,
   setIsNfse,
   isEntrance,
   setIsEntrance,
-  entranceModal,
-  setEntranceModal,
-  profileModal,
-  setProfileModal,
   isProfile,
   setIsProfile,
-  usersModal,
-  setUsersModal,
   isUser,
   setIsUser,
   visible,
   setVisible,
   isCnpj,
   setIsCnpj,
-  certificadoVisible,
-  setCertificadoVisible,
   isCertificate,
   setIsCertificate,
-  companyModal,
-  setCompanyModal,
   isCompanyConfig,
   setIsCompanyConfig,
 }) => {
@@ -66,7 +50,9 @@ const Perfis = ({
         {availableApps.NFE && (
           <div className="body-row">
             <div
-              onClick={() => setNfeModal(!nfeModal)}
+              onClick={() =>
+                setVisible({ ...visible, nfeModal: !visible.nfeModal })
+              }
               style={{ cursor: 'pointer' }}
             >
               <span className="line">
@@ -76,14 +62,14 @@ const Perfis = ({
                 <h5>Painel e Visualização de Nf-e</h5>
               </span>
               <span>
-                {!nfeModal ? (
+                {!visible.nfeModal ? (
                   <ChevronDown className="icon" />
                 ) : (
                   <ChevronUp className="icon" />
                 )}
               </span>
             </div>
-            {nfeModal && (
+            {visible.nfeModal && (
               <div className="modal">
                 <div>
                   <span>
@@ -185,7 +171,9 @@ const Perfis = ({
         {availableApps.CTE && (
           <div className="body-row">
             <div
-              onClick={() => setCteModal(!cteModal)}
+              onClick={() =>
+                setVisible({ ...visible, cteModal: !visible.cteModal })
+              }
               style={{ cursor: 'pointer' }}
             >
               <span className="line">
@@ -195,14 +183,14 @@ const Perfis = ({
                 <h5>Painel e Visualização de Ct-e</h5>
               </span>
               <span>
-                {!cteModal ? (
+                {!visible.cteModal ? (
                   <ChevronDown className="icon" />
                 ) : (
                   <ChevronUp className="icon" />
                 )}
               </span>
             </div>
-            {cteModal && (
+            {visible.cteModal && (
               <div className="modal">
                 <div>
                   <span>
@@ -252,7 +240,9 @@ const Perfis = ({
         {availableApps.NFSE && (
           <div className="body-row">
             <div
-              onClick={() => setNfseModal(!nfseModal)}
+              onClick={() =>
+                setVisible({ ...visible, nfseModal: !visible.nfseModal })
+              }
               style={{ cursor: 'pointer' }}
             >
               <span className="line">
@@ -262,14 +252,14 @@ const Perfis = ({
                 <h5>Painel e Visualização de Nfs-e</h5>
               </span>
               <span>
-                {!nfseModal ? (
+                {!visible.nfseModal ? (
                   <ChevronDown className="icon" />
                 ) : (
                   <ChevronUp className="icon" />
                 )}
               </span>
             </div>
-            {nfseModal && (
+            {visible.nfseModal && (
               <div className="modal">
                 <div>
                   <span>
@@ -325,7 +315,12 @@ const Perfis = ({
         {availableApps.PORTARIA && (
           <div className="body-row">
             <div
-              onClick={() => setEntranceModal(!entranceModal)}
+              onClick={() =>
+                setVisible({
+                  ...visible,
+                  entranceModal: !visible.entranceModal,
+                })
+              }
               style={{ cursor: 'pointer' }}
             >
               <span className="line">
@@ -335,14 +330,14 @@ const Perfis = ({
                 <h5>Painel e Visualização de Portaria</h5>
               </span>
               <span>
-                {!entranceModal ? (
+                {!visible.entranceModal ? (
                   <ChevronDown className="icon" />
                 ) : (
                   <ChevronUp className="icon" />
                 )}
               </span>
             </div>
-            {entranceModal && (
+            {visible.entranceModal && (
               <div className="modal">
                 <div>
                   <span>
@@ -432,7 +427,12 @@ const Perfis = ({
         )}
         <div className="body-row">
           <div
-            onClick={() => setProfileModal(!profileModal)}
+            onClick={() =>
+              setVisible({
+                ...visible,
+                profileModal: !visible.profileModal,
+              })
+            }
             style={{ cursor: 'pointer' }}
           >
             <span className="line">
@@ -442,14 +442,14 @@ const Perfis = ({
               <h5>Cadastro de Perfis</h5>
             </span>
             <span>
-              {!profileModal ? (
+              {!visible.profileModal ? (
                 <ChevronDown className="icon" />
               ) : (
                 <ChevronUp className="icon" />
               )}
             </span>
           </div>
-          {profileModal && (
+          {visible.profileModal && (
             <div className="modal">
               <div>
                 <span>
@@ -503,7 +503,12 @@ const Perfis = ({
         </div>
         <div className="body-row">
           <div
-            onClick={() => setUsersModal(!usersModal)}
+            onClick={() =>
+              setVisible({
+                ...visible,
+                usersModal: !visible.usersModal,
+              })
+            }
             style={{ cursor: 'pointer' }}
           >
             <span className="line">
@@ -513,14 +518,14 @@ const Perfis = ({
               <h5>Cadastro de Usuários</h5>
             </span>
             <span>
-              {!usersModal ? (
+              {!visible.usersModal ? (
                 <ChevronDown className="icon" />
               ) : (
                 <ChevronUp className="icon" />
               )}
             </span>
           </div>
-          {usersModal && (
+          {visible.usersModal && (
             <div className="modal">
               <div>
                 <span>
@@ -568,7 +573,12 @@ const Perfis = ({
         </div>
         <div className="body-row">
           <div
-            onClick={() => setVisible(!visible)}
+            onClick={() =>
+              setVisible({
+                ...visible,
+                cnpjModal: !visible.cnpjModal,
+              })
+            }
             style={{ cursor: 'pointer' }}
           >
             <span className="line">
@@ -578,14 +588,14 @@ const Perfis = ({
               <h5>Cadastro de CNPJs</h5>
             </span>
             <span>
-              {!visible ? (
+              {!visible.cnpjModal ? (
                 <ChevronDown className="icon" />
               ) : (
                 <ChevronUp className="icon" />
               )}
             </span>
           </div>
-          {visible && (
+          {visible.cnpjModal && (
             <div className="modal">
               <div>
                 <span>
@@ -633,7 +643,12 @@ const Perfis = ({
         </div>
         <div className="body-row">
           <div
-            onClick={() => setCertificadoVisible(!certificadoVisible)}
+            onClick={() =>
+              setVisible({
+                ...visible,
+                certificadoModal: !visible.certificadoModal,
+              })
+            }
             style={{ cursor: 'pointer' }}
           >
             <span className="line">
@@ -643,14 +658,14 @@ const Perfis = ({
               <h5>Upload do Certificado Digital</h5>
             </span>
             <span>
-              {!certificadoVisible ? (
+              {!visible.certificadoModal ? (
                 <ChevronDown className="icon" />
               ) : (
                 <ChevronUp className="icon" />
               )}
             </span>
           </div>
-          {certificadoVisible && (
+          {visible.certificadoModal && (
             <div className="modal">
               <div>
                 <span>
@@ -691,7 +706,12 @@ const Perfis = ({
         </div>
         <div className="body-row">
           <div
-            onClick={() => setCompanyModal(!companyModal)}
+            onClick={() =>
+              setVisible({
+                ...visible,
+                companyModal: !visible.companyModal,
+              })
+            }
             style={{ cursor: 'pointer' }}
           >
             <span className="line">
@@ -701,14 +721,14 @@ const Perfis = ({
               <h5>Confirgurações de Perfil da Empresa</h5>
             </span>
             <span>
-              {!companyModal ? (
+              {!visible.companyModal ? (
                 <ChevronDown className="icon" />
               ) : (
                 <ChevronUp className="icon" />
               )}
             </span>
           </div>
-          {companyModal && (
+          {visible.companyModal && (
             <div className="modal">
               <div>
                 <span>

@@ -1,12 +1,10 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import BotaoVoltar from '@components/BotaoVoltar';
-import { Table, ButtonStyle } from './style';
+import { ButtonStyle } from './style';
 import { useSession } from 'next-auth/client';
-import { Checkbox } from '@material-ui/core';
 import * as perfil from '@services/perfis';
 import * as planos from '@services/planos';
 import Head from 'next/head';
-import { ChevronDown, ChevronUp } from '@geist-ui/react-icons';
 import { useRouter } from 'next/router';
 import { useToasts } from '@geist-ui/react';
 import { accountsResources } from '@utils/permissions-labels';
@@ -17,6 +15,7 @@ import {
   initialStateB,
   availableResources,
 } from '@utils/initial-states';
+import { initialStates } from './utils/initialStates';
 import Perfis from './perfis';
 
 export default function PerfilCadastro() {
@@ -24,15 +23,7 @@ export default function PerfilCadastro() {
   const [session] = useSession();
   const [, setToast] = useToasts();
   // modais
-  const [nfeModal, setNfeModal] = useState(false);
-  const [cteModal, setCteModal] = useState(false);
-  const [nfseModal, setNfseModal] = useState(false);
-  const [entranceModal, setEntranceModal] = useState(false);
-  const [usersModal, setUsersModal] = useState(false);
-  const [profileModal, setProfileModal] = useState(false);
-  const [certificadoVisible, setCertificadoVisible] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const [companyModal, setCompanyModal] = useState(false);
+  const [visible, setVisible] = useState({ ...initialStates });
   // checkbox
   const [isNfe, setIsNfe] = useState({ ...initialState });
   const [isCte, setIsCte] = useState({ ...initialStateB });
@@ -110,40 +101,24 @@ export default function PerfilCadastro() {
       <Perfis
         availableApps={availableApps}
         gatherData={gatherData}
-        nfeModal={nfeModal}
-        setNfeModal={setNfeModal}
         isNfe={isNfe}
         setIsNfe={setIsNfe}
-        cteModal={cteModal}
-        setCteModal={setCteModal}
         isCte={isCte}
         setIsCte={setIsCte}
-        nfseModal={nfseModal}
-        setNfseModal={setNfseModal}
         isNfse={isNfse}
         setIsNfse={setIsNfse}
         isEntrance={isEntrance}
         setIsEntrance={setIsEntrance}
-        entranceModal={entranceModal}
-        setEntranceModal={setEntranceModal}
-        profileModal={profileModal}
-        setProfileModal={setProfileModal}
         isProfile={isProfile}
         setIsProfile={setIsProfile}
-        usersModal={usersModal}
-        setUsersModal={setUsersModal}
         isUser={isUser}
         setIsUser={setIsUser}
         visible={visible}
         setVisible={setVisible}
         isCnpj={isCnpj}
         setIsCnpj={setIsCnpj}
-        certificadoVisible={certificadoVisible}
-        setCertificadoVisible={setCertificadoVisible}
         isCertificate={isCertificate}
         setIsCertificate={setIsCertificate}
-        companyModal={companyModal}
-        setCompanyModal={setCompanyModal}
         isCompanyConfig={isCompanyConfig}
         setIsCompanyConfig={setIsCompanyConfig}
       />
