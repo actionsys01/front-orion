@@ -1,3 +1,12 @@
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
+
+import { useSecurityContext } from '@contexts/security';
+
+import getProfileAnTotalByCompanyId from '@services/perfis/getProfileAnTotalByCompanyId';
+
+import capitalize from '@utils/capitalize';
+
+import { RefreshCw } from '@geist-ui/react-icons';
 import {
   Button,
   Input,
@@ -14,15 +23,14 @@ import { useSession } from 'next-auth/client';
 import { Plus } from '@geist-ui/react-icons';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useMemo, useState, useEffect, useCallback } from 'react';
+
+import Popover from '@components/Popover';
+
 import { Grid } from './styled';
-import { Pages } from '@styles/pages';
-import { useSecurityContext } from '@contexts/security';
 import ProfilePopover from './Popover';
-import capitalize from '@utils/capitalize';
-import getProfileAnTotalByCompanyId from '@services/perfis/getProfileAnTotalByCompanyId';
-import { RefreshCw } from '@geist-ui/react-icons';
+import { Pages } from '@styles/pages';
 import { RefreshBtn } from '@styles/RefreshBtn';
+import { TableGrid } from '@styles/tableStyle';
 
 export interface IPerfilAplicacao {
   id: number;
@@ -52,7 +60,7 @@ export default function PerfilAcesso() {
   const { profilePermission } = useSecurityContext();
   const { setVisible, bindings } = useModal();
   const [planoId, setPlanoId] = useState<number>();
-  const [perfilId, setPerfiId] = useState<number>();
+  // const [perfilId, setPerfiId] = useState<number>();
   const [nome, setNome] = useState<string>('');
   const [descricao, setDescricao] = useState<string>('');
   const [perfisAplicacoes, setPerfisAplicacoes] = useState<IPerfilAplicacao[]>(
@@ -71,15 +79,22 @@ export default function PerfilAcesso() {
   };
 
   const getProfileData = useCallback(async () => {
-    const response = await getProfileAnTotalByCompanyId(
-      session?.usuario.empresa.id,
-      page,
-    );
+    try {
+      const response = await getProfileAnTotalByCompanyId(
+        session?.usuario.empresa.id,
+        page,
+      );
+      const { data } = response;
 
-    const { data } = response;
-
-    setQuantityPage(Math.ceil(data.total / 8));
-    setPerfisAplicacoes(data.perfis);
+      setQuantityPage(Math.ceil(data.total / 8));
+      setPerfisAplicacoes(data.perfis);
+    } catch (error) {
+      console.log('error', error);
+      setToast({
+        text: 'Houve um problema, por favor tente novamente',
+        type: 'warning',
+      });
+    }
   }, [page]);
 
   useEffect(() => {
@@ -91,14 +106,15 @@ export default function PerfilAcesso() {
   const perfis = useMemo(() => {
     const perfis: any = [];
     if (perfisAplicacoes) {
-      perfisAplicacoes.forEach(item => {
+      perfisAplicacoes.forEach((item, i) => {
         perfis.push({
           ...item,
           nome: capitalize(item.nome),
-          link: (action: any, data: any) => (
+          option: (
             <ProfilePopover
-              data={data}
+              data={item}
               setPerfisAplicacoes={setPerfisAplicacoes}
+              i={i}
             />
           ),
         });
@@ -160,26 +176,36 @@ export default function PerfilAcesso() {
           Adicionar
         </Button>
       </Row>
-
-      <Spacer y={1} />
-
-      <Grid>
-        {profilePermission.ADICIONAR && (
-          <Table data={perfis}>
-            <Table.Column prop="link" width={15} />
-            <Table.Column prop="nome" label="Nome" width={500} />
-            <Table.Column prop="descricao" label="Descrição" width={500} />
-          </Table>
-        )}
-        <Pages>
-          <Pagination
-            style={{ margin: '0 auto' }}
-            onChange={handleChange}
-            count={quantityPage}
-            shape="rounded"
-          />
-        </Pages>
-      </Grid>
+      <TableGrid>
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Nome</th>
+              <th>Descrição</th>
+            </tr>
+          </thead>
+          {profilePermission.ADICIONAR && (
+            <tbody>
+              {perfis.map((item, i) => (
+                <tr key={i}>
+                  <td>{item.option}</td>
+                  <td>{item.nome}</td>
+                  <td>{item.descricao}</td>
+                </tr>
+              ))}
+            </tbody>
+          )}
+        </table>
+      </TableGrid>
+      <Pages>
+        <Pagination
+          style={{ margin: '0 auto' }}
+          onChange={handleChange}
+          count={quantityPage}
+          shape="rounded"
+        />
+      </Pages>
 
       <Modal
         disableBackdropClick={true}
