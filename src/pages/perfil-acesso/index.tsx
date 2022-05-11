@@ -176,6 +176,7 @@ export default function PerfilAcesso() {
           Adicionar
         </Button>
       </Row>
+      <Spacer y={1} />
       <TableGrid>
         <table>
           <thead>
