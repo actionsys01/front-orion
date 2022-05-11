@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import Pagination from '@material-ui/lab/Pagination';
 import { Grid, Pages } from './style';
+import { TableGrid } from '@styles/tableStyle';
 import { useRouter } from 'next/router';
 import { format } from 'date-fns';
 import PopoverComponent from './Popover';
@@ -70,7 +71,7 @@ export default function NfePagination({ company_id, sefaz, portaria }: Props) {
 
   // console.log('nfe.controle_entrada', nfe);
 
-  const dataFormatted = useMemo(() => {
+  const gatheredData = useMemo(() => {
     const newData: any = [];
     if (nfe) {
       nfe.forEach(item => {
@@ -151,7 +152,7 @@ export default function NfePagination({ company_id, sefaz, portaria }: Props) {
     <>
       <Grid>
         {nfePermissions.VISUALIZAR && (
-          <Table data={dataFormatted}>
+          <Table data={gatheredData}>
             <Table.Column prop="option" />
             <Table.Column prop="emissionDate" label="Data/hora Emissão" />
             <Table.Column prop="nota" label="Número" />

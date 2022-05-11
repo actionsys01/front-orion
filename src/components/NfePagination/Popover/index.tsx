@@ -188,7 +188,6 @@ const PopoverComponent: React.FC<PopoverProps> = ({ item }) => {
                             </Text>
                           </Popover.Item>
                         )}
-
                         {nfePermissions.CONFIRMACAO && (
                           <Popover.Item>
                             <Text
