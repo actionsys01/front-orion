@@ -1,13 +1,7 @@
-import React, {
-  useState,
-  useMemo,
-  useEffect,
-  useCallback,
-  useRef,
-} from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Plus, Filter } from '@geist-ui/react-icons';
+import { Plus } from '@geist-ui/react-icons';
 import { EntranceGrid, BtnRow } from './style';
 import Popover from '@components/Popover';
 import * as entrances from '@services/controle-entrada';
@@ -23,6 +17,8 @@ import EntranceModal from './modal';
 import { useSecurityContext } from '@contexts/security';
 import ModalHandler from './modalHandler';
 import { entranceInitials } from '@utils/initial-states';
+import { RefreshCw } from '@geist-ui/react-icons';
+import { RefreshBtn } from '@styles/RefreshBtn';
 
 interface Entrance {
   id: number;
@@ -333,6 +329,13 @@ export default function ControleEntrada() {
         <div>
           <RadioFilter />
         </div>
+        <RefreshBtn style={{ margin: '0 0 0 110px' }}>
+          <RefreshCw
+            onClick={() => {
+              getControlData();
+            }}
+          />
+        </RefreshBtn>
         <div>
           <FilterModal data={filters} />
           <button

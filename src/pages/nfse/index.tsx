@@ -17,6 +17,8 @@ import Danfse from '@components/danfse';
 import { useSecurityContext } from '@contexts/security';
 import * as nfseRequest from '@services/nfse';
 import Loader from '@components/Loader';
+import { RefreshCw } from '@geist-ui/react-icons';
+import { RefreshBtn } from '@styles/RefreshBtn';
 
 interface GatheredProps {
   id: number;
@@ -181,6 +183,14 @@ export default function Nfse() {
       </Head>
       <h2>Painel de Controle NFS-e</h2>
       <RowBtn>
+        <RefreshBtn>
+          <RefreshCw
+            onClick={() => {
+              setLoading(true);
+              getNfsesAndTotalPages();
+            }}
+          />
+        </RefreshBtn>
         <Filtro abaAtual={'nfse'} data={nfses} />
       </RowBtn>
       <TableGrid>
