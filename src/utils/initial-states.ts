@@ -69,5 +69,5 @@ export const availableResources = {
   NFE: false,
   CTE: false,
   NFSE: false,
-  PORTARIA: false,
+  ENTRADA: false,
 };
