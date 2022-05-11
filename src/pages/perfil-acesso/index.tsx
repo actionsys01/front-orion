@@ -24,9 +24,6 @@ import { Plus } from '@geist-ui/react-icons';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import Popover from '@components/Popover';
-
-import { Grid } from './styled';
 import ProfilePopover from './Popover';
 import { Pages } from '@styles/pages';
 import { RefreshBtn } from '@styles/RefreshBtn';
