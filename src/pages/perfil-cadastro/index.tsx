@@ -1,19 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState} from 'react';
 import BotaoVoltar from '@components/BotaoVoltar';
 import { ButtonStyle } from './style';
 import { useSession } from 'next-auth/client';
 import * as perfil from '@services/perfis';
-import * as planos from '@services/planos';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useToasts } from '@geist-ui/react';
-import { accountsResources } from '@utils/permissions-labels';
 import {
   initialState,
   initial,
   initialStateEntrada,
   initialStateB,
-  availableResources,
 } from '@utils/initial-states';
 import { initialStates } from './utils/initialStates';
 import Perfis from './perfis';
@@ -34,22 +31,9 @@ export default function PerfilCadastro() {
   const [isEntrance, setIsEntrance] = useState({ ...initialStateEntrada });
   const [isNfse, setIsNfse] = useState({ ...initialStateB });
   const [isCompanyConfig, setIsCompanyConfig] = useState(false);
-
-  const [availableApps, setAvailableApps] = useState({ ...availableResources });
   const [profileApp, setProfileApp] = useState<number[]>([]);
 
-  const getAccountResources = useCallback(async () => {
-    const response = await planos.getAccountById(Number(router.query.planoId));
-    const data = response.data.aplicacoes;
-    const apps: [] = data.map(item => item.categoria);
-    let currentApps;
-    for (let i = 0; i < apps.length; i++) {
-      currentApps = accountsResources.find(item => item === apps[i]);
-      const accountApps = availableApps;
-      accountApps[currentApps] = true;
-      setAvailableApps(accountApps);
-    }
-  }, []);
+
 
   const gatherData = (e: any) => {
     const findProfileApp = profileApp.find(value => value === Number(e));
@@ -82,18 +66,6 @@ export default function PerfilCadastro() {
     router.push({ pathname: '/perfil-acesso' });
   }
 
-  useEffect(() => {
-    console.log('availableApps', availableApps);
-  }, [availableApps]);
-
-  useEffect(() => {
-    getAccountResources();
-  }, []);
-
-  useEffect(() => {
-    console.log('availableApps', availableApps);
-  }, [availableApps]);
-
   return (
     <>
       <Head>
@@ -107,7 +79,6 @@ export default function PerfilCadastro() {
         </button>
       </ButtonStyle>
       <Perfis
-        availableApps={availableApps}
         gatherData={gatherData}
         isNfe={isNfe}
         setIsNfe={setIsNfe}
