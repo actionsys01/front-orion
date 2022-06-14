@@ -8,6 +8,8 @@ import FiltroContextProvider from '@contexts/filtro-cadastros';
 import { SecurityProvider } from '@contexts/security';
 import { CompanyProvider } from '@contexts/company';
 import ControlFilterProvider from '@contexts/ControlFilter';
+import FiltroRefCruzadaDadosContextProvider from '@contexts/filtro-referencia-cruzada';
+import FiltroFornecedoresDadosContextProvider from '@contexts/filtro-fornecedores-referencia-cruzada';
 import {
   CssBaseline,
   GeistProvider,
@@ -75,40 +77,44 @@ export default function App({ Component, pageProps }: any) {
         <FiltroProvider>
           <ControlFilterProvider>
             <FiltroContextProvider>
-              <FiltroDadosContext>
-                <FiltroItemContext>
-                  <SecurityProvider>
-                    <CompanyProvider>
-                      <ThemeProvider theme={orionTheme}>
-                        <Head> </Head>
-                        {Component.auth ? (
-                          <Auth>
-                            <Container>
-                              <MenuLateral
-                                collapsed={collapsed}
-                                setCollapsed={setCollapsed}
-                                toggled={toggle}
-                                setToggled={setToggle}
-                              />
-                              <Main>
-                                {isXS && (
-                                  <AlignCenter
-                                    onClick={() => setToggle(!toggle)}
+              <FiltroFornecedoresDadosContextProvider>
+                <FiltroRefCruzadaDadosContextProvider>
+                  <FiltroDadosContext>
+                    <FiltroItemContext>
+                      <SecurityProvider>
+                        <CompanyProvider>
+                            <ThemeProvider theme={orionTheme}>
+                            <Head> </Head>
+                            {Component.auth ? (
+                              <Auth>
+                                <Container>
+                                  <MenuLateral
+                                    collapsed={collapsed}
+                                    setCollapsed={setCollapsed}
+                                    toggled={toggle}
+                                    setToggled={setToggle}
                                   />
-                                )}
+                                  <Main>
+                                    {isXS && (
+                                      <AlignCenter
+                                        onClick={() => setToggle(!toggle)}
+                                      />
+                                    )}
 
+                                    <Component {...pageProps} />
+                                  </Main>
+                                </Container>
+                              </Auth>
+                              ) : (
                                 <Component {...pageProps} />
-                              </Main>
-                            </Container>
-                          </Auth>
-                        ) : (
-                          <Component {...pageProps} />
-                        )}
-                      </ThemeProvider>
-                    </CompanyProvider>
-                  </SecurityProvider>
-                </FiltroItemContext>
-              </FiltroDadosContext>
+                              )}
+                            </ThemeProvider>
+                        </CompanyProvider>
+                      </SecurityProvider>
+                    </FiltroItemContext>
+                  </FiltroDadosContext>
+                </FiltroRefCruzadaDadosContextProvider>
+              </FiltroFornecedoresDadosContextProvider>
             </FiltroContextProvider>
           </ControlFilterProvider>
         </FiltroProvider>
