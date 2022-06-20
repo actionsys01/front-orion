@@ -109,7 +109,7 @@ export default function CadastrosDados() {
             text: 'Houve um problema. Por favor tente novamente',
             type: 'warning',
           });
-          LoadAndGetData(setLoading, getDadosCadastrosPages);
+          // LoadAndGetData(setLoading, getDadosCadastrosPages);
         }
       });
     } catch (error) {
