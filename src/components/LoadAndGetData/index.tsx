@@ -8,7 +8,7 @@ const LoadAndGetData = (
     setLoading(true),
     setTimeout(() => {
       onClick();
-    }, 2500)
+    }, 1600)
   );
 };
 
