@@ -11,7 +11,7 @@ import {
   ModalBackground,
 } from '../style';
 import FilterLine from '../FilterLine';
-import { useFiltro } from '@contexts/filtro-fornecedores-referencia-cruzada';
+import { useFiltro } from '@contexts/filtro-regras-busca';
 
 interface FormData {
   filtros: [{ campo: string; valor: string; compare: string }];
@@ -22,8 +22,8 @@ interface IFilter {
   valor: string | number;
   compare: string;
 }
-
 interface IProps {
+  // abaAtual: 'nfe' | 'cte' | 'nfse';
   data: IFilter[];
 }
 
@@ -31,7 +31,7 @@ export default function Filtro({ data }: IProps) {
   const formRef = useRef<FormHandles>(null);
 
   const {
-    cadastrarFornecedores,
+    cadastrarRegrasBusca,
     scopeIgnition,
     scopeIgnitionCompare,
   } = useFiltro();
@@ -57,7 +57,7 @@ export default function Filtro({ data }: IProps) {
 
   const handleSubmit: SubmitHandler = (data: FormData) => {
     if (data.filtros === undefined) {
-      cadastrarFornecedores([]);
+      cadastrarRegrasBusca([]);
       setErro(false);
       setModalVisivel(false);
       return;
@@ -70,7 +70,7 @@ export default function Filtro({ data }: IProps) {
       return;
     } else {
       const filtro = scopeIgnition(data.filtros)
-      cadastrarFornecedores(filtro)
+      cadastrarRegrasBusca(filtro)
     }
 
     setErro(false);
@@ -86,7 +86,7 @@ export default function Filtro({ data }: IProps) {
         return;
       }
     }
-    cadastrarFornecedores([])
+    cadastrarRegrasBusca([])
     setErro(false);
     setModalVisivel(false);
   }

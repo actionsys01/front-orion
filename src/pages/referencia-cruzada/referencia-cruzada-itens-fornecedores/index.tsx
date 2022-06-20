@@ -108,8 +108,10 @@ export default function CadastroReferenciaCruzada() {
       newData.forEach(async data => {
 
         const verify = await request.VerifyUnique(data.item_fornecedor, mainData.codigo_pessoa, mainData.id_empresa,[])
-        
+
+        console.log('verify', verify)
         if(verify.data) {
+          console.log('verify.data', verify.data)
           setToast({
             text: 'Houve duplicidade de registros, por favor verifique !',
             type: 'warning',
@@ -240,16 +242,12 @@ export default function CadastroReferenciaCruzada() {
     }
     return allData;
   }, [appData]);
-
-
   async function getValidColumns() {
     const newAppData = [...appData];
     console.log('newAppData', newAppData)
     newAppData.push({ ...InitialDadosRef });
     setAppData(newAppData);
   }
-
-
   return (
     <>
       <Head>

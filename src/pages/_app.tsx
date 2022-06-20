@@ -10,6 +10,7 @@ import { CompanyProvider } from '@contexts/company';
 import ControlFilterProvider from '@contexts/ControlFilter';
 import FiltroRefCruzadaDadosContextProvider from '@contexts/filtro-referencia-cruzada';
 import FiltroFornecedoresDadosContextProvider from '@contexts/filtro-fornecedores-referencia-cruzada';
+import FiltroRegrasBuscaDadosContextProvider from '@contexts/filtro-regras-busca'
 import {
   CssBaseline,
   GeistProvider,
@@ -77,6 +78,7 @@ export default function App({ Component, pageProps }: any) {
         <FiltroProvider>
           <ControlFilterProvider>
             <FiltroContextProvider>
+            <FiltroRegrasBuscaDadosContextProvider>
               <FiltroFornecedoresDadosContextProvider>
                 <FiltroRefCruzadaDadosContextProvider>
                   <FiltroDadosContext>
@@ -115,6 +117,7 @@ export default function App({ Component, pageProps }: any) {
                   </FiltroDadosContext>
                 </FiltroRefCruzadaDadosContextProvider>
               </FiltroFornecedoresDadosContextProvider>
+              </FiltroRegrasBuscaDadosContextProvider>
             </FiltroContextProvider>
           </ControlFilterProvider>
         </FiltroProvider>
