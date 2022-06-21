@@ -2,13 +2,13 @@ import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/client';
 import { useToasts } from '@geist-ui/react';
 import Head from 'next/head';
-import { PlusSquare, Filter } from '@geist-ui/react-icons';
+import { PlusSquare } from '@geist-ui/react-icons';
 import { Pages } from '@styles/pages';
 import Pagination from '@material-ui/lab/Pagination';
+import Loader from '@components/Loader';
 import { useRouter } from 'next/router';
 import { TableGrid } from '@styles/tableStyle';
 import Popover from '@components/Popover';
-import Loader from '@components/Loader';
 import paginate from '@utils/paginate';
 import { AddBtn } from '@styles/buttons';
 import BotaoVoltar from '@components/BotaoVoltar';
@@ -20,6 +20,7 @@ import { format } from 'date-fns';
 import DeleteModal from './modal';
 import { useFiltro } from '@contexts/filtro-dados';
 import Filtro from '@components/Filtro-Dados/Filter-Modal';
+import LoadAndGetData from '@components/LoadAndGetData';
 
 const initialValues = {
   chave_8: false,
@@ -33,6 +34,7 @@ export default function CadastrosDados() {
   const [session] = useSession();
   const router = useRouter();
   const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [quantityPage, setQuantityPage] = useState(1);
   const [visibleModal, setVisibleModal] = useState(false);
   const [columnData, setColumnData] = useState({} as IConfigData);
@@ -48,7 +50,6 @@ export default function CadastrosDados() {
   });
 
   const { dados, getData } = useFiltro();
-  // console.log('router.query', router.query)
 
   const getDadosCadastrosPages = useCallback(async () => {
     try {
@@ -69,6 +70,7 @@ export default function CadastrosDados() {
       data.valor_date_1 && setDates({ ...dates, valor_date_1: true });
       data.valor_date_2 && setDates({ ...dates, valor_date_2: true });
       data.valor_date_3 && setDates({ ...dates, valor_date_3: true });
+      setLoading(false);
     } catch (error) {
       console.log(error);
       setToast({
@@ -90,18 +92,25 @@ export default function CadastrosDados() {
     const newData = appData.filter(item => item.active);
     // console.log('newData', newData);
     try {
-      await newData.forEach(async data => {
-        await request.CreateDado({
-          id_empresa: mainData.id_empresa,
-          // cod_categoria: String(mainData.cod_categoria),
-          aplicacao: Number(mainData.aplicacao),
-          // desc_aplicacao: String(mainData.desc_aplicacao),
-          ...data,
-        });
-      });
-      setToast({
-        text: 'Cadastro concluído',
-        type: 'success',
+      newData.forEach(async data => {
+        try {
+          await request.CreateDado({
+            id_empresa: mainData.id_empresa,
+            aplicacao: Number(mainData.aplicacao),
+            ...data,
+          });
+          setToast({
+            text: 'Cadastro concluído',
+            type: 'success',
+          });
+          LoadAndGetData(setLoading, getDadosCadastrosPages);
+        } catch (error) {
+          setToast({
+            text: 'Houve um problema. Por favor tente novamente',
+            type: 'warning',
+          });
+          // LoadAndGetData(setLoading, getDadosCadastrosPages);
+        }
       });
     } catch (error) {
       console.log(error);
@@ -160,9 +169,16 @@ export default function CadastrosDados() {
     }
   }, [page, quantityPage]);
 
-  // useEffect(() => {
-  //   console.log('appData', appData);
-  // }, [appData]);
+  function loadAndGet() {
+    setLoading(true);
+    setTimeout(() => {
+      getDadosCadastrosPages();
+    }, 3000);
+  }
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <>
