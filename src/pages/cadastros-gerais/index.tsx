@@ -46,7 +46,7 @@ export default function CadastrosGerais() {
         </div>
         <div>
           <label htmlFor="second"> De/Para CNPJ Fornecedor</label>
-          <Inbox id="second" />
+          <Inbox id="second" onClick={() => router.push('/regras-busca')}/>
         </div>
         <div>
           <label htmlFor="third">Cadastro de Códigos de Categoria</label>

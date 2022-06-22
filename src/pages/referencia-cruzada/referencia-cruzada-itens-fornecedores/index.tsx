@@ -2,13 +2,12 @@ import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/client';
 import { useToasts } from '@geist-ui/react';
 import Head from 'next/head';
-import { PlusSquare, Filter } from '@geist-ui/react-icons';
+import { PlusSquare} from '@geist-ui/react-icons';
 import { Pages } from '@styles/pages';
 import Pagination from '@material-ui/lab/Pagination';
 import { useRouter } from 'next/router';
 import { TableGrid } from '@styles/tableStyle';
 import Popover from '@components/Popover';
-import Loader from '@components/Loader';
 import BotaoVoltar from '@components/BotaoVoltar';
 import * as request from '@services/referencia-cruzada';
 import { ICreateReferenciaCruzada, IDados, IGatheredDados } from '@services/referencia-cruzada/types';
@@ -16,12 +15,8 @@ import { CollumHide, IconBtn, InfoFornecedor } from './style';
 import DeleteModal from './modal';
 import { useFiltro } from '@contexts/filtro-referencia-cruzada';
 import Filtro from '@components/Filtro-Referencia-Cruzada/Filter-Modal';
-
-import { BtnRow } from '@styles/buttons';
-import paginate from '@utils/paginate';
+import LoadAndGetData from '@components/LoadAndGetData';
 import { AddBtn } from '@styles/buttons';
-
-import * as companyRequest from '@services/empresas';
 import { ImportTableData } from '@pages/itens/style';
 import { InitialDadosRef } from '@utils/filtros/colunas/colunas_referencia_cruzada';
 
@@ -45,15 +40,11 @@ export default function CadastroReferenciaCruzada() {
   const [session] = useSession();
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [unique, setUnique] = useState(false)
-
   const [quantityPage, setQuantityPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [visibleModal, setVisibleModal] = useState(false);
   const [dataId, setDataId] = useState(0);
-
   const { dadosRefCruzada  } = useFiltro();
-  
   const [dataActive, setDataActive] = useState(false);
   const [columnData, setColumnData] = useState({} as ICreateReferenciaCruzada);
   const [appData, setAppData] = useState<IDados[]>([]);
@@ -99,26 +90,9 @@ export default function CadastroReferenciaCruzada() {
   
   async function saveChanges() {
     const newData = appData.filter(item => item.active);
-    const otherData = appData.filter(item => item.item_fornecedor);
-    console.log('newData', newData);
-    
-    
     try {
-      
       newData.forEach(async data => {
-
-        const verify = await request.VerifyUnique(data.item_fornecedor, mainData.codigo_pessoa, mainData.id_empresa,[])
-
-        console.log('verify', verify)
-        if(verify.data) {
-          console.log('verify.data', verify.data)
-          setToast({
-            text: 'Houve duplicidade de registros, por favor verifique !',
-            type: 'warning',
-          });
-          return
-        }
-        // validações dos campos a serem inseridos pelo usuario
+        try {
 
           if (data.item_fornecedor.length === 0 || data.item_fornecedor === '---') {
             setToast({
@@ -177,9 +151,8 @@ export default function CadastroReferenciaCruzada() {
             });
             return
           }
-          
-          // criando registro no banco de dados
-          
+          // post no banco de dados
+
           await request.CreateReferenciaCruzada({
             codigo_fornecedor: Number(mainData.codigo_pessoa),
             ...data,
@@ -188,8 +161,14 @@ export default function CadastroReferenciaCruzada() {
             text: 'Cadastro concluído',
             type: 'success',
           });
+          LoadAndGetData(setLoading, getRefcAndTotalPages);
+        } catch (error) {
+          setToast({
+            text: 'Houve duplicidade de registros, por favor verifique !',
+            type: 'warning',
+          });
+        }
       });
-      
     } catch (error) {
       console.log(error);
       setToast({

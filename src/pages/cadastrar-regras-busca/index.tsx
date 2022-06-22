@@ -11,15 +11,7 @@ import { IUpdateRegrasBusca } from '@services/regras-busca/types';
 
 export default function CadastrarRegrasDeBusca() {
     const [, setToast] = useToasts();
-    const [session] = useSession();
     const router = useRouter();
-    const [mainData, setMainData] = useState({
-        id_empresa: Number(session?.usuario.empresa.id),
-        cod_categoria: router?.query?.cod,
-        aplicacao: router?.query?.app,
-        desc_aplicacao: router?.query?.desc,
-        id: router?.query?.id,
-    });
     const [registro, setRegistro] = useState({} as IUpdateRegrasBusca);
 
 

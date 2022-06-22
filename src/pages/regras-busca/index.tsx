@@ -98,6 +98,9 @@ export default function RegrasDeBusca() {
                   onClick: () => {
                     router.push({
                       pathname: '/atualizar-regras-busca',
+                      query: {
+                        id: item.id,
+                      },
                     });
                   },
                   className: 'able',
