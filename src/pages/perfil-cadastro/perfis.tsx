@@ -94,7 +94,7 @@ const Perfis = ({
               )}
             </span>
           </div>
-          {visible.nfeModal && (
+          {visible?.nfeModal && (
             <div className="modal">
               <div>
                 <span>
@@ -207,14 +207,14 @@ const Perfis = ({
               <h5>Painel e Visualização de Ct-e</h5>
             </span>
             <span>
-              {!visible.cteModal ? (
+              {!visible?.cteModal ? (
                 <ChevronDown className="icon" />
               ) : (
                 <ChevronUp className="icon" />
               )}
             </span>
           </div>
-          {visible.cteModal && (
+          {visible?.cteModal && (
             <div className="modal">
               <div>
                 <span>
@@ -276,14 +276,14 @@ const Perfis = ({
               <h5>Painel e Visualização de Nfs-e</h5>
             </span>
             <span>
-              {!visible.nfseModal ? (
+              {!visible?.nfseModal ? (
                 <ChevronDown className="icon" />
               ) : (
                 <ChevronUp className="icon" />
               )}
             </span>
           </div>
-          {visible.nfseModal && (
+          {visible?.nfseModal && (
             <div className="modal">
               <div>
                 <span>
@@ -354,14 +354,14 @@ const Perfis = ({
               <h5>Painel e Visualização de Portaria</h5>
             </span>
             <span>
-              {!visible.entranceModal ? (
+              {!visible?.entranceModal ? (
                 <ChevronDown className="icon" />
               ) : (
                 <ChevronUp className="icon" />
               )}
             </span>
           </div>
-          {visible.entranceModal && (
+          {visible?.entranceModal && (
             <div className="modal">
               <div>
                 <span>
