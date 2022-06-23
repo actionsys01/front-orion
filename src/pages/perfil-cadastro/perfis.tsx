@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Table } from './style';
 import { ChevronDown, ChevronUp } from '@geist-ui/react-icons';
 import { Checkbox } from '@material-ui/core';
-
-// interface IPerfis {}
+import { accountsResources } from '@utils/permissions-labels';
+import * as planos from '@services/planos';
+import { useRouter } from 'next/router';
+import { availableResources } from '@utils/initial-states';
 
 const Perfis = ({
-  availableApps,
   gatherData,
   isNfe,
   setIsNfe,
@@ -29,6 +30,30 @@ const Perfis = ({
   isCompanyConfig,
   setIsCompanyConfig,
 }) => {
+  // const [availableApps, setAvailableApps] = useState({
+  //   ...availableResources,
+  // });
+
+  // const router = useRouter();
+
+  // async function getAccountResources() {
+  //   console.log('first');
+  //   const response = await planos.getAccountById(Number(router.query.planoId));
+  //   const data = response.data.aplicacoes;
+  //   const apps: [] = data.map(item => item.categoria);
+  //   let currentApps;
+  //   for (let i = 0; i < apps.length; i++) {
+  //     currentApps = accountsResources.find(item => item === apps[i]);
+  //     const accountApps = availableApps;
+  //     accountApps[currentApps] = true;
+  //     setAvailableApps(accountApps);
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   getAccountResources();
+  // }, [isNfe]);
+
   return (
     <Table>
       <div className="main">
@@ -47,384 +72,383 @@ const Perfis = ({
             <h5></h5>
           </span>
         </header>
-        {availableApps?.NFE && (
-          <div className="body-row">
-            <div
-              onClick={() =>
-                setVisible({ ...visible, nfeModal: !visible.nfeModal })
-              }
-              style={{ cursor: 'pointer' }}
-            >
-              <span className="line">
-                <h5>Nf-e</h5>
-              </span>
-              <span className="line">
-                <h5>Painel e Visualização de Nf-e</h5>
-              </span>
-              <span>
-                {!visible?.nfeModal ? (
-                  <ChevronDown className="icon" />
-                ) : (
-                  <ChevronUp className="icon" />
-                )}
-              </span>
-            </div>
-            {visible.nfeModal && (
-              <div className="modal">
-                <div>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={2}
-                        checked={isNfe.VISUALIZAR}
-                        onClick={() =>
-                          setIsNfe({
-                            ...isNfe,
-                            VISUALIZAR: !isNfe.VISUALIZAR,
-                          })
-                        }
-                        onChange={() => gatherData(2)}
-                      />
-                    </span>
-                    Visualizar
-                  </span>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={1}
-                        checked={isNfe.HISTORICO}
-                        onClick={() =>
-                          setIsNfe({ ...isNfe, HISTORICO: !isNfe.HISTORICO })
-                        }
-                        onChange={() => gatherData(1)}
-                      />
-                    </span>
-                    Histórico de Notas
-                  </span>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={3}
-                        checked={isNfe.CIENCIA}
-                        onClick={() =>
-                          setIsNfe({ ...isNfe, CIENCIA: !isNfe.CIENCIA })
-                        }
-                        onChange={() => gatherData(3)}
-                      />
-                    </span>
-                    Registrar Evento - Ciência da Operação
-                  </span>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={4}
-                        checked={isNfe.CONFIRMACAO}
-                        onClick={() =>
-                          setIsNfe({
-                            ...isNfe,
-                            CONFIRMACAO: !isNfe.CONFIRMACAO,
-                          })
-                        }
-                        onChange={() => gatherData(4)}
-                      />
-                    </span>
-                    Registrar Evento - Confirmação da Operação
-                  </span>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={6}
-                        checked={isNfe.OPERACAO_NAO_REALIZADA}
-                        onClick={() =>
-                          setIsNfe({
-                            ...isNfe,
-                            OPERACAO_NAO_REALIZADA:
-                              !isNfe.OPERACAO_NAO_REALIZADA,
-                          })
-                        }
-                        onChange={() => gatherData(6)}
-                      />
-                    </span>
-                    Registrar Evento - Operação Não Realizada
-                  </span>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={5}
-                        checked={isNfe.DESCONHECIMENTO}
-                        onClick={() =>
-                          setIsNfe({
-                            ...isNfe,
-                            DESCONHECIMENTO: !isNfe.DESCONHECIMENTO,
-                          })
-                        }
-                        onChange={() => gatherData(5)}
-                      />
-                    </span>
-                    Registrar Evento - Desconhecimento da Operação
-                  </span>
-                </div>
-              </div>
-            )}
+        {/* {availableApps?.NFE && ( */}
+        <div className="body-row">
+          <div
+            onClick={() =>
+              setVisible({ ...visible, nfeModal: !visible.nfeModal })
+            }
+            style={{ cursor: 'pointer' }}
+          >
+            <span className="line">
+              <h5>Nf-e</h5>
+            </span>
+            <span className="line">
+              <h5>Painel e Visualização de Nf-e</h5>
+            </span>
+            <span>
+              {!visible?.nfeModal ? (
+                <ChevronDown className="icon" />
+              ) : (
+                <ChevronUp className="icon" />
+              )}
+            </span>
           </div>
-        )}
-        {availableApps?.CTE && (
-          <div className="body-row">
-            <div
-              onClick={() =>
-                setVisible({ ...visible, cteModal: !visible.cteModal })
-              }
-              style={{ cursor: 'pointer' }}
-            >
-              <span className="line">
-                <h5>Ct-e</h5>
-              </span>
-              <span className="line">
-                <h5>Painel e Visualização de Ct-e</h5>
-              </span>
-              <span>
-                {!visible.cteModal ? (
-                  <ChevronDown className="icon" />
-                ) : (
-                  <ChevronUp className="icon" />
-                )}
-              </span>
-            </div>
-            {visible.cteModal && (
-              <div className="modal">
-                <div>
+          {visible?.nfeModal && (
+            <div className="modal">
+              <div>
+                <span>
                   <span>
-                    <span>
-                      <Checkbox
-                        checked={isCte.VISUALIZAR}
-                        onClick={() =>
-                          setIsCte({
-                            ...isCte,
-                            VISUALIZAR: !isCte.VISUALIZAR,
-                          })
-                        }
-                        onChange={() => gatherData(14)}
-                      />
-                    </span>
-                    Visualizar
+                    <Checkbox
+                      value={2}
+                      checked={isNfe.VISUALIZAR}
+                      onClick={() =>
+                        setIsNfe({
+                          ...isNfe,
+                          VISUALIZAR: !isNfe.VISUALIZAR,
+                        })
+                      }
+                      onChange={() => gatherData(2)}
+                    />
                   </span>
+                  Visualizar
+                </span>
+                <span>
                   <span>
-                    <span>
-                      <Checkbox
-                        checked={isCte.HISTORICO}
-                        onClick={() =>
-                          setIsCte({ ...isCte, HISTORICO: !isCte.HISTORICO })
-                        }
-                        onChange={() => gatherData(13)}
-                      />
-                    </span>
-                    Histórico de Notas
+                    <Checkbox
+                      value={1}
+                      checked={isNfe.HISTORICO}
+                      onClick={() =>
+                        setIsNfe({ ...isNfe, HISTORICO: !isNfe.HISTORICO })
+                      }
+                      onChange={() => gatherData(1)}
+                    />
                   </span>
+                  Histórico de Notas
+                </span>
+                <span>
                   <span>
-                    <span>
-                      <Checkbox
-                        checked={isCte.IMPRIMIR}
-                        onClick={() =>
-                          setIsCte({ ...isCte, IMPRIMIR: !isCte.IMPRIMIR })
-                        }
-                        onChange={() => gatherData(15)}
-                      />
-                    </span>
-                    Imprimir Notas
+                    <Checkbox
+                      value={3}
+                      checked={isNfe.CIENCIA}
+                      onClick={() =>
+                        setIsNfe({ ...isNfe, CIENCIA: !isNfe.CIENCIA })
+                      }
+                      onChange={() => gatherData(3)}
+                    />
                   </span>
-                </div>
+                  Registrar Evento - Ciência da Operação
+                </span>
+                <span>
+                  <span>
+                    <Checkbox
+                      value={4}
+                      checked={isNfe.CONFIRMACAO}
+                      onClick={() =>
+                        setIsNfe({
+                          ...isNfe,
+                          CONFIRMACAO: !isNfe.CONFIRMACAO,
+                        })
+                      }
+                      onChange={() => gatherData(4)}
+                    />
+                  </span>
+                  Registrar Evento - Confirmação da Operação
+                </span>
+                <span>
+                  <span>
+                    <Checkbox
+                      value={6}
+                      checked={isNfe.OPERACAO_NAO_REALIZADA}
+                      onClick={() =>
+                        setIsNfe({
+                          ...isNfe,
+                          OPERACAO_NAO_REALIZADA: !isNfe.OPERACAO_NAO_REALIZADA,
+                        })
+                      }
+                      onChange={() => gatherData(6)}
+                    />
+                  </span>
+                  Registrar Evento - Operação Não Realizada
+                </span>
+                <span>
+                  <span>
+                    <Checkbox
+                      value={5}
+                      checked={isNfe.DESCONHECIMENTO}
+                      onClick={() =>
+                        setIsNfe({
+                          ...isNfe,
+                          DESCONHECIMENTO: !isNfe.DESCONHECIMENTO,
+                        })
+                      }
+                      onChange={() => gatherData(5)}
+                    />
+                  </span>
+                  Registrar Evento - Desconhecimento da Operação
+                </span>
               </div>
-            )}
-          </div>
-        )}
-        {availableApps?.NFSE && (
-          <div className="body-row">
-            <div
-              onClick={() =>
-                setVisible({ ...visible, nfseModal: !visible.nfseModal })
-              }
-              style={{ cursor: 'pointer' }}
-            >
-              <span className="line">
-                <h5>Nfs-e</h5>
-              </span>
-              <span className="line">
-                <h5>Painel e Visualização de Nfs-e</h5>
-              </span>
-              <span>
-                {!visible.nfseModal ? (
-                  <ChevronDown className="icon" />
-                ) : (
-                  <ChevronUp className="icon" />
-                )}
-              </span>
             </div>
-            {visible.nfseModal && (
-              <div className="modal">
-                <div>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={17}
-                        checked={isNfse.VISUALIZAR}
-                        onClick={() =>
-                          setIsNfse({
-                            ...isNfse,
-                            VISUALIZAR: !isNfse.VISUALIZAR,
-                          })
-                        }
-                        onChange={() => gatherData(17)}
-                      />
-                    </span>
-                    Visualizar
-                  </span>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={16}
-                        checked={isNfse.HISTORICO}
-                        onClick={() =>
-                          setIsNfse({
-                            ...isNfse,
-                            HISTORICO: !isNfse.HISTORICO,
-                          })
-                        }
-                        onChange={() => gatherData(16)}
-                      />
-                    </span>
-                    Histórico de Notas
-                  </span>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={18}
-                        checked={isNfse.IMPRIMIR}
-                        onClick={() =>
-                          setIsNfse({ ...isNfse, IMPRIMIR: !isNfse.IMPRIMIR })
-                        }
-                        onChange={() => gatherData(18)}
-                      />
-                    </span>
-                    Imprimir Notas
-                  </span>
-                </div>
-              </div>
-            )}
+          )}
+        </div>
+        {/* // )}  */}
+        {/* {availableApps?.CTE && ( */}
+        <div className="body-row">
+          <div
+            onClick={() =>
+              setVisible({ ...visible, cteModal: !visible.cteModal })
+            }
+            style={{ cursor: 'pointer' }}
+          >
+            <span className="line">
+              <h5>Ct-e</h5>
+            </span>
+            <span className="line">
+              <h5>Painel e Visualização de Ct-e</h5>
+            </span>
+            <span>
+              {!visible?.cteModal ? (
+                <ChevronDown className="icon" />
+              ) : (
+                <ChevronUp className="icon" />
+              )}
+            </span>
           </div>
-        )}
-        {availableApps?.ENTRADA && (
-          <div className="body-row">
-            <div
-              onClick={() =>
-                setVisible({
-                  ...visible,
-                  entranceModal: !visible.entranceModal,
-                })
-              }
-              style={{ cursor: 'pointer' }}
-            >
-              <span className="line">
-                <h5>Entrada</h5>
-              </span>
-              <span className="line">
-                <h5>Painel e Visualização de Portaria</h5>
-              </span>
-              <span>
-                {!visible.entranceModal ? (
-                  <ChevronDown className="icon" />
-                ) : (
-                  <ChevronUp className="icon" />
-                )}
-              </span>
+          {visible?.cteModal && (
+            <div className="modal">
+              <div>
+                <span>
+                  <span>
+                    <Checkbox
+                      checked={isCte.VISUALIZAR}
+                      onClick={() =>
+                        setIsCte({
+                          ...isCte,
+                          VISUALIZAR: !isCte.VISUALIZAR,
+                        })
+                      }
+                      onChange={() => gatherData(14)}
+                    />
+                  </span>
+                  Visualizar
+                </span>
+                <span>
+                  <span>
+                    <Checkbox
+                      checked={isCte.HISTORICO}
+                      onClick={() =>
+                        setIsCte({ ...isCte, HISTORICO: !isCte.HISTORICO })
+                      }
+                      onChange={() => gatherData(13)}
+                    />
+                  </span>
+                  Histórico de Notas
+                </span>
+                <span>
+                  <span>
+                    <Checkbox
+                      checked={isCte.IMPRIMIR}
+                      onClick={() =>
+                        setIsCte({ ...isCte, IMPRIMIR: !isCte.IMPRIMIR })
+                      }
+                      onChange={() => gatherData(15)}
+                    />
+                  </span>
+                  Imprimir Notas
+                </span>
+              </div>
             </div>
-            {visible.entranceModal && (
-              <div className="modal">
-                <div>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={19}
-                        checked={isEntrance.VISUALIZAR}
-                        onClick={() =>
-                          setIsEntrance({
-                            ...isEntrance,
-                            VISUALIZAR: !isEntrance.VISUALIZAR,
-                          })
-                        }
-                        onChange={() => gatherData(19)}
-                      />
-                    </span>
-                    Visualizar
-                  </span>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={20}
-                        checked={isEntrance.AUTORIZAR}
-                        onClick={() =>
-                          setIsEntrance({
-                            ...isEntrance,
-                            AUTORIZAR: !isEntrance.AUTORIZAR,
-                          })
-                        }
-                        onChange={() => gatherData(20)}
-                      />
-                    </span>
-                    Autorizar
-                  </span>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={21}
-                        checked={isEntrance.EDITAR}
-                        onClick={() =>
-                          setIsEntrance({
-                            ...isEntrance,
-                            EDITAR: !isEntrance.EDITAR,
-                          })
-                        }
-                        onChange={() => gatherData(21)}
-                      />
-                    </span>
-                    Editar
-                  </span>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={22}
-                        checked={isEntrance.CANCELAR}
-                        onClick={() =>
-                          setIsEntrance({
-                            ...isEntrance,
-                            CANCELAR: !isEntrance.CANCELAR,
-                          })
-                        }
-                        onChange={() => gatherData(22)}
-                      />
-                    </span>
-                    Cancelar
-                  </span>
-                  <span>
-                    <span>
-                      <Checkbox
-                        value={23}
-                        checked={isEntrance.ADICIONAR}
-                        onClick={() =>
-                          setIsEntrance({
-                            ...isEntrance,
-                            ADICIONAR: !isEntrance.ADICIONAR,
-                          })
-                        }
-                        onChange={() => gatherData(23)}
-                      />
-                    </span>
-                    Adicionar
-                  </span>
-                </div>
-              </div>
-            )}
+          )}
+        </div>
+        {/* )}  */}
+        {/* {availableApps?.NFSE && ( */}
+        <div className="body-row">
+          <div
+            onClick={() =>
+              setVisible({ ...visible, nfseModal: !visible.nfseModal })
+            }
+            style={{ cursor: 'pointer' }}
+          >
+            <span className="line">
+              <h5>Nfs-e</h5>
+            </span>
+            <span className="line">
+              <h5>Painel e Visualização de Nfs-e</h5>
+            </span>
+            <span>
+              {!visible?.nfseModal ? (
+                <ChevronDown className="icon" />
+              ) : (
+                <ChevronUp className="icon" />
+              )}
+            </span>
           </div>
-        )}
+          {visible?.nfseModal && (
+            <div className="modal">
+              <div>
+                <span>
+                  <span>
+                    <Checkbox
+                      value={17}
+                      checked={isNfse.VISUALIZAR}
+                      onClick={() =>
+                        setIsNfse({
+                          ...isNfse,
+                          VISUALIZAR: !isNfse.VISUALIZAR,
+                        })
+                      }
+                      onChange={() => gatherData(17)}
+                    />
+                  </span>
+                  Visualizar
+                </span>
+                <span>
+                  <span>
+                    <Checkbox
+                      value={16}
+                      checked={isNfse.HISTORICO}
+                      onClick={() =>
+                        setIsNfse({
+                          ...isNfse,
+                          HISTORICO: !isNfse.HISTORICO,
+                        })
+                      }
+                      onChange={() => gatherData(16)}
+                    />
+                  </span>
+                  Histórico de Notas
+                </span>
+                <span>
+                  <span>
+                    <Checkbox
+                      value={18}
+                      checked={isNfse.IMPRIMIR}
+                      onClick={() =>
+                        setIsNfse({ ...isNfse, IMPRIMIR: !isNfse.IMPRIMIR })
+                      }
+                      onChange={() => gatherData(18)}
+                    />
+                  </span>
+                  Imprimir Notas
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* )}  */}
+        {/* {availableApps?.ENTRADA && ( */}
+        <div className="body-row">
+          <div
+            onClick={() =>
+              setVisible({
+                ...visible,
+                entranceModal: !visible.entranceModal,
+              })
+            }
+            style={{ cursor: 'pointer' }}
+          >
+            <span className="line">
+              <h5>Entrada</h5>
+            </span>
+            <span className="line">
+              <h5>Painel e Visualização de Portaria</h5>
+            </span>
+            <span>
+              {!visible?.entranceModal ? (
+                <ChevronDown className="icon" />
+              ) : (
+                <ChevronUp className="icon" />
+              )}
+            </span>
+          </div>
+          {visible?.entranceModal && (
+            <div className="modal">
+              <div>
+                <span>
+                  <span>
+                    <Checkbox
+                      value={19}
+                      checked={isEntrance.VISUALIZAR}
+                      onClick={() =>
+                        setIsEntrance({
+                          ...isEntrance,
+                          VISUALIZAR: !isEntrance.VISUALIZAR,
+                        })
+                      }
+                      onChange={() => gatherData(19)}
+                    />
+                  </span>
+                  Visualizar
+                </span>
+                <span>
+                  <span>
+                    <Checkbox
+                      value={20}
+                      checked={isEntrance.AUTORIZAR}
+                      onClick={() =>
+                        setIsEntrance({
+                          ...isEntrance,
+                          AUTORIZAR: !isEntrance.AUTORIZAR,
+                        })
+                      }
+                      onChange={() => gatherData(20)}
+                    />
+                  </span>
+                  Autorizar
+                </span>
+                <span>
+                  <span>
+                    <Checkbox
+                      value={21}
+                      checked={isEntrance.EDITAR}
+                      onClick={() =>
+                        setIsEntrance({
+                          ...isEntrance,
+                          EDITAR: !isEntrance.EDITAR,
+                        })
+                      }
+                      onChange={() => gatherData(21)}
+                    />
+                  </span>
+                  Editar
+                </span>
+                <span>
+                  <span>
+                    <Checkbox
+                      value={22}
+                      checked={isEntrance.CANCELAR}
+                      onClick={() =>
+                        setIsEntrance({
+                          ...isEntrance,
+                          CANCELAR: !isEntrance.CANCELAR,
+                        })
+                      }
+                      onChange={() => gatherData(22)}
+                    />
+                  </span>
+                  Cancelar
+                </span>
+                <span>
+                  <span>
+                    <Checkbox
+                      value={23}
+                      checked={isEntrance.ADICIONAR}
+                      onClick={() =>
+                        setIsEntrance({
+                          ...isEntrance,
+                          ADICIONAR: !isEntrance.ADICIONAR,
+                        })
+                      }
+                      onChange={() => gatherData(23)}
+                    />
+                  </span>
+                  Adicionar
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+        {/* )}  */}
         <div className="body-row">
           <div
             onClick={() =>

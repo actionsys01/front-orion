@@ -41,11 +41,12 @@ export default function CadastrosGerais() {
       <IconLine>
         <div>
           <label htmlFor="first">De/Para Itens de Fornecedor</label>
-          <UserPlus id="first" />
+          <UserPlus id="first" onClick={() => router.push('/referencia-cruzada/referencia-cruzada-fornecedores')}/>
+          
         </div>
         <div>
           <label htmlFor="second"> De/Para CNPJ Fornecedor</label>
-          <Inbox id="second" />
+          <Inbox id="second" onClick={() => router.push('/regras-busca')}/>
         </div>
         <div>
           <label htmlFor="third">Cadastro de Códigos de Categoria</label>
